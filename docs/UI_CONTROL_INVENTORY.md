@@ -1,0 +1,642 @@
+# UI Control Inventory
+
+## Ghi chú chung
+- Tất cả form nghiệp vụ kế thừa `ModuleFormBase` đều có sẵn:
+  - `pnlModuleHeader`
+  - `lblModuleTitle`
+  - `pnlModuleBody`
+- Các `DataGridView` hiện bind dữ liệu mẫu từ `DemoDataFactory`; backend có thể thay bằng `DataSource` thật hoặc khai báo cột tay nếu cần kiểm soát sâu hơn.
+- `FrmAdminReports` dùng `Chart` control thật: `chtAdminRevenue`.
+- `FrmTuitionReceipt` có sẵn:
+  - `ppdTuitionReceiptPreview`
+  - `prdTuitionReceipt`
+- Prefix đang dùng thống nhất:
+  - `pnl`, `lbl`, `txt`, `cbo`, `dtp`, `dgv`, `btn`, `grp`, `tab`, `tp`, `pic`, `chk`, `err`, `tt`, `cht`, `ppd`, `prd`
+
+## FrmLogin
+- Mục đích: form vào hệ thống, điều hướng theo role `admin`, `staff`, `teacher`
+- Controls:
+  - `pnlLoginContainer`
+  - `pnlLoginHeader`
+  - `pnlLoginHeaderOverlay`
+  - `picHeaderLogo`
+  - `lblHeaderTitle`
+  - `lblHeaderSubtitle`
+  - `pnlLoginFormContent`
+  - `pnlErrorAlert`
+  - `pnlErrorAccent`
+  - `pnlErrorIcon`
+  - `lblErrorAlertText`
+  - `lblUsername`
+  - `pnlUsernameInput`
+  - `pnlUsernameIcon`
+  - `txtUsername`
+  - `lblPassword`
+  - `pnlPasswordInput`
+  - `pnlPasswordIcon`
+  - `txtPassword`
+  - `pnlSubControls`
+  - `chkShowPassword`
+  - `lnkForgotPassword`
+  - `pnlActionButtons`
+  - `btnLogin`
+  - `btnExit`
+  - `pnlLoginFooter`
+  - `lblFooterVersion`
+  - `lblFooterSupport`
+  - `errLogin`
+  - `ttLogin`
+
+## FrmAdminDashboard
+- Shell chrome:
+  - `pnlSidebarAdmin`
+  - `pnlTopbarAdmin`
+  - `pnlContentHostAdmin`
+  - `lblCurrentRoleAdmin`
+  - `lblCurrentUserAdmin`
+  - `btnLogoutAdmin`
+  - `lblBrandTitle`
+  - `lblBrandSubtitle`
+  - `pnlSidebarMenu`
+  - `btnMenuAdminDashboard`
+  - `btnMenuSystemMonitor`
+  - `btnMenuAccountManagement`
+  - `btnMenuAdminReports`
+- Dashboard home:
+  - `lblAdminDashboardTitle`
+  - `pnlAdminKpiRow`
+  - `pnlKpiTotalAccounts`
+  - `lblKpiTotalAccountsTitle`
+  - `lblKpiTotalAccountsValue`
+  - `pnlKpiActiveClasses`
+  - `lblKpiActiveClassesTitle`
+  - `lblKpiActiveClassesValue`
+  - `pnlKpiRevenue`
+  - `lblKpiRevenueTitle`
+  - `lblKpiRevenueValue`
+  - `pnlKpiDebtStudents`
+  - `lblKpiDebtStudentsTitle`
+  - `lblKpiDebtStudentsValue`
+  - `tblAdminDashboardContent`
+  - `grpAdminTasks`
+  - `lblAdminTask01`
+  - `lblAdminTask02`
+  - `lblAdminTask03`
+  - `lblAdminTask04`
+  - `pnlAdminQuickButtons`
+  - `btnOpenSystemMonitor`
+  - `btnOpenAccountManagement`
+  - `btnOpenAdminReports`
+  - `pnlAdminWarningsCard`
+  - `lblAdminWarningsTitle`
+  - `dgvAdminWarnings`
+
+## FrmSystemMonitor
+- Mục đích: giám sát tổng quan hệ thống theo dạng read-only
+- Controls:
+  - `pnlSystemMonitorFilterCard`
+  - `lblMonitorPeriod`
+  - `cboMonitorPeriod`
+  - `lblMonitorViewType`
+  - `cboMonitorViewType`
+  - `btnViewMonitor`
+  - `btnQuickExportMonitor`
+  - `btnOpenAdminReports`
+  - `btnBackAdminDashboard`
+  - `pnlMonitorStudentCount`
+  - `lblMonitorStudentCountTitle`
+  - `lblMonitorStudentCountValue`
+  - `pnlMonitorEnrollmentCount`
+  - `lblMonitorEnrollmentCountTitle`
+  - `lblMonitorEnrollmentCountValue`
+  - `pnlMonitorReceiptCount`
+  - `lblMonitorReceiptCountTitle`
+  - `lblMonitorReceiptCountValue`
+  - `pnlMonitorDebtTotal`
+  - `lblMonitorDebtTotalTitle`
+  - `lblMonitorDebtTotalValue`
+  - `tblSystemMonitorContent`
+  - `pnlSystemMonitorLeft`
+  - `pnlSystemMonitorRight`
+  - `dgvMonitorActivity`
+  - `dgvMonitorSource`
+
+## FrmAccountManagement
+- Mục đích: quản lý tài khoản và phân quyền
+- Controls:
+  - `pnlAccountFilterCard`
+  - `lblAccountKeyword`
+  - `txtAccountKeyword`
+  - `lblAccountRoleFilter`
+  - `cboAccountRoleFilter`
+  - `btnSearchAccount`
+  - `btnRefreshAccount`
+  - `tblAccountContent`
+  - `pnlAccountListCard`
+  - `dgvAccountList`
+  - `grpAccountInfo`
+  - `lblUsername`
+  - `txtUsername`
+  - `lblPassword`
+  - `txtPassword`
+  - `lblDisplayName`
+  - `txtDisplayName`
+  - `lblAccountRole`
+  - `cboAccountRole`
+  - `lblAccountStatus`
+  - `cboAccountStatus`
+  - `grpPermissionRule`
+  - `lblRuleAdmin`
+  - `lblRuleStaff`
+  - `lblRuleTeacher`
+  - `pnlAccountActions`
+  - `btnCreateAccount`
+  - `btnSaveAccount`
+  - `btnToggleAccountStatus`
+  - `btnResetPassword`
+  - `errAccount`
+
+## FrmAdminReports
+- Mục đích: báo cáo thống kê tổng hợp
+- Controls:
+  - `pnlAdminReportFilterCard`
+  - `lblReportType`
+  - `cboReportType`
+  - `lblFromDate`
+  - `dtpReportFromDate`
+  - `lblToDate`
+  - `dtpReportToDate`
+  - `btnViewReport`
+  - `btnExportReportExcel`
+  - `btnExportReportPdf`
+  - `pnlReportRevenue`
+  - `lblReportRevenueTitle`
+  - `lblReportRevenueValue`
+  - `pnlReportEnrollment`
+  - `lblReportEnrollmentTitle`
+  - `lblReportEnrollmentValue`
+  - `pnlReportClassCount`
+  - `lblReportClassCountTitle`
+  - `lblReportClassCountValue`
+  - `tblAdminReportContent`
+  - `pnlAdminReportChartCard`
+  - `chtAdminRevenue`
+  - `pnlAdminReportDetailCard`
+  - `dgvAdminReportDetail`
+
+## FrmStaffDashboard
+- Shell chrome:
+  - `pnlSidebarStaff`
+  - `pnlTopbarStaff`
+  - `pnlContentHostStaff`
+  - `lblCurrentRoleStaff`
+  - `lblCurrentUserStaff`
+  - `btnLogoutStaff`
+  - `lblBrandTitle`
+  - `lblBrandSubtitle`
+  - `pnlSidebarMenu`
+  - `btnMenuStaffDashboard`
+  - `btnMenuStudentManagement`
+  - `btnMenuTeacherManagement`
+  - `btnMenuCourseManagement`
+  - `btnMenuClassManagement`
+  - `btnMenuEnrollment`
+  - `btnMenuTuitionReceipt`
+  - `btnMenuDebtTracking`
+- Dashboard home:
+  - `lblStaffDashboardTitle`
+  - `pnlStaffKpiRow`
+  - `pnlNewStudentsToday`
+  - `lblNewStudentsTodayTitle`
+  - `lblNewStudentsTodayValue`
+  - `pnlAvailableClasses`
+  - `lblAvailableClassesTitle`
+  - `lblAvailableClassesValue`
+  - `pnlTodayReceipts`
+  - `lblTodayReceiptsTitle`
+  - `lblTodayReceiptsValue`
+  - `pnlDebtStudents`
+  - `lblDebtStudentsTitle`
+  - `lblDebtStudentsValue`
+  - `tblStaffDashboardContent`
+  - `grpStaffTasks`
+  - `lblStaffTask01`
+  - `lblStaffTask02`
+  - `lblStaffTask03`
+  - `lblStaffTask04`
+  - `pnlStaffQuickButtons`
+  - `btnOpenStudentManagement`
+  - `btnOpenEnrollment`
+  - `btnOpenTuitionReceipt`
+  - `btnOpenDebtTracking`
+  - `pnlRecentReceiptsCard`
+  - `dgvRecentReceipts`
+
+## FrmStudentManagement
+- Mục đích: quản lý học viên và chuẩn bị dữ liệu cho ghi danh
+- Controls:
+  - `pnlStudentFilterCard`
+  - `lblStudentKeyword`
+  - `txtStudentKeyword`
+  - `lblStudentStatusFilter`
+  - `cboStudentStatusFilter`
+  - `btnSearchStudent`
+  - `btnRefreshStudent`
+  - `tblStudentContent`
+  - `pnlStudentListCard`
+  - `dgvStudentList`
+  - `grpStudentInfo`
+  - `lblStudentId`
+  - `txtStudentId`
+  - `lblStudentName`
+  - `txtStudentName`
+  - `lblStudentDob`
+  - `dtpStudentDob`
+  - `lblStudentPhone`
+  - `txtStudentPhone`
+  - `lblStudentAddress`
+  - `txtStudentAddress`
+  - `lblStudentEmail`
+  - `txtStudentEmail`
+  - `lblStudentParent`
+  - `txtStudentParent`
+  - `lblStudentStatus`
+  - `cboStudentStatus`
+  - `lblStudentNote`
+  - `txtStudentNote`
+  - `picStudentAvatar`
+  - `btnChooseStudentAvatar`
+  - `btnRemoveStudentAvatar`
+  - `pnlStudentActions`
+  - `btnCreateStudent`
+  - `btnSaveStudent`
+  - `btnUpdateStudent`
+  - `btnDeleteStudent`
+  - `btnResetStudent`
+  - `btnOpenEnrollment`
+  - `errStudent`
+  - `ttStudentManagement`
+
+## FrmTeacherManagement
+- Mục đích: quản lý hồ sơ giáo viên
+- Controls:
+  - `pnlTeacherFilterCard`
+  - `lblTeacherKeyword`
+  - `txtTeacherKeyword`
+  - `lblTeacherStatusFilter`
+  - `cboTeacherStatusFilter`
+  - `btnSearchTeacher`
+  - `btnRefreshTeacher`
+  - `tblTeacherContent`
+  - `pnlTeacherListCard`
+  - `dgvTeacherList`
+  - `grpTeacherInfo`
+  - `lblTeacherId`
+  - `txtTeacherId`
+  - `lblTeacherName`
+  - `txtTeacherName`
+  - `lblTeacherPhone`
+  - `txtTeacherPhone`
+  - `lblTeacherEmail`
+  - `txtTeacherEmail`
+  - `lblTeacherSpecialization`
+  - `txtTeacherSpecialization`
+  - `lblTeacherAddress`
+  - `txtTeacherAddress`
+  - `lblTeacherStatus`
+  - `cboTeacherStatus`
+  - `lblTeacherNote`
+  - `txtTeacherNote`
+  - `pnlTeacherActions`
+  - `btnCreateTeacher`
+  - `btnSaveTeacher`
+  - `btnUpdateTeacher`
+  - `btnDeleteTeacher`
+  - `btnResetTeacher`
+  - `errTeacher`
+
+## FrmCourseManagement
+- Mục đích: quản lý khóa học
+- Controls:
+  - `pnlCourseFilterCard`
+  - `lblCourseKeyword`
+  - `txtCourseKeyword`
+  - `lblCourseStatusFilter`
+  - `cboCourseStatusFilter`
+  - `btnSearchCourse`
+  - `btnRefreshCourse`
+  - `tblCourseContent`
+  - `pnlCourseListCard`
+  - `dgvCourseList`
+  - `grpCourseInfo`
+  - `lblCourseId`
+  - `txtCourseId`
+  - `lblCourseName`
+  - `txtCourseName`
+  - `lblCourseLevel`
+  - `txtCourseLevel`
+  - `lblCourseSessions`
+  - `txtCourseSessions`
+  - `lblCourseFee`
+  - `txtCourseFee`
+  - `lblCourseStatus`
+  - `cboCourseStatus`
+  - `lblCourseDescription`
+  - `txtCourseDescription`
+  - `pnlCourseActions`
+  - `btnCreateCourse`
+  - `btnSaveCourse`
+  - `btnUpdateCourse`
+  - `btnDeleteCourse`
+  - `btnResetCourse`
+  - `btnOpenClassManagement`
+
+## FrmClassManagement
+- Mục đích: quản lý lớp học, danh sách học viên lớp và buổi học
+- Controls:
+  - `pnlClassFilterCard`
+  - `lblClassKeyword`
+  - `txtClassKeyword`
+  - `lblClassStatusFilter`
+  - `cboClassStatusFilter`
+  - `btnSearchClass`
+  - `btnRefreshClass`
+  - `tblClassContent`
+  - `pnlClassListCard`
+  - `dgvClassList`
+  - `tabClassManagement`
+  - `tpClassInfo`
+  - `tpClassStudents`
+  - `tpClassSessions`
+  - `grpClassInfo`
+  - `lblClassId`
+  - `txtClassId`
+  - `lblClassName`
+  - `txtClassName`
+  - `lblClassCourse`
+  - `cboClassCourse`
+  - `lblClassTeacher`
+  - `cboClassTeacher`
+  - `lblClassSchedule`
+  - `txtClassSchedule`
+  - `lblClassRoom`
+  - `txtClassRoom`
+  - `lblClassStartDate`
+  - `dtpClassStartDate`
+  - `lblClassEndDate`
+  - `dtpClassEndDate`
+  - `lblClassCapacity`
+  - `txtClassCapacity`
+  - `lblClassCurrentSize`
+  - `txtClassCurrentSize`
+  - `lblClassStatus`
+  - `cboClassStatus`
+  - `pnlClassActions`
+  - `btnCreateClass`
+  - `btnSaveClass`
+  - `btnUpdateClass`
+  - `btnGenerateSessions`
+  - `btnOpenEnrollmentFromClass`
+  - `btnOpenAttendanceFromClass`
+  - `btnOpenScoreEntryFromClass`
+  - `dgvClassStudentList`
+  - `dgvClassSessionList`
+
+## FrmEnrollment
+- Mục đích: chọn học viên, chọn lớp, tạo ghi danh
+- Controls:
+  - `tblEnrollmentContent`
+  - `grpEnrollmentStudentSelect`
+  - `lblEnrollmentStudentKeyword`
+  - `txtEnrollmentStudentKeyword`
+  - `btnSearchEnrollmentStudent`
+  - `dgvEnrollmentStudentList`
+  - `grpEnrollmentClassSelect`
+  - `lblEnrollmentCourse`
+  - `cboEnrollmentCourse`
+  - `lblEnrollmentClassStatus`
+  - `cboEnrollmentClassStatus`
+  - `dgvEnrollmentClassList`
+  - `grpEnrollmentSummary`
+  - `lblEnrollmentDate`
+  - `dtpEnrollmentDate`
+  - `lblEnrollmentOriginalFee`
+  - `txtEnrollmentOriginalFee`
+  - `lblEnrollmentDiscount`
+  - `txtEnrollmentDiscount`
+  - `lblEnrollmentFinalFee`
+  - `txtEnrollmentFinalFee`
+  - `lblEnrollmentStatus`
+  - `cboEnrollmentStatus`
+  - `lblEnrollmentNote`
+  - `txtEnrollmentNote`
+  - `pnlEnrollmentActions`
+  - `btnCreateEnrollment`
+  - `btnRefreshEnrollment`
+  - `btnOpenTuitionReceipt`
+
+## FrmTuitionReceipt
+- Mục đích: thu học phí, xem lịch sử biên nhận, in preview
+- Controls:
+  - `grpEnrollmentInfo`
+  - `lblReceiptStudent`
+  - `txtReceiptStudent`
+  - `lblReceiptClass`
+  - `txtReceiptClass`
+  - `lblReceiptCourse`
+  - `txtReceiptCourse`
+  - `lblReceiptFinalFee`
+  - `txtReceiptFinalFee`
+  - `lblReceiptPaid`
+  - `txtReceiptPaid`
+  - `lblReceiptDebt`
+  - `txtReceiptDebt`
+  - `grpPaymentInfo`
+  - `lblReceiptNumber`
+  - `txtReceiptNumber`
+  - `lblReceiptPayDate`
+  - `dtpReceiptPayDate`
+  - `lblReceiptAmount`
+  - `txtReceiptAmount`
+  - `lblReceiptMethod`
+  - `cboReceiptMethod`
+  - `lblReceiptNote`
+  - `txtReceiptNote`
+  - `pnlTuitionReceiptActions`
+  - `btnCollectTuition`
+  - `btnSavePrintReceipt`
+  - `btnViewReceipt`
+  - `btnCancelReceipt`
+  - `pnlReceiptHistoryCard`
+  - `dgvReceiptHistory`
+  - `ppdTuitionReceiptPreview`
+  - `prdTuitionReceipt`
+  - `ttTuitionReceipt`
+  - `errTuitionReceipt`
+
+## FrmDebtTracking
+- Mục đích: theo dõi công nợ và mở thu tiền nhanh
+- Controls:
+  - `pnlDebtFilterCard`
+  - `lblDebtCourseFilter`
+  - `cboDebtCourseFilter`
+  - `lblDebtClassFilter`
+  - `cboDebtClassFilter`
+  - `lblDebtFromDate`
+  - `dtpDebtFromDate`
+  - `lblDebtToDate`
+  - `dtpDebtToDate`
+  - `btnSearchDebt`
+  - `btnRefreshDebt`
+  - `btnExportDebt`
+  - `pnlDebtTotalCount`
+  - `lblDebtTotalCountTitle`
+  - `lblDebtTotalCountValue`
+  - `pnlDebtTotalAmount`
+  - `lblDebtTotalAmountTitle`
+  - `lblDebtTotalAmountValue`
+  - `pnlDebtListCard`
+  - `dgvDebtTrackingList`
+  - `pnlDebtActions`
+  - `btnOpenTuitionFromDebt`
+  - `btnViewReceiptHistory`
+
+## FrmTeacherDashboard
+- Shell chrome:
+  - `pnlSidebarTeacher`
+  - `pnlTopbarTeacher`
+  - `pnlContentHostTeacher`
+  - `lblCurrentRoleTeacher`
+  - `lblCurrentUserTeacher`
+  - `btnLogoutTeacher`
+  - `lblBrandTitle`
+  - `lblBrandSubtitle`
+  - `pnlSidebarMenu`
+  - `btnMenuTeacherDashboard`
+  - `btnMenuTeachingClasses`
+  - `btnMenuClassStudentList`
+  - `btnMenuAttendance`
+  - `btnMenuScoreEntry`
+- Dashboard home:
+  - `lblTeacherDashboardTitle`
+  - `pnlTeacherKpiRow`
+  - `pnlTeachingClassesCount`
+  - `lblTeachingClassesCountTitle`
+  - `lblTeachingClassesCountValue`
+  - `pnlTeachingStudentCount`
+  - `lblTeachingStudentCountTitle`
+  - `lblTeachingStudentCountValue`
+  - `pnlTeachingTodaySessions`
+  - `lblTeachingTodaySessionsTitle`
+  - `lblTeachingTodaySessionsValue`
+  - `pnlTeachingPendingScores`
+  - `lblTeachingPendingScoresTitle`
+  - `lblTeachingPendingScoresValue`
+  - `tblTeacherDashboardContent`
+  - `pnlTeacherClassListCard`
+  - `dgvTeacherClassOverview`
+  - `grpTeacherTasks`
+  - `lblTeacherTask01`
+  - `lblTeacherTask02`
+  - `lblTeacherTask03`
+  - `lblTeacherTask04`
+  - `pnlTeacherQuickButtons`
+  - `btnOpenTeachingClasses`
+  - `btnOpenAttendance`
+  - `btnOpenScoreEntry`
+
+## FrmTeachingClasses
+- Mục đích: danh sách lớp đang dạy của giáo viên
+- Controls:
+  - `pnlTeachingClassFilterCard`
+  - `lblTeachingClassKeyword`
+  - `txtTeachingClassKeyword`
+  - `lblTeachingStatusFilter`
+  - `cboTeachingStatusFilter`
+  - `btnSearchTeachingClass`
+  - `btnRefreshTeachingClass`
+  - `btnOpenClassStudentList`
+  - `btnOpenAttendance`
+  - `btnOpenScoreEntry`
+  - `pnlTeachingClassListCard`
+  - `dgvTeachingClassList`
+
+## FrmClassStudentList
+- Mục đích: xem danh sách học viên của lớp đang dạy
+- Controls:
+  - `pnlClassStudentFilterCard`
+  - `lblClassStudentClass`
+  - `cboClassStudentClass`
+  - `lblClassStudentKeyword`
+  - `txtClassStudentKeyword`
+  - `btnSearchClassStudent`
+  - `btnRefreshClassStudent`
+  - `btnOpenAttendanceFromStudentList`
+  - `btnBackToTeachingClasses`
+  - `pnlClassStudentCount`
+  - `lblClassStudentCountTitle`
+  - `lblClassStudentCountValue`
+  - `pnlClassStudentSchedule`
+  - `lblClassStudentScheduleTitle`
+  - `lblClassStudentScheduleValue`
+  - `pnlClassStudentListCard`
+  - `dgvClassStudentList`
+
+## FrmAttendance
+- Mục đích: điểm danh theo buổi học
+- Controls:
+  - `pnlAttendanceFilterCard`
+  - `lblAttendanceClass`
+  - `cboAttendanceClass`
+  - `lblAttendanceSession`
+  - `cboAttendanceSession`
+  - `lblAttendanceDate`
+  - `dtpAttendanceDate`
+  - `btnSearchAttendance`
+  - `btnSelectAllAttendance`
+  - `btnSaveAttendance`
+  - `btnClearAttendance`
+  - `pnlAttendanceListCard`
+  - `dgvAttendanceList`
+  - `ttAttendance`
+  - `errAttendance`
+
+## FrmScoreEntry
+- Mục đích: nhập điểm giữa kỳ / cuối kỳ
+- Controls:
+  - `pnlScoreFilterCard`
+  - `lblScoreClass`
+  - `cboScoreClass`
+  - `lblScoreType`
+  - `cboScoreType`
+  - `lblScoreExamDate`
+  - `dtpScoreExamDate`
+  - `btnSearchScore`
+  - `btnSaveScore`
+  - `btnExportScore`
+  - `pnlScoreListCard`
+  - `dgvScoreEntryList`
+  - `errScoreEntry`
+
+## FrmConfirmDialog
+- Controls:
+  - `lblConfirmTitle`
+  - `lblConfirmMessage`
+  - `pnlConfirmButtons`
+  - `btnConfirmAccept`
+  - `btnConfirmCancel`
+
+## FrmStatusDialog
+- Controls:
+  - `lblStatusTitle`
+  - `lblStatusMessage`
+  - `btnCloseStatusDialog`
+
+## FrmImagePreviewDialog
+- Controls:
+  - `lblImageTitle`
+  - `picPreviewImage`
+  - `pnlImagePreviewButtons`
+  - `btnChooseImage`
+  - `btnRemoveImage`
+  - `btnClosePreview`
