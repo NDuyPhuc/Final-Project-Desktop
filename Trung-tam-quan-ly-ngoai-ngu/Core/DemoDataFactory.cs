@@ -4,6 +4,16 @@ namespace Trung_tam_quan_ly_ngoai_ngu;
 
 internal static class DemoDataFactory
 {
+    public static DataTable GetAccessMatrix() => CreateTable(
+        ["Lĩnh vực chức năng", "Quản trị viên", "Nhân viên", "Giáo viên", "Thừa kế"],
+        ["Quản lý người dùng", "●", "○", "○", "TOÀN CỤC"],
+        ["Tài chính & Hóa đơn", "●", "●", "○", "FINANCE_DEPT"],
+        ["Xử lý ghi danh", "●", "●", "○", "OPS_DEFAULT"],
+        ["Nhật ký chuyên cần", "●", "●", "●", "PUBLIC_LOG"],
+        ["Chấm điểm & Đánh giá", "●", "○", "●", "TEACHER_HUB"],
+        ["Lập kế hoạch bài giảng", "●", "○", "●", "CURRICULUM"],
+        ["Công cụ Marketing", "●", "●", "○", "KHÔNG"]);
+
     public static DataTable GetAdminWarnings() => CreateTable(
         ["Mức độ", "Nội dung", "Hạn xử lý"],
         ["Cao", "3 lớp sắp đầy sĩ số trong tuần này", "Hôm nay"],
@@ -34,9 +44,9 @@ internal static class DemoDataFactory
 
     public static DataTable GetRecentReceipts() => CreateTable(
         ["Số biên nhận", "Học viên", "Lớp", "Số tiền", "Ngày nộp"],
-        ["PT001", "Nguyễn Hải Đăng", "ENG-A1-01", "1,500,000", "20/04/2026"],
-        ["PT002", "Lê Khánh Vy", "ENG-KID-02", "1,200,000", "20/04/2026"],
-        ["PT003", "Trần Ngọc Hân", "TIN-CB-03", "850,000", "19/04/2026"]);
+        ["PT001", "Nguyễn Hải Đăng", "ENG-A1-01", "1.500.000", "20/04/2026"],
+        ["PT002", "Lê Khánh Vy", "ENG-KID-02", "1.200.000", "20/04/2026"],
+        ["PT003", "Trần Ngọc Hân", "TIN-CB-03", "850.000", "19/04/2026"]);
 
     public static DataTable GetStudentList() => CreateTable(
         ["Mã học viên", "Họ tên", "Ngày sinh", "Điện thoại", "Trạng thái"],
@@ -53,9 +63,9 @@ internal static class DemoDataFactory
 
     public static DataTable GetCourseList() => CreateTable(
         ["Mã khóa", "Tên khóa", "Level", "Học phí", "Trạng thái"],
-        ["KH001", "English Foundation", "A1", "2,400,000", "Còn mở"],
-        ["KH002", "English Kids Starter", "Kids", "2,100,000", "Còn mở"],
-        ["KH003", "Tin học cơ bản", "Cơ bản", "1,800,000", "Tạm dừng"]);
+        ["KH001", "English Foundation", "A1", "2.400.000", "Còn mở"],
+        ["KH002", "English Kids Starter", "Kids", "2.100.000", "Còn mở"],
+        ["KH003", "Tin học cơ bản", "Cơ bản", "1.800.000", "Tạm dừng"]);
 
     public static DataTable GetClassList() => CreateTable(
         ["Mã lớp", "Tên lớp", "Khóa học", "Giáo viên", "Lịch học", "Sĩ số", "Trạng thái"],
@@ -83,18 +93,18 @@ internal static class DemoDataFactory
 
     public static DataTable GetEnrollmentClasses() => CreateTable(
         ["Mã lớp", "Tên lớp", "Lịch học", "Giáo viên", "Còn chỗ", "Học phí"],
-        ["LP001", "ENG-A1-01", "2-4-6", "Trần Minh An", "2", "2,400,000"],
-        ["LP003", "TIN-CB-03", "T7-CN", "Ngô Gia Hưng", "8", "1,800,000"]);
+        ["LP001", "ENG-A1-01", "2-4-6", "Trần Minh An", "2", "2.400.000"],
+        ["LP003", "TIN-CB-03", "T7-CN", "Ngô Gia Hưng", "8", "1.800.000"]);
 
     public static DataTable GetReceiptHistory() => CreateTable(
         ["Số biên nhận", "Ngày nộp", "Phương thức", "Số tiền", "Ghi chú"],
-        ["PT001", "10/04/2026", "Tiền mặt", "1,000,000", "Đợt 1"],
-        ["PT004", "18/04/2026", "Chuyển khoản", "500,000", "Bổ sung"]);
+        ["PT001", "10/04/2026", "Tiền mặt", "1.000.000", "Đợt 1"],
+        ["PT004", "18/04/2026", "Chuyển khoản", "500.000", "Bổ sung"]);
 
     public static DataTable GetDebtList() => CreateTable(
         ["Học viên", "Lớp", "Khóa học", "Phải thu", "Đã thu", "Còn nợ", "Trạng thái"],
-        ["Nguyễn Hải Đăng", "ENG-A1-01", "English Foundation", "2,400,000", "1,500,000", "900,000", "Còn nợ"],
-        ["Trần Ngọc Hân", "TIN-CB-03", "Tin học cơ bản", "1,800,000", "800,000", "1,000,000", "Còn nợ"]);
+        ["Nguyễn Hải Đăng", "ENG-A1-01", "English Foundation", "2.400.000", "1.500.000", "900.000", "Còn nợ"],
+        ["Trần Ngọc Hân", "TIN-CB-03", "Tin học cơ bản", "1.800.000", "800.000", "1.000.000", "Còn nợ"]);
 
     public static DataTable GetTeachingClasses() => CreateTable(
         ["Mã lớp", "Tên lớp", "Lịch học", "Số HV", "Buổi gần nhất", "Trạng thái"],
@@ -122,10 +132,10 @@ internal static class DemoDataFactory
 
     public static DataTable GetReportDetail() => CreateTable(
         ["Tháng", "Doanh thu", "Ghi danh mới", "Học viên còn nợ"],
-        ["01/2026", "42,000,000", "32", "11"],
-        ["02/2026", "48,500,000", "39", "9"],
-        ["03/2026", "51,300,000", "41", "7"],
-        ["04/2026", "36,900,000", "28", "5"]);
+        ["01/2026", "42.000.000", "32", "11"],
+        ["02/2026", "48.500.000", "39", "9"],
+        ["03/2026", "51.300.000", "41", "7"],
+        ["04/2026", "36.900.000", "28", "5"]);
 
     private static DataTable CreateTable(string[] columns, params object[][] rows)
     {

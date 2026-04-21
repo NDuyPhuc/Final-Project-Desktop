@@ -1,0 +1,525 @@
+namespace Trung_tam_quan_ly_ngoai_ngu;
+
+partial class FrmClassManagement
+{
+    private System.ComponentModel.IContainer components = null;
+    private TableLayoutPanel tblClassRoot;
+    private Panel pnlClassFilterCard;
+    private Label lblClassKeyword;
+    private TextBox txtClassKeyword;
+    private Label lblClassStatus;
+    private ComboBox cboClassStatusFilter;
+    private Button btnSearchClass;
+    private Button btnRefreshClass;
+    private SplitContainer splClassContent;
+    private DataGridView dgvClassList;
+    private TabControl tabClassManagement;
+    private TabPage tpClassInfo;
+    private TabPage tpClassStudents;
+    private TabPage tpClassSessions;
+    private TableLayoutPanel tblClassInfo;
+    private Label lblClassCode;
+    private TextBox txtClassCode;
+    private Label lblClassName;
+    private TextBox txtClassName;
+    private Label lblClassCourse;
+    private TextBox txtClassCourse;
+    private Label lblClassTeacher;
+    private TextBox txtClassTeacher;
+    private Label lblClassSchedule;
+    private TextBox txtClassSchedule;
+    private Label lblClassSize;
+    private TextBox txtClassSize;
+    private Label lblClassDetailStatus;
+    private ComboBox cboClassDetailStatus;
+    private DataGridView dgvClassStudentList;
+    private DataGridView dgvClassSessionList;
+    private FlowLayoutPanel flpClassActions;
+    private Button btnCreateClass;
+    private Button btnSaveClass;
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing && (components != null))
+        {
+            components.Dispose();
+        }
+
+        base.Dispose(disposing);
+    }
+
+    private void InitializeComponent()
+    {
+        tblClassRoot = new TableLayoutPanel();
+        pnlClassFilterCard = new Panel();
+        lblClassKeyword = new Label();
+        txtClassKeyword = new TextBox();
+        lblClassStatus = new Label();
+        cboClassStatusFilter = new ComboBox();
+        btnSearchClass = new Button();
+        btnRefreshClass = new Button();
+        splClassContent = new SplitContainer();
+        dgvClassList = new DataGridView();
+        tabClassManagement = new TabControl();
+        tpClassInfo = new TabPage();
+        tblClassInfo = new TableLayoutPanel();
+        lblClassCode = new Label();
+        txtClassCode = new TextBox();
+        lblClassName = new Label();
+        txtClassName = new TextBox();
+        lblClassCourse = new Label();
+        txtClassCourse = new TextBox();
+        lblClassTeacher = new Label();
+        txtClassTeacher = new TextBox();
+        lblClassSchedule = new Label();
+        txtClassSchedule = new TextBox();
+        lblClassSize = new Label();
+        txtClassSize = new TextBox();
+        lblClassDetailStatus = new Label();
+        cboClassDetailStatus = new ComboBox();
+        tpClassStudents = new TabPage();
+        dgvClassStudentList = new DataGridView();
+        tpClassSessions = new TabPage();
+        dgvClassSessionList = new DataGridView();
+        flpClassActions = new FlowLayoutPanel();
+        btnCreateClass = new Button();
+        btnSaveClass = new Button();
+        tblClassRoot.SuspendLayout();
+        pnlClassFilterCard.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)splClassContent).BeginInit();
+        splClassContent.Panel1.SuspendLayout();
+        splClassContent.Panel2.SuspendLayout();
+        splClassContent.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)dgvClassList).BeginInit();
+        tabClassManagement.SuspendLayout();
+        tpClassInfo.SuspendLayout();
+        tblClassInfo.SuspendLayout();
+        tpClassStudents.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)dgvClassStudentList).BeginInit();
+        tpClassSessions.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)dgvClassSessionList).BeginInit();
+        flpClassActions.SuspendLayout();
+        SuspendLayout();
+        // 
+        // tblClassRoot
+        // 
+        tblClassRoot.ColumnCount = 1;
+        tblClassRoot.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+        tblClassRoot.Controls.Add(pnlClassFilterCard, 0, 0);
+        tblClassRoot.Controls.Add(splClassContent, 0, 1);
+        tblClassRoot.Controls.Add(flpClassActions, 0, 2);
+        tblClassRoot.Dock = DockStyle.Fill;
+        tblClassRoot.Location = new Point(12, 12);
+        tblClassRoot.Name = "tblClassRoot";
+        tblClassRoot.RowCount = 3;
+        tblClassRoot.RowStyles.Add(new RowStyle());
+        tblClassRoot.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+        tblClassRoot.RowStyles.Add(new RowStyle());
+        tblClassRoot.Size = new Size(956, 596);
+        tblClassRoot.TabIndex = 0;
+        // 
+        // pnlClassFilterCard
+        // 
+        pnlClassFilterCard.BorderStyle = BorderStyle.FixedSingle;
+        pnlClassFilterCard.Controls.Add(btnRefreshClass);
+        pnlClassFilterCard.Controls.Add(btnSearchClass);
+        pnlClassFilterCard.Controls.Add(cboClassStatusFilter);
+        pnlClassFilterCard.Controls.Add(lblClassStatus);
+        pnlClassFilterCard.Controls.Add(txtClassKeyword);
+        pnlClassFilterCard.Controls.Add(lblClassKeyword);
+        pnlClassFilterCard.Dock = DockStyle.Fill;
+        pnlClassFilterCard.Location = new Point(3, 3);
+        pnlClassFilterCard.Name = "pnlClassFilterCard";
+        pnlClassFilterCard.Padding = new Padding(16, 14, 16, 14);
+        pnlClassFilterCard.Size = new Size(950, 82);
+        pnlClassFilterCard.TabIndex = 0;
+        // 
+        // lblClassKeyword
+        // 
+        lblClassKeyword.AutoSize = true;
+        lblClassKeyword.Location = new Point(16, 18);
+        lblClassKeyword.Name = "lblClassKeyword";
+        lblClassKeyword.Size = new Size(95, 20);
+        lblClassKeyword.TabIndex = 0;
+        lblClassKeyword.Text = "Từ khóa tìm";
+        // 
+        // txtClassKeyword
+        // 
+        txtClassKeyword.Location = new Point(16, 41);
+        txtClassKeyword.Name = "txtClassKeyword";
+        txtClassKeyword.PlaceholderText = "Mã lớp hoặc tên lớp";
+        txtClassKeyword.Size = new Size(280, 27);
+        txtClassKeyword.TabIndex = 1;
+        // 
+        // lblClassStatus
+        // 
+        lblClassStatus.AutoSize = true;
+        lblClassStatus.Location = new Point(318, 18);
+        lblClassStatus.Name = "lblClassStatus";
+        lblClassStatus.Size = new Size(78, 20);
+        lblClassStatus.TabIndex = 2;
+        lblClassStatus.Text = "Trạng thái";
+        // 
+        // cboClassStatusFilter
+        // 
+        cboClassStatusFilter.DropDownStyle = ComboBoxStyle.DropDownList;
+        cboClassStatusFilter.FormattingEnabled = true;
+        cboClassStatusFilter.Items.AddRange(new object[] { "Tất cả", "Đang mở", "Đầy", "Đã đóng" });
+        cboClassStatusFilter.Location = new Point(318, 41);
+        cboClassStatusFilter.Name = "cboClassStatusFilter";
+        cboClassStatusFilter.Size = new Size(170, 28);
+        cboClassStatusFilter.TabIndex = 3;
+        // 
+        // btnSearchClass
+        // 
+        btnSearchClass.Location = new Point(512, 39);
+        btnSearchClass.Name = "btnSearchClass";
+        btnSearchClass.Size = new Size(100, 30);
+        btnSearchClass.TabIndex = 4;
+        btnSearchClass.Text = "Tìm kiếm";
+        btnSearchClass.UseVisualStyleBackColor = true;
+        // 
+        // btnRefreshClass
+        // 
+        btnRefreshClass.Location = new Point(620, 39);
+        btnRefreshClass.Name = "btnRefreshClass";
+        btnRefreshClass.Size = new Size(108, 30);
+        btnRefreshClass.TabIndex = 5;
+        btnRefreshClass.Text = "Làm mới";
+        btnRefreshClass.UseVisualStyleBackColor = true;
+        // 
+        // splClassContent
+        // 
+        splClassContent.Dock = DockStyle.Fill;
+        splClassContent.Location = new Point(3, 91);
+        splClassContent.Name = "splClassContent";
+        // 
+        // splClassContent.Panel1
+        // 
+        splClassContent.Panel1.Controls.Add(dgvClassList);
+        splClassContent.Panel1.Padding = new Padding(0, 0, 6, 0);
+        // 
+        // splClassContent.Panel2
+        // 
+        splClassContent.Panel2.Controls.Add(tabClassManagement);
+        splClassContent.Panel2.Padding = new Padding(6, 0, 0, 0);
+        splClassContent.Size = new Size(950, 458);
+        splClassContent.SplitterDistance = 390;
+        splClassContent.TabIndex = 1;
+        // 
+        // dgvClassList
+        // 
+        dgvClassList.AllowUserToAddRows = false;
+        dgvClassList.AllowUserToDeleteRows = false;
+        dgvClassList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        dgvClassList.BackgroundColor = Color.White;
+        dgvClassList.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+        dgvClassList.Dock = DockStyle.Fill;
+        dgvClassList.Location = new Point(0, 0);
+        dgvClassList.MultiSelect = false;
+        dgvClassList.Name = "dgvClassList";
+        dgvClassList.ReadOnly = true;
+        dgvClassList.RowHeadersVisible = false;
+        dgvClassList.RowHeadersWidth = 51;
+        dgvClassList.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+        dgvClassList.Size = new Size(384, 458);
+        dgvClassList.TabIndex = 0;
+        // 
+        // tabClassManagement
+        // 
+        tabClassManagement.Controls.Add(tpClassInfo);
+        tabClassManagement.Controls.Add(tpClassStudents);
+        tabClassManagement.Controls.Add(tpClassSessions);
+        tabClassManagement.Dock = DockStyle.Fill;
+        tabClassManagement.Location = new Point(6, 0);
+        tabClassManagement.Name = "tabClassManagement";
+        tabClassManagement.SelectedIndex = 0;
+        tabClassManagement.Size = new Size(550, 458);
+        tabClassManagement.TabIndex = 0;
+        // 
+        // tpClassInfo
+        // 
+        tpClassInfo.Controls.Add(tblClassInfo);
+        tpClassInfo.Location = new Point(4, 29);
+        tpClassInfo.Name = "tpClassInfo";
+        tpClassInfo.Padding = new Padding(10);
+        tpClassInfo.Size = new Size(542, 425);
+        tpClassInfo.TabIndex = 0;
+        tpClassInfo.Text = "Thông tin lớp";
+        tpClassInfo.UseVisualStyleBackColor = true;
+        // 
+        // tblClassInfo
+        // 
+        tblClassInfo.ColumnCount = 2;
+        tblClassInfo.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120F));
+        tblClassInfo.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+        tblClassInfo.Controls.Add(lblClassCode, 0, 0);
+        tblClassInfo.Controls.Add(txtClassCode, 1, 0);
+        tblClassInfo.Controls.Add(lblClassName, 0, 1);
+        tblClassInfo.Controls.Add(txtClassName, 1, 1);
+        tblClassInfo.Controls.Add(lblClassCourse, 0, 2);
+        tblClassInfo.Controls.Add(txtClassCourse, 1, 2);
+        tblClassInfo.Controls.Add(lblClassTeacher, 0, 3);
+        tblClassInfo.Controls.Add(txtClassTeacher, 1, 3);
+        tblClassInfo.Controls.Add(lblClassSchedule, 0, 4);
+        tblClassInfo.Controls.Add(txtClassSchedule, 1, 4);
+        tblClassInfo.Controls.Add(lblClassSize, 0, 5);
+        tblClassInfo.Controls.Add(txtClassSize, 1, 5);
+        tblClassInfo.Controls.Add(lblClassDetailStatus, 0, 6);
+        tblClassInfo.Controls.Add(cboClassDetailStatus, 1, 6);
+        tblClassInfo.Dock = DockStyle.Fill;
+        tblClassInfo.Location = new Point(10, 10);
+        tblClassInfo.Name = "tblClassInfo";
+        tblClassInfo.RowCount = 7;
+        tblClassInfo.RowStyles.Add(new RowStyle());
+        tblClassInfo.RowStyles.Add(new RowStyle());
+        tblClassInfo.RowStyles.Add(new RowStyle());
+        tblClassInfo.RowStyles.Add(new RowStyle());
+        tblClassInfo.RowStyles.Add(new RowStyle());
+        tblClassInfo.RowStyles.Add(new RowStyle());
+        tblClassInfo.RowStyles.Add(new RowStyle());
+        tblClassInfo.Size = new Size(522, 405);
+        tblClassInfo.TabIndex = 0;
+        // 
+        // lblClassCode
+        // 
+        lblClassCode.Anchor = AnchorStyles.Left;
+        lblClassCode.AutoSize = true;
+        lblClassCode.Location = new Point(3, 6);
+        lblClassCode.Name = "lblClassCode";
+        lblClassCode.Size = new Size(56, 20);
+        lblClassCode.TabIndex = 0;
+        lblClassCode.Text = "Mã lớp";
+        // 
+        // txtClassCode
+        // 
+        txtClassCode.Dock = DockStyle.Fill;
+        txtClassCode.Location = new Point(123, 3);
+        txtClassCode.Name = "txtClassCode";
+        txtClassCode.Size = new Size(396, 27);
+        txtClassCode.TabIndex = 1;
+        // 
+        // lblClassName
+        // 
+        lblClassName.Anchor = AnchorStyles.Left;
+        lblClassName.AutoSize = true;
+        lblClassName.Location = new Point(3, 39);
+        lblClassName.Name = "lblClassName";
+        lblClassName.Size = new Size(57, 20);
+        lblClassName.TabIndex = 2;
+        lblClassName.Text = "Tên lớp";
+        // 
+        // txtClassName
+        // 
+        txtClassName.Dock = DockStyle.Fill;
+        txtClassName.Location = new Point(123, 36);
+        txtClassName.Name = "txtClassName";
+        txtClassName.Size = new Size(396, 27);
+        txtClassName.TabIndex = 3;
+        // 
+        // lblClassCourse
+        // 
+        lblClassCourse.Anchor = AnchorStyles.Left;
+        lblClassCourse.AutoSize = true;
+        lblClassCourse.Location = new Point(3, 72);
+        lblClassCourse.Name = "lblClassCourse";
+        lblClassCourse.Size = new Size(65, 20);
+        lblClassCourse.TabIndex = 4;
+        lblClassCourse.Text = "Khóa học";
+        // 
+        // txtClassCourse
+        // 
+        txtClassCourse.Dock = DockStyle.Fill;
+        txtClassCourse.Location = new Point(123, 69);
+        txtClassCourse.Name = "txtClassCourse";
+        txtClassCourse.Size = new Size(396, 27);
+        txtClassCourse.TabIndex = 5;
+        // 
+        // lblClassTeacher
+        // 
+        lblClassTeacher.Anchor = AnchorStyles.Left;
+        lblClassTeacher.AutoSize = true;
+        lblClassTeacher.Location = new Point(3, 105);
+        lblClassTeacher.Name = "lblClassTeacher";
+        lblClassTeacher.Size = new Size(71, 20);
+        lblClassTeacher.TabIndex = 6;
+        lblClassTeacher.Text = "Giáo viên";
+        // 
+        // txtClassTeacher
+        // 
+        txtClassTeacher.Dock = DockStyle.Fill;
+        txtClassTeacher.Location = new Point(123, 102);
+        txtClassTeacher.Name = "txtClassTeacher";
+        txtClassTeacher.Size = new Size(396, 27);
+        txtClassTeacher.TabIndex = 7;
+        // 
+        // lblClassSchedule
+        // 
+        lblClassSchedule.Anchor = AnchorStyles.Left;
+        lblClassSchedule.AutoSize = true;
+        lblClassSchedule.Location = new Point(3, 138);
+        lblClassSchedule.Name = "lblClassSchedule";
+        lblClassSchedule.Size = new Size(64, 20);
+        lblClassSchedule.TabIndex = 8;
+        lblClassSchedule.Text = "Lịch học";
+        // 
+        // txtClassSchedule
+        // 
+        txtClassSchedule.Dock = DockStyle.Fill;
+        txtClassSchedule.Location = new Point(123, 135);
+        txtClassSchedule.Name = "txtClassSchedule";
+        txtClassSchedule.Size = new Size(396, 27);
+        txtClassSchedule.TabIndex = 9;
+        // 
+        // lblClassSize
+        // 
+        lblClassSize.Anchor = AnchorStyles.Left;
+        lblClassSize.AutoSize = true;
+        lblClassSize.Location = new Point(3, 171);
+        lblClassSize.Name = "lblClassSize";
+        lblClassSize.Size = new Size(44, 20);
+        lblClassSize.TabIndex = 10;
+        lblClassSize.Text = "Sĩ số";
+        // 
+        // txtClassSize
+        // 
+        txtClassSize.Dock = DockStyle.Fill;
+        txtClassSize.Location = new Point(123, 168);
+        txtClassSize.Name = "txtClassSize";
+        txtClassSize.Size = new Size(396, 27);
+        txtClassSize.TabIndex = 11;
+        // 
+        // lblClassDetailStatus
+        // 
+        lblClassDetailStatus.Anchor = AnchorStyles.Left;
+        lblClassDetailStatus.AutoSize = true;
+        lblClassDetailStatus.Location = new Point(3, 205);
+        lblClassDetailStatus.Name = "lblClassDetailStatus";
+        lblClassDetailStatus.Size = new Size(78, 20);
+        lblClassDetailStatus.TabIndex = 12;
+        lblClassDetailStatus.Text = "Trạng thái";
+        // 
+        // cboClassDetailStatus
+        // 
+        cboClassDetailStatus.Dock = DockStyle.Left;
+        cboClassDetailStatus.DropDownStyle = ComboBoxStyle.DropDownList;
+        cboClassDetailStatus.FormattingEnabled = true;
+        cboClassDetailStatus.Items.AddRange(new object[] { "Đang mở", "Đầy", "Đã đóng" });
+        cboClassDetailStatus.Location = new Point(123, 201);
+        cboClassDetailStatus.Name = "cboClassDetailStatus";
+        cboClassDetailStatus.Size = new Size(180, 28);
+        cboClassDetailStatus.TabIndex = 13;
+        // 
+        // tpClassStudents
+        // 
+        tpClassStudents.Controls.Add(dgvClassStudentList);
+        tpClassStudents.Location = new Point(4, 29);
+        tpClassStudents.Name = "tpClassStudents";
+        tpClassStudents.Padding = new Padding(10);
+        tpClassStudents.Size = new Size(542, 425);
+        tpClassStudents.TabIndex = 1;
+        tpClassStudents.Text = "Học viên lớp";
+        tpClassStudents.UseVisualStyleBackColor = true;
+        // 
+        // dgvClassStudentList
+        // 
+        dgvClassStudentList.AllowUserToAddRows = false;
+        dgvClassStudentList.AllowUserToDeleteRows = false;
+        dgvClassStudentList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        dgvClassStudentList.BackgroundColor = Color.White;
+        dgvClassStudentList.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+        dgvClassStudentList.Dock = DockStyle.Fill;
+        dgvClassStudentList.Location = new Point(10, 10);
+        dgvClassStudentList.Name = "dgvClassStudentList";
+        dgvClassStudentList.ReadOnly = true;
+        dgvClassStudentList.RowHeadersVisible = false;
+        dgvClassStudentList.RowHeadersWidth = 51;
+        dgvClassStudentList.Size = new Size(522, 405);
+        dgvClassStudentList.TabIndex = 0;
+        // 
+        // tpClassSessions
+        // 
+        tpClassSessions.Controls.Add(dgvClassSessionList);
+        tpClassSessions.Location = new Point(4, 29);
+        tpClassSessions.Name = "tpClassSessions";
+        tpClassSessions.Padding = new Padding(10);
+        tpClassSessions.Size = new Size(542, 425);
+        tpClassSessions.TabIndex = 2;
+        tpClassSessions.Text = "Buổi học";
+        tpClassSessions.UseVisualStyleBackColor = true;
+        // 
+        // dgvClassSessionList
+        // 
+        dgvClassSessionList.AllowUserToAddRows = false;
+        dgvClassSessionList.AllowUserToDeleteRows = false;
+        dgvClassSessionList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        dgvClassSessionList.BackgroundColor = Color.White;
+        dgvClassSessionList.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+        dgvClassSessionList.Dock = DockStyle.Fill;
+        dgvClassSessionList.Location = new Point(10, 10);
+        dgvClassSessionList.Name = "dgvClassSessionList";
+        dgvClassSessionList.ReadOnly = true;
+        dgvClassSessionList.RowHeadersVisible = false;
+        dgvClassSessionList.RowHeadersWidth = 51;
+        dgvClassSessionList.Size = new Size(522, 405);
+        dgvClassSessionList.TabIndex = 0;
+        // 
+        // flpClassActions
+        // 
+        flpClassActions.AutoSize = true;
+        flpClassActions.Controls.Add(btnCreateClass);
+        flpClassActions.Controls.Add(btnSaveClass);
+        flpClassActions.Dock = DockStyle.Fill;
+        flpClassActions.Location = new Point(3, 555);
+        flpClassActions.Name = "flpClassActions";
+        flpClassActions.Size = new Size(950, 38);
+        flpClassActions.TabIndex = 2;
+        flpClassActions.WrapContents = false;
+        // 
+        // btnCreateClass
+        // 
+        btnCreateClass.Location = new Point(3, 3);
+        btnCreateClass.Name = "btnCreateClass";
+        btnCreateClass.Size = new Size(120, 32);
+        btnCreateClass.TabIndex = 0;
+        btnCreateClass.Text = "Thêm lớp";
+        btnCreateClass.UseVisualStyleBackColor = true;
+        // 
+        // btnSaveClass
+        // 
+        btnSaveClass.Location = new Point(129, 3);
+        btnSaveClass.Name = "btnSaveClass";
+        btnSaveClass.Size = new Size(120, 32);
+        btnSaveClass.TabIndex = 1;
+        btnSaveClass.Text = "Lưu thay đổi";
+        btnSaveClass.UseVisualStyleBackColor = true;
+        // 
+        // FrmClassManagement
+        // 
+        AutoScaleMode = AutoScaleMode.None;
+        ClientSize = new Size(980, 620);
+        Controls.Add(tblClassRoot);
+        Name = "FrmClassManagement";
+        Padding = new Padding(12);
+        Text = "Quản lý lớp học";
+        tblClassRoot.ResumeLayout(false);
+        tblClassRoot.PerformLayout();
+        pnlClassFilterCard.ResumeLayout(false);
+        pnlClassFilterCard.PerformLayout();
+        splClassContent.Panel1.ResumeLayout(false);
+        splClassContent.Panel2.ResumeLayout(false);
+        ((System.ComponentModel.ISupportInitialize)splClassContent).EndInit();
+        splClassContent.ResumeLayout(false);
+        ((System.ComponentModel.ISupportInitialize)dgvClassList).EndInit();
+        tabClassManagement.ResumeLayout(false);
+        tpClassInfo.ResumeLayout(false);
+        tblClassInfo.ResumeLayout(false);
+        tblClassInfo.PerformLayout();
+        tpClassStudents.ResumeLayout(false);
+        ((System.ComponentModel.ISupportInitialize)dgvClassStudentList).EndInit();
+        tpClassSessions.ResumeLayout(false);
+        ((System.ComponentModel.ISupportInitialize)dgvClassSessionList).EndInit();
+        flpClassActions.ResumeLayout(false);
+        ResumeLayout(false);
+    }
+}
