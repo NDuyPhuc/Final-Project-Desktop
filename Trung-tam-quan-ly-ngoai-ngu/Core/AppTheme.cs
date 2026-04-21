@@ -1,5 +1,3 @@
-using System.Drawing.Drawing2D;
-
 namespace Trung_tam_quan_ly_ngoai_ngu;
 
 internal static class AppTheme
@@ -84,14 +82,9 @@ internal static class AppTheme
     public static void StyleCard(Panel panel)
     {
         panel.BackColor = Surface;
+        panel.BorderStyle = BorderStyle.FixedSingle;
         panel.Padding = new Padding(14);
         panel.Margin = new Padding(0, 0, 12, 12);
-        panel.Paint += (_, e) =>
-        {
-            using var pen = new Pen(Border);
-            var rect = new Rectangle(0, 0, panel.Width - 1, panel.Height - 1);
-            e.Graphics.DrawRectangle(pen, rect);
-        };
     }
 
     public static void StyleGrid(DataGridView grid)
@@ -119,15 +112,5 @@ internal static class AppTheme
 
     public static void RoundPanelCorners(Panel panel, int radius = 10)
     {
-        panel.Resize += (_, _) =>
-        {
-            using var path = new GraphicsPath();
-            path.AddArc(0, 0, radius, radius, 180, 90);
-            path.AddArc(panel.Width - radius, 0, radius, radius, 270, 90);
-            path.AddArc(panel.Width - radius, panel.Height - radius, radius, radius, 0, 90);
-            path.AddArc(0, panel.Height - radius, radius, radius, 90, 90);
-            path.CloseFigure();
-            panel.Region = new Region(path);
-        };
     }
 }

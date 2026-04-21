@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <Target Name="StopLockedDebugExe" BeforeTargets="PrepareForBuild;_GenerateAppHost" Condition="'$(Configuration)' == 'Debug'">
-    <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;$target = [System.IO.Path]::GetFullPath('$(TargetDir)$(AssemblyName).exe'); Get-CimInstance Win32_Process -Filter \&quot;Name='$(AssemblyName).exe'\&quot; | Where-Object { $_.ExecutablePath -and ([System.IO.Path]::GetFullPath($_.ExecutablePath) -ieq $target) } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force }&quot;" />
+    <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;$ErrorActionPreference = 'SilentlyContinue'; $target = [System.IO.Path]::GetFullPath('$(TargetDir)$(AssemblyName).exe'); try { Get-CimInstance Win32_Process -Filter \&quot;Name='$(AssemblyName).exe'\&quot; -ErrorAction SilentlyContinue | Where-Object { $_.ExecutablePath -and ([System.IO.Path]::GetFullPath($_.ExecutablePath) -ieq $target) } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue } } catch { }; exit 0&quot;" />
   </Target>
 
 </Project>

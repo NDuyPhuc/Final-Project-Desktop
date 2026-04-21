@@ -4,7 +4,7 @@ namespace Trung_tam_quan_ly_ngoai_ngu;
 
 public partial class FrmClassManagement : Form
 {
-    private DataTable classTable = new();
+    private DataTable _classTable = new();
 
     public FrmClassManagement()
     {
@@ -19,15 +19,17 @@ public partial class FrmClassManagement : Form
     {
         cboClassStatusFilter.SelectedIndex = 0;
         cboClassDetailStatus.SelectedIndex = 0;
-        dgvClassList.EnableHeadersVisualStyles = false;
-        dgvClassList.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(232, 242, 250);
-        dgvClassList.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+        dtpClassStartDate.Value = DateTime.Today;
+        dtpClassEndDate.Value = DateTime.Today.AddMonths(3);
+        AppTheme.StyleGrid(dgvClassList);
+        AppTheme.StyleGrid(dgvClassStudentList);
+        AppTheme.StyleGrid(dgvClassSessionList);
     }
 
     private void BindMockData()
     {
-        classTable = DemoDataFactory.GetClassList();
-        dgvClassList.DataSource = classTable;
+        _classTable = DemoDataFactory.GetClassList();
+        dgvClassList.DataSource = _classTable;
         dgvClassStudentList.DataSource = DemoDataFactory.GetClassStudents();
         dgvClassSessionList.DataSource = DemoDataFactory.GetSessions();
         if (dgvClassList.Rows.Count > 0)
@@ -44,12 +46,15 @@ public partial class FrmClassManagement : Form
         btnRefreshClass.Click += (_, _) => ResetFilters();
         btnCreateClass.Click += (_, _) =>
         {
-            txtClassCode.Text = $"LP{classTable.Rows.Count + 1:000}";
+            txtClassCode.Text = $"LP{_classTable.Rows.Count + 1:000}";
             txtClassName.Clear();
             txtClassCourse.Clear();
             txtClassTeacher.Clear();
             txtClassSchedule.Clear();
+            txtClassRoom.Clear();
             txtClassSize.Clear();
+            dtpClassStartDate.Value = DateTime.Today;
+            dtpClassEndDate.Value = DateTime.Today.AddMonths(3);
             cboClassDetailStatus.SelectedIndex = 0;
             tabClassManagement.SelectedTab = tpClassInfo;
             txtClassName.Focus();
@@ -59,15 +64,21 @@ public partial class FrmClassManagement : Form
             using var dialog = new FrmStatusDialog("Lưu lớp học", "UI demo đã lưu trạng thái lớp học trong phiên làm việc hiện tại.");
             dialog.ShowDialog(this);
         };
+        btnGenerateSessions.Click += (_, _) => tabClassManagement.SelectedTab = tpClassSessions;
+        btnOpenEnrollmentFromClass.Click += (_, _) =>
+        {
+            using var dialog = new FrmStatusDialog("Mở ghi danh lớp", "UI demo đã sẵn sàng chuyển sang nghiệp vụ ghi danh / xếp lớp.");
+            dialog.ShowDialog(this);
+        };
     }
 
     private void ApplyFilters()
     {
         var keyword = txtClassKeyword.Text.Trim();
         var status = cboClassStatusFilter.Text;
-        var filteredTable = classTable.Clone();
+        var filteredTable = _classTable.Clone();
 
-        foreach (DataRow row in classTable.Rows)
+        foreach (DataRow row in _classTable.Rows)
         {
             var matchesKeyword =
                 string.IsNullOrWhiteSpace(keyword) ||
@@ -93,7 +104,7 @@ public partial class FrmClassManagement : Form
     {
         txtClassKeyword.Clear();
         cboClassStatusFilter.SelectedIndex = 0;
-        dgvClassList.DataSource = classTable;
+        dgvClassList.DataSource = _classTable;
         if (dgvClassList.Rows.Count > 0)
         {
             dgvClassList.Rows[0].Selected = true;
@@ -114,6 +125,9 @@ public partial class FrmClassManagement : Form
         txtClassCourse.Text = row["Khóa học"].ToString();
         txtClassTeacher.Text = row["Giáo viên"].ToString();
         txtClassSchedule.Text = row["Lịch học"].ToString();
+        txtClassRoom.Text = "P201";
+        dtpClassStartDate.Value = DateTime.Today;
+        dtpClassEndDate.Value = DateTime.Today.AddMonths(3);
         txtClassSize.Text = row["Sĩ số"].ToString();
         cboClassDetailStatus.Text = row["Trạng thái"].ToString();
     }

@@ -1,15 +1,20 @@
 namespace Trung_tam_quan_ly_ngoai_ngu;
 
 using System.ComponentModel;
+using System.Reflection;
 
 public static class FormHostHelpers
 {
+    private static readonly PropertyInfo? DoubleBufferedProperty =
+        typeof(Control).GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic);
+
     public static void ConfigureModuleSurface(Form form, string title)
     {
         form.Text = title;
         form.BackColor = AppTheme.Background;
         form.Font = AppTheme.FontBody;
         form.AutoScroll = true;
+        EnableOptimizedRendering(form);
     }
 
     public static void ConfigureShellSurface(Form form, string title)
@@ -28,6 +33,8 @@ public static class FormHostHelpers
             form.WindowState = FormWindowState.Maximized;
             form.MinimumSize = new Size(1280, 760);
         }
+
+        EnableOptimizedRendering(form);
     }
 
     public static void OpenChildForm(Panel hostPanel, Form childForm)
@@ -51,6 +58,7 @@ public static class FormHostHelpers
         childForm.FormBorderStyle = FormBorderStyle.None;
         childForm.Dock = DockStyle.Fill;
         hostPanel.Controls.Add(childForm);
+        EnableOptimizedRendering(childForm);
         childForm.Show();
     }
 
@@ -80,6 +88,38 @@ public static class FormHostHelpers
                 button.Font = AppTheme.FontSidebarItem;
                 button.FlatAppearance.BorderSize = 0;
             }
+        }
+    }
+
+    public static void EnableOptimizedRendering(Control control)
+    {
+        if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
+        {
+            return;
+        }
+
+        SetDoubleBuffered(control);
+
+        foreach (Control child in control.Controls)
+        {
+            EnableOptimizedRendering(child);
+        }
+
+        if (control is SplitContainer splitContainer)
+        {
+            SetDoubleBuffered(splitContainer.Panel1);
+            SetDoubleBuffered(splitContainer.Panel2);
+        }
+    }
+
+    private static void SetDoubleBuffered(Control control)
+    {
+        try
+        {
+            DoubleBufferedProperty?.SetValue(control, true);
+        }
+        catch
+        {
         }
     }
 }

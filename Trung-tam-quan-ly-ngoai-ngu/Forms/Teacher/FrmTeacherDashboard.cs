@@ -18,11 +18,20 @@ public partial class FrmTeacherDashboard : Form
         lblCurrentRoleTeacher.Text = "Teacher";
         lblCurrentUserTeacher.Text = _currentUserName;
         btnLogoutTeacher.Click += (_, _) => FormHostHelpers.OpenLoginAndClose(this);
+        foreach (var card in new[] { pnlTeacherHeroCard, pnlTeachingClassesCount, pnlTeachingStudentCount, pnlTeachingTodaySessions, pnlTeachingPendingScores, pnlTeacherClassCard, pnlTeacherTaskCard })
+        {
+            AppTheme.StyleCard(card);
+        }
+
+        AppTheme.StyleGrid(dgvTeacherClassOverview);
+
         var menuButtons = new[] { btnMenuTeacherDashboard, btnMenuTeachingClasses, btnMenuClassStudentList, btnMenuAttendance, btnMenuScoreEntry };
         foreach (var button in menuButtons)
         {
             button.FlatStyle = FlatStyle.Flat; button.FlatAppearance.BorderSize = 0; button.Height = 40; button.TextAlign = ContentAlignment.MiddleLeft; button.Padding = new Padding(16, 0, 0, 0); button.BackColor = Color.Transparent; button.ForeColor = AppTheme.SidebarText; button.Font = AppTheme.FontSidebarItem;
         }
+
+        AppTheme.StyleDangerButton(btnLogoutTeacher);
         btnMenuTeacherDashboard.Click += (_, _) => ShowDashboardHome();
         btnMenuTeachingClasses.Click += (_, _) => OpenModule(new FrmTeachingClasses(), btnMenuTeachingClasses, menuButtons);
         btnMenuClassStudentList.Click += (_, _) => OpenModule(new FrmClassStudentList(), btnMenuClassStudentList, menuButtons);

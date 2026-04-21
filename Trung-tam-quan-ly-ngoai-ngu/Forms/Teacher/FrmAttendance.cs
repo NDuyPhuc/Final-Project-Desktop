@@ -4,7 +4,7 @@ namespace Trung_tam_quan_ly_ngoai_ngu;
 
 public partial class FrmAttendance : Form
 {
-    private DataTable attendanceTable = new();
+    private DataTable _attendanceTable = new();
 
     public FrmAttendance()
     {
@@ -19,30 +19,32 @@ public partial class FrmAttendance : Form
     {
         cboAttendanceClass.SelectedIndex = 0;
         cboAttendanceSession.SelectedIndex = 0;
-        ttAttendance.SetToolTip(btnSelectAllAttendance, "Đánh dấu có mặt cho toàn bộ học viên trong danh sách.");
+        AppTheme.StyleGrid(dgvAttendanceList);
+        ttAttendance.SetToolTip(btnCheckAllPresent, "Đánh dấu có mặt cho toàn bộ học viên trong danh sách.");
+        ttAttendance.SetToolTip(btnCheckAllAbsent, "Đánh dấu vắng cho toàn bộ học viên trong danh sách.");
         ttAttendance.SetToolTip(btnSaveAttendance, "Lưu trạng thái điểm danh tạm thời trong phiên UI demo.");
     }
 
     private void BindMockData()
     {
-        attendanceTable = DemoDataFactory.GetAttendanceList();
-        dgvAttendanceList.DataSource = attendanceTable;
+        _attendanceTable = DemoDataFactory.GetAttendanceList();
+        dgvAttendanceList.DataSource = _attendanceTable;
     }
 
     private void WireEvents()
     {
-        btnSearchAttendance.Click += (_, _) => dgvAttendanceList.DataSource = attendanceTable;
-        btnSelectAllAttendance.Click += (_, _) =>
+        btnSearchAttendance.Click += (_, _) => dgvAttendanceList.DataSource = _attendanceTable;
+        btnCheckAllPresent.Click += (_, _) =>
         {
-            foreach (DataRow row in attendanceTable.Rows)
+            foreach (DataRow row in _attendanceTable.Rows)
             {
                 row["Có mặt"] = true;
                 row["Ghi chú"] = string.Empty;
             }
         };
-        btnClearAttendance.Click += (_, _) =>
+        btnCheckAllAbsent.Click += (_, _) =>
         {
-            foreach (DataRow row in attendanceTable.Rows)
+            foreach (DataRow row in _attendanceTable.Rows)
             {
                 row["Có mặt"] = false;
             }

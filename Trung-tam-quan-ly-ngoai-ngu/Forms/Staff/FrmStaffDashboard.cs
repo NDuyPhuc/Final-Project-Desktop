@@ -23,6 +23,13 @@ public partial class FrmStaffDashboard : Form
         lblCurrentRoleStaff.Text = "Staff";
         lblCurrentUserStaff.Text = _currentUserName;
         btnLogoutStaff.Click += (_, _) => FormHostHelpers.OpenLoginAndClose(this);
+        foreach (var card in new[] { pnlStaffHeroCard, pnlNewStudentsToday, pnlAvailableClasses, pnlTodayReceipts, pnlDebtStudents, pnlRecentReceiptCard, pnlStaffActionCard })
+        {
+            AppTheme.StyleCard(card);
+        }
+
+        AppTheme.StyleGrid(dgvRecentReceipts);
+
         var menuButtons = new[] { btnMenuStaffDashboard, btnMenuStudentManagement, btnMenuTeacherManagement, btnMenuCourseManagement, btnMenuClassManagement, btnMenuEnrollment, btnMenuTuitionReceipt, btnMenuDebtTracking };
         foreach (var button in menuButtons)
         {
@@ -35,6 +42,8 @@ public partial class FrmStaffDashboard : Form
             button.ForeColor = AppTheme.SidebarText;
             button.Font = AppTheme.FontSidebarItem;
         }
+
+        AppTheme.StyleDangerButton(btnLogoutStaff);
         btnMenuStaffDashboard.Click += (_, _) => ShowDashboardHome();
         btnMenuStudentManagement.Click += (_, _) => OpenModule(new FrmStudentManagement(), btnMenuStudentManagement, menuButtons);
         btnMenuTeacherManagement.Click += (_, _) => OpenModule(new FrmTeacherManagement(), btnMenuTeacherManagement, menuButtons);

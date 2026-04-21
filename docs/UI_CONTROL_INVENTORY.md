@@ -142,24 +142,47 @@ T?i li?u n?y ???c regenerate t? c?c file `.Designer.cs` hi?n t?i ?? backend b?m 
 ## FrmAdminReports
 
 - File: `C:\Users\ICHI\Downloads\Final-Project-Desktop\Trung-tam-quan-ly-ngoai-ngu\Forms\Admin\FrmAdminReports.Designer.cs`
-- M?c ??ch: B?o c?o th?ng k? v? bi?u ?? doanh thu.
-- S? control/component khai b?o: 15
+- M?c ??ch: B?o c?o th?ng k? doanh thu, ghi danh, c?ng n? v? b?ng t?ng h?p.
+- S? control/component khai b?o: 35
 - Danh s?ch:
+  - `tblAdminReportRoot` (TableLayoutPanel)
+  - `pnlAdminReportHeader` (Panel)
+  - `lblAdminReportTitle` (Label)
+  - `lblAdminReportSubtitle` (Label)
   - `pnlAdminReportFilterCard` (Panel)
+  - `tblAdminReportFilter` (TableLayoutPanel)
+  - `lblReportType` (Label)
+  - `lblReportFromDate` (Label)
+  - `lblReportToDate` (Label)
   - `cboReportType` (ComboBox)
   - `dtpReportFromDate` (DateTimePicker)
   - `dtpReportToDate` (DateTimePicker)
+  - `flpReportActions` (FlowLayoutPanel)
   - `btnViewReport` (Button)
   - `btnExportReportExcel` (Button)
   - `btnExportReportPdf` (Button)
+  - `tblReportKpi` (TableLayoutPanel)
   - `pnlReportRevenue` (Panel)
+  - `lblReportRevenueTitle` (Label)
+  - `lblReportRevenueNote` (Label)
   - `pnlReportEnrollment` (Panel)
+  - `lblReportEnrollmentTitle` (Label)
+  - `lblReportEnrollmentNote` (Label)
   - `pnlReportClassCount` (Panel)
+  - `lblReportClassCountTitle` (Label)
+  - `lblReportClassCountNote` (Label)
   - `lblReportRevenueValue` (Label)
   - `lblReportEnrollmentValue` (Label)
   - `lblReportClassCountValue` (Label)
+  - `splAdminReportContent` (SplitContainer)
+  - `pnlReportChartCard` (Panel)
+  - `lblReportChartTitle` (Label)
   - `chtAdminRevenue` (Chart)
+  - `pnlReportDetailCard` (Panel)
+  - `lblReportDetailTitle` (Label)
   - `dgvAdminReportDetail` (DataGridView)
+  - `pnlReportFooter` (Panel)
+  - `lblReportFooterHint` (Label)
 
 ## FrmSystemMonitor
 
