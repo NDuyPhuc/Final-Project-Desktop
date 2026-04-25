@@ -243,7 +243,7 @@ partial class FrmAdminDashboard
         lblCurrentRoleAdmin.ForeColor = Color.FromArgb(66, 71, 80);
         lblCurrentRoleAdmin.Location = new Point(0, 84);
         lblCurrentRoleAdmin.Name = "lblCurrentRoleAdmin";
-        lblCurrentRoleAdmin.Size = new Size(53, 20);
+        lblCurrentRoleAdmin.Size = new Size(60, 23);
         lblCurrentRoleAdmin.TabIndex = 3;
         lblCurrentRoleAdmin.Text = "Admin";
         // 
@@ -254,7 +254,7 @@ partial class FrmAdminDashboard
         lblCurrentUserAdmin.ForeColor = Color.FromArgb(7, 30, 39);
         lblCurrentUserAdmin.Location = new Point(0, 56);
         lblCurrentUserAdmin.Name = "lblCurrentUserAdmin";
-        lblCurrentUserAdmin.Size = new Size(125, 25);
+        lblCurrentUserAdmin.Size = new Size(139, 25);
         lblCurrentUserAdmin.TabIndex = 2;
         lblCurrentUserAdmin.Text = "System Admin";
         // 
@@ -264,7 +264,7 @@ partial class FrmAdminDashboard
         lblSidebarBrandSubtitle.ForeColor = Color.FromArgb(0, 110, 110);
         lblSidebarBrandSubtitle.Location = new Point(0, 30);
         lblSidebarBrandSubtitle.Name = "lblSidebarBrandSubtitle";
-        lblSidebarBrandSubtitle.Size = new Size(115, 20);
+        lblSidebarBrandSubtitle.Size = new Size(148, 23);
         lblSidebarBrandSubtitle.TabIndex = 1;
         lblSidebarBrandSubtitle.Text = "Quản trị hệ thống";
         // 
@@ -310,7 +310,7 @@ partial class FrmAdminDashboard
         lblAdminUserCardRole.ForeColor = Color.FromArgb(102, 112, 133);
         lblAdminUserCardRole.Location = new Point(16, 32);
         lblAdminUserCardRole.Name = "lblAdminUserCardRole";
-        lblAdminUserCardRole.Size = new Size(53, 20);
+        lblAdminUserCardRole.Size = new Size(60, 23);
         lblAdminUserCardRole.TabIndex = 1;
         lblAdminUserCardRole.Text = "Admin";
         // 
@@ -321,7 +321,7 @@ partial class FrmAdminDashboard
         lblAdminUserCardName.ForeColor = Color.FromArgb(42, 51, 64);
         lblAdminUserCardName.Location = new Point(16, 10);
         lblAdminUserCardName.Name = "lblAdminUserCardName";
-        lblAdminUserCardName.Size = new Size(109, 23);
+        lblAdminUserCardName.Size = new Size(127, 23);
         lblAdminUserCardName.TabIndex = 0;
         lblAdminUserCardName.Text = "System Admin";
         // 
@@ -331,7 +331,7 @@ partial class FrmAdminDashboard
         lblAdminHeaderSubtitle.ForeColor = Color.FromArgb(102, 112, 133);
         lblAdminHeaderSubtitle.Location = new Point(30, 52);
         lblAdminHeaderSubtitle.Name = "lblAdminHeaderSubtitle";
-        lblAdminHeaderSubtitle.Size = new Size(378, 20);
+        lblAdminHeaderSubtitle.Size = new Size(506, 23);
         lblAdminHeaderSubtitle.TabIndex = 1;
         lblAdminHeaderSubtitle.Text = "Chỉ hiển thị dữ liệu quản trị tổng hợp, không thao tác nghiệp vụ.";
         // 
@@ -342,7 +342,7 @@ partial class FrmAdminDashboard
         lblAdminHeaderTitle.ForeColor = Color.FromArgb(7, 30, 39);
         lblAdminHeaderTitle.Location = new Point(28, 16);
         lblAdminHeaderTitle.Name = "lblAdminHeaderTitle";
-        lblAdminHeaderTitle.Size = new Size(241, 37);
+        lblAdminHeaderTitle.Size = new Size(249, 37);
         lblAdminHeaderTitle.TabIndex = 0;
         lblAdminHeaderTitle.Text = "Dashboard Admin";
         // 
@@ -394,6 +394,7 @@ partial class FrmAdminDashboard
         pnlAdminHeroCard.Padding = new Padding(24, 20, 24, 20);
         pnlAdminHeroCard.Size = new Size(1084, 108);
         pnlAdminHeroCard.TabIndex = 0;
+        pnlAdminHeroCard.Paint += pnlAdminHeroCard_Paint;
         // 
         // lblDashboardSubtitle
         // 
@@ -401,7 +402,7 @@ partial class FrmAdminDashboard
         lblDashboardSubtitle.ForeColor = Color.FromArgb(102, 112, 133);
         lblDashboardSubtitle.Location = new Point(24, 58);
         lblDashboardSubtitle.Name = "lblDashboardSubtitle";
-        lblDashboardSubtitle.Size = new Size(552, 20);
+        lblDashboardSubtitle.Size = new Size(667, 23);
         lblDashboardSubtitle.TabIndex = 1;
         lblDashboardSubtitle.Text = "Theo dõi tài khoản, lớp đang mở, doanh thu đã thu và danh sách cảnh báo cần chú ý.";
         // 
@@ -412,7 +413,7 @@ partial class FrmAdminDashboard
         lblDashboardTitle.ForeColor = Color.FromArgb(7, 30, 39);
         lblDashboardTitle.Location = new Point(20, 10);
         lblDashboardTitle.Name = "lblDashboardTitle";
-        lblDashboardTitle.Size = new Size(331, 46);
+        lblDashboardTitle.Size = new Size(329, 46);
         lblDashboardTitle.TabIndex = 0;
         lblDashboardTitle.Text = "Dashboard quản trị";
         // 
@@ -456,7 +457,7 @@ partial class FrmAdminDashboard
         lblKpiAccountsNote.ForeColor = Color.FromArgb(102, 112, 133);
         lblKpiAccountsNote.Location = new Point(18, 88);
         lblKpiAccountsNote.Name = "lblKpiAccountsNote";
-        lblKpiAccountsNote.Size = new Size(131, 20);
+        lblKpiAccountsNote.Size = new Size(171, 23);
         lblKpiAccountsNote.TabIndex = 2;
         lblKpiAccountsNote.Text = "Toàn bộ tài khoản hệ";
         // 
@@ -467,7 +468,7 @@ partial class FrmAdminDashboard
         lblKpiAccountsValue.ForeColor = Color.FromArgb(0, 66, 118);
         lblKpiAccountsValue.Location = new Point(15, 32);
         lblKpiAccountsValue.Name = "lblKpiAccountsValue";
-        lblKpiAccountsValue.Size = new Size(52, 50);
+        lblKpiAccountsValue.Size = new Size(64, 50);
         lblKpiAccountsValue.TabIndex = 1;
         lblKpiAccountsValue.Text = "32";
         // 
@@ -478,7 +479,7 @@ partial class FrmAdminDashboard
         lblKpiAccountsTitle.ForeColor = Color.FromArgb(42, 51, 64);
         lblKpiAccountsTitle.Location = new Point(18, 12);
         lblKpiAccountsTitle.Name = "lblKpiAccountsTitle";
-        lblKpiAccountsTitle.Size = new Size(120, 23);
+        lblKpiAccountsTitle.Size = new Size(131, 23);
         lblKpiAccountsTitle.TabIndex = 0;
         lblKpiAccountsTitle.Text = "Tổng tài khoản";
         // 
@@ -502,7 +503,7 @@ partial class FrmAdminDashboard
         lblKpiClassesNote.ForeColor = Color.FromArgb(102, 112, 133);
         lblKpiClassesNote.Location = new Point(18, 88);
         lblKpiClassesNote.Name = "lblKpiClassesNote";
-        lblKpiClassesNote.Size = new Size(160, 20);
+        lblKpiClassesNote.Size = new Size(220, 23);
         lblKpiClassesNote.TabIndex = 2;
         lblKpiClassesNote.Text = "Lớp đang có lịch khai giảng";
         // 
@@ -513,7 +514,7 @@ partial class FrmAdminDashboard
         lblKpiClassesValue.ForeColor = Color.FromArgb(0, 110, 110);
         lblKpiClassesValue.Location = new Point(15, 32);
         lblKpiClassesValue.Name = "lblKpiClassesValue";
-        lblKpiClassesValue.Size = new Size(52, 50);
+        lblKpiClassesValue.Size = new Size(64, 50);
         lblKpiClassesValue.TabIndex = 1;
         lblKpiClassesValue.Text = "18";
         // 
@@ -524,7 +525,7 @@ partial class FrmAdminDashboard
         lblKpiClassesTitle.ForeColor = Color.FromArgb(42, 51, 64);
         lblKpiClassesTitle.Location = new Point(18, 12);
         lblKpiClassesTitle.Name = "lblKpiClassesTitle";
-        lblKpiClassesTitle.Size = new Size(117, 23);
+        lblKpiClassesTitle.Size = new Size(119, 23);
         lblKpiClassesTitle.TabIndex = 0;
         lblKpiClassesTitle.Text = "Lớp đang mở";
         // 
@@ -548,7 +549,7 @@ partial class FrmAdminDashboard
         lblKpiRevenueNote.ForeColor = Color.FromArgb(102, 112, 133);
         lblKpiRevenueNote.Location = new Point(18, 88);
         lblKpiRevenueNote.Name = "lblKpiRevenueNote";
-        lblKpiRevenueNote.Size = new Size(133, 20);
+        lblKpiRevenueNote.Size = new Size(190, 23);
         lblKpiRevenueNote.TabIndex = 2;
         lblKpiRevenueNote.Text = "Doanh thu đã xác nhận";
         // 
@@ -559,7 +560,7 @@ partial class FrmAdminDashboard
         lblKpiRevenueValue.ForeColor = Color.FromArgb(124, 45, 18);
         lblKpiRevenueValue.Location = new Point(15, 32);
         lblKpiRevenueValue.Name = "lblKpiRevenueValue";
-        lblKpiRevenueValue.Size = new Size(158, 50);
+        lblKpiRevenueValue.Size = new Size(155, 50);
         lblKpiRevenueValue.TabIndex = 1;
         lblKpiRevenueValue.Text = "286,5 tr";
         // 
@@ -570,7 +571,7 @@ partial class FrmAdminDashboard
         lblKpiRevenueTitle.ForeColor = Color.FromArgb(42, 51, 64);
         lblKpiRevenueTitle.Location = new Point(18, 12);
         lblKpiRevenueTitle.Name = "lblKpiRevenueTitle";
-        lblKpiRevenueTitle.Size = new Size(138, 23);
+        lblKpiRevenueTitle.Size = new Size(151, 23);
         lblKpiRevenueTitle.TabIndex = 0;
         lblKpiRevenueTitle.Text = "Doanh thu đã thu";
         // 
@@ -594,7 +595,7 @@ partial class FrmAdminDashboard
         lblKpiDebtNote.ForeColor = Color.FromArgb(102, 112, 133);
         lblKpiDebtNote.Location = new Point(18, 88);
         lblKpiDebtNote.Name = "lblKpiDebtNote";
-        lblKpiDebtNote.Size = new Size(158, 20);
+        lblKpiDebtNote.Size = new Size(235, 23);
         lblKpiDebtNote.TabIndex = 2;
         lblKpiDebtNote.Text = "Học viên còn nợ cần theo dõi";
         // 
@@ -605,7 +606,7 @@ partial class FrmAdminDashboard
         lblKpiDebtValue.ForeColor = Color.FromArgb(224, 91, 97);
         lblKpiDebtValue.Location = new Point(15, 32);
         lblKpiDebtValue.Name = "lblKpiDebtValue";
-        lblKpiDebtValue.Size = new Size(52, 50);
+        lblKpiDebtValue.Size = new Size(64, 50);
         lblKpiDebtValue.TabIndex = 1;
         lblKpiDebtValue.Text = "27";
         // 
@@ -616,7 +617,7 @@ partial class FrmAdminDashboard
         lblKpiDebtTitle.ForeColor = Color.FromArgb(42, 51, 64);
         lblKpiDebtTitle.Location = new Point(18, 12);
         lblKpiDebtTitle.Name = "lblKpiDebtTitle";
-        lblKpiDebtTitle.Size = new Size(124, 23);
+        lblKpiDebtTitle.Size = new Size(138, 23);
         lblKpiDebtTitle.TabIndex = 0;
         lblKpiDebtTitle.Text = "Học viên còn nợ";
         // 
@@ -655,6 +656,7 @@ partial class FrmAdminDashboard
         // 
         // dgvDashboardWarnings
         // 
+        dgvDashboardWarnings.ColumnHeadersHeight = 29;
         dgvDashboardWarnings.Dock = DockStyle.Fill;
         dgvDashboardWarnings.Location = new Point(18, 69);
         dgvDashboardWarnings.Name = "dgvDashboardWarnings";
@@ -693,16 +695,17 @@ partial class FrmAdminDashboard
         pnlAdminQuickViewCard.Location = new Point(10, 0);
         pnlAdminQuickViewCard.Name = "pnlAdminQuickViewCard";
         pnlAdminQuickViewCard.Padding = new Padding(18);
-        pnlAdminQuickViewCard.Size = new Size(538, 375);
+        pnlAdminQuickViewCard.Size = new Size(548, 375);
         pnlAdminQuickViewCard.TabIndex = 0;
         // 
         // dgvDashboardSnapshot
         // 
+        dgvDashboardSnapshot.ColumnHeadersHeight = 29;
         dgvDashboardSnapshot.Dock = DockStyle.Fill;
         dgvDashboardSnapshot.Location = new Point(18, 69);
         dgvDashboardSnapshot.Name = "dgvDashboardSnapshot";
         dgvDashboardSnapshot.RowHeadersWidth = 51;
-        dgvDashboardSnapshot.Size = new Size(502, 288);
+        dgvDashboardSnapshot.Size = new Size(512, 288);
         dgvDashboardSnapshot.TabIndex = 2;
         // 
         // lblAdminQuickViewHint
@@ -711,7 +714,7 @@ partial class FrmAdminDashboard
         lblAdminQuickViewHint.ForeColor = Color.FromArgb(102, 112, 133);
         lblAdminQuickViewHint.Location = new Point(18, 41);
         lblAdminQuickViewHint.Name = "lblAdminQuickViewHint";
-        lblAdminQuickViewHint.Size = new Size(502, 28);
+        lblAdminQuickViewHint.Size = new Size(512, 28);
         lblAdminQuickViewHint.TabIndex = 1;
         lblAdminQuickViewHint.Text = "Số liệu nhanh để đánh giá tình hình trung tâm trước khi mở báo cáo chi tiết.";
         // 
@@ -722,7 +725,7 @@ partial class FrmAdminDashboard
         lblAdminQuickViewTitle.ForeColor = Color.FromArgb(42, 51, 64);
         lblAdminQuickViewTitle.Location = new Point(18, 18);
         lblAdminQuickViewTitle.Name = "lblAdminQuickViewTitle";
-        lblAdminQuickViewTitle.Size = new Size(502, 23);
+        lblAdminQuickViewTitle.Size = new Size(512, 23);
         lblAdminQuickViewTitle.TabIndex = 0;
         lblAdminQuickViewTitle.Text = "Số liệu nhanh";
         // 

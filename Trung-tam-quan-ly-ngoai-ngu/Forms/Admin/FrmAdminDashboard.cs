@@ -106,4 +106,9 @@ public partial class FrmAdminDashboard : Form
             btnMenuAccountManagement,
             btnMenuAdminReports);
     }
+
+    private void pnlAdminHeroCard_Paint(object sender, PaintEventArgs e)
+    {
+
+    }
 }

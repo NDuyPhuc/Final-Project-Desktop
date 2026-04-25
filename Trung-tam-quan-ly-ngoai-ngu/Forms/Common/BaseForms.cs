@@ -7,6 +7,7 @@ public static class FormHostHelpers
 {
     private static readonly PropertyInfo? DoubleBufferedProperty =
         typeof(Control).GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic);
+    private static readonly object UiLogLock = new();
 
     public static void ConfigureModuleSurface(Form form, string title)
     {
@@ -39,27 +40,42 @@ public static class FormHostHelpers
 
     public static void OpenChildForm(Panel hostPanel, Form childForm)
     {
-        for (var index = hostPanel.Controls.Count - 1; index >= 0; index--)
+        LogUi($"OpenChildForm:start:{childForm.GetType().Name}");
+        hostPanel.SuspendLayout();
+        try
         {
-            var control = hostPanel.Controls[index];
-            if (control is Form oldForm)
+            for (var index = hostPanel.Controls.Count - 1; index >= 0; index--)
             {
-                oldForm.Close();
-                oldForm.Dispose();
+                var control = hostPanel.Controls[index];
+                if (control is Form oldForm)
+                {
+                    oldForm.Close();
+                    oldForm.Dispose();
+                }
+                else
+                {
+                    hostPanel.Controls.RemoveAt(index);
+                }
             }
-            else
-            {
-                hostPanel.Controls.RemoveAt(index);
-            }
-        }
 
-        hostPanel.Controls.Clear();
-        childForm.TopLevel = false;
-        childForm.FormBorderStyle = FormBorderStyle.None;
-        childForm.Dock = DockStyle.Fill;
-        hostPanel.Controls.Add(childForm);
-        EnableOptimizedRendering(childForm);
-        childForm.Show();
+            hostPanel.Controls.Clear();
+            childForm.TopLevel = false;
+            childForm.FormBorderStyle = FormBorderStyle.None;
+            childForm.Dock = DockStyle.Fill;
+            hostPanel.Controls.Add(childForm);
+            EnableOptimizedRendering(childForm);
+            childForm.Show();
+            LogUi($"OpenChildForm:shown:{childForm.GetType().Name}");
+        }
+        catch (Exception exception)
+        {
+            LogUi($"OpenChildForm:error:{childForm.GetType().Name}:{exception}");
+            throw;
+        }
+        finally
+        {
+            hostPanel.ResumeLayout(true);
+        }
     }
 
     public static void OpenLoginAndClose(Form currentForm)
@@ -109,6 +125,25 @@ public static class FormHostHelpers
         {
             SetDoubleBuffered(splitContainer.Panel1);
             SetDoubleBuffered(splitContainer.Panel2);
+        }
+    }
+
+    public static void LogUi(string message)
+    {
+        try
+        {
+            var logDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs");
+            Directory.CreateDirectory(logDirectory);
+            var logPath = Path.Combine(logDirectory, "ui-trace.log");
+            var line = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} | {message}{Environment.NewLine}";
+
+            lock (UiLogLock)
+            {
+                File.AppendAllText(logPath, line);
+            }
+        }
+        catch
+        {
         }
     }
 

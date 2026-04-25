@@ -61,12 +61,12 @@ partial class FrmClassManagement
     {
         tblClassRoot = new TableLayoutPanel();
         pnlClassFilterCard = new Panel();
-        lblClassKeyword = new Label();
-        txtClassKeyword = new TextBox();
-        lblClassStatus = new Label();
-        cboClassStatusFilter = new ComboBox();
-        btnSearchClass = new Button();
         btnRefreshClass = new Button();
+        btnSearchClass = new Button();
+        cboClassStatusFilter = new ComboBox();
+        lblClassStatus = new Label();
+        txtClassKeyword = new TextBox();
+        lblClassKeyword = new Label();
         splClassContent = new SplitContainer();
         dgvClassList = new DataGridView();
         tabClassManagement = new TabControl();
@@ -152,31 +152,23 @@ partial class FrmClassManagement
         pnlClassFilterCard.Size = new Size(970, 82);
         pnlClassFilterCard.TabIndex = 0;
         // 
-        // lblClassKeyword
+        // btnRefreshClass
         // 
-        lblClassKeyword.AutoSize = true;
-        lblClassKeyword.Location = new Point(16, 18);
-        lblClassKeyword.Name = "lblClassKeyword";
-        lblClassKeyword.Size = new Size(95, 20);
-        lblClassKeyword.TabIndex = 0;
-        lblClassKeyword.Text = "Từ khóa tìm";
+        btnRefreshClass.Location = new Point(620, 39);
+        btnRefreshClass.Name = "btnRefreshClass";
+        btnRefreshClass.Size = new Size(108, 30);
+        btnRefreshClass.TabIndex = 5;
+        btnRefreshClass.Text = "Làm mới";
+        btnRefreshClass.UseVisualStyleBackColor = true;
         // 
-        // txtClassKeyword
+        // btnSearchClass
         // 
-        txtClassKeyword.Location = new Point(16, 41);
-        txtClassKeyword.Name = "txtClassKeyword";
-        txtClassKeyword.PlaceholderText = "Mã lớp hoặc tên lớp";
-        txtClassKeyword.Size = new Size(280, 27);
-        txtClassKeyword.TabIndex = 1;
-        // 
-        // lblClassStatus
-        // 
-        lblClassStatus.AutoSize = true;
-        lblClassStatus.Location = new Point(318, 18);
-        lblClassStatus.Name = "lblClassStatus";
-        lblClassStatus.Size = new Size(78, 20);
-        lblClassStatus.TabIndex = 2;
-        lblClassStatus.Text = "Trạng thái";
+        btnSearchClass.Location = new Point(512, 39);
+        btnSearchClass.Name = "btnSearchClass";
+        btnSearchClass.Size = new Size(100, 30);
+        btnSearchClass.TabIndex = 4;
+        btnSearchClass.Text = "Tìm kiếm";
+        btnSearchClass.UseVisualStyleBackColor = true;
         // 
         // cboClassStatusFilter
         // 
@@ -188,23 +180,31 @@ partial class FrmClassManagement
         cboClassStatusFilter.Size = new Size(170, 28);
         cboClassStatusFilter.TabIndex = 3;
         // 
-        // btnSearchClass
+        // lblClassStatus
         // 
-        btnSearchClass.Location = new Point(512, 39);
-        btnSearchClass.Name = "btnSearchClass";
-        btnSearchClass.Size = new Size(100, 30);
-        btnSearchClass.TabIndex = 4;
-        btnSearchClass.Text = "Tìm kiếm";
-        btnSearchClass.UseVisualStyleBackColor = true;
+        lblClassStatus.AutoSize = true;
+        lblClassStatus.Location = new Point(318, 18);
+        lblClassStatus.Name = "lblClassStatus";
+        lblClassStatus.Size = new Size(75, 20);
+        lblClassStatus.TabIndex = 2;
+        lblClassStatus.Text = "Trạng thái";
         // 
-        // btnRefreshClass
+        // txtClassKeyword
         // 
-        btnRefreshClass.Location = new Point(620, 39);
-        btnRefreshClass.Name = "btnRefreshClass";
-        btnRefreshClass.Size = new Size(108, 30);
-        btnRefreshClass.TabIndex = 5;
-        btnRefreshClass.Text = "Làm mới";
-        btnRefreshClass.UseVisualStyleBackColor = true;
+        txtClassKeyword.Location = new Point(16, 41);
+        txtClassKeyword.Name = "txtClassKeyword";
+        txtClassKeyword.PlaceholderText = "Mã lớp hoặc tên lớp";
+        txtClassKeyword.Size = new Size(280, 27);
+        txtClassKeyword.TabIndex = 1;
+        // 
+        // lblClassKeyword
+        // 
+        lblClassKeyword.AutoSize = true;
+        lblClassKeyword.Location = new Point(16, 18);
+        lblClassKeyword.Name = "lblClassKeyword";
+        lblClassKeyword.Size = new Size(88, 20);
+        lblClassKeyword.TabIndex = 0;
+        lblClassKeyword.Text = "Từ khóa tìm";
         // 
         // splClassContent
         // 
@@ -221,7 +221,7 @@ partial class FrmClassManagement
         // 
         splClassContent.Panel2.Controls.Add(tabClassManagement);
         splClassContent.Panel2.Padding = new Padding(6, 0, 0, 0);
-        splClassContent.Size = new Size(970, 458);
+        splClassContent.Size = new Size(970, 476);
         splClassContent.SplitterDistance = 390;
         splClassContent.TabIndex = 1;
         // 
@@ -240,7 +240,7 @@ partial class FrmClassManagement
         dgvClassList.RowHeadersVisible = false;
         dgvClassList.RowHeadersWidth = 51;
         dgvClassList.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-        dgvClassList.Size = new Size(384, 458);
+        dgvClassList.Size = new Size(384, 476);
         dgvClassList.TabIndex = 0;
         // 
         // tabClassManagement
@@ -252,7 +252,7 @@ partial class FrmClassManagement
         tabClassManagement.Location = new Point(6, 0);
         tabClassManagement.Name = "tabClassManagement";
         tabClassManagement.SelectedIndex = 0;
-        tabClassManagement.Size = new Size(570, 458);
+        tabClassManagement.Size = new Size(570, 476);
         tabClassManagement.TabIndex = 0;
         // 
         // tpClassInfo
@@ -261,7 +261,7 @@ partial class FrmClassManagement
         tpClassInfo.Location = new Point(4, 29);
         tpClassInfo.Name = "tpClassInfo";
         tpClassInfo.Padding = new Padding(12);
-        tpClassInfo.Size = new Size(562, 425);
+        tpClassInfo.Size = new Size(562, 443);
         tpClassInfo.TabIndex = 0;
         tpClassInfo.Text = "Thông tin lớp";
         tpClassInfo.UseVisualStyleBackColor = true;
@@ -305,7 +305,7 @@ partial class FrmClassManagement
         tblClassInfo.RowStyles.Add(new RowStyle());
         tblClassInfo.RowStyles.Add(new RowStyle());
         tblClassInfo.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-        tblClassInfo.Size = new Size(538, 401);
+        tblClassInfo.Size = new Size(538, 419);
         tblClassInfo.TabIndex = 0;
         // 
         // lblClassCode
@@ -332,7 +332,7 @@ partial class FrmClassManagement
         lblClassName.AutoSize = true;
         lblClassName.Location = new Point(3, 39);
         lblClassName.Name = "lblClassName";
-        lblClassName.Size = new Size(57, 20);
+        lblClassName.Size = new Size(58, 20);
         lblClassName.TabIndex = 2;
         lblClassName.Text = "Tên lớp";
         // 
@@ -350,7 +350,7 @@ partial class FrmClassManagement
         lblClassCourse.AutoSize = true;
         lblClassCourse.Location = new Point(3, 72);
         lblClassCourse.Name = "lblClassCourse";
-        lblClassCourse.Size = new Size(65, 20);
+        lblClassCourse.Size = new Size(71, 20);
         lblClassCourse.TabIndex = 4;
         lblClassCourse.Text = "Khóa học";
         // 
@@ -386,7 +386,7 @@ partial class FrmClassManagement
         lblClassSchedule.AutoSize = true;
         lblClassSchedule.Location = new Point(3, 138);
         lblClassSchedule.Name = "lblClassSchedule";
-        lblClassSchedule.Size = new Size(64, 20);
+        lblClassSchedule.Size = new Size(63, 20);
         lblClassSchedule.TabIndex = 8;
         lblClassSchedule.Text = "Lịch học";
         // 
@@ -404,7 +404,7 @@ partial class FrmClassManagement
         lblClassRoom.AutoSize = true;
         lblClassRoom.Location = new Point(3, 171);
         lblClassRoom.Name = "lblClassRoom";
-        lblClassRoom.Size = new Size(72, 20);
+        lblClassRoom.Size = new Size(79, 20);
         lblClassRoom.TabIndex = 10;
         lblClassRoom.Text = "Phòng học";
         // 
@@ -420,9 +420,9 @@ partial class FrmClassManagement
         // 
         lblClassStartDate.Anchor = AnchorStyles.Left;
         lblClassStartDate.AutoSize = true;
-        lblClassStartDate.Location = new Point(3, 206);
+        lblClassStartDate.Location = new Point(3, 204);
         lblClassStartDate.Name = "lblClassStartDate";
-        lblClassStartDate.Size = new Size(101, 20);
+        lblClassStartDate.Size = new Size(99, 20);
         lblClassStartDate.TabIndex = 12;
         lblClassStartDate.Text = "Ngày bắt đầu";
         // 
@@ -439,9 +439,9 @@ partial class FrmClassManagement
         // 
         lblClassEndDate.Anchor = AnchorStyles.Left;
         lblClassEndDate.AutoSize = true;
-        lblClassEndDate.Location = new Point(3, 239);
+        lblClassEndDate.Location = new Point(3, 237);
         lblClassEndDate.Name = "lblClassEndDate";
-        lblClassEndDate.Size = new Size(96, 20);
+        lblClassEndDate.Size = new Size(100, 20);
         lblClassEndDate.TabIndex = 14;
         lblClassEndDate.Text = "Ngày kết thúc";
         // 
@@ -458,9 +458,9 @@ partial class FrmClassManagement
         // 
         lblClassSize.Anchor = AnchorStyles.Left;
         lblClassSize.AutoSize = true;
-        lblClassSize.Location = new Point(3, 272);
+        lblClassSize.Location = new Point(3, 270);
         lblClassSize.Name = "lblClassSize";
-        lblClassSize.Size = new Size(44, 20);
+        lblClassSize.Size = new Size(40, 20);
         lblClassSize.TabIndex = 16;
         lblClassSize.Text = "Sĩ số";
         // 
@@ -476,9 +476,9 @@ partial class FrmClassManagement
         // 
         lblClassDetailStatus.Anchor = AnchorStyles.Left;
         lblClassDetailStatus.AutoSize = true;
-        lblClassDetailStatus.Location = new Point(3, 306);
+        lblClassDetailStatus.Location = new Point(3, 348);
         lblClassDetailStatus.Name = "lblClassDetailStatus";
-        lblClassDetailStatus.Size = new Size(78, 20);
+        lblClassDetailStatus.Size = new Size(75, 20);
         lblClassDetailStatus.TabIndex = 18;
         lblClassDetailStatus.Text = "Trạng thái";
         // 
@@ -499,7 +499,7 @@ partial class FrmClassManagement
         tpClassStudents.Location = new Point(4, 29);
         tpClassStudents.Name = "tpClassStudents";
         tpClassStudents.Padding = new Padding(12);
-        tpClassStudents.Size = new Size(562, 425);
+        tpClassStudents.Size = new Size(562, 443);
         tpClassStudents.TabIndex = 1;
         tpClassStudents.Text = "Học viên lớp";
         tpClassStudents.UseVisualStyleBackColor = true;
@@ -517,7 +517,7 @@ partial class FrmClassManagement
         dgvClassStudentList.ReadOnly = true;
         dgvClassStudentList.RowHeadersVisible = false;
         dgvClassStudentList.RowHeadersWidth = 51;
-        dgvClassStudentList.Size = new Size(538, 401);
+        dgvClassStudentList.Size = new Size(538, 419);
         dgvClassStudentList.TabIndex = 0;
         // 
         // tpClassSessions
@@ -526,7 +526,7 @@ partial class FrmClassManagement
         tpClassSessions.Location = new Point(4, 29);
         tpClassSessions.Name = "tpClassSessions";
         tpClassSessions.Padding = new Padding(12);
-        tpClassSessions.Size = new Size(562, 425);
+        tpClassSessions.Size = new Size(562, 443);
         tpClassSessions.TabIndex = 2;
         tpClassSessions.Text = "Buổi học";
         tpClassSessions.UseVisualStyleBackColor = true;
@@ -544,7 +544,7 @@ partial class FrmClassManagement
         dgvClassSessionList.ReadOnly = true;
         dgvClassSessionList.RowHeadersVisible = false;
         dgvClassSessionList.RowHeadersWidth = 51;
-        dgvClassSessionList.Size = new Size(538, 401);
+        dgvClassSessionList.Size = new Size(538, 419);
         dgvClassSessionList.TabIndex = 0;
         // 
         // flpClassActions
@@ -556,9 +556,9 @@ partial class FrmClassManagement
         flpClassActions.Controls.Add(btnGenerateSessions);
         flpClassActions.Controls.Add(btnOpenEnrollmentFromClass);
         flpClassActions.Dock = DockStyle.Fill;
-        flpClassActions.Location = new Point(3, 555);
+        flpClassActions.Location = new Point(3, 573);
         flpClassActions.Name = "flpClassActions";
-        flpClassActions.Size = new Size(970, 58);
+        flpClassActions.Size = new Size(970, 40);
         flpClassActions.TabIndex = 2;
         flpClassActions.WrapContents = false;
         // 
