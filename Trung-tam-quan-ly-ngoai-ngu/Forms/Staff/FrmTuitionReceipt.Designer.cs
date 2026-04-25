@@ -1,4 +1,4 @@
-using System.Drawing.Printing;
+﻿using System.Drawing.Printing;
 
 namespace Trung_tam_quan_ly_ngoai_ngu;
 
@@ -130,7 +130,7 @@ partial class FrmTuitionReceipt
         grpEnrollmentInfo.Size = new Size(469, 208);
         grpEnrollmentInfo.TabIndex = 0;
         grpEnrollmentInfo.TabStop = false;
-        grpEnrollmentInfo.Text = "Thông tin ghi danh";
+        grpEnrollmentInfo.Text = "ThÃ´ng tin ghi danh";
         // 
         // tblEnrollmentInfo
         // 
@@ -164,7 +164,7 @@ partial class FrmTuitionReceipt
         lblReceiptStudentCode.Name = "lblReceiptStudentCode";
         lblReceiptStudentCode.Size = new Size(92, 20);
         lblReceiptStudentCode.TabIndex = 0;
-        lblReceiptStudentCode.Text = "Mã học viên";
+        lblReceiptStudentCode.Text = "MÃ£ há»c viÃªn";
         // 
         // txtReceiptStudentCode
         // 
@@ -182,7 +182,7 @@ partial class FrmTuitionReceipt
         lblReceiptStudentName.Name = "lblReceiptStudentName";
         lblReceiptStudentName.Size = new Size(58, 20);
         lblReceiptStudentName.TabIndex = 2;
-        lblReceiptStudentName.Text = "Họ tên";
+        lblReceiptStudentName.Text = "Há» tÃªn";
         // 
         // txtReceiptStudentName
         // 
@@ -200,7 +200,7 @@ partial class FrmTuitionReceipt
         lblReceiptClassCode.Name = "lblReceiptClassCode";
         lblReceiptClassCode.Size = new Size(56, 20);
         lblReceiptClassCode.TabIndex = 4;
-        lblReceiptClassCode.Text = "Mã lớp";
+        lblReceiptClassCode.Text = "MÃ£ lá»›p";
         // 
         // txtReceiptClassCode
         // 
@@ -218,7 +218,7 @@ partial class FrmTuitionReceipt
         lblReceiptCourseName.Name = "lblReceiptCourseName";
         lblReceiptCourseName.Size = new Size(65, 20);
         lblReceiptCourseName.TabIndex = 6;
-        lblReceiptCourseName.Text = "Khóa học";
+        lblReceiptCourseName.Text = "KhÃ³a há»c";
         // 
         // txtReceiptCourseName
         // 
@@ -238,7 +238,7 @@ partial class FrmTuitionReceipt
         grpPaymentInfo.Size = new Size(469, 208);
         grpPaymentInfo.TabIndex = 1;
         grpPaymentInfo.TabStop = false;
-        grpPaymentInfo.Text = "Khối thu tiền";
+        grpPaymentInfo.Text = "Khá»‘i thu tiá»n";
         // 
         // tblPaymentInfo
         // 
@@ -271,7 +271,7 @@ partial class FrmTuitionReceipt
         lblReceiptAmount.Name = "lblReceiptAmount";
         lblReceiptAmount.Size = new Size(58, 20);
         lblReceiptAmount.TabIndex = 0;
-        lblReceiptAmount.Text = "Số tiền";
+        lblReceiptAmount.Text = "Sá»‘ tiá»n";
         // 
         // txtReceiptAmount
         // 
@@ -289,14 +289,14 @@ partial class FrmTuitionReceipt
         lblReceiptMethod.Name = "lblReceiptMethod";
         lblReceiptMethod.Size = new Size(91, 20);
         lblReceiptMethod.TabIndex = 2;
-        lblReceiptMethod.Text = "Phương thức";
+        lblReceiptMethod.Text = "PhÆ°Æ¡ng thá»©c";
         // 
         // cboReceiptMethod
         // 
         cboReceiptMethod.Dock = DockStyle.Left;
         cboReceiptMethod.DropDownStyle = ComboBoxStyle.DropDownList;
         cboReceiptMethod.FormattingEnabled = true;
-        cboReceiptMethod.Items.AddRange(new object[] { "Tiền mặt", "Chuyển khoản" });
+        cboReceiptMethod.Items.AddRange(new object[] { "Tiá»n máº·t", "Chuyá»ƒn khoáº£n" });
         cboReceiptMethod.Location = new Point(123, 36);
         cboReceiptMethod.Name = "cboReceiptMethod";
         cboReceiptMethod.Size = new Size(180, 28);
@@ -310,7 +310,7 @@ partial class FrmTuitionReceipt
         lblReceiptNote.Name = "lblReceiptNote";
         lblReceiptNote.Size = new Size(57, 20);
         lblReceiptNote.TabIndex = 4;
-        lblReceiptNote.Text = "Ghi chú";
+        lblReceiptNote.Text = "Ghi chÃº";
         // 
         // txtReceiptNote
         // 
@@ -342,7 +342,7 @@ partial class FrmTuitionReceipt
         btnCollectTuition.Name = "btnCollectTuition";
         btnCollectTuition.Size = new Size(110, 28);
         btnCollectTuition.TabIndex = 0;
-        btnCollectTuition.Text = "Thu học phí";
+        btnCollectTuition.Text = "Thu há»c phÃ­";
         btnCollectTuition.UseVisualStyleBackColor = true;
         // 
         // btnSavePrintReceipt
@@ -351,7 +351,7 @@ partial class FrmTuitionReceipt
         btnSavePrintReceipt.Name = "btnSavePrintReceipt";
         btnSavePrintReceipt.Size = new Size(96, 28);
         btnSavePrintReceipt.TabIndex = 1;
-        btnSavePrintReceipt.Text = "Lưu và in";
+        btnSavePrintReceipt.Text = "LÆ°u vÃ  in";
         btnSavePrintReceipt.UseVisualStyleBackColor = true;
         // 
         // btnViewReceipt
@@ -360,7 +360,7 @@ partial class FrmTuitionReceipt
         btnViewReceipt.Name = "btnViewReceipt";
         btnViewReceipt.Size = new Size(120, 28);
         btnViewReceipt.TabIndex = 2;
-        btnViewReceipt.Text = "Xem biên nhận";
+        btnViewReceipt.Text = "Xem biÃªn nháº­n";
         btnViewReceipt.UseVisualStyleBackColor = true;
         // 
         // btnCancelReceipt
@@ -369,7 +369,7 @@ partial class FrmTuitionReceipt
         btnCancelReceipt.Name = "btnCancelReceipt";
         btnCancelReceipt.Size = new Size(70, 28);
         btnCancelReceipt.TabIndex = 3;
-        btnCancelReceipt.Text = "Hủy";
+        btnCancelReceipt.Text = "Há»§y";
         btnCancelReceipt.UseVisualStyleBackColor = true;
         // 
         // dgvReceiptHistory
@@ -405,12 +405,13 @@ partial class FrmTuitionReceipt
         // 
         // FrmTuitionReceipt
         // 
-        AutoScaleMode = AutoScaleMode.None;
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(980, 620);
         Controls.Add(tblReceiptRoot);
         Name = "FrmTuitionReceipt";
         Padding = new Padding(12);
-        Text = "Thu học phí / biên nhận";
+        Text = "Thu há»c phÃ­ / biÃªn nháº­n";
         tblReceiptRoot.ResumeLayout(false);
         tblReceiptTop.ResumeLayout(false);
         grpEnrollmentInfo.ResumeLayout(false);
@@ -425,3 +426,4 @@ partial class FrmTuitionReceipt
         ResumeLayout(false);
     }
 }
+

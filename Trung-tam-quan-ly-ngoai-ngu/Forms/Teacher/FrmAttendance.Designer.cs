@@ -1,4 +1,4 @@
-namespace Trung_tam_quan_ly_ngoai_ngu;
+﻿namespace Trung_tam_quan_ly_ngoai_ngu;
 
 partial class FrmAttendance
 {
@@ -116,7 +116,7 @@ partial class FrmAttendance
         btnCheckAllPresent.Name = "btnCheckAllPresent";
         btnCheckAllPresent.Size = new Size(120, 32);
         btnCheckAllPresent.TabIndex = 1;
-        btnCheckAllPresent.Text = "Tất cả có mặt";
+        btnCheckAllPresent.Text = "Táº¥t cáº£ cÃ³ máº·t";
         btnCheckAllPresent.UseVisualStyleBackColor = true;
         // 
         // btnCheckAllAbsent
@@ -125,7 +125,7 @@ partial class FrmAttendance
         btnCheckAllAbsent.Name = "btnCheckAllAbsent";
         btnCheckAllAbsent.Size = new Size(120, 32);
         btnCheckAllAbsent.TabIndex = 2;
-        btnCheckAllAbsent.Text = "Tất cả vắng";
+        btnCheckAllAbsent.Text = "Táº¥t cáº£ váº¯ng";
         btnCheckAllAbsent.UseVisualStyleBackColor = true;
         // 
         // btnSaveAttendance
@@ -134,7 +134,7 @@ partial class FrmAttendance
         btnSaveAttendance.Name = "btnSaveAttendance";
         btnSaveAttendance.Size = new Size(70, 32);
         btnSaveAttendance.TabIndex = 3;
-        btnSaveAttendance.Text = "Lưu";
+        btnSaveAttendance.Text = "LÆ°u";
         btnSaveAttendance.UseVisualStyleBackColor = true;
         // 
         // dtpAttendanceDate
@@ -152,13 +152,13 @@ partial class FrmAttendance
         lblAttendanceDate.Name = "lblAttendanceDate";
         lblAttendanceDate.Size = new Size(76, 20);
         lblAttendanceDate.TabIndex = 4;
-        lblAttendanceDate.Text = "Ngày học";
+        lblAttendanceDate.Text = "NgÃ y há»c";
         // 
         // cboAttendanceSession
         // 
         cboAttendanceSession.DropDownStyle = ComboBoxStyle.DropDownList;
         cboAttendanceSession.FormattingEnabled = true;
-        cboAttendanceSession.Items.AddRange(new object[] { "Buổi 01", "Buổi 02", "Buổi 03" });
+        cboAttendanceSession.Items.AddRange(new object[] { "Buá»•i 01", "Buá»•i 02", "Buá»•i 03" });
         cboAttendanceSession.Location = new Point(220, 41);
         cboAttendanceSession.Name = "cboAttendanceSession";
         cboAttendanceSession.Size = new Size(160, 28);
@@ -171,7 +171,7 @@ partial class FrmAttendance
         lblAttendanceSession.Name = "lblAttendanceSession";
         lblAttendanceSession.Size = new Size(55, 20);
         lblAttendanceSession.TabIndex = 2;
-        lblAttendanceSession.Text = "Buổi học";
+        lblAttendanceSession.Text = "Buá»•i há»c";
         // 
         // cboAttendanceClass
         // 
@@ -190,7 +190,7 @@ partial class FrmAttendance
         lblAttendanceClass.Name = "lblAttendanceClass";
         lblAttendanceClass.Size = new Size(58, 20);
         lblAttendanceClass.TabIndex = 0;
-        lblAttendanceClass.Text = "Lớp học";
+        lblAttendanceClass.Text = "Lá»›p há»c";
         // 
         // dgvAttendanceList
         // 
@@ -213,12 +213,13 @@ partial class FrmAttendance
         // 
         // FrmAttendance
         // 
-        AutoScaleMode = AutoScaleMode.None;
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(1000, 640);
         Controls.Add(tblAttendanceRoot);
         Name = "FrmAttendance";
         Padding = new Padding(12);
-        Text = "Điểm danh";
+        Text = "Äiá»ƒm danh";
         tblAttendanceRoot.ResumeLayout(false);
         pnlAttendanceFilterCard.ResumeLayout(false);
         pnlAttendanceFilterCard.PerformLayout();
@@ -228,3 +229,4 @@ partial class FrmAttendance
         ResumeLayout(false);
     }
 }
+

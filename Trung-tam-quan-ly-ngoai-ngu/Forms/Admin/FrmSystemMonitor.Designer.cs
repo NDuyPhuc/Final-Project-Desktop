@@ -1,4 +1,4 @@
-namespace Trung_tam_quan_ly_ngoai_ngu;
+﻿namespace Trung_tam_quan_ly_ngoai_ngu;
 
 partial class FrmSystemMonitor
 {
@@ -250,7 +250,7 @@ partial class FrmSystemMonitor
         btnMonitorToday.Name = "btnMonitorToday";
         btnMonitorToday.Size = new Size(146, 42);
         btnMonitorToday.TabIndex = 3;
-        btnMonitorToday.Text = "HÔM NAY";
+        btnMonitorToday.Text = "HÃ”M NAY";
         btnMonitorToday.UseVisualStyleBackColor = true;
         // 
         // lblMonitorSubtitle
@@ -260,7 +260,7 @@ partial class FrmSystemMonitor
         lblMonitorSubtitle.Name = "lblMonitorSubtitle";
         lblMonitorSubtitle.Size = new Size(408, 20);
         lblMonitorSubtitle.TabIndex = 2;
-        lblMonitorSubtitle.Text = "Phiên làm việc hiện tại: 08:45:12 GMT+7 | Trạng thái: Ổn định";
+        lblMonitorSubtitle.Text = "PhiÃªn lÃ m viá»‡c hiá»‡n táº¡i: 08:45:12 GMT+7 | Tráº¡ng thÃ¡i: á»”n Ä‘á»‹nh";
         // 
         // lblMonitorTitle
         // 
@@ -270,7 +270,7 @@ partial class FrmSystemMonitor
         lblMonitorTitle.Name = "lblMonitorTitle";
         lblMonitorTitle.Size = new Size(428, 54);
         lblMonitorTitle.TabIndex = 1;
-        lblMonitorTitle.Text = "GIÁM SÁT HỆ THỐNG";
+        lblMonitorTitle.Text = "GIÃM SÃT Há»† THá»NG";
         // 
         // lblMonitorEyebrow
         // 
@@ -322,14 +322,14 @@ partial class FrmSystemMonitor
         lblMonitorPeriod.Name = "lblMonitorPeriod";
         lblMonitorPeriod.Size = new Size(159, 20);
         lblMonitorPeriod.TabIndex = 0;
-        lblMonitorPeriod.Text = "KHOẢNG THỜI GIAN";
+        lblMonitorPeriod.Text = "KHOáº¢NG THá»œI GIAN";
         // 
         // cboMonitorPeriod
         // 
         cboMonitorPeriod.Dock = DockStyle.Fill;
         cboMonitorPeriod.DropDownStyle = ComboBoxStyle.DropDownList;
         cboMonitorPeriod.FormattingEnabled = true;
-        cboMonitorPeriod.Items.AddRange(new object[] { "24 giờ qua", "7 ngày qua", "30 ngày qua" });
+        cboMonitorPeriod.Items.AddRange(new object[] { "24 giá» qua", "7 ngÃ y qua", "30 ngÃ y qua" });
         cboMonitorPeriod.Location = new Point(3, 23);
         cboMonitorPeriod.Name = "cboMonitorPeriod";
         cboMonitorPeriod.Size = new Size(288, 28);
@@ -343,14 +343,14 @@ partial class FrmSystemMonitor
         lblMonitorDepartment.Name = "lblMonitorDepartment";
         lblMonitorDepartment.Size = new Size(146, 20);
         lblMonitorDepartment.TabIndex = 2;
-        lblMonitorDepartment.Text = "BỘ PHẬN QUẢN LÝ";
+        lblMonitorDepartment.Text = "Bá»˜ PHáº¬N QUáº¢N LÃ";
         // 
         // cboMonitorDepartment
         // 
         cboMonitorDepartment.Dock = DockStyle.Fill;
         cboMonitorDepartment.DropDownStyle = ComboBoxStyle.DropDownList;
         cboMonitorDepartment.FormattingEnabled = true;
-        cboMonitorDepartment.Items.AddRange(new object[] { "Nhân viên & Giảng viên", "Nhân viên", "Giảng viên", "Toàn hệ thống" });
+        cboMonitorDepartment.Items.AddRange(new object[] { "NhÃ¢n viÃªn & Giáº£ng viÃªn", "NhÃ¢n viÃªn", "Giáº£ng viÃªn", "ToÃ n há»‡ thá»‘ng" });
         cboMonitorDepartment.Location = new Point(297, 23);
         cboMonitorDepartment.Name = "cboMonitorDepartment";
         cboMonitorDepartment.Size = new Size(288, 28);
@@ -364,14 +364,14 @@ partial class FrmSystemMonitor
         lblMonitorViewType.Name = "lblMonitorViewType";
         lblMonitorViewType.Size = new Size(139, 20);
         lblMonitorViewType.TabIndex = 4;
-        lblMonitorViewType.Text = "LOẠI HOẠT ĐỘNG";
+        lblMonitorViewType.Text = "LOáº I HOáº T Äá»˜NG";
         // 
         // cboMonitorViewType
         // 
         cboMonitorViewType.Dock = DockStyle.Fill;
         cboMonitorViewType.DropDownStyle = ComboBoxStyle.DropDownList;
         cboMonitorViewType.FormattingEnabled = true;
-        cboMonitorViewType.Items.AddRange(new object[] { "Tất cả hoạt động", "Thanh toán", "Điểm danh", "Ghi danh", "Cấu hình" });
+        cboMonitorViewType.Items.AddRange(new object[] { "Táº¥t cáº£ hoáº¡t Ä‘á»™ng", "Thanh toÃ¡n", "Äiá»ƒm danh", "Ghi danh", "Cáº¥u hÃ¬nh" });
         cboMonitorViewType.Location = new Point(591, 23);
         cboMonitorViewType.Name = "cboMonitorViewType";
         cboMonitorViewType.Size = new Size(288, 28);
@@ -395,7 +395,7 @@ partial class FrmSystemMonitor
         btnViewMonitor.Name = "btnViewMonitor";
         btnViewMonitor.Size = new Size(158, 46);
         btnViewMonitor.TabIndex = 0;
-        btnViewMonitor.Text = "LÀM MỚI";
+        btnViewMonitor.Text = "LÃ€M Má»šI";
         btnViewMonitor.UseVisualStyleBackColor = true;
         // 
         // btnQuickExportMonitor
@@ -404,7 +404,7 @@ partial class FrmSystemMonitor
         btnQuickExportMonitor.Name = "btnQuickExportMonitor";
         btnQuickExportMonitor.Size = new Size(160, 46);
         btnQuickExportMonitor.TabIndex = 1;
-        btnQuickExportMonitor.Text = "XUẤT NHANH";
+        btnQuickExportMonitor.Text = "XUáº¤T NHANH";
         btnQuickExportMonitor.UseVisualStyleBackColor = true;
         btnQuickExportMonitor.Visible = false;
         // 
@@ -448,7 +448,7 @@ partial class FrmSystemMonitor
         lblMonitorStudentCountTag.Name = "lblMonitorStudentCountTag";
         lblMonitorStudentCountTag.Size = new Size(72, 20);
         lblMonitorStudentCountTag.TabIndex = 2;
-        lblMonitorStudentCountTag.Text = "ỔN ĐỊNH";
+        lblMonitorStudentCountTag.Text = "á»”N Äá»ŠNH";
         lblMonitorStudentCountTag.Click += lblMonitorStudentCountTag_Click;
         // 
         // lblMonitorStudentCountValue
@@ -469,7 +469,7 @@ partial class FrmSystemMonitor
         lblMonitorStudentCountTitle.Name = "lblMonitorStudentCountTitle";
         lblMonitorStudentCountTitle.Size = new Size(207, 23);
         lblMonitorStudentCountTitle.TabIndex = 0;
-        lblMonitorStudentCountTitle.Text = "THỜI GIAN HOẠT ĐỘNG";
+        lblMonitorStudentCountTitle.Text = "THá»œI GIAN HOáº T Äá»˜NG";
         // 
         // pnlMonitorEnrollmentCount
         // 
@@ -491,7 +491,7 @@ partial class FrmSystemMonitor
         lblMonitorEnrollmentCountTag.Name = "lblMonitorEnrollmentCountTag";
         lblMonitorEnrollmentCountTag.Size = new Size(102, 20);
         lblMonitorEnrollmentCountTag.TabIndex = 2;
-        lblMonitorEnrollmentCountTag.Text = "NGƯỜI DÙNG";
+        lblMonitorEnrollmentCountTag.Text = "NGÆ¯á»œI DÃ™NG";
         lblMonitorEnrollmentCountTag.Click += lblMonitorEnrollmentCountTag_Click;
         // 
         // lblMonitorEnrollmentCountValue
@@ -512,7 +512,7 @@ partial class FrmSystemMonitor
         lblMonitorEnrollmentCountTitle.Name = "lblMonitorEnrollmentCountTitle";
         lblMonitorEnrollmentCountTitle.Size = new Size(169, 23);
         lblMonitorEnrollmentCountTitle.TabIndex = 0;
-        lblMonitorEnrollmentCountTitle.Text = "PHIÊN HOẠT ĐỘNG";
+        lblMonitorEnrollmentCountTitle.Text = "PHIÃŠN HOáº T Äá»˜NG";
         // 
         // pnlMonitorReceiptCount
         // 
@@ -534,7 +534,7 @@ partial class FrmSystemMonitor
         lblMonitorReceiptCountTag.Name = "lblMonitorReceiptCountTag";
         lblMonitorReceiptCountTag.Size = new Size(83, 20);
         lblMonitorReceiptCountTag.TabIndex = 2;
-        lblMonitorReceiptCountTag.Text = "GIAO DỊCH";
+        lblMonitorReceiptCountTag.Text = "GIAO Dá»ŠCH";
         // 
         // lblMonitorReceiptCountValue
         // 
@@ -554,7 +554,7 @@ partial class FrmSystemMonitor
         lblMonitorReceiptCountTitle.Name = "lblMonitorReceiptCountTitle";
         lblMonitorReceiptCountTitle.Size = new Size(145, 23);
         lblMonitorReceiptCountTitle.TabIndex = 0;
-        lblMonitorReceiptCountTitle.Text = "NV XỬ LÝ HỒ SƠ";
+        lblMonitorReceiptCountTitle.Text = "NV Xá»¬ LÃ Há»’ SÆ ";
         // 
         // pnlMonitorDebtTotal
         // 
@@ -576,7 +576,7 @@ partial class FrmSystemMonitor
         lblMonitorDebtTotalTag.Name = "lblMonitorDebtTotalTag";
         lblMonitorDebtTotalTag.Size = new Size(68, 20);
         lblMonitorDebtTotalTag.TabIndex = 2;
-        lblMonitorDebtTotalTag.Text = "BẢN GHI";
+        lblMonitorDebtTotalTag.Text = "Báº¢N GHI";
         // 
         // lblMonitorDebtTotalValue
         // 
@@ -596,7 +596,7 @@ partial class FrmSystemMonitor
         lblMonitorDebtTotalTitle.Name = "lblMonitorDebtTotalTitle";
         lblMonitorDebtTotalTitle.Size = new Size(211, 23);
         lblMonitorDebtTotalTitle.TabIndex = 0;
-        lblMonitorDebtTotalTitle.Text = "GV NHẬT KÝ GIẢNG DẠY";
+        lblMonitorDebtTotalTitle.Text = "GV NHáº¬T KÃ GIáº¢NG Dáº Y";
         // 
         // splMonitorMain
         // 
@@ -696,7 +696,7 @@ partial class FrmSystemMonitor
         lblMonitorActivityFooter.Name = "lblMonitorActivityFooter";
         lblMonitorActivityFooter.Size = new Size(224, 20);
         lblMonitorActivityFooter.TabIndex = 0;
-        lblMonitorActivityFooter.Text = "HIỂN THỊ 5 TRÊN 4,208 BẢN GHI";
+        lblMonitorActivityFooter.Text = "HIá»‚N THá»Š 5 TRÃŠN 4,208 Báº¢N GHI";
         // 
         // lblMonitorActivityTitle
         // 
@@ -706,7 +706,7 @@ partial class FrmSystemMonitor
         lblMonitorActivityTitle.Name = "lblMonitorActivityTitle";
         lblMonitorActivityTitle.Size = new Size(708, 39);
         lblMonitorActivityTitle.TabIndex = 0;
-        lblMonitorActivityTitle.Text = "NHẬT KÝ HOẠT ĐỘNG CHI TIẾT";
+        lblMonitorActivityTitle.Text = "NHáº¬T KÃ HOáº T Äá»˜NG CHI TIáº¾T";
         // 
         // pnlMonitorSourceColumn
         // 
@@ -740,7 +740,7 @@ partial class FrmSystemMonitor
         lblMonitorHealthFootnote.Name = "lblMonitorHealthFootnote";
         lblMonitorHealthFootnote.Size = new Size(280, 20);
         lblMonitorHealthFootnote.TabIndex = 2;
-        lblMonitorHealthFootnote.Text = "* Mỗi ô đại diện cho một cluster logic xử lý dữ liệu";
+        lblMonitorHealthFootnote.Text = "* Má»—i Ã´ Ä‘áº¡i diá»‡n cho má»™t cluster logic xá»­ lÃ½ dá»¯ liá»‡u";
         // 
         // tblMonitorHealthMatrix
         // 
@@ -952,7 +952,7 @@ partial class FrmSystemMonitor
         lblMonitorHealthTitle.Name = "lblMonitorHealthTitle";
         lblMonitorHealthTitle.Size = new Size(280, 31);
         lblMonitorHealthTitle.TabIndex = 0;
-        lblMonitorHealthTitle.Text = "MA TRẬN SỨC KHỎE HỆ THỐNG";
+        lblMonitorHealthTitle.Text = "MA TRáº¬N Sá»¨C KHá»ŽE Há»† THá»NG";
         // 
         // pnlMonitorSourceCardTeacher
         // 
@@ -987,7 +987,7 @@ partial class FrmSystemMonitor
         lblMonitorSourceTeacherRate2.Name = "lblMonitorSourceTeacherRate2";
         lblMonitorSourceTeacherRate2.Size = new Size(130, 20);
         lblMonitorSourceTeacherRate2.TabIndex = 4;
-        lblMonitorSourceTeacherRate2.Text = "Hệ thống Điểm số";
+        lblMonitorSourceTeacherRate2.Text = "Há»‡ thá»‘ng Äiá»ƒm sá»‘";
         // 
         // prgMonitorSourceTeacher2
         // 
@@ -1003,7 +1003,7 @@ partial class FrmSystemMonitor
         lblMonitorSourceTeacherRate1.Name = "lblMonitorSourceTeacherRate1";
         lblMonitorSourceTeacherRate1.Size = new Size(136, 20);
         lblMonitorSourceTeacherRate1.TabIndex = 2;
-        lblMonitorSourceTeacherRate1.Text = "Nhật ký Điểm danh";
+        lblMonitorSourceTeacherRate1.Text = "Nháº­t kÃ½ Äiá»ƒm danh";
         // 
         // prgMonitorSourceTeacher1
         // 
@@ -1020,7 +1020,7 @@ partial class FrmSystemMonitor
         lblMonitorSourceTeacherTitle.Name = "lblMonitorSourceTeacherTitle";
         lblMonitorSourceTeacherTitle.Size = new Size(200, 25);
         lblMonitorSourceTeacherTitle.TabIndex = 0;
-        lblMonitorSourceTeacherTitle.Text = "LUỒNG: GIẢNG VIÊN";
+        lblMonitorSourceTeacherTitle.Text = "LUá»’NG: GIáº¢NG VIÃŠN";
         // 
         // pnlMonitorSourceCardStaff
         // 
@@ -1055,7 +1055,7 @@ partial class FrmSystemMonitor
         lblMonitorSourceStaffRate2.Name = "lblMonitorSourceStaffRate2";
         lblMonitorSourceStaffRate2.Size = new Size(150, 20);
         lblMonitorSourceStaffRate2.TabIndex = 4;
-        lblMonitorSourceStaffRate2.Text = "Giao dịch Thanh toán";
+        lblMonitorSourceStaffRate2.Text = "Giao dá»‹ch Thanh toÃ¡n";
         // 
         // prgMonitorSourceStaff2
         // 
@@ -1071,7 +1071,7 @@ partial class FrmSystemMonitor
         lblMonitorSourceStaffRate1.Name = "lblMonitorSourceStaffRate1";
         lblMonitorSourceStaffRate1.Size = new Size(111, 20);
         lblMonitorSourceStaffRate1.TabIndex = 2;
-        lblMonitorSourceStaffRate1.Text = "Hồ sơ Ghi danh";
+        lblMonitorSourceStaffRate1.Text = "Há»“ sÆ¡ Ghi danh";
         // 
         // prgMonitorSourceStaff1
         // 
@@ -1088,7 +1088,7 @@ partial class FrmSystemMonitor
         lblMonitorSourceStaffTitle.Name = "lblMonitorSourceStaffTitle";
         lblMonitorSourceStaffTitle.Size = new Size(196, 25);
         lblMonitorSourceStaffTitle.TabIndex = 0;
-        lblMonitorSourceStaffTitle.Text = "LUỒNG: NHÂN VIÊN";
+        lblMonitorSourceStaffTitle.Text = "LUá»’NG: NHÃ‚N VIÃŠN";
         // 
         // lblMonitorSourceTitle
         // 
@@ -1098,17 +1098,18 @@ partial class FrmSystemMonitor
         lblMonitorSourceTitle.Name = "lblMonitorSourceTitle";
         lblMonitorSourceTitle.Size = new Size(312, 53);
         lblMonitorSourceTitle.TabIndex = 0;
-        lblMonitorSourceTitle.Text = "NGUỒN DỮ LIỆU";
+        lblMonitorSourceTitle.Text = "NGUá»’N Dá»® LIá»†U";
         // 
         // FrmSystemMonitor
         // 
-        AutoScaleMode = AutoScaleMode.None;
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         BackColor = Color.FromArgb(241, 248, 255);
         ClientSize = new Size(1120, 720);
         Controls.Add(tblMonitorRoot);
         Name = "FrmSystemMonitor";
         Padding = new Padding(16);
-        Text = "Giám sát hệ thống";
+        Text = "GiÃ¡m sÃ¡t há»‡ thá»‘ng";
         tblMonitorRoot.ResumeLayout(false);
         pnlMonitorHeader.ResumeLayout(false);
         pnlMonitorHeader.PerformLayout();
@@ -1144,3 +1145,4 @@ partial class FrmSystemMonitor
         ResumeLayout(false);
     }
 }
+

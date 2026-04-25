@@ -1,281 +1,257 @@
 using System.Data;
+using System.Globalization;
+using TrungTamNgoaiNgu.Application.Infrastructure;
 
 namespace Trung_tam_quan_ly_ngoai_ngu;
 
 public partial class FrmEnrollment : Form
 {
+    private readonly ErrorProvider _errEnrollment = new();
     private DataTable _studentTable = new();
     private DataTable _classTable = new();
+    private string? _selectedStudentId;
+    private string? _selectedClassId;
+    private string? _currentEnrollmentId;
 
     public FrmEnrollment()
     {
         InitializeComponent();
-        FormHostHelpers.ConfigureModuleSurface(this, "Ghi danh / xếp lớp");
+        FormHostHelpers.ConfigureModuleSurface(this, "Ghi danh hoc vien");
         ConfigureView();
-        BindMockData();
+        LoadData();
         WireEvents();
-        ApplyResponsiveLayout();
-        UpdateEnrollmentSummary();
     }
 
     private void ConfigureView()
     {
         LocalizeLabels();
 
-        AppTheme.StyleGroupBox(grpEnrollmentStudentSelect);
-        AppTheme.StyleGroupBox(grpEnrollmentClassSelect);
-        AppTheme.StyleGroupBox(grpEnrollmentSummary);
         AppTheme.StyleGrid(dgvEnrollmentStudentList);
         AppTheme.StyleGrid(dgvEnrollmentClassList);
         AppTheme.StylePrimaryButton(btnCreateEnrollment);
         AppTheme.StyleSecondaryButton(btnRefreshEnrollment);
         AppTheme.StyleSecondaryButton(btnOpenTuitionReceipt);
 
-        txtEnrollmentStudent.BackColor = Color.White;
-        txtEnrollmentCourseClass.BackColor = Color.White;
-        txtEnrollmentOriginalFee.BackColor = Color.White;
-        txtEnrollmentFinalFee.BackColor = Color.White;
-        txtEnrollmentNote.BackColor = Color.White;
-        txtEnrollmentStudent.ScrollBars = ScrollBars.Vertical;
-        txtEnrollmentCourseClass.ScrollBars = ScrollBars.Vertical;
-        txtEnrollmentNote.ScrollBars = ScrollBars.Vertical;
-        txtEnrollmentStudent.MinimumSize = new Size(0, 58);
-        txtEnrollmentCourseClass.MinimumSize = new Size(0, 58);
-        dtpEnrollmentDate.Dock = DockStyle.Fill;
-        cboEnrollmentStatus.Dock = DockStyle.Fill;
+        dgvEnrollmentStudentList.AutoGenerateColumns = true;
+        dgvEnrollmentClassList.AutoGenerateColumns = true;
+        dgvEnrollmentStudentList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        dgvEnrollmentClassList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-        if (tblEnrollmentSummary.ColumnStyles.Count > 0)
-        {
-            tblEnrollmentSummary.ColumnStyles[0].Width = 136F;
-        }
-
-        flpEnrollmentActions.AutoSize = true;
-        flpEnrollmentActions.WrapContents = true;
-        flpEnrollmentActions.Dock = DockStyle.Fill;
-        flpEnrollmentActions.Margin = new Padding(0, 12, 0, 0);
-        flpEnrollmentActions.Padding = new Padding(0, 4, 0, 0);
-        flpEnrollmentActions.FlowDirection = FlowDirection.LeftToRight;
-
-        foreach (Control control in flpEnrollmentActions.Controls)
-        {
-            control.Margin = new Padding(0, 0, 10, 10);
-        }
-
-        dgvEnrollmentStudentList.RowTemplate.Height = 42;
-        dgvEnrollmentClassList.RowTemplate.Height = 42;
-
-        cboEnrollmentStatus.SelectedIndex = 1;
-        dtpEnrollmentDate.Value = DateTime.Today;
+        cboEnrollmentStatus.SelectedIndex = 0;
         txtEnrollmentDiscount.Text = "0";
-    }
-
-    private void BindMockData()
-    {
-        _studentTable = DemoDataFactory.GetEnrollmentStudents();
-        _classTable = DemoDataFactory.GetEnrollmentClasses();
-        dgvEnrollmentStudentList.DataSource = _studentTable;
-        dgvEnrollmentClassList.DataSource = _classTable;
-
-        if (dgvEnrollmentStudentList.Rows.Count > 0)
-        {
-            dgvEnrollmentStudentList.Rows[0].Selected = true;
-        }
-
-        if (dgvEnrollmentClassList.Rows.Count > 0)
-        {
-            dgvEnrollmentClassList.Rows[0].Selected = true;
-        }
+        txtEnrollmentOriginalFee.ReadOnly = true;
+        txtEnrollmentFinalFee.ReadOnly = true;
+        btnOpenTuitionReceipt.Enabled = false;
+        _errEnrollment.BlinkStyle = ErrorBlinkStyle.NeverBlink;
     }
 
     private void WireEvents()
     {
-        dgvEnrollmentStudentList.SelectionChanged += (_, _) => UpdateEnrollmentSummary();
-        dgvEnrollmentClassList.SelectionChanged += (_, _) => UpdateEnrollmentSummary();
-        txtEnrollmentDiscount.TextChanged += (_, _) => UpdateEnrollmentSummary();
-        btnRefreshEnrollment.Click += (_, _) => ResetEnrollmentSummary();
+        dgvEnrollmentStudentList.SelectionChanged += (_, _) => UpdateSelectedStudent();
+        dgvEnrollmentClassList.SelectionChanged += (_, _) => UpdateSelectedClass();
+        btnRefreshEnrollment.Click += (_, _) => LoadData();
         btnCreateEnrollment.Click += (_, _) => CreateEnrollment();
-        btnOpenTuitionReceipt.Click += (_, _) =>
+        btnOpenTuitionReceipt.Click += (_, _) => OpenTuitionReceipt();
+        txtEnrollmentDiscount.TextChanged += (_, _) => RecalculateFinalFee();
+    }
+
+    private void LoadData()
+    {
+        try
         {
-            using var form = new FrmTuitionReceipt();
-            form.ShowDialog(this);
-        };
+            _studentTable = AppRuntime.DataService.GetEnrollmentStudents();
+            _classTable = AppRuntime.DataService.GetEnrollmentClasses();
+            dgvEnrollmentStudentList.DataSource = _studentTable;
+            dgvEnrollmentClassList.DataSource = _classTable;
 
-        Resize += (_, _) => ApplyResponsiveLayout();
+            if (dgvEnrollmentStudentList.Rows.Count > 0)
+            {
+                dgvEnrollmentStudentList.Rows[0].Selected = true;
+                UpdateSelectedStudent();
+            }
+
+            if (dgvEnrollmentClassList.Rows.Count > 0)
+            {
+                dgvEnrollmentClassList.Rows[0].Selected = true;
+                UpdateSelectedClass();
+            }
+
+            btnOpenTuitionReceipt.Enabled = !string.IsNullOrWhiteSpace(_currentEnrollmentId);
+        }
+        catch (Exception ex)
+        {
+            ErrorLogger.Log(ex, nameof(FrmEnrollment));
+            MessageBox.Show(this, "Khong tai duoc du lieu ghi danh. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 
-    private void ResetEnrollmentSummary()
+    private void UpdateSelectedStudent()
     {
-        txtEnrollmentDiscount.Text = "0";
-        txtEnrollmentNote.Clear();
-        cboEnrollmentStatus.SelectedIndex = 1;
-        dtpEnrollmentDate.Value = DateTime.Today;
-        UpdateEnrollmentSummary();
+        if (dgvEnrollmentStudentList.CurrentRow?.DataBoundItem is not DataRowView rowView)
+        {
+            return;
+        }
+
+        _selectedStudentId = rowView.Row[0]?.ToString();
+        txtEnrollmentStudent.Text = BuildStudentSummary(rowView.Row);
     }
 
-    private void UpdateEnrollmentSummary()
+    private void UpdateSelectedClass()
     {
-        txtEnrollmentStudent.Text = BuildSelectedStudentText();
-        txtEnrollmentCourseClass.Text = BuildSelectedClassText();
+        if (dgvEnrollmentClassList.CurrentRow?.DataBoundItem is not DataRowView rowView)
+        {
+            return;
+        }
 
-        var originalFee = GetSelectedClassFee();
-        txtEnrollmentOriginalFee.Text = FormatCurrency(originalFee);
+        _selectedClassId = rowView.Row[0]?.ToString();
+        txtEnrollmentCourseClass.Text = BuildClassSummary(rowView.Row);
+        txtEnrollmentOriginalFee.Text = rowView.Row[6]?.ToString() ?? "0";
+        RecalculateFinalFee();
+    }
 
+    private void RecalculateFinalFee()
+    {
+        var originalFee = ParseMoney(txtEnrollmentOriginalFee.Text);
         var discount = ParseMoney(txtEnrollmentDiscount.Text);
-        var finalFee = Math.Max(0M, originalFee - discount);
-        txtEnrollmentFinalFee.Text = FormatCurrency(finalFee);
-    }
-
-    private string BuildSelectedStudentText()
-    {
-        if (dgvEnrollmentStudentList.CurrentRow?.DataBoundItem is not DataRowView studentView)
+        if (discount < 0)
         {
-            return string.Empty;
+            discount = 0;
         }
 
-        var row = studentView.Row;
-        return $"{row["Họ tên"]}\r\n{row["Mã học viên"]} - {row["Điện thoại"]}";
-    }
-
-    private string BuildSelectedClassText()
-    {
-        if (dgvEnrollmentClassList.CurrentRow?.DataBoundItem is not DataRowView classView)
-        {
-            return string.Empty;
-        }
-
-        var row = classView.Row;
-        return $"{row["Tên lớp"]}\r\n{row["Lịch học"]} - Còn chỗ: {row["Còn chỗ"]}";
-    }
-
-    private decimal GetSelectedClassFee()
-    {
-        if (dgvEnrollmentClassList.CurrentRow?.DataBoundItem is not DataRowView classView)
-        {
-            return 0M;
-        }
-
-        return ParseMoney(classView.Row["Học phí"]?.ToString());
+        var finalFee = Math.Max(0, originalFee - discount);
+        txtEnrollmentFinalFee.Text = finalFee.ToString("N0", CultureInfo.GetCultureInfo("vi-VN"));
     }
 
     private void CreateEnrollment()
     {
-        if (dgvEnrollmentStudentList.CurrentRow is null || dgvEnrollmentClassList.CurrentRow is null)
+        if (!ValidateEditor())
         {
-            using var warning = new FrmStatusDialog("Ghi danh", "Cần chọn học viên và lớp học trước khi tạo ghi danh.");
-            warning.ShowDialog(this);
             return;
         }
 
-        using var dialog = new FrmStatusDialog(
-            "Ghi danh / xếp lớp",
-            $"Đã tạo ghi danh demo cho {txtEnrollmentStudent.Text.Split(Environment.NewLine)[0]} với mức học phí {txtEnrollmentFinalFee.Text}.");
-        dialog.ShowDialog(this);
+        try
+        {
+            if (AppRuntime.DataService.StudentAlreadyEnrolled(_selectedStudentId!, _selectedClassId!))
+            {
+                MessageBox.Show(this, "Hoc vien da ton tai trong lop nay.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!AppRuntime.DataService.ClassHasAvailableSlot(_selectedClassId!))
+            {
+                MessageBox.Show(this, "Lop hoc da het cho.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var note = txtEnrollmentNote.Text.Trim();
+            var discount = ParseMoney(txtEnrollmentDiscount.Text);
+            if (discount > 0)
+            {
+                note = string.IsNullOrWhiteSpace(note)
+                    ? $"Discount tu van: {discount:N0}"
+                    : $"{note} | Discount tu van: {discount:N0}";
+            }
+
+            var enrollment = AppRuntime.DataService.CreateEnrollment(
+                _selectedStudentId!,
+                _selectedClassId!,
+                dtpEnrollmentDate.Value.Date,
+                cboEnrollmentStatus.Text,
+                note);
+
+            _currentEnrollmentId = enrollment.Id;
+            btnOpenTuitionReceipt.Enabled = true;
+
+            MessageBox.Show(this, "Da tao ghi danh thanh cong. Tiep tuc thu hoc phi o buoc tiep theo.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            OpenTuitionReceipt();
+        }
+        catch (Exception ex)
+        {
+            ErrorLogger.Log(ex, nameof(FrmEnrollment));
+            MessageBox.Show(this, "Khong tao duoc ghi danh. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private void OpenTuitionReceipt()
+    {
+        if (string.IsNullOrWhiteSpace(_currentEnrollmentId))
+        {
+            MessageBox.Show(this, "Hay tao ghi danh truoc khi thu hoc phi.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
+        using var form = new FrmTuitionReceipt(_currentEnrollmentId);
+        form.ShowDialog(this);
+    }
+
+    private bool ValidateEditor()
+    {
+        _errEnrollment.Clear();
+
+        if (string.IsNullOrWhiteSpace(_selectedStudentId))
+        {
+            _errEnrollment.SetError(dgvEnrollmentStudentList, "Chua chon hoc vien.");
+        }
+
+        if (string.IsNullOrWhiteSpace(_selectedClassId))
+        {
+            _errEnrollment.SetError(dgvEnrollmentClassList, "Chua chon lop hoc.");
+        }
+
+        if (ParseMoney(txtEnrollmentDiscount.Text) < 0)
+        {
+            _errEnrollment.SetError(txtEnrollmentDiscount, "Muc giam phai >= 0.");
+        }
+
+        return string.IsNullOrWhiteSpace(_errEnrollment.GetError(dgvEnrollmentStudentList))
+            && string.IsNullOrWhiteSpace(_errEnrollment.GetError(dgvEnrollmentClassList))
+            && string.IsNullOrWhiteSpace(_errEnrollment.GetError(txtEnrollmentDiscount));
     }
 
     private void LocalizeLabels()
     {
-        grpEnrollmentStudentSelect.Text = "1. Chọn học viên";
-        grpEnrollmentClassSelect.Text = "2. Chọn lớp phù hợp";
-        grpEnrollmentSummary.Text = "3. Xác nhận ghi danh";
-
-        lblEnrollmentDate.Text = "Ngày đăng ký";
-        lblEnrollmentStudent.Text = "Học viên";
-        lblEnrollmentCourseClass.Text = "Lớp học";
-        lblEnrollmentOriginalFee.Text = "Học phí gốc";
-        lblEnrollmentDiscount.Text = "Giảm giá";
-        lblEnrollmentFinalFee.Text = "Học phí cuối";
-        lblEnrollmentStatus.Text = "Trạng thái";
-        lblEnrollmentNote.Text = "Ghi chú";
+        lblEnrollmentDate.Text = "Ngay ghi danh";
+        lblEnrollmentStudent.Text = "Hoc vien";
+        lblEnrollmentCourseClass.Text = "Lop hoc / khoa hoc";
+        lblEnrollmentOriginalFee.Text = "Hoc phi goc";
+        lblEnrollmentDiscount.Text = "Giam tru";
+        lblEnrollmentFinalFee.Text = "Hoc phi tam tinh";
+        lblEnrollmentStatus.Text = "Trang thai";
+        lblEnrollmentNote.Text = "Ghi chu";
 
         cboEnrollmentStatus.Items.Clear();
-        cboEnrollmentStatus.Items.AddRange(["Chờ xác nhận", "Đã ghi danh", "Chờ thu học phí"]);
+        cboEnrollmentStatus.Items.AddRange(["Dang hoc", "Bao luu", "Da nghi"]);
 
-        btnCreateEnrollment.Text = "Tạo ghi danh";
-        btnRefreshEnrollment.Text = "Làm mới";
-        btnOpenTuitionReceipt.Text = "Mở thu học phí";
+        btnCreateEnrollment.Text = "Tao ghi danh";
+        btnRefreshEnrollment.Text = "Lam moi";
+        btnOpenTuitionReceipt.Text = "Thu hoc phi";
     }
 
-    private void ApplyResponsiveLayout()
+    private static string BuildStudentSummary(DataRow row)
     {
-        var width = ClientSize.Width - Padding.Horizontal;
-        if (width <= 0)
-        {
-            return;
-        }
-
-        tblEnrollmentColumns.SuspendLayout();
-
-        if (width < 980)
-        {
-            tblEnrollmentColumns.ColumnCount = 1;
-            tblEnrollmentColumns.RowCount = 3;
-            tblEnrollmentColumns.ColumnStyles.Clear();
-            tblEnrollmentColumns.RowStyles.Clear();
-            tblEnrollmentColumns.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tblEnrollmentColumns.RowStyles.Add(new RowStyle(SizeType.Absolute, 220F));
-            tblEnrollmentColumns.RowStyles.Add(new RowStyle(SizeType.Absolute, 220F));
-            tblEnrollmentColumns.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-
-            tblEnrollmentColumns.SetColumn(grpEnrollmentStudentSelect, 0);
-            tblEnrollmentColumns.SetRow(grpEnrollmentStudentSelect, 0);
-            tblEnrollmentColumns.SetColumn(grpEnrollmentClassSelect, 0);
-            tblEnrollmentColumns.SetRow(grpEnrollmentClassSelect, 1);
-            tblEnrollmentColumns.SetColumn(grpEnrollmentSummary, 0);
-            tblEnrollmentColumns.SetRow(grpEnrollmentSummary, 2);
-
-            grpEnrollmentStudentSelect.Margin = new Padding(0, 0, 0, 12);
-            grpEnrollmentClassSelect.Margin = new Padding(0, 0, 0, 12);
-            grpEnrollmentSummary.Margin = Padding.Empty;
-
-            if (tblEnrollmentSummary.ColumnStyles.Count > 0)
-            {
-                tblEnrollmentSummary.ColumnStyles[0].Width = 112F;
-            }
-        }
-        else
-        {
-            tblEnrollmentColumns.ColumnCount = 3;
-            tblEnrollmentColumns.RowCount = 1;
-            tblEnrollmentColumns.ColumnStyles.Clear();
-            tblEnrollmentColumns.RowStyles.Clear();
-            tblEnrollmentColumns.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 31F));
-            tblEnrollmentColumns.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 31F));
-            tblEnrollmentColumns.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 38F));
-            tblEnrollmentColumns.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-
-            tblEnrollmentColumns.SetColumn(grpEnrollmentStudentSelect, 0);
-            tblEnrollmentColumns.SetRow(grpEnrollmentStudentSelect, 0);
-            tblEnrollmentColumns.SetColumn(grpEnrollmentClassSelect, 1);
-            tblEnrollmentColumns.SetRow(grpEnrollmentClassSelect, 0);
-            tblEnrollmentColumns.SetColumn(grpEnrollmentSummary, 2);
-            tblEnrollmentColumns.SetRow(grpEnrollmentSummary, 0);
-
-            grpEnrollmentStudentSelect.Margin = new Padding(0, 0, 12, 0);
-            grpEnrollmentClassSelect.Margin = new Padding(0, 0, 12, 0);
-            grpEnrollmentSummary.Margin = Padding.Empty;
-
-            if (tblEnrollmentSummary.ColumnStyles.Count > 0)
-            {
-                tblEnrollmentSummary.ColumnStyles[0].Width = 136F;
-            }
-        }
-
-        tblEnrollmentColumns.ResumeLayout(true);
+        var studentId = row[0]?.ToString() ?? string.Empty;
+        var fullName = row[1]?.ToString() ?? string.Empty;
+        var phone = row[3]?.ToString() ?? string.Empty;
+        return $"{studentId}{Environment.NewLine}{fullName}{Environment.NewLine}SDT: {phone}";
     }
 
-    private static decimal ParseMoney(string? value)
+    private static string BuildClassSummary(DataRow row)
     {
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            return 0M;
-        }
-
-        var digits = new string(value.Where(char.IsDigit).ToArray());
-        return decimal.TryParse(digits, out var result) ? result : 0M;
+        var classId = row[0]?.ToString() ?? string.Empty;
+        var className = row[1]?.ToString() ?? string.Empty;
+        var courseName = row[2]?.ToString() ?? string.Empty;
+        var schedule = row[4]?.ToString() ?? string.Empty;
+        return $"{classId} - {className}{Environment.NewLine}{courseName}{Environment.NewLine}{schedule}";
     }
 
-    private static string FormatCurrency(decimal value)
+    private static decimal ParseMoney(string? input)
     {
-        return string.Format("{0:N0} VND", value);
+        if (string.IsNullOrWhiteSpace(input))
+        {
+            return 0;
+        }
+
+        var sanitized = input.Replace(".", string.Empty).Replace(",", string.Empty).Trim();
+        return decimal.TryParse(sanitized, NumberStyles.Number, CultureInfo.InvariantCulture, out var value) ? value : 0;
     }
 }

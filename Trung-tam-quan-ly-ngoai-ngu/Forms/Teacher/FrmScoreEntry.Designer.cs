@@ -1,4 +1,4 @@
-namespace Trung_tam_quan_ly_ngoai_ngu;
+﻿namespace Trung_tam_quan_ly_ngoai_ngu;
 
 partial class FrmScoreEntry
 {
@@ -71,7 +71,7 @@ partial class FrmScoreEntry
         btnSaveScore.Name = "btnSaveScore";
         btnSaveScore.Size = new Size(120, 32);
         btnSaveScore.TabIndex = 7;
-        btnSaveScore.Text = "Lưu điểm";
+        btnSaveScore.Text = "LÆ°u Ä‘iá»ƒm";
         btnSaveScore.UseVisualStyleBackColor = true;
         // 
         // btnLoadScoreList
@@ -80,7 +80,7 @@ partial class FrmScoreEntry
         btnLoadScoreList.Name = "btnLoadScoreList";
         btnLoadScoreList.Size = new Size(120, 32);
         btnLoadScoreList.TabIndex = 6;
-        btnLoadScoreList.Text = "Tải danh sách";
+        btnLoadScoreList.Text = "Táº£i danh sÃ¡ch";
         btnLoadScoreList.UseVisualStyleBackColor = true;
         // 
         // txtScoreWeight
@@ -97,13 +97,13 @@ partial class FrmScoreEntry
         lblScoreWeight.Name = "lblScoreWeight";
         lblScoreWeight.Size = new Size(44, 20);
         lblScoreWeight.TabIndex = 4;
-        lblScoreWeight.Text = "Hệ số";
+        lblScoreWeight.Text = "Há»‡ sá»‘";
         // 
         // cboScoreType
         // 
         cboScoreType.DropDownStyle = ComboBoxStyle.DropDownList;
         cboScoreType.FormattingEnabled = true;
-        cboScoreType.Items.AddRange(new object[] { "Giữa kỳ", "Cuối kỳ", "Thực hành" });
+        cboScoreType.Items.AddRange(new object[] { "Giá»¯a ká»³", "Cuá»‘i ká»³", "Thá»±c hÃ nh" });
         cboScoreType.Location = new Point(250, 41);
         cboScoreType.Name = "cboScoreType";
         cboScoreType.Size = new Size(210, 28);
@@ -116,7 +116,7 @@ partial class FrmScoreEntry
         lblScoreType.Name = "lblScoreType";
         lblScoreType.Size = new Size(73, 20);
         lblScoreType.TabIndex = 2;
-        lblScoreType.Text = "Loại điểm";
+        lblScoreType.Text = "Loáº¡i Ä‘iá»ƒm";
         // 
         // cboScoreClass
         // 
@@ -135,7 +135,7 @@ partial class FrmScoreEntry
         lblScoreClass.Name = "lblScoreClass";
         lblScoreClass.Size = new Size(58, 20);
         lblScoreClass.TabIndex = 0;
-        lblScoreClass.Text = "Lớp học";
+        lblScoreClass.Text = "Lá»›p há»c";
         // 
         // dgvScoreList
         // 
@@ -172,12 +172,13 @@ partial class FrmScoreEntry
         // 
         // FrmScoreEntry
         // 
-        AutoScaleMode = AutoScaleMode.None;
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(1004, 640);
         Controls.Add(tblScoreRoot);
         Name = "FrmScoreEntry";
         Padding = new Padding(12);
-        Text = "Nhập điểm";
+        Text = "Nháº­p Ä‘iá»ƒm";
         pnlScoreFilterCard.ResumeLayout(false);
         pnlScoreFilterCard.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)dgvScoreList).EndInit();
@@ -186,3 +187,4 @@ partial class FrmScoreEntry
         ResumeLayout(false);
     }
 }
+

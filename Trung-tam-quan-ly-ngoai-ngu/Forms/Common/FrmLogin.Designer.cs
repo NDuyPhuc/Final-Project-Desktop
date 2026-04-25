@@ -1,4 +1,4 @@
-namespace Trung_tam_quan_ly_ngoai_ngu;
+﻿namespace Trung_tam_quan_ly_ngoai_ngu;
 
 partial class FrmLogin
 {
@@ -104,6 +104,7 @@ partial class FrmLogin
         pnlLoginContainer.Controls.Add(pnlLoginFooter);
         pnlLoginContainer.Controls.Add(pnlLoginFormContent);
         pnlLoginContainer.Controls.Add(pnlLoginHeader);
+        pnlLoginContainer.MinimumSize = new Size(448, 678);
         pnlLoginContainer.Location = new Point(266, 21);
         pnlLoginContainer.Name = "pnlLoginContainer";
         pnlLoginContainer.Size = new Size(448, 678);
@@ -113,7 +114,7 @@ partial class FrmLogin
         // 
         pnlLoginFooter.BackColor = Color.FromArgb(243, 243, 243);
         pnlLoginFooter.Controls.Add(tblFooter);
-        pnlLoginFooter.Location = new Point(0, 622);
+        pnlLoginFooter.Dock = DockStyle.Bottom;
         pnlLoginFooter.Name = "pnlLoginFooter";
         pnlLoginFooter.Size = new Size(448, 56);
         pnlLoginFooter.TabIndex = 2;
@@ -156,7 +157,7 @@ partial class FrmLogin
         lblFooterSupport.Name = "lblFooterSupport";
         lblFooterSupport.Size = new Size(192, 32);
         lblFooterSupport.TabIndex = 1;
-        lblFooterSupport.Text = "Hỗ trợ kỹ thuật";
+        lblFooterSupport.Text = "Há»— trá»£ ká»¹ thuáº­t";
         lblFooterSupport.TextAlign = ContentAlignment.MiddleRight;
         // 
         // pnlLoginFormContent
@@ -169,13 +170,14 @@ partial class FrmLogin
         pnlLoginFormContent.Controls.Add(pnlUsernameInput);
         pnlLoginFormContent.Controls.Add(lblUsername);
         pnlLoginFormContent.Controls.Add(pnlErrorAlert);
-        pnlLoginFormContent.Location = new Point(0, 200);
+        pnlLoginFormContent.Dock = DockStyle.Fill;
         pnlLoginFormContent.Name = "pnlLoginFormContent";
         pnlLoginFormContent.Size = new Size(448, 430);
         pnlLoginFormContent.TabIndex = 1;
         // 
         // pnlActionButtons
         // 
+        pnlActionButtons.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
         pnlActionButtons.BackColor = Color.Transparent;
         pnlActionButtons.Controls.Add(btnExit);
         pnlActionButtons.Controls.Add(btnLogin);
@@ -195,7 +197,7 @@ partial class FrmLogin
         btnExit.Name = "btnExit";
         btnExit.Size = new Size(184, 44);
         btnExit.TabIndex = 0;
-        btnExit.Text = "Thoát";
+        btnExit.Text = "ThoÃ¡t";
         btnExit.UseVisualStyleBackColor = false;
         // 
         // btnLogin
@@ -209,11 +211,12 @@ partial class FrmLogin
         btnLogin.Name = "btnLogin";
         btnLogin.Size = new Size(184, 44);
         btnLogin.TabIndex = 1;
-        btnLogin.Text = "Đăng nhập";
+        btnLogin.Text = "ÄÄƒng nháº­p";
         btnLogin.UseVisualStyleBackColor = false;
         // 
         // pnlSubControls
         // 
+        pnlSubControls.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
         pnlSubControls.BackColor = Color.Transparent;
         pnlSubControls.Controls.Add(tblSubControls);
         pnlSubControls.Location = new Point(32, 258);
@@ -249,7 +252,7 @@ partial class FrmLogin
         chkShowPassword.Name = "chkShowPassword";
         chkShowPassword.Size = new Size(156, 28);
         chkShowPassword.TabIndex = 0;
-        chkShowPassword.Text = "Hiện mật khẩu";
+        chkShowPassword.Text = "Hiá»‡n máº­t kháº©u";
         chkShowPassword.UseVisualStyleBackColor = false;
         // 
         // lnkForgotPassword
@@ -264,12 +267,13 @@ partial class FrmLogin
         lnkForgotPassword.Size = new Size(156, 25);
         lnkForgotPassword.TabIndex = 1;
         lnkForgotPassword.TabStop = true;
-        lnkForgotPassword.Text = "Quên mật khẩu?";
+        lnkForgotPassword.Text = "QuÃªn máº­t kháº©u?";
         lnkForgotPassword.TextAlign = ContentAlignment.MiddleRight;
         lnkForgotPassword.VisitedLinkColor = Color.FromArgb(0, 106, 106);
         // 
         // pnlPasswordInput
         // 
+        pnlPasswordInput.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
         pnlPasswordInput.BackColor = Color.FromArgb(226, 226, 226);
         pnlPasswordInput.Controls.Add(txtPassword);
         pnlPasswordInput.Controls.Add(pnlPasswordIcon);
@@ -284,11 +288,12 @@ partial class FrmLogin
         txtPassword.BorderStyle = BorderStyle.None;
         txtPassword.Font = new Font("Segoe UI", 12F);
         txtPassword.ForeColor = Color.FromArgb(26, 28, 28);
+        txtPassword.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
         txtPassword.Location = new Point(40, 4);
         txtPassword.Name = "txtPassword";
         txtPassword.Size = new Size(332, 27);
         txtPassword.TabIndex = 1;
-        txtPassword.Text = "••••••••";
+        txtPassword.Text = "â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢";
         txtPassword.UseSystemPasswordChar = true;
         // 
         // pnlPasswordIcon
@@ -301,17 +306,19 @@ partial class FrmLogin
         // 
         // lblPassword
         // 
+        lblPassword.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
         lblPassword.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
         lblPassword.ForeColor = Color.FromArgb(26, 28, 28);
         lblPassword.Location = new Point(32, 180);
         lblPassword.Name = "lblPassword";
         lblPassword.Size = new Size(384, 25);
         lblPassword.TabIndex = 3;
-        lblPassword.Text = "MẬT KHẨU";
+        lblPassword.Text = "Máº¬T KHáº¨U";
         lblPassword.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // pnlUsernameInput
         // 
+        pnlUsernameInput.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
         pnlUsernameInput.BackColor = Color.FromArgb(226, 226, 226);
         pnlUsernameInput.Controls.Add(txtUsername);
         pnlUsernameInput.Controls.Add(pnlUsernameIcon);
@@ -326,6 +333,7 @@ partial class FrmLogin
         txtUsername.BorderStyle = BorderStyle.None;
         txtUsername.Font = new Font("Segoe UI", 12F);
         txtUsername.ForeColor = Color.FromArgb(26, 28, 28);
+        txtUsername.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
         txtUsername.Location = new Point(40, 4);
         txtUsername.Name = "txtUsername";
         txtUsername.Size = new Size(332, 27);
@@ -342,17 +350,19 @@ partial class FrmLogin
         // 
         // lblUsername
         // 
+        lblUsername.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
         lblUsername.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
         lblUsername.ForeColor = Color.FromArgb(26, 28, 28);
         lblUsername.Location = new Point(32, 96);
         lblUsername.Name = "lblUsername";
         lblUsername.Size = new Size(384, 25);
         lblUsername.TabIndex = 1;
-        lblUsername.Text = "TÊN ĐĂNG NHẬP";
+        lblUsername.Text = "TÃŠN ÄÄ‚NG NHáº¬P";
         lblUsername.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // pnlErrorAlert
         // 
+        pnlErrorAlert.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
         pnlErrorAlert.BackColor = Color.FromArgb(255, 218, 214);
         pnlErrorAlert.Controls.Add(lblErrorAlertText);
         pnlErrorAlert.Controls.Add(pnlErrorIcon);
@@ -365,12 +375,13 @@ partial class FrmLogin
         // 
         // lblErrorAlertText
         // 
+        lblErrorAlertText.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
         lblErrorAlertText.ForeColor = Color.FromArgb(147, 0, 10);
         lblErrorAlertText.Location = new Point(48, 17);
         lblErrorAlertText.Name = "lblErrorAlertText";
         lblErrorAlertText.Size = new Size(300, 20);
         lblErrorAlertText.TabIndex = 2;
-        lblErrorAlertText.Text = "Sai tên tài khoản hoặc mật khẩu";
+        lblErrorAlertText.Text = "Sai tÃªn tÃ i khoáº£n hoáº·c máº­t kháº©u";
         lblErrorAlertText.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // pnlErrorIcon
@@ -393,7 +404,7 @@ partial class FrmLogin
         // 
         pnlLoginHeader.BackColor = Color.FromArgb(0, 51, 102);
         pnlLoginHeader.Controls.Add(pnlLoginHeaderOverlay);
-        pnlLoginHeader.Location = new Point(0, 0);
+        pnlLoginHeader.Dock = DockStyle.Top;
         pnlLoginHeader.Name = "pnlLoginHeader";
         pnlLoginHeader.Size = new Size(448, 200);
         pnlLoginHeader.TabIndex = 0;
@@ -404,23 +415,25 @@ partial class FrmLogin
         pnlLoginHeaderOverlay.Controls.Add(lblHeaderSubtitle);
         pnlLoginHeaderOverlay.Controls.Add(lblHeaderTitle);
         pnlLoginHeaderOverlay.Controls.Add(picHeaderLogo);
-        pnlLoginHeaderOverlay.Location = new Point(0, 0);
+        pnlLoginHeaderOverlay.Dock = DockStyle.Fill;
         pnlLoginHeaderOverlay.Name = "pnlLoginHeaderOverlay";
         pnlLoginHeaderOverlay.Size = new Size(448, 200);
         pnlLoginHeaderOverlay.TabIndex = 0;
         // 
         // lblHeaderSubtitle
         // 
+        lblHeaderSubtitle.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
         lblHeaderSubtitle.ForeColor = Color.FromArgb(204, 255, 255, 255);
         lblHeaderSubtitle.Location = new Point(44, 155);
         lblHeaderSubtitle.Name = "lblHeaderSubtitle";
         lblHeaderSubtitle.Size = new Size(360, 24);
         lblHeaderSubtitle.TabIndex = 2;
-        lblHeaderSubtitle.Text = "ĐĂNG NHẬP HỆ THỐNG";
+        lblHeaderSubtitle.Text = "ÄÄ‚NG NHáº¬P Há»† THá»NG";
         lblHeaderSubtitle.TextAlign = ContentAlignment.MiddleCenter;
         // 
         // lblHeaderTitle
         // 
+        lblHeaderTitle.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
         lblHeaderTitle.Font = new Font("Segoe UI", 25F, FontStyle.Bold);
         lblHeaderTitle.ForeColor = Color.White;
         lblHeaderTitle.Location = new Point(44, 95);
@@ -448,12 +461,15 @@ partial class FrmLogin
         // 
         // FrmLogin
         // 
-        AutoScaleMode = AutoScaleMode.None;
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         BackColor = Color.FromArgb(233, 237, 244);
         ClientSize = new Size(980, 720);
         Controls.Add(pnlLoginContainer);
+        MinimumSize = new Size(760, 620);
         Name = "FrmLogin";
-        Text = "Đăng nhập hệ thống";
+        StartPosition = FormStartPosition.CenterScreen;
+        Text = "ÄÄƒng nháº­p há»‡ thá»‘ng";
         pnlLoginContainer.ResumeLayout(false);
         pnlLoginFooter.ResumeLayout(false);
         tblFooter.ResumeLayout(false);
@@ -474,3 +490,4 @@ partial class FrmLogin
         ResumeLayout(false);
     }
 }
+

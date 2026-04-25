@@ -1,21 +1,34 @@
 using System.ComponentModel;
 using System.Data;
+using TrungTamNgoaiNgu.Application.Contracts;
+using TrungTamNgoaiNgu.Application.Infrastructure;
+using TrungTamNgoaiNgu.Domain.Entities;
+using TrungTamNgoaiNgu.Domain.Enums;
 
 namespace Trung_tam_quan_ly_ngoai_ngu;
 
 public partial class FrmAccountManagement : Form
 {
+    private readonly ILanguageCenterDataService _dataService;
     private readonly List<AccountRecord> _accounts = [];
     private readonly Dictionary<string, Panel> _accountCards = new();
     private AccountRecord? _selectedAccount;
     private bool _creatingAccount;
 
-    public FrmAccountManagement()
+    public FrmAccountManagement() : this(AppRuntime.DataService)
     {
+    }
+
+    public FrmAccountManagement(ILanguageCenterDataService dataService)
+    {
+        _dataService = dataService;
+
         InitializeComponent();
         FormHostHelpers.ConfigureModuleSurface(this, "Tài khoản và phân quyền");
+
         ApplyLocalizedText();
         ConfigureVisualStyle();
+        ConfigureResponsiveLayout();
         WireEvents();
         SeedAccounts();
         ApplyFilters();
@@ -24,7 +37,7 @@ public partial class FrmAccountManagement : Form
     private void ApplyLocalizedText()
     {
         Text = "Tài khoản và phân quyền";
-        lblAccountListTitle.Text = "Danh sách Tài khoản";
+        lblAccountListTitle.Text = "Danh sách tài khoản";
         txtAccountKeyword.PlaceholderText = "Tìm kiếm tài khoản...";
         lblAccountTitle.Text = "CHI TIẾT TÀI KHOẢN";
         btnCreateAccount.Text = "+ Tạo tài khoản mới";
@@ -43,7 +56,7 @@ public partial class FrmAccountManagement : Form
         lblPermissionAdminTitle.Text = "ADMIN";
         lblPermissionAdminBody.Text = "Quản trị toàn diện và giám sát các hoạt động hệ thống tối cao.";
         lblPermissionStaffTitle.Text = "NHÂN VIÊN (STAFF)";
-        lblPermissionStaffBody.Text = "Vận hành các quy trình tác nghiệp: Tuyển sinh, Thu phí, Xếp lớp.";
+        lblPermissionStaffBody.Text = "Vận hành các quy trình tác nghiệp: Tuyển sinh, thu phí, xếp lớp.";
         lblPermissionTeacherTitle.Text = "GIÁO VIÊN (TEACHER)";
         lblPermissionTeacherBody.Text = "Truy cập học liệu, quản lý lớp học được giảng dạy và đánh giá học viên.";
         lblPermissionFooter.Text = "LINGUISTIC ARCHITECT SECURITY PROTOCOL V2.4";
@@ -64,9 +77,9 @@ public partial class FrmAccountManagement : Form
     {
         BackColor = Color.FromArgb(241, 248, 255);
         Padding = new Padding(20);
-        AutoScroll = true;
+        MinimumSize = new Size(920, 640);
 
-        tblAccountRoot.Padding = new Padding(0);
+        tblAccountRoot.Padding = Padding.Empty;
         tblAccountRoot.BackColor = Color.Transparent;
 
         pnlAccountListColumn.BackColor = Color.FromArgb(231, 244, 255);
@@ -77,9 +90,9 @@ public partial class FrmAccountManagement : Form
         lblAccountIdentifier.Font = new Font("Segoe UI", 9.5F, FontStyle.Italic);
         lblAccountIdentifier.ForeColor = Color.FromArgb(100, 112, 126);
 
-        StyleSurfacePanel(pnlAccountFilterCard, Color.FromArgb(231, 244, 255), Color.FromArgb(209, 225, 241));
-        StyleSurfacePanel(pnlAccountInfoCard, Color.White, Color.FromArgb(216, 228, 240));
-        StyleSurfacePanel(pnlPermissionRuleCard, Color.FromArgb(224, 243, 255), Color.FromArgb(200, 221, 237));
+        StyleSurfacePanel(pnlAccountFilterCard, Color.FromArgb(231, 244, 255));
+        StyleSurfacePanel(pnlAccountInfoCard, Color.White);
+        StyleSurfacePanel(pnlPermissionRuleCard, Color.FromArgb(224, 243, 255));
 
         StyleInput(txtAccountKeyword);
         StyleInput(txtDisplayName);
@@ -96,35 +109,162 @@ public partial class FrmAccountManagement : Form
         StylePrimaryAction(btnSearchAccount, Color.White, Color.FromArgb(58, 77, 98));
         StylePrimaryAction(btnRefreshAccount, Color.White, Color.FromArgb(58, 77, 98));
 
-        StylePermissionPanel(
-            pnlPermissionAdmin,
-            lblPermissionAdminTitle,
-            Color.FromArgb(9, 80, 144),
-            Color.White);
-        StylePermissionPanel(
-            pnlPermissionStaff,
-            lblPermissionStaffTitle,
-            Color.FromArgb(148, 164, 185),
-            Color.White);
-        StylePermissionPanel(
-            pnlPermissionTeacher,
-            lblPermissionTeacherTitle,
-            Color.FromArgb(28, 148, 136),
-            Color.White);
+        StylePermissionPanel(pnlPermissionAdmin, lblPermissionAdminTitle, Color.FromArgb(9, 80, 144), Color.White);
+        StylePermissionPanel(pnlPermissionStaff, lblPermissionStaffTitle, Color.FromArgb(148, 164, 185), Color.White);
+        StylePermissionPanel(pnlPermissionTeacher, lblPermissionTeacherTitle, Color.FromArgb(28, 148, 136), Color.White);
 
         flpAccountCards.BackColor = Color.Transparent;
         flpAccountCards.Padding = new Padding(0, 8, 0, 0);
         flpAccountCards.WrapContents = false;
+        flpAccountCards.AutoScroll = true;
 
-        flpAccountActions.Padding = new Padding(0, 10, 0, 0);
+        flpAccountActions.Padding = new Padding(0, 12, 0, 0);
         flpAccountActions.AutoSize = true;
         flpAccountActions.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+        flpAccountActions.WrapContents = true;
+        flpAccountActions.Dock = DockStyle.Top;
 
         flpAccountStatus.Padding = new Padding(0, 6, 0, 0);
-        rdoAccountActive.ForeColor = Color.FromArgb(26, 38, 53);
-        rdoAccountLocked.ForeColor = Color.FromArgb(26, 38, 53);
+        flpAccountStatus.WrapContents = true;
 
         tblAccountInfo.CellBorderStyle = TableLayoutPanelCellBorderStyle.None;
+        tblAccountInfo.AutoSize = true;
+        tblAccountInfo.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+        tblAccountInfo.Dock = DockStyle.Top;
+
+        LayoutFilterCard();
+    }
+
+    private void ConfigureResponsiveLayout()
+    {
+        Resize += (_, _) =>
+        {
+            LayoutFilterCard();
+            ApplyResponsiveBreakpoints();
+        };
+
+        flpAccountCards.Resize += (_, _) => ResizeAccountCards();
+        ApplyResponsiveBreakpoints();
+    }
+
+    private void ApplyResponsiveBreakpoints()
+    {
+        var compact = ClientSize.Width < 1240;
+
+        ConfigureRootLayout(compact);
+        ConfigurePermissionLayout(compact);
+
+        btnCreateAccount.Width = compact ? 180 : 217;
+        lblAccountTitle.Font = compact
+            ? new Font("Segoe UI", 16F, FontStyle.Bold)
+            : new Font("Segoe UI", 18F, FontStyle.Bold);
+    }
+
+    private void ConfigureRootLayout(bool compact)
+    {
+        tblAccountRoot.SuspendLayout();
+        tblAccountRoot.Controls.Clear();
+        tblAccountRoot.ColumnStyles.Clear();
+        tblAccountRoot.RowStyles.Clear();
+
+        if (compact)
+        {
+            tblAccountRoot.ColumnCount = 1;
+            tblAccountRoot.RowCount = 2;
+            tblAccountRoot.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tblAccountRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 290F));
+            tblAccountRoot.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+
+            pnlAccountListColumn.Padding = new Padding(0, 0, 0, 18);
+            pnlAccountDetailColumn.Padding = Padding.Empty;
+
+            tblAccountRoot.Controls.Add(pnlAccountListColumn, 0, 0);
+            tblAccountRoot.Controls.Add(pnlAccountDetailColumn, 0, 1);
+        }
+        else
+        {
+            tblAccountRoot.ColumnCount = 2;
+            tblAccountRoot.RowCount = 1;
+            tblAccountRoot.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 34F));
+            tblAccountRoot.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 66F));
+            tblAccountRoot.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+
+            pnlAccountListColumn.Padding = new Padding(0, 0, 20, 0);
+            pnlAccountDetailColumn.Padding = new Padding(8, 0, 0, 0);
+
+            tblAccountRoot.Controls.Add(pnlAccountListColumn, 0, 0);
+            tblAccountRoot.Controls.Add(pnlAccountDetailColumn, 1, 0);
+        }
+
+        tblAccountRoot.ResumeLayout(true);
+    }
+
+    private void ConfigurePermissionLayout(bool compact)
+    {
+        tblPermissionCards.SuspendLayout();
+        tblPermissionCards.Controls.Clear();
+        tblPermissionCards.ColumnStyles.Clear();
+        tblPermissionCards.RowStyles.Clear();
+
+        if (compact)
+        {
+            tblPermissionCards.ColumnCount = 1;
+            tblPermissionCards.RowCount = 3;
+            tblPermissionCards.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tblPermissionCards.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            tblPermissionCards.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            tblPermissionCards.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+
+            AddPermissionCard(pnlPermissionAdmin, 0, 0, new Padding(0, 0, 0, 12));
+            AddPermissionCard(pnlPermissionStaff, 0, 1, new Padding(0, 0, 0, 12));
+            AddPermissionCard(pnlPermissionTeacher, 0, 2, Padding.Empty);
+            tblPermissionCards.Height = 348;
+        }
+        else
+        {
+            tblPermissionCards.ColumnCount = 3;
+            tblPermissionCards.RowCount = 1;
+            tblPermissionCards.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
+            tblPermissionCards.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
+            tblPermissionCards.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
+            tblPermissionCards.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+
+            AddPermissionCard(pnlPermissionAdmin, 0, 0, new Padding(0, 0, 12, 0));
+            AddPermissionCard(pnlPermissionStaff, 1, 0, new Padding(0, 0, 12, 0));
+            AddPermissionCard(pnlPermissionTeacher, 2, 0, Padding.Empty);
+            tblPermissionCards.Height = 108;
+        }
+
+        tblPermissionCards.ResumeLayout(true);
+    }
+
+    private void AddPermissionCard(Control card, int column, int row, Padding margin)
+    {
+        card.Dock = DockStyle.Fill;
+        card.Margin = margin;
+        tblPermissionCards.Controls.Add(card, column, row);
+    }
+
+    private void LayoutFilterCard()
+    {
+        var top = 10;
+        var controlHeight = 32;
+        var smallButtonWidth = 56;
+        var gap = 8;
+        var availableWidth = Math.Max(320, pnlAccountFilterCard.ClientSize.Width);
+
+        cboAccountRoleFilter.Location = new Point(0, top + 2);
+        cboAccountRoleFilter.Size = new Size(88, controlHeight);
+
+        btnRefreshAccount.Size = new Size(smallButtonWidth, controlHeight);
+        btnSearchAccount.Size = new Size(smallButtonWidth, controlHeight);
+        btnRefreshAccount.Location = new Point(availableWidth - smallButtonWidth, top);
+        btnSearchAccount.Location = new Point(btnRefreshAccount.Left - gap - smallButtonWidth, top);
+
+        txtAccountKeyword.Location = new Point(cboAccountRoleFilter.Right + gap, top + 1);
+        txtAccountKeyword.Size = new Size(
+            Math.Max(160, btnSearchAccount.Left - gap - txtAccountKeyword.Left),
+            controlHeight);
     }
 
     private void WireEvents()
@@ -134,94 +274,31 @@ public partial class FrmAccountManagement : Form
         txtAccountKeyword.TextChanged += (_, _) => ApplyFilters();
         cboAccountRoleFilter.SelectedIndexChanged += (_, _) => ApplyFilters();
         btnCreateAccount.Click += (_, _) => StartCreatingAccount();
-        btnSaveAccount.Click += (_, _) => SaveCurrentAccount();
-        btnResetPassword.Click += (_, _) => ResetPasswordForCurrentAccount();
-        btnToggleAccountStatus.Click += (_, _) => ToggleCurrentAccountStatus();
+        btnSaveAccount.Click += (_, _) => SaveCurrentAccountPersisted();
+        btnResetPassword.Click += (_, _) => ResetSelectedAccountPassword();
+        btnToggleAccountStatus.Click += (_, _) => ToggleSelectedAccountStatus();
         cboAccountRole.SelectedIndexChanged += (_, _) => HighlightPermissionRole(cboAccountRole.Text);
-        flpAccountCards.Resize += (_, _) => ResizeAccountCards();
     }
 
     private void SeedAccounts()
     {
         _accounts.Clear();
 
-        foreach (var account in CreateSampleAccounts())
+        foreach (var account in _dataService.GetAccounts())
         {
-            _accounts.Add(account);
+            _accounts.Add(AccountRecord.FromEntity(account));
         }
     }
 
-    private List<AccountRecord> CreateSampleAccounts()
+    private void ReloadAccounts(string? preferredAccountId = null)
     {
-        var result = new List<AccountRecord>
+        SeedAccounts();
+        if (!string.IsNullOrWhiteSpace(preferredAccountId))
         {
-            new()
-            {
-                AccountId = "USER-8842-ANV",
-                Username = "admin_an_nv",
-                DisplayName = "Nguyễn Văn An",
-                Role = "Admin",
-                Status = "Hoạt động",
-                Email = "an.nguyen@architect.edu.vn",
-                Phone = "0905 123 456"
-            },
-            new()
-            {
-                AccountId = "USER-7721-BTB",
-                Username = "bich.teacher",
-                DisplayName = "Trần Thị Bích",
-                Role = "Teacher",
-                Status = "Hoạt động",
-                Email = "bich.tran@architect.edu.vn",
-                Phone = "0903 222 118"
-            },
-            new()
-            {
-                AccountId = "USER-4216-LMT",
-                Username = "tam_staff_01",
-                DisplayName = "Lê Minh Tâm",
-                Role = "Staff",
-                Status = "Hoạt động",
-                Email = "tam.le@architect.edu.vn",
-                Phone = "0908 417 015"
-            },
-            new()
-            {
-                AccountId = "USER-6084-PHN",
-                Username = "phung.nguyen",
-                DisplayName = "Phạm Hồng Nhung",
-                Role = "Teacher",
-                Status = "Khóa",
-                Email = "nhung.pham@architect.edu.vn",
-                Phone = "0907 610 228"
-            }
-        };
-
-        var fallback = DemoDataFactory.GetAccountList();
-        if (fallback.Rows.Count > result.Count)
-        {
-            foreach (DataRow row in fallback.Rows)
-            {
-                var username = row[0]?.ToString()?.Trim() ?? string.Empty;
-                if (result.Exists(account => account.Username.Equals(username, StringComparison.OrdinalIgnoreCase)))
-                {
-                    continue;
-                }
-
-                result.Add(new AccountRecord
-                {
-                    AccountId = $"USER-{7000 + result.Count * 37}-{username[..Math.Min(3, username.Length)].ToUpperInvariant()}",
-                    Username = username,
-                    DisplayName = row[1]?.ToString()?.Trim() ?? username,
-                    Role = NormalizeRole(row[2]?.ToString()),
-                    Status = NormalizeStatus(row[3]?.ToString()),
-                    Email = $"{username.Replace('.', '_')}@architect.edu.vn",
-                    Phone = $"090{result.Count + 1} 100 {120 + result.Count * 7:000}"
-                });
-            }
+            _selectedAccount = _accounts.FirstOrDefault(account => account.AccountId == preferredAccountId);
         }
 
-        return result;
+        ApplyFilters();
     }
 
     private void ApplyFilters()
@@ -269,7 +346,7 @@ public partial class FrmAccountManagement : Form
             flpAccountCards.Controls.Add(card);
         }
 
-        flpAccountCards.ResumeLayout();
+        flpAccountCards.ResumeLayout(true);
         ResizeAccountCards();
         RefreshCardSelection();
     }
@@ -331,7 +408,7 @@ public partial class FrmAccountManagement : Form
         {
             AutoSize = false,
             Location = new Point(82, 66),
-            Size = new Size(94, 22),
+            Size = new Size(96, 22),
             TextAlign = ContentAlignment.MiddleCenter,
             Font = new Font("Segoe UI", 7.5F, FontStyle.Bold),
             Text = account.Role.ToUpperInvariant(),
@@ -360,7 +437,7 @@ public partial class FrmAccountManagement : Form
 
     private void ResizeAccountCards()
     {
-        var width = Math.Max(360, flpAccountCards.ClientSize.Width - SystemInformation.VerticalScrollBarWidth - 6);
+        var width = Math.Max(320, flpAccountCards.ClientSize.Width - SystemInformation.VerticalScrollBarWidth - 6);
         foreach (Control control in flpAccountCards.Controls)
         {
             control.Width = width;
@@ -419,7 +496,7 @@ public partial class FrmAccountManagement : Form
         _creatingAccount = true;
         _selectedAccount = null;
         errAccount.Clear();
-        lblAccountIdentifier.Text = $"ID: USER-{DateTime.Now:HHmm}-{_accounts.Count + 1:000}";
+        lblAccountIdentifier.Text = $"ID: {_dataService.GetNextAccountId()}";
         txtDisplayName.Clear();
         txtUsername.Clear();
         txtEmail.Clear();
@@ -430,6 +507,89 @@ public partial class FrmAccountManagement : Form
         HighlightPermissionRole(cboAccountRole.Text);
         RefreshCardSelection();
         txtDisplayName.Focus();
+    }
+
+    private void SaveCurrentAccountPersisted()
+    {
+        if (!ValidateInputs())
+        {
+            return;
+        }
+
+        try
+        {
+            var accountId = _creatingAccount || _selectedAccount is null
+                ? lblAccountIdentifier.Text.Replace("ID:", string.Empty).Trim()
+                : _selectedAccount.AccountId;
+
+            var savedAccount = _dataService.SaveAccount(new AccountEntity
+            {
+                Id = accountId,
+                Username = txtUsername.Text.Trim(),
+                PasswordHash = string.Empty,
+                DisplayName = txtDisplayName.Text.Trim(),
+                Email = txtEmail.Text.Trim(),
+                Phone = txtPhone.Text.Trim(),
+                Role = Enum.TryParse<AccountRole>(cboAccountRole.Text, true, out var role) ? role : AccountRole.Staff,
+                Status = rdoAccountActive.Checked ? AccountStatus.Active : AccountStatus.Locked,
+                IsDeleted = false
+            });
+
+            _creatingAccount = false;
+            ReloadAccounts(savedAccount.Id);
+            MessageBox.Show(this, "Da luu tai khoan thanh cong.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        catch (Exception exception)
+        {
+            ErrorLogger.Log(exception, nameof(FrmAccountManagement));
+            MessageBox.Show(this, "Khong luu duoc tai khoan. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private void ResetSelectedAccountPassword()
+    {
+        if (_selectedAccount is null)
+        {
+            MessageBox.Show(this, "Chon tai khoan can dat lai mat khau.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return;
+        }
+
+        try
+        {
+            const string temporaryPassword = "123456";
+            _dataService.ResetAccountPassword(_selectedAccount.AccountId, temporaryPassword);
+            MessageBox.Show(
+                this,
+                $"Mat khau tam thoi cua tai khoan {_selectedAccount.Username} da duoc dat lai thanh {temporaryPassword}.",
+                "Dat lai mat khau",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+        }
+        catch (Exception exception)
+        {
+            ErrorLogger.Log(exception, nameof(FrmAccountManagement));
+            MessageBox.Show(this, "Khong dat lai duoc mat khau. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private void ToggleSelectedAccountStatus()
+    {
+        if (_selectedAccount is null)
+        {
+            rdoAccountLocked.Checked = !rdoAccountActive.Checked;
+            return;
+        }
+
+        try
+        {
+            _dataService.ToggleAccountStatus(_selectedAccount.AccountId);
+            ReloadAccounts(_selectedAccount.AccountId);
+        }
+        catch (Exception exception)
+        {
+            ErrorLogger.Log(exception, nameof(FrmAccountManagement));
+            MessageBox.Show(this, "Khong doi duoc trang thai tai khoan. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 
     private void SaveCurrentAccount()
@@ -544,12 +704,11 @@ public partial class FrmAccountManagement : Form
         title.ForeColor = accent;
     }
 
-    private static void StyleSurfacePanel(Panel panel, Color backColor, Color borderColor)
+    private static void StyleSurfacePanel(Panel panel, Color backColor)
     {
         panel.BackColor = backColor;
         panel.BorderStyle = BorderStyle.FixedSingle;
         panel.Margin = new Padding(0, 0, 0, 18);
-        panel.Tag = borderColor;
     }
 
     private static void StyleInput(TextBox textBox)
@@ -557,6 +716,7 @@ public partial class FrmAccountManagement : Form
         textBox.BorderStyle = BorderStyle.FixedSingle;
         textBox.BackColor = Color.White;
         textBox.Margin = new Padding(3, 0, 16, 12);
+        textBox.Dock = DockStyle.Fill;
     }
 
     private static void StyleCombo(ComboBox comboBox)
@@ -574,6 +734,8 @@ public partial class FrmAccountManagement : Form
         button.FlatAppearance.BorderSize = 0;
         button.Cursor = Cursors.Hand;
         button.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+        button.Height = 38;
+        button.Margin = new Padding(0, 0, 10, 10);
     }
 
     private static void StylePermissionPanel(Panel panel, Label titleLabel, Color accent, Color background)
@@ -614,39 +776,6 @@ public partial class FrmAccountManagement : Form
         return string.Concat(parts);
     }
 
-    private static string NormalizeRole(string? rawRole)
-    {
-        if (string.IsNullOrWhiteSpace(rawRole))
-        {
-            return "Staff";
-        }
-
-        if (rawRole.Contains("Admin", StringComparison.OrdinalIgnoreCase))
-        {
-            return "Admin";
-        }
-
-        if (rawRole.Contains("Teacher", StringComparison.OrdinalIgnoreCase))
-        {
-            return "Teacher";
-        }
-
-        return "Staff";
-    }
-
-    private static string NormalizeStatus(string? rawStatus)
-    {
-        if (string.IsNullOrWhiteSpace(rawStatus))
-        {
-            return "Hoạt động";
-        }
-
-        return rawStatus.Contains("Inactive", StringComparison.OrdinalIgnoreCase)
-            || rawStatus.Contains("Khóa", StringComparison.OrdinalIgnoreCase)
-            ? "Khóa"
-            : "Hoạt động";
-    }
-
     private sealed class AccountRecord
     {
         public required string AccountId { get; set; }
@@ -656,10 +785,27 @@ public partial class FrmAccountManagement : Form
         public required string Status { get; set; }
         public required string Email { get; set; }
         public required string Phone { get; set; }
+
+        public static AccountRecord FromEntity(AccountEntity entity)
+        {
+            return new AccountRecord
+            {
+                AccountId = entity.Id,
+                Username = entity.Username,
+                DisplayName = entity.DisplayName,
+                Email = entity.Email,
+                Phone = entity.Phone,
+                Role = entity.Role.ToString(),
+                Status = entity.Status == AccountStatus.Active ? "Hoạt động" : "Khóa"
+            };
+        }
     }
 
     private void pnlPermissionRuleCard_Paint(object sender, PaintEventArgs e)
     {
+    }
 
+    private void btnToggleAccountStatus_Click(object sender, EventArgs e)
+    {
     }
 }

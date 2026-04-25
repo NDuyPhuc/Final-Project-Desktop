@@ -1,4 +1,4 @@
-namespace Trung_tam_quan_ly_ngoai_ngu;
+﻿namespace Trung_tam_quan_ly_ngoai_ngu;
 
 partial class FrmStudentManagement
 {
@@ -143,13 +143,13 @@ partial class FrmStudentManagement
         lblStudentKeyword.Name = "lblStudentKeyword";
         lblStudentKeyword.Size = new Size(95, 20);
         lblStudentKeyword.TabIndex = 0;
-        lblStudentKeyword.Text = "Từ khóa tìm";
+        lblStudentKeyword.Text = "Tá»« khÃ³a tÃ¬m";
         // 
         // txtStudentKeyword
         // 
         txtStudentKeyword.Location = new Point(16, 41);
         txtStudentKeyword.Name = "txtStudentKeyword";
-        txtStudentKeyword.PlaceholderText = "Tên học viên hoặc mã học viên";
+        txtStudentKeyword.PlaceholderText = "TÃªn há»c viÃªn hoáº·c mÃ£ há»c viÃªn";
         txtStudentKeyword.Size = new Size(280, 27);
         txtStudentKeyword.TabIndex = 1;
         // 
@@ -160,13 +160,13 @@ partial class FrmStudentManagement
         lblStudentStatusFilter.Name = "lblStudentStatusFilter";
         lblStudentStatusFilter.Size = new Size(78, 20);
         lblStudentStatusFilter.TabIndex = 2;
-        lblStudentStatusFilter.Text = "Trạng thái";
+        lblStudentStatusFilter.Text = "Tráº¡ng thÃ¡i";
         // 
         // cboStudentStatusFilter
         // 
         cboStudentStatusFilter.DropDownStyle = ComboBoxStyle.DropDownList;
         cboStudentStatusFilter.FormattingEnabled = true;
-        cboStudentStatusFilter.Items.AddRange(new object[] { "Tất cả", "Đang học", "Bảo lưu", "Ngừng học" });
+        cboStudentStatusFilter.Items.AddRange(new object[] { "Táº¥t cáº£", "Äang há»c", "Báº£o lÆ°u", "Ngá»«ng há»c" });
         cboStudentStatusFilter.Location = new Point(318, 41);
         cboStudentStatusFilter.Name = "cboStudentStatusFilter";
         cboStudentStatusFilter.Size = new Size(170, 28);
@@ -178,7 +178,7 @@ partial class FrmStudentManagement
         btnSearchStudent.Name = "btnSearchStudent";
         btnSearchStudent.Size = new Size(100, 30);
         btnSearchStudent.TabIndex = 4;
-        btnSearchStudent.Text = "Tìm kiếm";
+        btnSearchStudent.Text = "TÃ¬m kiáº¿m";
         btnSearchStudent.UseVisualStyleBackColor = true;
         // 
         // btnRefreshStudent
@@ -187,7 +187,7 @@ partial class FrmStudentManagement
         btnRefreshStudent.Name = "btnRefreshStudent";
         btnRefreshStudent.Size = new Size(108, 30);
         btnRefreshStudent.TabIndex = 5;
-        btnRefreshStudent.Text = "Làm mới";
+        btnRefreshStudent.Text = "LÃ m má»›i";
         btnRefreshStudent.UseVisualStyleBackColor = true;
         // 
         // splStudentContent
@@ -237,7 +237,7 @@ partial class FrmStudentManagement
         grpStudentInfo.Size = new Size(464, 458);
         grpStudentInfo.TabIndex = 0;
         grpStudentInfo.TabStop = false;
-        grpStudentInfo.Text = "Thông tin học viên";
+        grpStudentInfo.Text = "ThÃ´ng tin há»c viÃªn";
         // 
         // tblStudentInfo
         // 
@@ -293,7 +293,7 @@ partial class FrmStudentManagement
         btnChooseStudentAvatar.Name = "btnChooseStudentAvatar";
         btnChooseStudentAvatar.Size = new Size(114, 30);
         btnChooseStudentAvatar.TabIndex = 1;
-        btnChooseStudentAvatar.Text = "Chọn ảnh";
+        btnChooseStudentAvatar.Text = "Chá»n áº£nh";
         btnChooseStudentAvatar.UseVisualStyleBackColor = true;
         // 
         // btnRemoveStudentAvatar
@@ -303,7 +303,7 @@ partial class FrmStudentManagement
         btnRemoveStudentAvatar.Name = "btnRemoveStudentAvatar";
         btnRemoveStudentAvatar.Size = new Size(120, 30);
         btnRemoveStudentAvatar.TabIndex = 2;
-        btnRemoveStudentAvatar.Text = "Xóa ảnh";
+        btnRemoveStudentAvatar.Text = "XÃ³a áº£nh";
         btnRemoveStudentAvatar.UseVisualStyleBackColor = true;
         // 
         // lblStudentId
@@ -314,7 +314,7 @@ partial class FrmStudentManagement
         lblStudentId.Name = "lblStudentId";
         lblStudentId.Size = new Size(92, 20);
         lblStudentId.TabIndex = 3;
-        lblStudentId.Text = "Mã học viên";
+        lblStudentId.Text = "MÃ£ há»c viÃªn";
         // 
         // txtStudentId
         // 
@@ -332,7 +332,7 @@ partial class FrmStudentManagement
         lblStudentFullName.Name = "lblStudentFullName";
         lblStudentFullName.Size = new Size(58, 20);
         lblStudentFullName.TabIndex = 5;
-        lblStudentFullName.Text = "Họ tên";
+        lblStudentFullName.Text = "Há» tÃªn";
         // 
         // txtStudentFullName
         // 
@@ -350,7 +350,7 @@ partial class FrmStudentManagement
         lblStudentBirthDate.Name = "lblStudentBirthDate";
         lblStudentBirthDate.Size = new Size(79, 20);
         lblStudentBirthDate.TabIndex = 7;
-        lblStudentBirthDate.Text = "Ngày sinh";
+        lblStudentBirthDate.Text = "NgÃ y sinh";
         // 
         // dtpStudentBirthDate
         // 
@@ -369,7 +369,7 @@ partial class FrmStudentManagement
         lblStudentPhone.Name = "lblStudentPhone";
         lblStudentPhone.Size = new Size(85, 20);
         lblStudentPhone.TabIndex = 9;
-        lblStudentPhone.Text = "Điện thoại";
+        lblStudentPhone.Text = "Äiá»‡n thoáº¡i";
         // 
         // txtStudentPhone
         // 
@@ -405,14 +405,14 @@ partial class FrmStudentManagement
         lblStudentStatus.Name = "lblStudentStatus";
         lblStudentStatus.Size = new Size(78, 20);
         lblStudentStatus.TabIndex = 13;
-        lblStudentStatus.Text = "Trạng thái";
+        lblStudentStatus.Text = "Tráº¡ng thÃ¡i";
         // 
         // cboStudentStatus
         // 
         cboStudentStatus.Dock = DockStyle.Left;
         cboStudentStatus.DropDownStyle = ComboBoxStyle.DropDownList;
         cboStudentStatus.FormattingEnabled = true;
-        cboStudentStatus.Items.AddRange(new object[] { "Đang học", "Bảo lưu", "Ngừng học" });
+        cboStudentStatus.Items.AddRange(new object[] { "Äang há»c", "Báº£o lÆ°u", "Ngá»«ng há»c" });
         cboStudentStatus.Location = new Point(123, 384);
         cboStudentStatus.Name = "cboStudentStatus";
         cboStudentStatus.Size = new Size(180, 28);
@@ -441,7 +441,7 @@ partial class FrmStudentManagement
         btnCreateStudent.Name = "btnCreateStudent";
         btnCreateStudent.Size = new Size(100, 32);
         btnCreateStudent.TabIndex = 0;
-        btnCreateStudent.Text = "Thêm mới";
+        btnCreateStudent.Text = "ThÃªm má»›i";
         btnCreateStudent.UseVisualStyleBackColor = true;
         // 
         // btnSaveStudent
@@ -450,7 +450,7 @@ partial class FrmStudentManagement
         btnSaveStudent.Name = "btnSaveStudent";
         btnSaveStudent.Size = new Size(100, 32);
         btnSaveStudent.TabIndex = 1;
-        btnSaveStudent.Text = "Lưu";
+        btnSaveStudent.Text = "LÆ°u";
         btnSaveStudent.UseVisualStyleBackColor = true;
         // 
         // btnUpdateStudent
@@ -459,7 +459,7 @@ partial class FrmStudentManagement
         btnUpdateStudent.Name = "btnUpdateStudent";
         btnUpdateStudent.Size = new Size(110, 32);
         btnUpdateStudent.TabIndex = 2;
-        btnUpdateStudent.Text = "Cập nhật";
+        btnUpdateStudent.Text = "Cáº­p nháº­t";
         btnUpdateStudent.UseVisualStyleBackColor = true;
         // 
         // btnDeleteStudent
@@ -468,7 +468,7 @@ partial class FrmStudentManagement
         btnDeleteStudent.Name = "btnDeleteStudent";
         btnDeleteStudent.Size = new Size(90, 32);
         btnDeleteStudent.TabIndex = 3;
-        btnDeleteStudent.Text = "Xóa";
+        btnDeleteStudent.Text = "XÃ³a";
         btnDeleteStudent.UseVisualStyleBackColor = true;
         // 
         // btnResetStudent
@@ -477,7 +477,7 @@ partial class FrmStudentManagement
         btnResetStudent.Name = "btnResetStudent";
         btnResetStudent.Size = new Size(100, 32);
         btnResetStudent.TabIndex = 4;
-        btnResetStudent.Text = "Làm mới";
+        btnResetStudent.Text = "LÃ m má»›i";
         btnResetStudent.UseVisualStyleBackColor = true;
         // 
         // btnOpenEnrollment
@@ -486,7 +486,7 @@ partial class FrmStudentManagement
         btnOpenEnrollment.Name = "btnOpenEnrollment";
         btnOpenEnrollment.Size = new Size(140, 32);
         btnOpenEnrollment.TabIndex = 5;
-        btnOpenEnrollment.Text = "Mở ghi danh";
+        btnOpenEnrollment.Text = "Má»Ÿ ghi danh";
         btnOpenEnrollment.UseVisualStyleBackColor = true;
         // 
         // errStudent
@@ -495,12 +495,13 @@ partial class FrmStudentManagement
         // 
         // FrmStudentManagement
         // 
-        AutoScaleMode = AutoScaleMode.None;
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(980, 620);
         Controls.Add(tblStudentRoot);
         Name = "FrmStudentManagement";
         Padding = new Padding(12);
-        Text = "Quản lý học viên";
+        Text = "Quáº£n lÃ½ há»c viÃªn";
         tblStudentRoot.ResumeLayout(false);
         tblStudentRoot.PerformLayout();
         pnlStudentFilterCard.ResumeLayout(false);
@@ -519,3 +520,4 @@ partial class FrmStudentManagement
         ResumeLayout(false);
     }
 }
+

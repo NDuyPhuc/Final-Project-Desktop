@@ -1,4 +1,4 @@
-namespace Trung_tam_quan_ly_ngoai_ngu;
+﻿namespace Trung_tam_quan_ly_ngoai_ngu;
 
 partial class FrmDebtTracking
 {
@@ -230,7 +230,7 @@ partial class FrmDebtTracking
         lblDebtCourseFilter.Name = "lblDebtCourseFilter";
         lblDebtCourseFilter.Size = new Size(75, 20);
         lblDebtCourseFilter.TabIndex = 0;
-        lblDebtCourseFilter.Text = "Khóa học";
+        lblDebtCourseFilter.Text = "KhÃ³a há»c";
         // 
         // cboDebtCourseFilter
         // 
@@ -251,7 +251,7 @@ partial class FrmDebtTracking
         lblDebtClassFilter.Name = "lblDebtClassFilter";
         lblDebtClassFilter.Size = new Size(65, 20);
         lblDebtClassFilter.TabIndex = 2;
-        lblDebtClassFilter.Text = "Lớp học";
+        lblDebtClassFilter.Text = "Lá»›p há»c";
         // 
         // cboDebtClassFilter
         // 
@@ -272,7 +272,7 @@ partial class FrmDebtTracking
         lblDebtFromDate.Name = "lblDebtFromDate";
         lblDebtFromDate.Size = new Size(60, 20);
         lblDebtFromDate.TabIndex = 4;
-        lblDebtFromDate.Text = "Từ ngày";
+        lblDebtFromDate.Text = "Tá»« ngÃ y";
         // 
         // dtpDebtFromDate
         // 
@@ -292,7 +292,7 @@ partial class FrmDebtTracking
         lblDebtToDate.Name = "lblDebtToDate";
         lblDebtToDate.Size = new Size(69, 20);
         lblDebtToDate.TabIndex = 6;
-        lblDebtToDate.Text = "Đến ngày";
+        lblDebtToDate.Text = "Äáº¿n ngÃ y";
         // 
         // dtpDebtToDate
         // 
@@ -323,7 +323,7 @@ partial class FrmDebtTracking
         btnSearchDebt.Name = "btnSearchDebt";
         btnSearchDebt.Size = new Size(116, 38);
         btnSearchDebt.TabIndex = 0;
-        btnSearchDebt.Text = "Lọc dữ liệu";
+        btnSearchDebt.Text = "Lá»c dá»¯ liá»‡u";
         btnSearchDebt.UseVisualStyleBackColor = true;
         // 
         // btnRefreshDebt
@@ -332,7 +332,7 @@ partial class FrmDebtTracking
         btnRefreshDebt.Name = "btnRefreshDebt";
         btnRefreshDebt.Size = new Size(116, 38);
         btnRefreshDebt.TabIndex = 1;
-        btnRefreshDebt.Text = "Làm mới";
+        btnRefreshDebt.Text = "LÃ m má»›i";
         btnRefreshDebt.UseVisualStyleBackColor = true;
         // 
         // tblDebtKpi
@@ -398,7 +398,7 @@ partial class FrmDebtTracking
         lblDebtTotalCountTitle.Name = "lblDebtTotalCountTitle";
         lblDebtTotalCountTitle.Size = new Size(124, 23);
         lblDebtTotalCountTitle.TabIndex = 1;
-        lblDebtTotalCountTitle.Text = "Học viên nợ phí";
+        lblDebtTotalCountTitle.Text = "Há»c viÃªn ná»£ phÃ­";
         // 
         // pnlDebtTotalCountAccent
         // 
@@ -466,7 +466,7 @@ partial class FrmDebtTracking
         lblDebtTotalAmountTitle.Name = "lblDebtTotalAmountTitle";
         lblDebtTotalAmountTitle.Size = new Size(124, 23);
         lblDebtTotalAmountTitle.TabIndex = 1;
-        lblDebtTotalAmountTitle.Text = "Tổng nợ công bố";
+        lblDebtTotalAmountTitle.Text = "Tá»•ng ná»£ cÃ´ng bá»‘";
         // 
         // pnlDebtTotalAmountAccent
         // 
@@ -524,7 +524,7 @@ partial class FrmDebtTracking
         lblDebtDueSoonTitle.Name = "lblDebtDueSoonTitle";
         lblDebtDueSoonTitle.Size = new Size(136, 23);
         lblDebtDueSoonTitle.TabIndex = 1;
-        lblDebtDueSoonTitle.Text = "Phát sinh đến hạn";
+        lblDebtDueSoonTitle.Text = "PhÃ¡t sinh Ä‘áº¿n háº¡n";
         // 
         // pnlDebtDueSoonAccent
         // 
@@ -592,7 +592,7 @@ partial class FrmDebtTracking
         lblDebtSectionTitle.Name = "lblDebtSectionTitle";
         lblDebtSectionTitle.Size = new Size(189, 25);
         lblDebtSectionTitle.TabIndex = 0;
-        lblDebtSectionTitle.Text = "Bảng kê chi tiết công nợ";
+        lblDebtSectionTitle.Text = "Báº£ng kÃª chi tiáº¿t cÃ´ng ná»£";
         // 
         // lblDebtUpdatedAt
         // 
@@ -606,7 +606,7 @@ partial class FrmDebtTracking
         lblDebtUpdatedAt.Padding = new Padding(10, 4, 10, 4);
         lblDebtUpdatedAt.Size = new Size(173, 28);
         lblDebtUpdatedAt.TabIndex = 1;
-        lblDebtUpdatedAt.Text = "Cập nhật: 14:30 24/04/2026";
+        lblDebtUpdatedAt.Text = "Cáº­p nháº­t: 14:30 24/04/2026";
         // 
         // flpDebtActions
         // 
@@ -629,7 +629,7 @@ partial class FrmDebtTracking
         btnOpenTuitionFromDebt.Name = "btnOpenTuitionFromDebt";
         btnOpenTuitionFromDebt.Size = new Size(146, 38);
         btnOpenTuitionFromDebt.TabIndex = 0;
-        btnOpenTuitionFromDebt.Text = "Mở thu học phí";
+        btnOpenTuitionFromDebt.Text = "Má»Ÿ thu há»c phÃ­";
         btnOpenTuitionFromDebt.UseVisualStyleBackColor = true;
         // 
         // btnExportDebt
@@ -639,7 +639,7 @@ partial class FrmDebtTracking
         btnExportDebt.Name = "btnExportDebt";
         btnExportDebt.Size = new Size(126, 38);
         btnExportDebt.TabIndex = 1;
-        btnExportDebt.Text = "Xuất Excel";
+        btnExportDebt.Text = "Xuáº¥t Excel";
         btnExportDebt.UseVisualStyleBackColor = true;
         // 
         // btnExportPdfDebt
@@ -649,7 +649,7 @@ partial class FrmDebtTracking
         btnExportPdfDebt.Name = "btnExportPdfDebt";
         btnExportPdfDebt.Size = new Size(120, 38);
         btnExportPdfDebt.TabIndex = 2;
-        btnExportPdfDebt.Text = "Xuất PDF";
+        btnExportPdfDebt.Text = "Xuáº¥t PDF";
         btnExportPdfDebt.UseVisualStyleBackColor = true;
         // 
         // pnlDebtGridHost
@@ -704,7 +704,7 @@ partial class FrmDebtTracking
         lblDebtFooterSummary.Name = "lblDebtFooterSummary";
         lblDebtFooterSummary.Size = new Size(198, 20);
         lblDebtFooterSummary.TabIndex = 0;
-        lblDebtFooterSummary.Text = "Hiển thị 1-6 trên tổng số 6 học viên";
+        lblDebtFooterSummary.Text = "Hiá»ƒn thá»‹ 1-6 trÃªn tá»•ng sá»‘ 6 há»c viÃªn";
         // 
         // flpDebtPager
         // 
@@ -786,12 +786,13 @@ partial class FrmDebtTracking
         // 
         // FrmDebtTracking
         // 
-        AutoScaleMode = AutoScaleMode.None;
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(1200, 720);
         Controls.Add(tblDebtRoot);
         Name = "FrmDebtTracking";
         Padding = new Padding(20, 18, 20, 18);
-        Text = "Công nợ học viên";
+        Text = "CÃ´ng ná»£ há»c viÃªn";
         tblDebtRoot.ResumeLayout(false);
         pnlDebtFilterCard.ResumeLayout(false);
         tblDebtFilterShell.ResumeLayout(false);
@@ -819,3 +820,4 @@ partial class FrmDebtTracking
         ResumeLayout(false);
     }
 }
+

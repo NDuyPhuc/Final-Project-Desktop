@@ -1,53 +1,74 @@
 using System.Data;
+using System.Globalization;
+using System.Text;
 using System.Windows.Forms.DataVisualization.Charting;
+using TrungTamNgoaiNgu.Application.Contracts;
+using TrungTamNgoaiNgu.Application.Infrastructure;
+using TrungTamNgoaiNgu.Application.Models;
 
 namespace Trung_tam_quan_ly_ngoai_ngu;
 
 public partial class FrmAdminReports : Form
 {
+    private static readonly CultureInfo ReportCulture = CultureInfo.GetCultureInfo("vi-VN");
+
+    private readonly ILanguageCenterDataService _dataService;
     private ReportScenario? _currentScenario;
 
-    public FrmAdminReports()
+    public FrmAdminReports() : this(AppRuntime.DataService)
     {
+    }
+
+    public FrmAdminReports(ILanguageCenterDataService dataService)
+    {
+        _dataService = dataService;
+
         InitializeComponent();
-        FormHostHelpers.ConfigureModuleSurface(this, "Báo cáo thống kê");
+        FormHostHelpers.ConfigureModuleSurface(this, "Bao cao thong ke");
         ApplyLocalizedText();
         ConfigureVisualStyle();
         ConfigureChartSurface();
-        ConfigureReportSurface();
-        ConfigureResponsiveLayout();
         BindReportEvents();
         LoadDefaultReport();
     }
 
     private void ApplyLocalizedText()
     {
-        Text = "Báo cáo thống kê";
-        lblAdminReportTitle.Text = "BÁO CÁO THỐNG KÊ";
-        lblAdminReportSession.Text = "PHIÊN: 24/05/2024 14:30";
-        lblAdminReportStatus.Text = "TRẠNG THÁI: ADMINISTRATOR";
+        Text = "Bao cao thong ke";
+        lblAdminReportTitle.Text = "BAO CAO THONG KE";
+        lblAdminReportSession.Text = $"PHIEN: {DateTime.Now:dd/MM/yyyy HH:mm}";
+        lblAdminReportStatus.Text = "TRANG THAI: ADMIN";
 
-        btnPrintReport.Text = "IN BÁO CÁO";
-        btnRefreshData.Text = "CẬP NHẬT DỮ LIỆU";
-        btnViewReport.Text = "XEM BÁO CÁO";
-        btnExportReportCsv.Text = "XUẤT FILE (.CSV)";
+        btnPrintReport.Text = "IN BAO CAO";
+        btnRefreshData.Text = "CAP NHAT DU LIEU";
+        btnViewReport.Text = "XEM BAO CAO";
+        btnExportReportCsv.Text = "XUAT FILE CSV";
 
-        lblReportType.Text = "LOẠI BÁO CÁO";
-        lblReportFromDate.Text = "TỪ NGÀY";
-        lblReportToDate.Text = "ĐẾN NGÀY";
+        lblReportType.Text = "LOAI BAO CAO";
+        lblReportFromDate.Text = "TU NGAY";
+        lblReportToDate.Text = "DEN NGAY";
 
-        lblReportChartTitle.Text = "XU HƯỚNG DOANH THU HÀNG THÁNG";
-        lblChartLegendRevenue.Text = "DOANH THU";
-        lblChartLegendTarget.Text = "MỤC TIÊU";
+        lblReportChartTitle.Text = "XU HUONG THEO THANG";
+        lblChartLegendRevenue.Text = "THUC TE";
+        lblChartLegendTarget.Text = "MUC TIEU";
 
-        lblReportDetailTitle.Text = "CHI TIẾT PHÁT SINH TRONG KỲ";
-        lblReportDetailPaging.Text = "Hiển thị 10 / 125 kết quả";
+        lblReportDetailTitle.Text = "CHI TIET PHAT SINH";
+        lblReportDetailPaging.Text = "Hien thi 0 / 0 ket qua";
         btnReportPrevPage.Text = "<";
         btnReportNextPage.Text = ">";
 
-        lblReportDistributionTitle.Text = "PHÂN BỔ KHÓA HỌC";
+        lblReportDistributionTitle.Text = "PHAN BO THEO KHOA";
+        lblReportHighlightTitle.Text = "Tong quan";
+        lblReportHighlightBody.Text = "Bao cao tong hop theo du lieu tu database.";
+
+        lblReportRevenueIcon.Text = "VND";
+        lblReportEnrollmentIcon.Text = "HV";
+        lblReportClassCountIcon.Text = "LOP";
+        lblReportRetentionIcon.Text = "NO";
+        lblReportHighlightIcon.Text = "i";
+
         cboReportType.Items.Clear();
-        cboReportType.Items.AddRange(["Doanh thu tổng hợp", "Tuyển sinh", "Công nợ"]);
+        cboReportType.Items.AddRange(["Doanh thu tong hop", "Tuyen sinh", "Cong no"]);
         cboReportType.SelectedIndex = 0;
     }
 
@@ -56,17 +77,18 @@ public partial class FrmAdminReports : Form
         BackColor = Color.FromArgb(239, 247, 255);
         Padding = new Padding(18);
         AutoScroll = true;
+        MinimumSize = new Size(1080, 720);
 
         StyleSurfaceCard(pnlAdminReportFilterCard, Color.FromArgb(223, 243, 255));
         StyleSurfaceCard(pnlReportChartCard, Color.White);
         StyleSurfaceCard(pnlReportDistributionCard, Color.FromArgb(217, 237, 252));
         StyleSurfaceCard(pnlReportDetailCard, Color.FromArgb(222, 242, 255));
+        StyleSurfaceCard(pnlReportHighlightCard, Color.FromArgb(127, 229, 227));
 
         StyleHeaderButton(btnPrintReport, Color.FromArgb(214, 237, 249), Color.FromArgb(10, 36, 66));
         StyleHeaderButton(btnRefreshData, Color.FromArgb(9, 72, 137), Color.White);
         StyleHeaderButton(btnViewReport, Color.FromArgb(112, 227, 223), Color.FromArgb(11, 91, 98));
         StyleHeaderButton(btnExportReportCsv, Color.White, Color.FromArgb(9, 60, 123), Color.FromArgb(182, 204, 228));
-
         StyleMiniNavButton(btnReportPrevPage);
         StyleMiniNavButton(btnReportNextPage);
 
@@ -75,31 +97,27 @@ public partial class FrmAdminReports : Form
         StyleKpiCard(pnlReportClassCount, pnlReportClassCountAccent, Color.FromArgb(115, 126, 141));
         StyleKpiCard(pnlReportRetention, pnlReportRetentionAccent, Color.FromArgb(115, 49, 4));
 
-        pnlReportHighlightCard.BackColor = Color.FromArgb(127, 229, 227);
         pnlReportHighlightTrack.BackColor = Color.FromArgb(154, 238, 236);
         pnlReportHighlightFill.BackColor = Color.FromArgb(16, 117, 121);
-
         pnlChartLegendRevenue.BackColor = Color.FromArgb(20, 83, 144);
         pnlChartLegendTarget.BackColor = Color.FromArgb(22, 126, 120);
-
-        lblReportRevenueIcon.ForeColor = Color.FromArgb(10, 73, 146);
-        lblReportEnrollmentIcon.ForeColor = Color.FromArgb(22, 126, 120);
-        lblReportClassCountIcon.ForeColor = Color.FromArgb(115, 126, 141);
-        lblReportRetentionIcon.ForeColor = Color.FromArgb(115, 49, 4);
 
         lblAdminReportTitle.ForeColor = Color.FromArgb(7, 30, 39);
         lblAdminReportSession.ForeColor = Color.FromArgb(50, 61, 76);
         lblAdminReportStatus.ForeColor = Color.FromArgb(22, 90, 88);
         lblReportHighlightTitle.ForeColor = Color.FromArgb(7, 87, 96);
         lblReportHighlightBody.ForeColor = Color.FromArgb(24, 93, 99);
-        lblReportHighlightIcon.ForeColor = Color.FromArgb(7, 87, 96);
 
-        dgvAdminReportDetail.BorderStyle = BorderStyle.None;
-        AppTheme.StyleGrid(dgvAdminReportDetail);
-
+        StyleCombo(cboReportType);
         StyleDatePicker(dtpReportFromDate);
         StyleDatePicker(dtpReportToDate);
-        StyleCombo(cboReportType);
+
+        dgvAdminReportDetail.BorderStyle = BorderStyle.None;
+        dgvAdminReportDetail.AutoGenerateColumns = true;
+        dgvAdminReportDetail.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        dgvAdminReportDetail.RowTemplate.Height = 40;
+        dgvAdminReportDetail.ColumnHeadersHeight = 42;
+        AppTheme.StyleGrid(dgvAdminReportDetail);
     }
 
     private void ConfigureChartSurface()
@@ -119,470 +137,290 @@ public partial class FrmAdminReports : Form
         area.AxisY.MajorTickMark.Enabled = false;
         area.AxisX.Interval = 1;
         area.AxisY.IsStartedFromZero = true;
-        area.AxisX.IsMarginVisible = true;
-        area.AxisX.IsLabelAutoFit = false;
-        area.AxisY.IsLabelAutoFit = false;
-        area.AxisY.IntervalAutoMode = IntervalAutoMode.VariableCount;
-        area.Position.Auto = true;
-        area.InnerPlotPosition.Auto = true;
 
         var legend = chtAdminRevenue.Legends["DefaultLegend"];
         legend.Enabled = false;
     }
 
-    private void ConfigureReportSurface()
-    {
-        dtpReportFromDate.Value = new DateTime(2024, 5, 1);
-        dtpReportToDate.Value = new DateTime(2024, 5, 24);
-        dgvAdminReportDetail.AutoGenerateColumns = true;
-        dgvAdminReportDetail.ScrollBars = ScrollBars.Vertical;
-        cboReportType.Dock = DockStyle.Fill;
-        dtpReportFromDate.Dock = DockStyle.Fill;
-        dtpReportToDate.Dock = DockStyle.Fill;
-        btnViewReport.Dock = DockStyle.Fill;
-        btnViewReport.AutoSize = false;
-        btnExportReportCsv.AutoSize = false;
-        btnViewReport.MinimumSize = new Size(0, 52);
-        btnExportReportCsv.MinimumSize = new Size(220, 52);
-        btnViewReport.TextAlign = ContentAlignment.MiddleCenter;
-        btnExportReportCsv.TextAlign = ContentAlignment.MiddleCenter;
-        btnViewReport.Padding = new Padding(12, 0, 12, 0);
-        btnExportReportCsv.Padding = new Padding(8, 0, 8, 0);
-        btnViewReport.UseCompatibleTextRendering = false;
-        btnExportReportCsv.UseCompatibleTextRendering = false;
-        btnExportReportCsv.Dock = DockStyle.None;
-        btnExportReportCsv.Anchor = AnchorStyles.None;
-        btnExportReportCsv.Margin = new Padding(12, 0, 0, 0);
-        tblReportDistribution.Dock = DockStyle.None;
-        tblReportDistribution.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-
-        pnlReportRevenue.Resize += (_, _) => LayoutKpiCard(pnlReportRevenue, lblReportRevenueTitle, lblReportRevenueValue, lblReportRevenueTrend, lblReportRevenueIcon);
-        pnlReportEnrollment.Resize += (_, _) => LayoutKpiCard(pnlReportEnrollment, lblReportEnrollmentTitle, lblReportEnrollmentValue, lblReportEnrollmentTrend, lblReportEnrollmentIcon);
-        pnlReportClassCount.Resize += (_, _) => LayoutKpiCard(pnlReportClassCount, lblReportClassCountTitle, lblReportClassCountValue, lblReportClassCountTrend, lblReportClassCountIcon);
-        pnlReportRetention.Resize += (_, _) => LayoutKpiCard(pnlReportRetention, lblReportRetentionTitle, lblReportRetentionValue, lblReportRetentionTrend, lblReportRetentionIcon);
-        pnlReportChartHeader.Resize += (_, _) => LayoutChartHeader();
-        pnlReportHighlightCard.Resize += (_, _) =>
-        {
-            UpdateHighlightProgressWidth();
-            LayoutHighlightCard();
-        };
-        pnlReportDistributionCard.Resize += (_, _) => LayoutDistributionCard();
-        pnlReportDetailHeader.Resize += (_, _) => LayoutDetailHeader();
-        Resize += (_, _) => ApplyResponsiveBreakpoints();
-    }
-
-    private void ConfigureResponsiveLayout()
-    {
-        tblAdminReportRoot.Dock = DockStyle.Top;
-        tblAdminReportRoot.AutoSize = true;
-        tblAdminReportRoot.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-        tblAdminReportRoot.MinimumSize = Size.Empty;
-        MinimumSize = new Size(760, 560);
-
-        pnlReportChartCard.MinimumSize = Size.Empty;
-        pnlReportDetailCard.MinimumSize = Size.Empty;
-        pnlReportHighlightCard.MinimumSize = Size.Empty;
-        pnlReportDistributionCard.MinimumSize = Size.Empty;
-        tblReportMiddle.MinimumSize = Size.Empty;
-
-        lblReportDetailPaging.AutoSize = false;
-        lblReportDetailPaging.Size = new Size(190, 24);
-        lblReportDetailPaging.TextAlign = ContentAlignment.MiddleRight;
-        lblReportDetailPaging.AutoEllipsis = true;
-
-        dgvAdminReportDetail.RowTemplate.Height = 40;
-        dgvAdminReportDetail.ColumnHeadersHeight = 42;
-        ApplyResponsiveBreakpoints();
-    }
-
-    private void ApplyResponsiveBreakpoints()
-    {
-        var contentWidth = Math.Max(720, ClientSize.Width - Padding.Horizontal);
-        var compact = contentWidth < 1160;
-        var veryCompact = contentWidth < 980;
-
-        SuspendLayout();
-        tblAdminReportRoot.SuspendLayout();
-        tblAdminReportHeaderLayout.SuspendLayout();
-        tblAdminReportFilter.SuspendLayout();
-        tblReportKpi.SuspendLayout();
-        tblReportMiddle.SuspendLayout();
-        tblReportSideColumn.SuspendLayout();
-
-        ConfigureRootRows(compact, veryCompact);
-        ConfigureHeaderLayout(compact);
-        ConfigureFilterLayout(compact, veryCompact);
-        ConfigureKpiLayout(compact);
-        ConfigureMiddleLayout(compact);
-
-        tblReportSideColumn.ResumeLayout(true);
-        tblReportMiddle.ResumeLayout(true);
-        tblReportKpi.ResumeLayout(true);
-        tblAdminReportFilter.ResumeLayout(true);
-        tblAdminReportHeaderLayout.ResumeLayout(true);
-        tblAdminReportRoot.ResumeLayout(true);
-        ResumeLayout(true);
-
-        LayoutKpiCard(pnlReportRevenue, lblReportRevenueTitle, lblReportRevenueValue, lblReportRevenueTrend, lblReportRevenueIcon);
-        LayoutKpiCard(pnlReportEnrollment, lblReportEnrollmentTitle, lblReportEnrollmentValue, lblReportEnrollmentTrend, lblReportEnrollmentIcon);
-        LayoutKpiCard(pnlReportClassCount, lblReportClassCountTitle, lblReportClassCountValue, lblReportClassCountTrend, lblReportClassCountIcon);
-        LayoutKpiCard(pnlReportRetention, lblReportRetentionTitle, lblReportRetentionValue, lblReportRetentionTrend, lblReportRetentionIcon);
-        LayoutChartHeader();
-        LayoutHighlightCard();
-        LayoutDistributionCard();
-        LayoutDetailHeader();
-    }
-
-    private void ConfigureRootRows(bool compact, bool veryCompact)
-    {
-        tblAdminReportRoot.RowStyles.Clear();
-        tblAdminReportRoot.RowCount = 5;
-
-        if (veryCompact)
-        {
-            tblAdminReportRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 168F));
-            tblAdminReportRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 228F));
-            tblAdminReportRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 302F));
-            tblAdminReportRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 612F));
-            tblAdminReportRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 330F));
-        }
-        else if (compact)
-        {
-            tblAdminReportRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 168F));
-            tblAdminReportRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 176F));
-            tblAdminReportRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 302F));
-            tblAdminReportRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 612F));
-            tblAdminReportRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 330F));
-        }
-        else
-        {
-            tblAdminReportRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 92F));
-            tblAdminReportRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 128F));
-            tblAdminReportRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 140F));
-            tblAdminReportRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 406F));
-            tblAdminReportRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 300F));
-        }
-    }
-
-    private void ConfigureHeaderLayout(bool compact)
-    {
-        tblAdminReportHeaderLayout.ColumnStyles.Clear();
-        tblAdminReportHeaderLayout.RowStyles.Clear();
-
-        if (compact)
-        {
-            tblAdminReportHeaderLayout.ColumnCount = 1;
-            tblAdminReportHeaderLayout.RowCount = 2;
-            tblAdminReportHeaderLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tblAdminReportHeaderLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 92F));
-            tblAdminReportHeaderLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 60F));
-
-            tblAdminReportHeaderLayout.SetColumn(pnlAdminReportTitleBlock, 0);
-            tblAdminReportHeaderLayout.SetRow(pnlAdminReportTitleBlock, 0);
-            tblAdminReportHeaderLayout.SetColumn(flpAdminReportHeaderActions, 0);
-            tblAdminReportHeaderLayout.SetRow(flpAdminReportHeaderActions, 1);
-
-            flpAdminReportHeaderActions.FlowDirection = FlowDirection.LeftToRight;
-            flpAdminReportHeaderActions.Padding = new Padding(0, 6, 0, 0);
-            flpAdminReportHeaderActions.AutoSize = false;
-            flpAdminReportHeaderActions.WrapContents = false;
-            btnPrintReport.Size = new Size(182, 48);
-            btnRefreshData.Size = new Size(182, 48);
-            btnExportReportCsv.Size = new Size(220, 48);
-            btnExportReportCsv.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
-        }
-        else
-        {
-            tblAdminReportHeaderLayout.ColumnCount = 2;
-            tblAdminReportHeaderLayout.RowCount = 1;
-            tblAdminReportHeaderLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tblAdminReportHeaderLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 624F));
-            tblAdminReportHeaderLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-
-            tblAdminReportHeaderLayout.SetColumn(pnlAdminReportTitleBlock, 0);
-            tblAdminReportHeaderLayout.SetRow(pnlAdminReportTitleBlock, 0);
-            tblAdminReportHeaderLayout.SetColumn(flpAdminReportHeaderActions, 1);
-            tblAdminReportHeaderLayout.SetRow(flpAdminReportHeaderActions, 0);
-
-            flpAdminReportHeaderActions.FlowDirection = FlowDirection.RightToLeft;
-            flpAdminReportHeaderActions.Padding = new Padding(0, 20, 0, 0);
-            flpAdminReportHeaderActions.AutoSize = false;
-            flpAdminReportHeaderActions.WrapContents = false;
-            btnPrintReport.Size = new Size(180, 52);
-            btnRefreshData.Size = new Size(180, 52);
-            btnExportReportCsv.Size = new Size(220, 52);
-            btnExportReportCsv.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-        }
-    }
-
-    private void ConfigureFilterLayout(bool compact, bool veryCompact)
-    {
-        tblAdminReportFilter.ColumnStyles.Clear();
-        tblAdminReportFilter.RowStyles.Clear();
-        btnViewReport.Font = new Font("Segoe UI", compact ? 10.5F : 10F, FontStyle.Bold);
-        btnExportReportCsv.Font = new Font("Segoe UI", compact ? 10.5F : 10F, FontStyle.Bold);
-
-        if (veryCompact)
-        {
-            tblAdminReportFilter.ColumnCount = 2;
-            tblAdminReportFilter.RowCount = 4;
-            tblAdminReportFilter.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tblAdminReportFilter.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tblAdminReportFilter.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            tblAdminReportFilter.RowStyles.Add(new RowStyle(SizeType.Absolute, 54F));
-            tblAdminReportFilter.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            tblAdminReportFilter.RowStyles.Add(new RowStyle(SizeType.Absolute, 54F));
-
-            tblAdminReportFilter.SetColumn(lblReportType, 0);
-            tblAdminReportFilter.SetRow(lblReportType, 0);
-            tblAdminReportFilter.SetColumn(lblReportFromDate, 1);
-            tblAdminReportFilter.SetRow(lblReportFromDate, 0);
-            tblAdminReportFilter.SetColumn(lblReportToDate, 0);
-            tblAdminReportFilter.SetRow(lblReportToDate, 2);
-            tblAdminReportFilter.SetColumnSpan(lblReportToDate, 2);
-
-            tblAdminReportFilter.SetColumn(cboReportType, 0);
-            tblAdminReportFilter.SetRow(cboReportType, 1);
-            tblAdminReportFilter.SetColumn(dtpReportFromDate, 1);
-            tblAdminReportFilter.SetRow(dtpReportFromDate, 1);
-            tblAdminReportFilter.SetColumn(dtpReportToDate, 0);
-            tblAdminReportFilter.SetRow(dtpReportToDate, 3);
-            tblAdminReportFilter.SetColumn(btnViewReport, 1);
-            tblAdminReportFilter.SetRow(btnViewReport, 3);
-        }
-        else if (compact)
-        {
-            tblAdminReportFilter.ColumnCount = 4;
-            tblAdminReportFilter.RowCount = 2;
-            tblAdminReportFilter.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 34F));
-            tblAdminReportFilter.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 22F));
-            tblAdminReportFilter.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 22F));
-            tblAdminReportFilter.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 22F));
-            tblAdminReportFilter.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            tblAdminReportFilter.RowStyles.Add(new RowStyle(SizeType.Absolute, 54F));
-
-            tblAdminReportFilter.SetColumn(lblReportType, 0);
-            tblAdminReportFilter.SetRow(lblReportType, 0);
-            tblAdminReportFilter.SetColumn(lblReportFromDate, 1);
-            tblAdminReportFilter.SetRow(lblReportFromDate, 0);
-            tblAdminReportFilter.SetColumn(lblReportToDate, 2);
-            tblAdminReportFilter.SetRow(lblReportToDate, 0);
-
-            tblAdminReportFilter.SetColumn(cboReportType, 0);
-            tblAdminReportFilter.SetRow(cboReportType, 1);
-            tblAdminReportFilter.SetColumn(dtpReportFromDate, 1);
-            tblAdminReportFilter.SetRow(dtpReportFromDate, 1);
-            tblAdminReportFilter.SetColumn(dtpReportToDate, 2);
-            tblAdminReportFilter.SetRow(dtpReportToDate, 1);
-            tblAdminReportFilter.SetColumn(btnViewReport, 3);
-            tblAdminReportFilter.SetRow(btnViewReport, 1);
-        }
-        else
-        {
-            tblAdminReportFilter.ColumnCount = 4;
-            tblAdminReportFilter.RowCount = 2;
-            tblAdminReportFilter.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 34F));
-            tblAdminReportFilter.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 22F));
-            tblAdminReportFilter.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 22F));
-            tblAdminReportFilter.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 22F));
-            tblAdminReportFilter.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            tblAdminReportFilter.RowStyles.Add(new RowStyle(SizeType.Absolute, 54F));
-
-            tblAdminReportFilter.SetColumn(lblReportType, 0);
-            tblAdminReportFilter.SetRow(lblReportType, 0);
-            tblAdminReportFilter.SetColumn(lblReportFromDate, 1);
-            tblAdminReportFilter.SetRow(lblReportFromDate, 0);
-            tblAdminReportFilter.SetColumn(lblReportToDate, 2);
-            tblAdminReportFilter.SetRow(lblReportToDate, 0);
-
-            tblAdminReportFilter.SetColumn(cboReportType, 0);
-            tblAdminReportFilter.SetRow(cboReportType, 1);
-            tblAdminReportFilter.SetColumn(dtpReportFromDate, 1);
-            tblAdminReportFilter.SetRow(dtpReportFromDate, 1);
-            tblAdminReportFilter.SetColumn(dtpReportToDate, 2);
-            tblAdminReportFilter.SetRow(dtpReportToDate, 1);
-            tblAdminReportFilter.SetColumn(btnViewReport, 3);
-            tblAdminReportFilter.SetRow(btnViewReport, 1);
-        }
-    }
-
-    private void ConfigureKpiLayout(bool compact)
-    {
-        tblReportKpi.ColumnStyles.Clear();
-        tblReportKpi.RowStyles.Clear();
-
-        if (compact)
-        {
-            tblReportKpi.ColumnCount = 2;
-            tblReportKpi.RowCount = 2;
-            tblReportKpi.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tblReportKpi.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tblReportKpi.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tblReportKpi.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-
-            MoveKpiCard(pnlReportRevenue, 0, 0, new Padding(0, 0, 12, 12));
-            MoveKpiCard(pnlReportEnrollment, 1, 0, new Padding(0, 0, 0, 12));
-            MoveKpiCard(pnlReportClassCount, 0, 1, new Padding(0, 0, 12, 0));
-            MoveKpiCard(pnlReportRetention, 1, 1, Padding.Empty);
-        }
-        else
-        {
-            tblReportKpi.ColumnCount = 4;
-            tblReportKpi.RowCount = 1;
-            tblReportKpi.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tblReportKpi.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tblReportKpi.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tblReportKpi.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tblReportKpi.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-
-            MoveKpiCard(pnlReportRevenue, 0, 0, new Padding(0, 0, 18, 0));
-            MoveKpiCard(pnlReportEnrollment, 1, 0, new Padding(0, 0, 18, 0));
-            MoveKpiCard(pnlReportClassCount, 2, 0, new Padding(0, 0, 18, 0));
-            MoveKpiCard(pnlReportRetention, 3, 0, Padding.Empty);
-        }
-    }
-
-    private void ConfigureMiddleLayout(bool compact)
-    {
-        tblReportMiddle.ColumnStyles.Clear();
-        tblReportMiddle.RowStyles.Clear();
-
-        if (compact)
-        {
-            tblReportMiddle.ColumnCount = 1;
-            tblReportMiddle.RowCount = 2;
-            tblReportMiddle.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tblReportMiddle.RowStyles.Add(new RowStyle(SizeType.Absolute, 360F));
-            tblReportMiddle.RowStyles.Add(new RowStyle(SizeType.Absolute, 234F));
-
-            tblReportMiddle.SetColumn(pnlReportChartCard, 0);
-            tblReportMiddle.SetRow(pnlReportChartCard, 0);
-            tblReportMiddle.SetColumn(tblReportSideColumn, 0);
-            tblReportMiddle.SetRow(tblReportSideColumn, 1);
-            pnlReportChartCard.Margin = new Padding(0, 0, 0, 18);
-            tblReportSideColumn.Margin = Padding.Empty;
-
-            tblReportSideColumn.ColumnCount = 2;
-            tblReportSideColumn.RowCount = 1;
-            tblReportSideColumn.ColumnStyles.Clear();
-            tblReportSideColumn.RowStyles.Clear();
-            tblReportSideColumn.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 52F));
-            tblReportSideColumn.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 48F));
-            tblReportSideColumn.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-
-            tblReportSideColumn.SetColumn(pnlReportHighlightCard, 0);
-            tblReportSideColumn.SetRow(pnlReportHighlightCard, 0);
-            tblReportSideColumn.SetColumn(pnlReportDistributionCard, 1);
-            tblReportSideColumn.SetRow(pnlReportDistributionCard, 0);
-            pnlReportHighlightCard.Margin = new Padding(0, 0, 18, 0);
-            pnlReportDistributionCard.Margin = Padding.Empty;
-        }
-        else
-        {
-            tblReportMiddle.ColumnCount = 2;
-            tblReportMiddle.RowCount = 1;
-            tblReportMiddle.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 67.5F));
-            tblReportMiddle.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 32.5F));
-            tblReportMiddle.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-
-            tblReportMiddle.SetColumn(pnlReportChartCard, 0);
-            tblReportMiddle.SetRow(pnlReportChartCard, 0);
-            tblReportMiddle.SetColumn(tblReportSideColumn, 1);
-            tblReportMiddle.SetRow(tblReportSideColumn, 0);
-            pnlReportChartCard.Margin = new Padding(0, 0, 24, 0);
-            tblReportSideColumn.Margin = Padding.Empty;
-
-            tblReportSideColumn.ColumnCount = 1;
-            tblReportSideColumn.RowCount = 2;
-            tblReportSideColumn.ColumnStyles.Clear();
-            tblReportSideColumn.RowStyles.Clear();
-            tblReportSideColumn.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tblReportSideColumn.RowStyles.Add(new RowStyle(SizeType.Percent, 58F));
-            tblReportSideColumn.RowStyles.Add(new RowStyle(SizeType.Percent, 42F));
-
-            tblReportSideColumn.SetColumn(pnlReportHighlightCard, 0);
-            tblReportSideColumn.SetRow(pnlReportHighlightCard, 0);
-            tblReportSideColumn.SetColumn(pnlReportDistributionCard, 0);
-            tblReportSideColumn.SetRow(pnlReportDistributionCard, 1);
-            pnlReportHighlightCard.Margin = new Padding(0, 0, 0, 22);
-            pnlReportDistributionCard.Margin = Padding.Empty;
-        }
-    }
-
-    private static void MoveKpiCard(Panel card, int column, int row, Padding margin)
-    {
-        if (card.Parent is not TableLayoutPanel host)
-        {
-            return;
-        }
-
-        host.SetColumn(card, column);
-        host.SetRow(card, row);
-        card.Margin = margin;
-    }
-
     private void BindReportEvents()
     {
         btnViewReport.Click += (_, _) => ApplyReportView();
-        btnExportReportCsv.Click += (_, _) => ShowExportHint("Xuất CSV");
-        btnPrintReport.Click += (_, _) => ShowExportHint("In báo cáo");
-        btnRefreshData.Click += (_, _) => ShowExportHint("Cập nhật dữ liệu");
+        btnRefreshData.Click += (_, _) => RefreshReportData();
+        btnExportReportCsv.Click += (_, _) => ExportCurrentReportCsv();
+        btnPrintReport.Click += (_, _) => ShowFeatureHint("In bao cao");
         cboReportType.SelectedIndexChanged += (_, _) => ApplyReportView();
-        btnReportPrevPage.Click += (_, _) => ShowExportHint("Điều hướng trang");
-        btnReportNextPage.Click += (_, _) => ShowExportHint("Điều hướng trang");
+        btnReportPrevPage.Click += (_, _) => ShowFeatureHint("Dieu huong trang");
+        btnReportNextPage.Click += (_, _) => ShowFeatureHint("Dieu huong trang");
     }
 
     private void LoadDefaultReport()
     {
+        var today = DateTime.Today;
+        dtpReportFromDate.Value = new DateTime(today.Year, 1, 1);
+        dtpReportToDate.Value = today;
         ApplyReportView();
     }
 
     private void ApplyReportView()
     {
-        _currentScenario = BuildScenario(cboReportType.SelectedItem?.ToString() ?? "Doanh thu tổng hợp");
+        if (dtpReportFromDate.Value.Date > dtpReportToDate.Value.Date)
+        {
+            MessageBox.Show(this, "Ngay bat dau phai nho hon hoac bang ngay ket thuc.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
 
-        lblReportRevenueTitle.Text = _currentScenario.RevenueTitle;
-        lblReportRevenueValue.Text = _currentScenario.RevenueValue;
-        lblReportRevenueTrend.Text = _currentScenario.RevenueTrend;
-
-        lblReportEnrollmentTitle.Text = _currentScenario.EnrollmentTitle;
-        lblReportEnrollmentValue.Text = _currentScenario.EnrollmentValue;
-        lblReportEnrollmentTrend.Text = _currentScenario.EnrollmentTrend;
-
-        lblReportClassCountTitle.Text = _currentScenario.ClassTitle;
-        lblReportClassCountValue.Text = _currentScenario.ClassValue;
-        lblReportClassCountTrend.Text = _currentScenario.ClassTrend;
-
-        lblReportRetentionTitle.Text = _currentScenario.RetentionTitle;
-        lblReportRetentionValue.Text = _currentScenario.RetentionValue;
-        lblReportRetentionTrend.Text = _currentScenario.RetentionTrend;
-
-        lblReportChartTitle.Text = _currentScenario.ChartTitle;
-        lblReportDetailTitle.Text = _currentScenario.DetailTitle;
-        lblReportHighlightTitle.Text = _currentScenario.HighlightTitle;
-        lblReportHighlightBody.Text = _currentScenario.HighlightBody;
-        lblReportDetailPaging.Text = _currentScenario.DetailPaging;
-
-        lblDistributionCourse1Name.Text = _currentScenario.Distributions[0].Name;
-        lblDistributionCourse1Value.Text = _currentScenario.Distributions[0].Value;
-        lblDistributionCourse2Name.Text = _currentScenario.Distributions[1].Name;
-        lblDistributionCourse2Value.Text = _currentScenario.Distributions[1].Value;
-        lblDistributionCourse3Name.Text = _currentScenario.Distributions[2].Name;
-        lblDistributionCourse3Value.Text = _currentScenario.Distributions[2].Value;
-
-        dgvAdminReportDetail.DataSource = _currentScenario.DetailTable;
-        FormatReportGrid();
-        BindSeries(_currentScenario.ChartPoints, _currentScenario.TargetPoints);
-        UpdateHighlightProgressWidth();
-        LayoutHighlightCard();
-        LayoutDetailHeader();
+        try
+        {
+            _currentScenario = BuildScenario(GetSelectedReportType(), dtpReportFromDate.Value.Date, dtpReportToDate.Value.Date);
+            BindScenarioToUi(_currentScenario);
+            lblAdminReportSession.Text = $"PHIEN: {DateTime.Now:dd/MM/yyyy HH:mm}";
+            lblAdminReportStatus.Text = $"TRANG THAI: ADMIN / {GetReadableReportType()}";
+        }
+        catch (Exception ex)
+        {
+            ErrorLogger.Log(ex, nameof(FrmAdminReports));
+            MessageBox.Show(this, "Khong tai duoc du lieu bao cao. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 
-    private void BindSeries((string Label, double Value)[] revenuePoints, (string Label, double Value)[] targetPoints)
+    private void BindScenarioToUi(ReportScenario scenario)
+    {
+        lblReportRevenueTitle.Text = scenario.RevenueTitle;
+        lblReportRevenueValue.Text = scenario.RevenueValue;
+        lblReportRevenueTrend.Text = scenario.RevenueTrend;
+
+        lblReportEnrollmentTitle.Text = scenario.EnrollmentTitle;
+        lblReportEnrollmentValue.Text = scenario.EnrollmentValue;
+        lblReportEnrollmentTrend.Text = scenario.EnrollmentTrend;
+
+        lblReportClassCountTitle.Text = scenario.ClassTitle;
+        lblReportClassCountValue.Text = scenario.ClassValue;
+        lblReportClassCountTrend.Text = scenario.ClassTrend;
+
+        lblReportRetentionTitle.Text = scenario.RetentionTitle;
+        lblReportRetentionValue.Text = scenario.RetentionValue;
+        lblReportRetentionTrend.Text = scenario.RetentionTrend;
+
+        lblReportChartTitle.Text = scenario.ChartTitle;
+        lblReportDetailTitle.Text = scenario.DetailTitle;
+        lblReportHighlightTitle.Text = scenario.HighlightTitle;
+        lblReportHighlightBody.Text = scenario.HighlightBody;
+        lblReportDetailPaging.Text = scenario.DetailPaging;
+
+        lblDistributionCourse1Name.Text = scenario.Distributions[0].Name;
+        lblDistributionCourse1Value.Text = scenario.Distributions[0].Value;
+        lblDistributionCourse2Name.Text = scenario.Distributions[1].Name;
+        lblDistributionCourse2Value.Text = scenario.Distributions[1].Value;
+        lblDistributionCourse3Name.Text = scenario.Distributions[2].Name;
+        lblDistributionCourse3Value.Text = scenario.Distributions[2].Value;
+
+        dgvAdminReportDetail.DataSource = scenario.DetailTable;
+        FormatReportGrid();
+        BindSeries(scenario.ChartPoints, scenario.TargetPoints);
+        UpdateHighlightProgressWidth(scenario.HighlightProgress);
+    }
+
+    private ReportScenario BuildScenario(string reportType, DateTime fromDate, DateTime toDate)
+    {
+        var stats = _dataService.GetAdminDashboardStats();
+        var detailTable = _dataService.GetReportDetail(reportType, fromDate, toDate);
+        var chartPoints = BuildChartPoints(reportType, fromDate, toDate, detailTable);
+        var targetPoints = BuildTargetPoints(chartPoints, reportType);
+        var distributions = BuildDistributions(reportType, fromDate, toDate, detailTable);
+        var detailCount = detailTable.Rows.Count;
+
+        return reportType switch
+        {
+            "Tuyen sinh" => new ReportScenario
+            {
+                RevenueTitle = "Tong ho so ghi danh",
+                RevenueValue = detailCount.ToString("N0", ReportCulture),
+                RevenueTrend = BuildTrendText(chartPoints),
+                EnrollmentTitle = "Hoc vien moi trong ky",
+                EnrollmentValue = CountDistinctValues(detailTable, "Hoc vien").ToString("N0", ReportCulture),
+                EnrollmentTrend = $"Thang nay: {stats.NewStudentsThisMonth:N0}",
+                ClassTitle = "So lop dang mo",
+                ClassValue = stats.TotalActiveClasses.ToString("N0", ReportCulture),
+                ClassTrend = $"Tong hoc vien: {stats.TotalStudents:N0}",
+                RetentionTitle = "Tong hoc vien trung tam",
+                RetentionValue = stats.TotalStudents.ToString("N0", ReportCulture),
+                RetentionTrend = $"Tong GV: {stats.TotalTeachers:N0}",
+                ChartTitle = "XU HUONG GHI DANH THEO THANG",
+                DetailTitle = "CHI TIET GHI DANH TRONG KY",
+                HighlightTitle = "Tuyen sinh dang tang",
+                HighlightBody = $"Co {detailCount:N0} ho so trong khoang {fromDate:dd/MM/yyyy} - {toDate:dd/MM/yyyy}.",
+                HighlightProgress = BuildProgressValue(detailCount, Math.Max(1, stats.TotalStudents)),
+                DetailPaging = BuildPagingText(detailCount),
+                Distributions = distributions,
+                ChartPoints = chartPoints,
+                TargetPoints = targetPoints,
+                DetailTable = detailTable
+            },
+            "Cong no" => new ReportScenario
+            {
+                RevenueTitle = "Tong cong no",
+                RevenueValue = FormatCompactMoney(stats.TotalDebt),
+                RevenueTrend = BuildTrendText(chartPoints),
+                EnrollmentTitle = "So bien lai",
+                EnrollmentValue = stats.TotalReceipts.ToString("N0", ReportCulture),
+                EnrollmentTrend = $"Doanh thu: {FormatCompactMoney(stats.TotalRevenue)}",
+                ClassTitle = "Lop dang mo",
+                ClassValue = stats.TotalActiveClasses.ToString("N0", ReportCulture),
+                ClassTrend = $"Tong staff: {stats.TotalStaff:N0}",
+                RetentionTitle = "Hoc vien con no",
+                RetentionValue = detailTable.Rows.Count.ToString("N0", ReportCulture),
+                RetentionTrend = "Theo doi cong no chua thanh toan",
+                ChartTitle = "XU HUONG CONG NO THEO THANG",
+                DetailTitle = "CHI TIET CONG NO TRONG KY",
+                HighlightTitle = "Cong no can theo doi",
+                HighlightBody = $"Tong cong no hien tai la {FormatMoney(stats.TotalDebt)}.",
+                HighlightProgress = BuildProgressValue(stats.TotalDebt, Math.Max(1M, stats.TotalRevenue + stats.TotalDebt)),
+                DetailPaging = BuildPagingText(detailTable.Rows.Count),
+                Distributions = distributions,
+                ChartPoints = chartPoints,
+                TargetPoints = targetPoints,
+                DetailTable = detailTable
+            },
+            _ => new ReportScenario
+            {
+                RevenueTitle = "Tong doanh thu da thu",
+                RevenueValue = FormatCompactMoney(stats.TotalRevenue),
+                RevenueTrend = BuildTrendText(chartPoints),
+                EnrollmentTitle = "Hoc vien moi",
+                EnrollmentValue = stats.NewStudentsThisMonth.ToString("N0", ReportCulture),
+                EnrollmentTrend = $"Tong hoc vien: {stats.TotalStudents:N0}",
+                ClassTitle = "So lop dang mo",
+                ClassValue = stats.TotalActiveClasses.ToString("N0", ReportCulture),
+                ClassTrend = $"Tong GV: {stats.TotalTeachers:N0}",
+                RetentionTitle = "Tong cong no",
+                RetentionValue = FormatCompactMoney(stats.TotalDebt),
+                RetentionTrend = $"Tong bien lai: {stats.TotalReceipts:N0}",
+                ChartTitle = "XU HUONG DOANH THU THEO THANG",
+                DetailTitle = "CHI TIET THU HOC PHI TRONG KY",
+                HighlightTitle = "Doanh thu da ghi nhan",
+                HighlightBody = $"Da thu {FormatMoney(stats.TotalRevenue)} va con no {FormatMoney(stats.TotalDebt)}.",
+                HighlightProgress = BuildProgressValue(stats.TotalRevenue, Math.Max(1M, stats.TotalRevenue + stats.TotalDebt)),
+                DetailPaging = BuildPagingText(detailTable.Rows.Count),
+                Distributions = distributions,
+                ChartPoints = chartPoints,
+                TargetPoints = targetPoints,
+                DetailTable = detailTable
+            }
+        };
+    }
+
+    private IReadOnlyList<ReportPoint> BuildChartPoints(string reportType, DateTime fromDate, DateTime toDate, DataTable detailTable)
+    {
+        IReadOnlyList<ReportPoint> points = reportType switch
+        {
+            "Tuyen sinh" => _dataService.GetMonthlyEnrollmentCounts(fromDate, toDate),
+            "Cong no" => BuildMonthlySeriesFromTable(detailTable, "Ngay doi soat", "Con no"),
+            _ => _dataService.GetMonthlyRevenue(fromDate, toDate)
+        };
+
+        return EnsureSeriesHasPoints(points, fromDate, toDate);
+    }
+
+    private IReadOnlyList<ReportPoint> BuildTargetPoints(IReadOnlyList<ReportPoint> sourcePoints, string reportType)
+    {
+        var multiplier = reportType == "Cong no" ? 0.85M : 0.90M;
+
+        return sourcePoints
+            .Select(point => new ReportPoint
+            {
+                Label = point.Label,
+                Value = Math.Round(point.Value * multiplier, 0)
+            })
+            .ToList();
+    }
+
+    private (string Name, string Value)[] BuildDistributions(string reportType, DateTime fromDate, DateTime toDate, DataTable detailTable)
+    {
+        IEnumerable<IGrouping<string, DataRow>> groupedRows = reportType switch
+        {
+            "Tuyen sinh" => detailTable.AsEnumerable()
+                .Where(row => !string.IsNullOrWhiteSpace(row.Field<string>("Khoa hoc")))
+                .GroupBy(row => row.Field<string>("Khoa hoc") ?? string.Empty),
+            "Cong no" => _dataService.GetDebtList(null, null, fromDate, toDate)
+                .AsEnumerable()
+                .Where(row => !string.IsNullOrWhiteSpace(row.Field<string>("Khoa hoc")))
+                .GroupBy(row => row.Field<string>("Khoa hoc") ?? string.Empty),
+            _ => _dataService.GetClassList()
+                .AsEnumerable()
+                .Where(row => !string.IsNullOrWhiteSpace(row.Field<string>("Khoa hoc")))
+                .GroupBy(row => row.Field<string>("Khoa hoc") ?? string.Empty)
+        };
+
+        var summary = groupedRows
+            .Select(group => new
+            {
+                Name = group.Key,
+                Count = group.Count()
+            })
+            .Where(item => !string.IsNullOrWhiteSpace(item.Name))
+            .OrderByDescending(item => item.Count)
+            .ToList();
+
+        var total = Math.Max(1, summary.Sum(item => item.Count));
+        var result = summary
+            .Take(3)
+            .Select(item => (item.Name, $"{Math.Round(item.Count * 100M / total, 1):0.#}%"))
+            .ToList();
+
+        while (result.Count < 3)
+        {
+            result.Add(("-", "0%"));
+        }
+
+        return [result[0], result[1], result[2]];
+    }
+
+    private IReadOnlyList<ReportPoint> BuildMonthlySeriesFromTable(DataTable sourceTable, string dateColumn, string valueColumn)
+    {
+        return sourceTable.AsEnumerable()
+            .Select(row => new
+            {
+                Date = TryParseDate(row[dateColumn]?.ToString()),
+                Value = TryParseMoney(row[valueColumn]?.ToString())
+            })
+            .Where(item => item.Date.HasValue)
+            .GroupBy(item => new { item.Date!.Value.Year, item.Date.Value.Month })
+            .OrderBy(group => group.Key.Year)
+            .ThenBy(group => group.Key.Month)
+            .Select(group => new ReportPoint
+            {
+                Label = $"{group.Key.Month:00}/{group.Key.Year}",
+                Value = group.Sum(item => item.Value)
+            })
+            .ToList();
+    }
+
+    private IReadOnlyList<ReportPoint> EnsureSeriesHasPoints(IReadOnlyList<ReportPoint> points, DateTime fromDate, DateTime toDate)
+    {
+        if (points.Count > 0)
+        {
+            return points;
+        }
+
+        var firstMonth = new DateTime(fromDate.Year, fromDate.Month, 1);
+        var lastMonth = new DateTime(toDate.Year, toDate.Month, 1);
+        var monthCount = Math.Max(1, ((lastMonth.Year - firstMonth.Year) * 12) + lastMonth.Month - firstMonth.Month + 1);
+
+        return Enumerable.Range(0, monthCount)
+            .Select(offset => firstMonth.AddMonths(offset))
+            .Select(date => new ReportPoint
+            {
+                Label = $"{date.Month:00}/{date.Year}",
+                Value = 0
+            })
+            .ToList();
+    }
+
+    private void BindSeries(IReadOnlyList<ReportPoint> actualPoints, IReadOnlyList<ReportPoint> targetPoints)
     {
         chtAdminRevenue.Series.Clear();
 
-        var revenueSeries = new Series("Doanh thu")
+        var actualSeries = new Series("Thuc te")
         {
             ChartType = SeriesChartType.Column,
             Color = Color.FromArgb(20, 83, 144),
@@ -590,14 +428,14 @@ public partial class FrmAdminReports : Form
             IsValueShownAsLabel = false,
             IsXValueIndexed = true
         };
-        revenueSeries["PointWidth"] = "0.58";
+        actualSeries["PointWidth"] = "0.58";
 
-        foreach (var point in revenuePoints)
+        foreach (var point in actualPoints)
         {
-            revenueSeries.Points.AddXY(point.Label, point.Value);
+            actualSeries.Points.AddXY(point.Label, (double)point.Value);
         }
 
-        var targetSeries = new Series("Mục tiêu")
+        var targetSeries = new Series("Muc tieu")
         {
             ChartType = SeriesChartType.Line,
             Color = Color.FromArgb(22, 126, 120),
@@ -609,10 +447,10 @@ public partial class FrmAdminReports : Form
 
         foreach (var point in targetPoints)
         {
-            targetSeries.Points.AddXY(point.Label, point.Value);
+            targetSeries.Points.AddXY(point.Label, (double)point.Value);
         }
 
-        chtAdminRevenue.Series.Add(revenueSeries);
+        chtAdminRevenue.Series.Add(actualSeries);
         chtAdminRevenue.Series.Add(targetSeries);
     }
 
@@ -620,148 +458,209 @@ public partial class FrmAdminReports : Form
     {
         foreach (DataGridViewColumn column in dgvAdminReportDetail.Columns)
         {
-            var header = column.HeaderText;
-            if (header.Contains("TIỀN", StringComparison.OrdinalIgnoreCase)
-                || header.Contains("THU", StringComparison.OrdinalIgnoreCase)
-                || header.Contains("NỢ", StringComparison.OrdinalIgnoreCase))
-            {
-                column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            }
-            else
-            {
-                column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            }
+            var header = column.HeaderText.ToLowerInvariant();
+            var isMoneyColumn = header.Contains("thu") || header.Contains("phi") || header.Contains("tien") || header.Contains("no");
+            column.DefaultCellStyle.Alignment = isMoneyColumn
+                ? DataGridViewContentAlignment.MiddleRight
+                : DataGridViewContentAlignment.MiddleCenter;
         }
     }
 
-    private void UpdateHighlightProgressWidth()
+    private void UpdateHighlightProgressWidth(double progress)
+    {
+        var width = Math.Max(24, (int)(pnlReportHighlightTrack.ClientSize.Width * Math.Clamp(progress, 0.08, 1.0)));
+        pnlReportHighlightFill.Width = width;
+    }
+
+    private void RefreshReportData()
+    {
+        ApplyReportView();
+        MessageBox.Show(this, "Da cap nhat lai du lieu bao cao tu database.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Information);
+    }
+
+    private void ExportCurrentReportCsv()
     {
         if (_currentScenario is null)
         {
             return;
         }
 
-        var width = Math.Max(24, (int)(pnlReportHighlightTrack.ClientSize.Width * _currentScenario.HighlightProgress));
-        pnlReportHighlightFill.Width = width;
-    }
-
-    private static void LayoutKpiCard(Panel host, Label title, Label value, Label trend, Label icon)
-    {
-        var compact = host.ClientSize.Width < 260;
-        var contentLeft = 30;
-        var contentWidth = Math.Max(110, host.ClientSize.Width - 88);
-        var blockHeight = compact ? 102 : 112;
-        var contentTop = Math.Max(12, (host.ClientSize.Height - blockHeight) / 2);
-
-        title.Font = new Font("Segoe UI", compact ? 9F : 10F, FontStyle.Bold);
-        value.Font = new Font("Segoe UI", compact ? 18F : 23F, FontStyle.Bold);
-        trend.Font = new Font("Segoe UI", compact ? 9F : 10F, FontStyle.Bold);
-        icon.Font = new Font("Segoe UI", compact ? 15F : 18F, FontStyle.Bold);
-
-        title.AutoSize = false;
-        title.Location = new Point(contentLeft, contentTop);
-        title.Size = new Size(contentWidth, compact ? 34 : 24);
-        title.TextAlign = ContentAlignment.MiddleCenter;
-
-        value.AutoSize = false;
-        value.Location = new Point(contentLeft, contentTop + (compact ? 30 : 28));
-        value.Size = new Size(contentWidth, compact ? 42 : 52);
-        value.TextAlign = ContentAlignment.MiddleCenter;
-
-        trend.AutoSize = false;
-        trend.Location = new Point(contentLeft, contentTop + (compact ? 76 : 82));
-        trend.Size = new Size(contentWidth, 22);
-        trend.TextAlign = ContentAlignment.MiddleCenter;
-
-        icon.Location = new Point(Math.Max(contentLeft, host.ClientSize.Width - 56), contentTop + 6);
-        icon.Size = new Size(34, 34);
-        icon.TextAlign = ContentAlignment.MiddleCenter;
-    }
-
-    private void LayoutChartHeader()
-    {
-        var availableWidth = pnlReportChartHeader.ClientSize.Width;
-        var stackedLegend = availableWidth < 700;
-
-        lblReportChartTitle.AutoSize = false;
-        lblReportChartTitle.Location = new Point(0, 6);
-        lblReportChartTitle.Size = new Size(Math.Max(220, availableWidth - 10), 30);
-        lblReportChartTitle.TextAlign = ContentAlignment.MiddleLeft;
-
-        flpChartLegend.AutoSize = true;
-
-        if (stackedLegend)
+        try
         {
-            pnlReportChartHeader.Height = 78;
-            flpChartLegend.Location = new Point(0, 42);
+            using var dialog = new SaveFileDialog
+            {
+                Filter = "CSV files (*.csv)|*.csv",
+                FileName = $"bao-cao-{GetSelectedReportType().ToLowerInvariant().Replace(' ', '-')}-{DateTime.Now:yyyyMMdd-HHmmss}.csv",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)
+            };
+
+            if (dialog.ShowDialog(this) != DialogResult.OK)
+            {
+                return;
+            }
+
+            var csv = BuildCsv(_currentScenario.DetailTable);
+            File.WriteAllText(dialog.FileName, csv, new UTF8Encoding(true));
+            MessageBox.Show(this, "Da xuat file CSV thanh cong.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-        else
+        catch (Exception ex)
         {
-            pnlReportChartHeader.Height = 54;
-            flpChartLegend.Location = new Point(Math.Max(0, availableWidth - flpChartLegend.Width), 12);
+            ErrorLogger.Log(ex, nameof(FrmAdminReports));
+            MessageBox.Show(this, "Khong xuat duoc file CSV. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
-    private void LayoutHighlightCard()
+    private void ShowFeatureHint(string actionName)
     {
-        var compact = pnlReportHighlightCard.ClientSize.Width < 280;
-        lblReportHighlightTitle.Font = new Font("Segoe UI", compact ? 15F : 18F, FontStyle.Bold);
-        lblReportHighlightBody.Font = new Font("Segoe UI", compact ? 10.5F : 12F, FontStyle.Regular);
-
-        lblReportHighlightIcon.Location = new Point(24, 10);
-        lblReportHighlightIcon.Size = new Size(42, 42);
-        lblReportHighlightIcon.TextAlign = ContentAlignment.MiddleCenter;
-
-        lblReportHighlightTitle.AutoSize = false;
-        lblReportHighlightTitle.Location = new Point(24, 56);
-        lblReportHighlightTitle.Size = new Size(Math.Max(160, pnlReportHighlightCard.ClientSize.Width - 48), compact ? 54 : 44);
-        lblReportHighlightTitle.TextAlign = ContentAlignment.MiddleCenter;
-
-        lblReportHighlightBody.AutoSize = false;
-        lblReportHighlightBody.Location = new Point(28, compact ? 116 : 110);
-        lblReportHighlightBody.Size = new Size(Math.Max(150, pnlReportHighlightCard.ClientSize.Width - 56), compact ? 62 : 50);
-        lblReportHighlightBody.TextAlign = ContentAlignment.MiddleCenter;
-
-        pnlReportHighlightTrack.Location = new Point(28, Math.Max(140, pnlReportHighlightCard.ClientSize.Height - 26));
-        pnlReportHighlightTrack.Size = new Size(Math.Max(140, pnlReportHighlightCard.ClientSize.Width - 56), 8);
+        MessageBox.Show(
+            this,
+            $"{actionName} dang duoc giu o muc co ban de de demo. Du lieu hien tai da lay tu SQL Server/EF.",
+            "Thong bao",
+            MessageBoxButtons.OK,
+            MessageBoxIcon.Information);
     }
 
-    private void LayoutDistributionCard()
+    private string GetSelectedReportType()
     {
-        var compact = pnlReportDistributionCard.ClientSize.Width < 280;
-        lblReportDistributionTitle.Font = new Font("Segoe UI", compact ? 10.5F : 11F, FontStyle.Bold);
-
-        lblReportDistributionTitle.AutoSize = false;
-        lblReportDistributionTitle.Location = new Point(28, 20);
-        lblReportDistributionTitle.Size = new Size(Math.Max(150, pnlReportDistributionCard.ClientSize.Width - 56), 24);
-
-        tblReportDistribution.Location = new Point(28, 54);
-        tblReportDistribution.Size = new Size(Math.Max(160, pnlReportDistributionCard.ClientSize.Width - 56), Math.Max(92, pnlReportDistributionCard.ClientSize.Height - 78));
-
-        foreach (RowStyle row in tblReportDistribution.RowStyles)
+        return cboReportType.SelectedIndex switch
         {
-            row.SizeType = SizeType.Percent;
-            row.Height = 33.3333F;
+            1 => "Tuyen sinh",
+            2 => "Cong no",
+            _ => "Doanh thu tong hop"
+        };
+    }
+
+    private string GetReadableReportType()
+    {
+        return cboReportType.SelectedItem?.ToString() ?? "Bao cao";
+    }
+
+    private static int CountDistinctValues(DataTable table, string columnName)
+    {
+        if (!table.Columns.Contains(columnName))
+        {
+            return 0;
         }
 
-        var nameFont = new Font("Segoe UI", compact ? 10F : 11F, FontStyle.Regular);
-        var valueFont = new Font("Segoe UI", compact ? 10F : 11F, FontStyle.Bold);
-
-        lblDistributionCourse1Name.Font = nameFont;
-        lblDistributionCourse2Name.Font = nameFont;
-        lblDistributionCourse3Name.Font = nameFont;
-        lblDistributionCourse1Value.Font = valueFont;
-        lblDistributionCourse2Value.Font = valueFont;
-        lblDistributionCourse3Value.Font = valueFont;
+        return table.AsEnumerable()
+            .Select(row => row[columnName]?.ToString())
+            .Where(value => !string.IsNullOrWhiteSpace(value))
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .Count();
     }
 
-    private void LayoutDetailHeader()
+    private static string BuildPagingText(int totalRows)
     {
-        var navigationLeft = pnlReportDetailHeader.ClientSize.Width - flpReportDetailNavigation.Width - 18;
-        var pagingLeft = navigationLeft - lblReportDetailPaging.Width - 12;
+        return $"Hien thi {Math.Min(10, totalRows)} / {totalRows} ket qua";
+    }
 
-        flpReportDetailNavigation.Location = new Point(Math.Max(24, navigationLeft), 16);
-        lblReportDetailPaging.Location = new Point(Math.Max(320, pagingLeft), 22);
+    private static string BuildTrendText(IReadOnlyList<ReportPoint> points)
+    {
+        if (points.Count < 2)
+        {
+            return "Khong doi";
+        }
+
+        var previous = points[^2].Value;
+        var current = points[^1].Value;
+        if (previous == 0)
+        {
+            return current == 0 ? "Khong doi" : "Tang moi";
+        }
+
+        var change = Math.Round((current - previous) * 100M / previous, 1);
+        return change switch
+        {
+            > 0 => $"Tang {change:0.#}%",
+            < 0 => $"Giam {Math.Abs(change):0.#}%",
+            _ => "Khong doi"
+        };
+    }
+
+    private static double BuildProgressValue(decimal value, decimal total)
+    {
+        if (total <= 0)
+        {
+            return 0.08;
+        }
+
+        return Math.Clamp((double)(value / total), 0.08, 1.0);
+    }
+
+    private static string FormatCompactMoney(decimal amount)
+    {
+        if (amount >= 1_000_000_000M)
+        {
+            return $"{amount / 1_000_000_000M:0.##} ty";
+        }
+
+        if (amount >= 1_000_000M)
+        {
+            return $"{amount / 1_000_000M:0.##} tr";
+        }
+
+        if (amount >= 1_000M)
+        {
+            return $"{amount / 1_000M:0.##} nghin";
+        }
+
+        return amount.ToString("N0", ReportCulture);
+    }
+
+    private static string FormatMoney(decimal amount)
+    {
+        return amount.ToString("N0", ReportCulture) + " VND";
+    }
+
+    private static DateTime? TryParseDate(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return null;
+        }
+
+        return DateTime.TryParseExact(value, "dd/MM/yyyy", ReportCulture, DateTimeStyles.None, out var parsedDate)
+            ? parsedDate
+            : null;
+    }
+
+    private static decimal TryParseMoney(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return 0;
+        }
+
+        var sanitized = value
+            .Replace("VND", string.Empty, StringComparison.OrdinalIgnoreCase)
+            .Replace(".", string.Empty, StringComparison.OrdinalIgnoreCase)
+            .Replace(",", string.Empty, StringComparison.OrdinalIgnoreCase)
+            .Trim();
+
+        return decimal.TryParse(sanitized, NumberStyles.Number, CultureInfo.InvariantCulture, out var parsedValue)
+            ? parsedValue
+            : 0;
+    }
+
+    private static string BuildCsv(DataTable table)
+    {
+        var builder = new StringBuilder();
+        var headers = table.Columns.Cast<DataColumn>().Select(column => EscapeCsv(column.ColumnName));
+        builder.AppendLine(string.Join(",", headers));
+
+        foreach (DataRow row in table.Rows)
+        {
+            var cells = row.ItemArray.Select(cell => EscapeCsv(cell?.ToString() ?? string.Empty));
+            builder.AppendLine(string.Join(",", cells));
+        }
+
+        return builder.ToString();
+    }
+
+    private static string EscapeCsv(string value)
+    {
+        var escaped = value.Replace("\"", "\"\"");
+        return $"\"{escaped}\"";
     }
 
     private static void StyleSurfaceCard(Panel panel, Color backColor)
@@ -811,218 +710,6 @@ public partial class FrmAdminReports : Form
         accent.BackColor = accentColor;
     }
 
-    private static DataTable BuildRevenueDetailTable()
-    {
-        var table = CreateReportTable("NGÀY PHÁT SINH", "SỐ BIÊN NHẬN", "HỌC VIÊN", "LỚP", "KHOẢN THU", "SỐ TIỀN (VND)");
-        table.Rows.Add("05/01/2024", "PT051", "Nguyễn Hải Đăng", "ENG-A1-01", "Thu học phí đợt 1", "1.500.000");
-        table.Rows.Add("05/02/2024", "PT052", "Lê Khánh Vy", "ENG-KID-02", "Thu học phí đủ khóa", "2.100.000");
-        table.Rows.Add("05/03/2024", "PT053", "Trần Ngọc Hân", "TIN-CB-03", "Thu học phí đợt 1", "800.000");
-        table.Rows.Add("05/05/2024", "PT054", "Phan Đức Minh", "ENG-A1-01", "Thu học phí đủ khóa", "2.400.000");
-        table.Rows.Add("05/06/2024", "PT055", "Vũ Gia Bảo", "ENG-KID-02", "Giữ chỗ khai giảng", "500.000");
-        table.Rows.Add("05/08/2024", "PT056", "Nguyễn Linh Chi", "ENG-A1-01", "Thu học phí đợt 1", "1.200.000");
-        table.Rows.Add("05/10/2024", "PT057", "Lâm Minh Quân", "TIN-CB-03", "Thu học phí đủ khóa", "1.800.000");
-        table.Rows.Add("05/12/2024", "PT058", "Hoàng Gia Hân", "ENG-KID-02", "Thu học phí đợt 1", "1.050.000");
-        table.Rows.Add("05/15/2024", "PT059", "Phạm Quốc An", "ENG-A1-01", "Thu học phí bổ sung", "900.000");
-        table.Rows.Add("05/18/2024", "PT060", "Đỗ Thanh Mai", "TIN-CB-03", "Thu học phí đợt 1", "1.000.000");
-        table.Rows.Add("05/21/2024", "PT061", "Nguyễn Khánh Linh", "ENG-A1-01", "Thu học phí đủ khóa", "2.400.000");
-        table.Rows.Add("05/24/2024", "PT062", "Trần Bảo Ngọc", "ENG-KID-02", "Thu học phí bổ sung", "650.000");
-        return table;
-    }
-
-    private static DataTable BuildEnrollmentDetailTable()
-    {
-        var table = CreateReportTable("NGÀY GHI DANH", "MÃ GHI DANH", "HỌC VIÊN", "KHÓA HỌC", "LỚP", "TRẠNG THÁI");
-        table.Rows.Add("05/01/2024", "GD401", "Nguyễn Hải Đăng", "English Foundation", "ENG-A1-01", "Đã xếp lớp");
-        table.Rows.Add("05/02/2024", "GD402", "Lê Khánh Vy", "English Kids Starter", "ENG-KID-02", "Đã xếp lớp");
-        table.Rows.Add("05/03/2024", "GD403", "Trần Ngọc Hân", "Tin học cơ bản", "TIN-CB-03", "Đã xếp lớp");
-        table.Rows.Add("05/04/2024", "GD404", "Phan Đức Minh", "English Foundation", "ENG-A1-01", "Chờ học phí");
-        table.Rows.Add("05/06/2024", "GD405", "Vũ Gia Bảo", "English Kids Starter", "ENG-KID-02", "Tư vấn");
-        table.Rows.Add("05/07/2024", "GD406", "Nguyễn Linh Chi", "English Foundation", "ENG-A1-01", "Đã xếp lớp");
-        table.Rows.Add("05/09/2024", "GD407", "Lâm Minh Quân", "Tin học cơ bản", "TIN-CB-03", "Đã xếp lớp");
-        table.Rows.Add("05/10/2024", "GD408", "Hoàng Gia Hân", "English Kids Starter", "ENG-KID-02", "Giữ chỗ");
-        table.Rows.Add("05/13/2024", "GD409", "Phạm Quốc An", "English Foundation", "ENG-A1-01", "Đã xếp lớp");
-        table.Rows.Add("05/16/2024", "GD410", "Đỗ Thanh Mai", "Tin học cơ bản", "TIN-CB-03", "Chờ khai giảng");
-        table.Rows.Add("05/19/2024", "GD411", "Nguyễn Khánh Linh", "English Foundation", "ENG-A1-01", "Đã xếp lớp");
-        table.Rows.Add("05/23/2024", "GD412", "Trần Bảo Ngọc", "English Kids Starter", "ENG-KID-02", "Đã xếp lớp");
-        return table;
-    }
-
-    private static DataTable BuildDebtDetailTable()
-    {
-        var table = CreateReportTable("NGÀY ĐỐI SOÁT", "HỌC VIÊN", "LỚP", "PHẢI THU", "ĐÃ THU", "CÒN NỢ", "TRẠNG THÁI");
-        table.Rows.Add("05/02/2024", "Nguyễn Hải Đăng", "ENG-A1-01", "2.400.000", "1.500.000", "900.000", "Còn nợ");
-        table.Rows.Add("05/03/2024", "Trần Ngọc Hân", "TIN-CB-03", "1.800.000", "800.000", "1.000.000", "Còn nợ");
-        table.Rows.Add("05/05/2024", "Vũ Gia Bảo", "ENG-KID-02", "2.100.000", "500.000", "1.600.000", "Chờ thu tiếp");
-        table.Rows.Add("05/07/2024", "Hoàng Gia Hân", "ENG-KID-02", "2.100.000", "1.050.000", "1.050.000", "Còn nợ");
-        table.Rows.Add("05/09/2024", "Đỗ Thanh Mai", "TIN-CB-03", "1.800.000", "1.000.000", "800.000", "Còn nợ");
-        table.Rows.Add("05/10/2024", "Phạm Quốc An", "ENG-A1-01", "2.400.000", "900.000", "1.500.000", "Quá hạn 3 ngày");
-        table.Rows.Add("05/12/2024", "Nguyễn Khánh Linh", "ENG-A1-01", "2.400.000", "1.200.000", "1.200.000", "Còn nợ");
-        table.Rows.Add("05/14/2024", "Trần Bảo Ngọc", "ENG-KID-02", "2.100.000", "650.000", "1.450.000", "Quá hạn 5 ngày");
-        table.Rows.Add("05/16/2024", "Lâm Minh Quân", "TIN-CB-03", "1.800.000", "1.200.000", "600.000", "Nhắc phí");
-        table.Rows.Add("05/18/2024", "Nguyễn Linh Chi", "ENG-A1-01", "2.400.000", "1.200.000", "1.200.000", "Còn nợ");
-        table.Rows.Add("05/20/2024", "Phan Đức Minh", "ENG-A1-01", "2.400.000", "2.000.000", "400.000", "Sắp đến hạn");
-        table.Rows.Add("05/24/2024", "Lê Khánh Vy", "ENG-KID-02", "2.100.000", "1.800.000", "300.000", "Sắp đến hạn");
-        return table;
-    }
-
-    private static DataTable CreateReportTable(params string[] columns)
-    {
-        var table = new DataTable();
-        foreach (var column in columns)
-        {
-            table.Columns.Add(column);
-        }
-
-        return table;
-    }
-
-    private static ReportScenario BuildScenario(string reportType)
-    {
-        return reportType switch
-        {
-            "Tuyển sinh" => new ReportScenario
-            {
-                RevenueTitle = "TỔNG HỒ SƠ GHI DANH",
-                RevenueValue = "842",
-                RevenueTrend = "↑ 9.1%",
-                EnrollmentTitle = "HỌC VIÊN MỚI",
-                EnrollmentValue = "524",
-                EnrollmentTrend = "↑ 6.3%",
-                ClassTitle = "SỐ LỚP MỞ MỚI",
-                ClassValue = "31",
-                ClassTrend = "↑ 3.4%",
-                RetentionTitle = "TỶ LỆ CHUYỂN ĐỔI",
-                RetentionValue = "76.8%",
-                RetentionTrend = "↑ 2.6%",
-                ChartTitle = "XU HƯỚNG TUYỂN SINH HÀNG THÁNG",
-                DetailTitle = "CHI TIẾT HỒ SƠ PHÁT SINH",
-                HighlightTitle = "Chiến dịch hè tăng 18%",
-                HighlightBody = "Tỷ lệ chốt hồ sơ từ nhóm khách hàng mới đạt mức cao nhất kể từ đầu năm.",
-                HighlightProgress = 0.82,
-                DetailPaging = "Hiển thị 10 / 96 kết quả",
-                Distributions =
-                [
-                    ("English Foundation", "41%"),
-                    ("English Kids Starter", "34%"),
-                    ("Tin học cơ bản", "25%")
-                ],
-                ChartPoints =
-                [
-                    ("TH01", 148),
-                    ("TH02", 182),
-                    ("TH03", 164),
-                    ("TH04", 214),
-                    ("TH05", 246)
-                ],
-                TargetPoints =
-                [
-                    ("TH01", 140),
-                    ("TH02", 168),
-                    ("TH03", 170),
-                    ("TH04", 198),
-                    ("TH05", 220)
-                ],
-                DetailTable = BuildEnrollmentDetailTable()
-            },
-            "Công nợ" => new ReportScenario
-            {
-                RevenueTitle = "TỔNG CÔNG NỢ",
-                RevenueValue = "98.120K",
-                RevenueTrend = "↓ 4.7%",
-                EnrollmentTitle = "HỒ SƠ QUÁ HẠN",
-                EnrollmentValue = "37",
-                EnrollmentTrend = "↓ 2.1%",
-                ClassTitle = "LỚP CẦN ĐỐI SOÁT",
-                ClassValue = "14",
-                ClassTrend = "↑ 1.2%",
-                RetentionTitle = "TỶ LỆ THU HỒI",
-                RetentionValue = "88.6%",
-                RetentionTrend = "↑ 3.9%",
-                ChartTitle = "XU HƯỚNG CÔNG NỢ HÀNG THÁNG",
-                DetailTitle = "CHI TIẾT CÔNG NỢ TRONG KỲ",
-                HighlightTitle = "Công nợ giảm còn 4.7%",
-                HighlightBody = "Nhóm lớp IELTS đã hoàn thành đợt đối soát sớm hơn kế hoạch 5 ngày.",
-                HighlightProgress = 0.68,
-                DetailPaging = "Hiển thị 10 / 58 kết quả",
-                Distributions =
-                [
-                    ("English Foundation", "44%"),
-                    ("English Kids Starter", "31%"),
-                    ("Tin học cơ bản", "25%")
-                ],
-                ChartPoints =
-                [
-                    ("TH01", 124),
-                    ("TH02", 118),
-                    ("TH03", 102),
-                    ("TH04", 95),
-                    ("TH05", 88)
-                ],
-                TargetPoints =
-                [
-                    ("TH01", 120),
-                    ("TH02", 112),
-                    ("TH03", 108),
-                    ("TH04", 96),
-                    ("TH05", 90)
-                ],
-                DetailTable = BuildDebtDetailTable()
-            },
-            _ => new ReportScenario
-            {
-                RevenueTitle = "TỔNG DOANH THU",
-                RevenueValue = "1.420.500K",
-                RevenueTrend = "↑ 12.4%",
-                EnrollmentTitle = "HỌC VIÊN MỚI",
-                EnrollmentValue = "842",
-                EnrollmentTrend = "↑ 5.2%",
-                ClassTitle = "SỐ LỚP ĐANG MỞ",
-                ClassValue = "156",
-                ClassTrend = "0.0%",
-                RetentionTitle = "TỶ LỆ DUY TRÌ",
-                RetentionValue = "94.2%",
-                RetentionTrend = "↑ 1.8%",
-                ChartTitle = "XU HƯỚNG DOANH THU HÀNG THÁNG",
-                DetailTitle = "CHI TIẾT PHÁT SINH TRONG KỲ",
-                HighlightTitle = "Phát triển vượt mức 15%",
-                HighlightBody = "Chiến dịch tuyển sinh mùa hè đạt hiệu quả cao nhất trong 3 năm qua.",
-                HighlightProgress = 0.86,
-                DetailPaging = "Hiển thị 10 / 125 kết quả",
-                Distributions =
-                [
-                    ("English Foundation", "42%"),
-                    ("English Kids Starter", "33%"),
-                    ("Tin học cơ bản", "25%")
-                ],
-                ChartPoints =
-                [
-                    ("TH01", 420),
-                    ("TH02", 515),
-                    ("TH03", 338),
-                    ("TH04", 614),
-                    ("TH05", 702)
-                ],
-                TargetPoints =
-                [
-                    ("TH01", 405),
-                    ("TH02", 480),
-                    ("TH03", 360),
-                    ("TH04", 560),
-                    ("TH05", 650)
-                ],
-                DetailTable = BuildRevenueDetailTable()
-            }
-        };
-    }
-
-    private void ShowExportHint(string action)
-    {
-        using var dialog = new FrmStatusDialog(
-            action,
-            $"Chức năng {action.ToLower()} đang dùng dữ liệu mẫu. Backend có thể nối sang dữ liệu thật sau.");
-        dialog.ShowDialog(this);
-    }
-
     private sealed class ReportScenario
     {
         public required string RevenueTitle { get; init; }
@@ -1044,8 +731,8 @@ public partial class FrmAdminReports : Form
         public required double HighlightProgress { get; init; }
         public required string DetailPaging { get; init; }
         public required (string Name, string Value)[] Distributions { get; init; }
-        public required (string Label, double Value)[] ChartPoints { get; init; }
-        public required (string Label, double Value)[] TargetPoints { get; init; }
+        public required IReadOnlyList<ReportPoint> ChartPoints { get; init; }
+        public required IReadOnlyList<ReportPoint> TargetPoints { get; init; }
         public required DataTable DetailTable { get; init; }
     }
 }

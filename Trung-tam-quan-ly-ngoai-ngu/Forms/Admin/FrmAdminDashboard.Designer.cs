@@ -1,4 +1,4 @@
-namespace Trung_tam_quan_ly_ngoai_ngu;
+﻿namespace Trung_tam_quan_ly_ngoai_ngu;
 
 partial class FrmAdminDashboard
 {
@@ -172,7 +172,7 @@ partial class FrmAdminDashboard
         btnLogoutAdmin.Name = "btnLogoutAdmin";
         btnLogoutAdmin.Size = new Size(212, 54);
         btnLogoutAdmin.TabIndex = 0;
-        btnLogoutAdmin.Text = "Đăng xuất";
+        btnLogoutAdmin.Text = "ÄÄƒng xuáº¥t";
         btnLogoutAdmin.UseVisualStyleBackColor = true;
         // 
         // flpSidebarMenu
@@ -204,7 +204,7 @@ partial class FrmAdminDashboard
         btnMenuSystemMonitor.Name = "btnMenuSystemMonitor";
         btnMenuSystemMonitor.Size = new Size(206, 46);
         btnMenuSystemMonitor.TabIndex = 1;
-        btnMenuSystemMonitor.Text = "Giám sát hệ thống";
+        btnMenuSystemMonitor.Text = "GiÃ¡m sÃ¡t há»‡ thá»‘ng";
         btnMenuSystemMonitor.UseVisualStyleBackColor = true;
         // 
         // btnMenuAccountManagement
@@ -213,7 +213,7 @@ partial class FrmAdminDashboard
         btnMenuAccountManagement.Name = "btnMenuAccountManagement";
         btnMenuAccountManagement.Size = new Size(206, 46);
         btnMenuAccountManagement.TabIndex = 2;
-        btnMenuAccountManagement.Text = "Tài khoản && phân quyền";
+        btnMenuAccountManagement.Text = "TÃ i khoáº£n && phÃ¢n quyá»n";
         btnMenuAccountManagement.UseVisualStyleBackColor = true;
         // 
         // btnMenuAdminReports
@@ -222,7 +222,7 @@ partial class FrmAdminDashboard
         btnMenuAdminReports.Name = "btnMenuAdminReports";
         btnMenuAdminReports.Size = new Size(206, 46);
         btnMenuAdminReports.TabIndex = 3;
-        btnMenuAdminReports.Text = "Báo cáo thống kê";
+        btnMenuAdminReports.Text = "BÃ¡o cÃ¡o thá»‘ng kÃª";
         btnMenuAdminReports.UseVisualStyleBackColor = true;
         // 
         // pnlSidebarBrand
@@ -266,7 +266,7 @@ partial class FrmAdminDashboard
         lblSidebarBrandSubtitle.Name = "lblSidebarBrandSubtitle";
         lblSidebarBrandSubtitle.Size = new Size(148, 23);
         lblSidebarBrandSubtitle.TabIndex = 1;
-        lblSidebarBrandSubtitle.Text = "Quản trị hệ thống";
+        lblSidebarBrandSubtitle.Text = "Quáº£n trá»‹ há»‡ thá»‘ng";
         // 
         // lblSidebarBrandTitle
         // 
@@ -333,7 +333,7 @@ partial class FrmAdminDashboard
         lblAdminHeaderSubtitle.Name = "lblAdminHeaderSubtitle";
         lblAdminHeaderSubtitle.Size = new Size(506, 23);
         lblAdminHeaderSubtitle.TabIndex = 1;
-        lblAdminHeaderSubtitle.Text = "Chỉ hiển thị dữ liệu quản trị tổng hợp, không thao tác nghiệp vụ.";
+        lblAdminHeaderSubtitle.Text = "Chá»‰ hiá»ƒn thá»‹ dá»¯ liá»‡u quáº£n trá»‹ tá»•ng há»£p, khÃ´ng thao tÃ¡c nghiá»‡p vá»¥.";
         // 
         // lblAdminHeaderTitle
         // 
@@ -404,7 +404,7 @@ partial class FrmAdminDashboard
         lblDashboardSubtitle.Name = "lblDashboardSubtitle";
         lblDashboardSubtitle.Size = new Size(667, 23);
         lblDashboardSubtitle.TabIndex = 1;
-        lblDashboardSubtitle.Text = "Theo dõi tài khoản, lớp đang mở, doanh thu đã thu và danh sách cảnh báo cần chú ý.";
+        lblDashboardSubtitle.Text = "Theo dÃµi tÃ i khoáº£n, lá»›p Ä‘ang má»Ÿ, doanh thu Ä‘Ã£ thu vÃ  danh sÃ¡ch cáº£nh bÃ¡o cáº§n chÃº Ã½.";
         // 
         // lblDashboardTitle
         // 
@@ -415,7 +415,7 @@ partial class FrmAdminDashboard
         lblDashboardTitle.Name = "lblDashboardTitle";
         lblDashboardTitle.Size = new Size(329, 46);
         lblDashboardTitle.TabIndex = 0;
-        lblDashboardTitle.Text = "Dashboard quản trị";
+        lblDashboardTitle.Text = "Dashboard quáº£n trá»‹";
         // 
         // tblAdminKpi
         // 
@@ -459,7 +459,7 @@ partial class FrmAdminDashboard
         lblKpiAccountsNote.Name = "lblKpiAccountsNote";
         lblKpiAccountsNote.Size = new Size(171, 23);
         lblKpiAccountsNote.TabIndex = 2;
-        lblKpiAccountsNote.Text = "Toàn bộ tài khoản hệ";
+        lblKpiAccountsNote.Text = "ToÃ n bá»™ tÃ i khoáº£n há»‡";
         // 
         // lblKpiAccountsValue
         // 
@@ -481,7 +481,7 @@ partial class FrmAdminDashboard
         lblKpiAccountsTitle.Name = "lblKpiAccountsTitle";
         lblKpiAccountsTitle.Size = new Size(131, 23);
         lblKpiAccountsTitle.TabIndex = 0;
-        lblKpiAccountsTitle.Text = "Tổng tài khoản";
+        lblKpiAccountsTitle.Text = "Tá»•ng tÃ i khoáº£n";
         // 
         // pnlKpiClasses
         // 
@@ -505,7 +505,7 @@ partial class FrmAdminDashboard
         lblKpiClassesNote.Name = "lblKpiClassesNote";
         lblKpiClassesNote.Size = new Size(220, 23);
         lblKpiClassesNote.TabIndex = 2;
-        lblKpiClassesNote.Text = "Lớp đang có lịch khai giảng";
+        lblKpiClassesNote.Text = "Lá»›p Ä‘ang cÃ³ lá»‹ch khai giáº£ng";
         // 
         // lblKpiClassesValue
         // 
@@ -527,7 +527,7 @@ partial class FrmAdminDashboard
         lblKpiClassesTitle.Name = "lblKpiClassesTitle";
         lblKpiClassesTitle.Size = new Size(119, 23);
         lblKpiClassesTitle.TabIndex = 0;
-        lblKpiClassesTitle.Text = "Lớp đang mở";
+        lblKpiClassesTitle.Text = "Lá»›p Ä‘ang má»Ÿ";
         // 
         // pnlKpiRevenue
         // 
@@ -551,7 +551,7 @@ partial class FrmAdminDashboard
         lblKpiRevenueNote.Name = "lblKpiRevenueNote";
         lblKpiRevenueNote.Size = new Size(190, 23);
         lblKpiRevenueNote.TabIndex = 2;
-        lblKpiRevenueNote.Text = "Doanh thu đã xác nhận";
+        lblKpiRevenueNote.Text = "Doanh thu Ä‘Ã£ xÃ¡c nháº­n";
         // 
         // lblKpiRevenueValue
         // 
@@ -573,7 +573,7 @@ partial class FrmAdminDashboard
         lblKpiRevenueTitle.Name = "lblKpiRevenueTitle";
         lblKpiRevenueTitle.Size = new Size(151, 23);
         lblKpiRevenueTitle.TabIndex = 0;
-        lblKpiRevenueTitle.Text = "Doanh thu đã thu";
+        lblKpiRevenueTitle.Text = "Doanh thu Ä‘Ã£ thu";
         // 
         // pnlKpiDebt
         // 
@@ -597,7 +597,7 @@ partial class FrmAdminDashboard
         lblKpiDebtNote.Name = "lblKpiDebtNote";
         lblKpiDebtNote.Size = new Size(235, 23);
         lblKpiDebtNote.TabIndex = 2;
-        lblKpiDebtNote.Text = "Học viên còn nợ cần theo dõi";
+        lblKpiDebtNote.Text = "Há»c viÃªn cÃ²n ná»£ cáº§n theo dÃµi";
         // 
         // lblKpiDebtValue
         // 
@@ -619,7 +619,7 @@ partial class FrmAdminDashboard
         lblKpiDebtTitle.Name = "lblKpiDebtTitle";
         lblKpiDebtTitle.Size = new Size(138, 23);
         lblKpiDebtTitle.TabIndex = 0;
-        lblKpiDebtTitle.Text = "Học viên còn nợ";
+        lblKpiDebtTitle.Text = "Há»c viÃªn cÃ²n ná»£";
         // 
         // splAdminDashboardBottom
         // 
@@ -672,7 +672,7 @@ partial class FrmAdminDashboard
         lblAdminWarningsHint.Name = "lblAdminWarningsHint";
         lblAdminWarningsHint.Size = new Size(476, 28);
         lblAdminWarningsHint.TabIndex = 1;
-        lblAdminWarningsHint.Text = "Danh sách read-only các cảnh báo cần Admin theo dõi.";
+        lblAdminWarningsHint.Text = "Danh sÃ¡ch read-only cÃ¡c cáº£nh bÃ¡o cáº§n Admin theo dÃµi.";
         // 
         // lblAdminWarningsTitle
         // 
@@ -683,7 +683,7 @@ partial class FrmAdminDashboard
         lblAdminWarningsTitle.Name = "lblAdminWarningsTitle";
         lblAdminWarningsTitle.Size = new Size(476, 23);
         lblAdminWarningsTitle.TabIndex = 0;
-        lblAdminWarningsTitle.Text = "Cảnh báo quản trị";
+        lblAdminWarningsTitle.Text = "Cáº£nh bÃ¡o quáº£n trá»‹";
         // 
         // pnlAdminQuickViewCard
         // 
@@ -716,7 +716,7 @@ partial class FrmAdminDashboard
         lblAdminQuickViewHint.Name = "lblAdminQuickViewHint";
         lblAdminQuickViewHint.Size = new Size(512, 28);
         lblAdminQuickViewHint.TabIndex = 1;
-        lblAdminQuickViewHint.Text = "Số liệu nhanh để đánh giá tình hình trung tâm trước khi mở báo cáo chi tiết.";
+        lblAdminQuickViewHint.Text = "Sá»‘ liá»‡u nhanh Ä‘á»ƒ Ä‘Ã¡nh giÃ¡ tÃ¬nh hÃ¬nh trung tÃ¢m trÆ°á»›c khi má»Ÿ bÃ¡o cÃ¡o chi tiáº¿t.";
         // 
         // lblAdminQuickViewTitle
         // 
@@ -727,11 +727,12 @@ partial class FrmAdminDashboard
         lblAdminQuickViewTitle.Name = "lblAdminQuickViewTitle";
         lblAdminQuickViewTitle.Size = new Size(512, 23);
         lblAdminQuickViewTitle.TabIndex = 0;
-        lblAdminQuickViewTitle.Text = "Số liệu nhanh";
+        lblAdminQuickViewTitle.Text = "Sá»‘ liá»‡u nhanh";
         // 
         // FrmAdminDashboard
         // 
-        AutoScaleMode = AutoScaleMode.None;
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         BackColor = Color.FromArgb(245, 247, 251);
         ClientSize = new Size(1372, 761);
         Controls.Add(pnlContentHostAdmin);
@@ -776,3 +777,4 @@ partial class FrmAdminDashboard
         ResumeLayout(false);
     }
 }
+

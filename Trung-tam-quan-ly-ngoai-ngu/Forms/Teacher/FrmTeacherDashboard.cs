@@ -127,12 +127,13 @@ public partial class FrmTeacherDashboard : Form
 
     private void BindDashboardData()
     {
-        lblTeachingClassesCountValue.Text = "12";
-        lblTeachingStudentCountValue.Text = "186";
-        lblTeachingTodaySessionsValue.Text = "04";
-        lblTeachingPendingScoresValue.Text = "01";
+        var stats = AppRuntime.DataService.GetTeacherDashboardStats(AppRuntime.CurrentUser?.Id);
+        lblTeachingClassesCountValue.Text = stats.TeachingClassCount.ToString("00");
+        lblTeachingStudentCountValue.Text = stats.TeachingStudentCount.ToString("00");
+        lblTeachingTodaySessionsValue.Text = stats.TodaySessionCount.ToString("00");
+        lblTeachingPendingScoresValue.Text = stats.PendingScoreCount.ToString("00");
 
-        dgvTeacherClassOverview.DataSource = CreateTeachingOverviewTable();
+        dgvTeacherClassOverview.DataSource = AppRuntime.DataService.GetTeachingClasses(AppRuntime.CurrentUser?.Id);
         ConfigureTeacherOverviewGrid();
         RebuildTaskCards();
     }
@@ -871,8 +872,7 @@ public partial class FrmTeacherDashboard : Form
             splTeacherDashboard.Panel1MinSize = 120;
             splTeacherDashboard.Panel2MinSize = 120;
             var safeVerticalDistance = Math.Clamp((int)(availableWidth * 0.66), 120, Math.Max(120, availableWidth - 120));
-            splTeacherDashboard.SplitterDistance = safeVerticalDistance;
-            splTeacherDashboard.Orientation = Orientation.Vertical;
+            FormHostHelpers.ApplyResponsiveSplit(splTeacherDashboard, Orientation.Vertical, safeVerticalDistance);
         }
 
         var panel2Min = Math.Min(300, Math.Max(180, availableWidth / 4));
@@ -889,7 +889,9 @@ public partial class FrmTeacherDashboard : Form
 
         var maxDistance = Math.Max(panel1Min, availableWidth - panel2Min);
         var desiredDistance = Math.Max(panel1Min, (int)(availableWidth * 0.70));
-        splTeacherDashboard.SplitterDistance = Math.Clamp(desiredDistance, panel1Min, maxDistance);
+        FormHostHelpers.ApplySafeSplitterDistance(
+            splTeacherDashboard,
+            Math.Clamp(desiredDistance, panel1Min, maxDistance));
     }
 
     private void ResizeDashboardTaskCards()
@@ -948,24 +950,6 @@ public partial class FrmTeacherDashboard : Form
                 }
             }
         }
-    }
-
-    private static DataTable CreateTeachingOverviewTable()
-    {
-        var table = new DataTable();
-        table.Columns.Add("Mã lớp");
-        table.Columns.Add("Tên lớp");
-        table.Columns.Add("Khóa học");
-        table.Columns.Add("Lịch học");
-        table.Columns.Add("Sĩ số");
-        table.Columns.Add("Trạng thái");
-        table.Columns.Add("Thao tác");
-
-        table.Rows.Add("IELTS-01", "IELTS Foundation", "IELTS Track A", "Thứ 2-4-6 (18:00)", "15/20", "ĐANG DẠY", "⋯");
-        table.Rows.Add("TOEIC-A2", "TOEIC 500+", "TOEIC Intensive", "Thứ 3-5 (19:30)", "12/15", "KẾT THÚC", "⋯");
-        table.Rows.Add("COM-B1", "Giao tiếp cơ bản", "General English", "Thứ 7-CN (08:00)", "18/20", "ĐANG DẠY", "⋯");
-        table.Rows.Add("IELTS-03", "IELTS Advanced", "IELTS Track B", "Thứ 2-4-6 (20:00)", "08/12", "ĐANG DẠY", "⋯");
-        return table;
     }
 
     private static (string Title, string Description, string Action, string Deadline, Color Accent)[] GetTeachingTaskItems()

@@ -34,7 +34,8 @@ internal static class AppTheme
         form.StartPosition = FormStartPosition.CenterScreen;
         form.BackColor = Background;
         form.Font = FontBody;
-        form.MinimumSize = new Size(1280, 760);
+        form.AutoScaleMode = AutoScaleMode.Dpi;
+        form.MinimumSize = new Size(1024, 700);
     }
 
     public static void StylePrimaryButton(Button button)

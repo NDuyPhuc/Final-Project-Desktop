@@ -1,4 +1,4 @@
-namespace Trung_tam_quan_ly_ngoai_ngu;
+﻿namespace Trung_tam_quan_ly_ngoai_ngu;
 
 partial class FrmEnrollment
 {
@@ -426,7 +426,8 @@ partial class FrmEnrollment
         // 
         // FrmEnrollment
         // 
-        AutoScaleMode = AutoScaleMode.None;
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(1140, 650);
         Controls.Add(tblEnrollmentRoot);
         Name = "FrmEnrollment";
@@ -445,3 +446,4 @@ partial class FrmEnrollment
         ResumeLayout(false);
     }
 }
+

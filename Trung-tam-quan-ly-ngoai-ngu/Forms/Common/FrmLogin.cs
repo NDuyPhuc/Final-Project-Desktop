@@ -1,17 +1,28 @@
 using System.ComponentModel;
+using TrungTamNgoaiNgu.Application.Contracts;
+using TrungTamNgoaiNgu.Application.Infrastructure;
+using TrungTamNgoaiNgu.Domain.Enums;
 
 namespace Trung_tam_quan_ly_ngoai_ngu;
 
 [DesignerCategory("Form")]
 public sealed partial class FrmLogin : Form
 {
+    private readonly ILanguageCenterDataService _dataService;
     private readonly string loginLogoPath;
 
-    public FrmLogin()
+    public FrmLogin() : this(AppRuntime.DataService)
     {
+    }
+
+    public FrmLogin(ILanguageCenterDataService dataService)
+    {
+        _dataService = dataService;
         InitializeComponent();
 
         AppTheme.ApplyFormStyle(this, "\u0110\u0103ng nh\u1eadp h\u1ec7 th\u1ed1ng");
+        ApplyLocalizedText();
+        AutoScroll = true;
         if (!IsInDesignMode())
         {
             ClientSize = new Size(1366, 768);
@@ -39,12 +50,12 @@ public sealed partial class FrmLogin : Form
         btnLogin.Click += (_, _) => HandleLogin();
         lnkForgotPassword.LinkClicked += (_, _) =>
         {
-            using var dialog = new FrmStatusDialog("H\u1ed7 tr\u1ee3 \u0111\u0103ng nh\u1eadp", "M\u00e0n n\u00e0y m\u1edbi l\u00e0 UI demo. Backend c\u00f3 th\u1ec3 n\u1ed1i sang quy tr\u00ecnh reset m\u1eadt kh\u1ea9u sau.");
+            using var dialog = new FrmStatusDialog("Ho tro dang nhap", "Lien he quan tri vien de cap tai khoan hoac cap lai mat khau. Chuoi ket noi SQL duoc cau hinh tap trung trong appsettings.json.");
             dialog.ShowDialog(this);
         };
 
-        ttLogin.SetToolTip(txtUsername, "Nh\u1eadp admin, staff ho\u1eb7c teacher \u0111\u1ec3 m\u1edf shell t\u01b0\u01a1ng \u1ee9ng.");
-        ttLogin.SetToolTip(txtPassword, "M\u1eadt kh\u1ea9u \u0111ang l\u00e0 d\u1eef li\u1ec7u demo, backend s\u1ebd n\u1ed1i x\u00e1c th\u1ef1c sau.");
+        ttLogin.SetToolTip(txtUsername, "Nhap ten dang nhap duoc cap tren he thong.");
+        ttLogin.SetToolTip(txtPassword, "Mat khau duoc doi chieu voi PasswordHash trong bang Accounts.");
 
         LoadLoginLogoIfAvailable();
         CenterLoginPanel();
@@ -57,10 +68,28 @@ public sealed partial class FrmLogin : Form
         };
     }
 
+    private void ApplyLocalizedText()
+    {
+        Text = "Dang nhap he thong";
+        lblHeaderTitle.Text = "Academic Curator";
+        lblHeaderSubtitle.Text = "DANG NHAP HE THONG";
+        lblUsername.Text = "TEN DANG NHAP";
+        lblPassword.Text = "MAT KHAU";
+        chkShowPassword.Text = "Hien mat khau";
+        lnkForgotPassword.Text = "Quen mat khau?";
+        btnExit.Text = "Thoat";
+        btnLogin.Text = "Dang nhap";
+        lblFooterVersion.Text = "Academic Curator v2.4";
+        lblFooterSupport.Text = "Ho tro ky thuat";
+        lblErrorAlertText.Text = "Sai ten tai khoan hoac mat khau";
+        txtUsername.Text = string.Empty;
+        txtPassword.Text = string.Empty;
+    }
+
     private void CenterLoginPanel()
     {
-        pnlLoginContainer.Left = (ClientSize.Width - pnlLoginContainer.Width) / 2;
-        pnlLoginContainer.Top = (ClientSize.Height - pnlLoginContainer.Height) / 2;
+        pnlLoginContainer.Left = Math.Max(24, (ClientSize.Width - pnlLoginContainer.Width) / 2);
+        pnlLoginContainer.Top = Math.Max(24, (ClientSize.Height - pnlLoginContainer.Height) / 2);
     }
 
     private static bool IsInDesignMode()
@@ -70,48 +99,60 @@ public sealed partial class FrmLogin : Form
 
     private void HandleLogin()
     {
-        errLogin.Clear();
-        SetErrorState(null);
-
-        if (string.IsNullOrWhiteSpace(txtUsername.Text))
+        try
         {
-            errLogin.SetError(txtUsername, "T\u00ean \u0111\u0103ng nh\u1eadp kh\u00f4ng \u0111\u01b0\u1ee3c \u0111\u1ec3 tr\u1ed1ng.");
+            errLogin.Clear();
+            SetErrorState(null);
+
+            if (string.IsNullOrWhiteSpace(txtUsername.Text))
+            {
+                errLogin.SetError(txtUsername, "Ten dang nhap khong duoc de trong.");
+            }
+
+            if (string.IsNullOrWhiteSpace(txtPassword.Text))
+            {
+                errLogin.SetError(txtPassword, "Mat khau khong duoc de trong.");
+            }
+
+            if (!string.IsNullOrWhiteSpace(errLogin.GetError(txtUsername)) || !string.IsNullOrWhiteSpace(errLogin.GetError(txtPassword)))
+            {
+                SetErrorState("Vui long nhap day du ten dang nhap va mat khau.");
+                return;
+            }
+
+            var account = _dataService.Authenticate(txtUsername.Text.Trim(), txtPassword.Text.Trim());
+            if (account is null)
+            {
+                SetErrorState("Sai ten tai khoan hoac mat khau.");
+                return;
+            }
+
+            AppRuntime.SetCurrentUser(account);
+            Form dashboard = account.Role switch
+            {
+                AccountRole.Admin => new FrmAdminDashboard(account.DisplayName, _dataService),
+                AccountRole.Staff => new FrmStaffDashboard(account.DisplayName),
+                AccountRole.Teacher => new FrmTeacherDashboard(account.DisplayName),
+                _ => throw new InvalidOperationException("Vai tro khong hop le.")
+            };
+
+            pnlErrorAlert.Visible = false;
+            Hide();
+            using (dashboard)
+            {
+                dashboard.ShowDialog();
+            }
+
+            AppRuntime.SetCurrentUser(null);
+            Show();
+            txtPassword.Clear();
+            txtUsername.Focus();
         }
-
-        if (string.IsNullOrWhiteSpace(txtPassword.Text))
+        catch (Exception exception)
         {
-            errLogin.SetError(txtPassword, "M\u1eadt kh\u1ea9u kh\u00f4ng \u0111\u01b0\u1ee3c \u0111\u1ec3 tr\u1ed1ng.");
+            ErrorLogger.Log(exception, "FrmLogin.HandleLogin");
+            SetErrorState("Khong the dang nhap. Vui long kiem tra log.txt.");
         }
-
-        if (!string.IsNullOrWhiteSpace(errLogin.GetError(txtUsername)) || !string.IsNullOrWhiteSpace(errLogin.GetError(txtPassword)))
-        {
-            SetErrorState("Vui l\u00f2ng nh\u1eadp \u0111\u1ea7y \u0111\u1ee7 t\u00ean \u0111\u0103ng nh\u1eadp v\u00e0 m\u1eadt kh\u1ea9u.");
-            return;
-        }
-
-        Form? dashboard = txtUsername.Text.Trim().ToLowerInvariant() switch
-        {
-            "admin" => new FrmAdminDashboard("admin"),
-            "staff" => new FrmStaffDashboard("staff"),
-            "teacher" => new FrmTeacherDashboard("teacher"),
-            _ => null
-        };
-
-        if (dashboard is null)
-        {
-            SetErrorState("Sai t\u00ean t\u00e0i kho\u1ea3n ho\u1eb7c m\u1eadt kh\u1ea9u");
-            return;
-        }
-
-        pnlErrorAlert.Visible = false;
-        Hide();
-        using (dashboard)
-        {
-            dashboard.ShowDialog();
-        }
-        Show();
-        txtPassword.Clear();
-        txtUsername.Focus();
     }
 
     private void SetErrorState(string? message)

@@ -1,4 +1,4 @@
-namespace Trung_tam_quan_ly_ngoai_ngu;
+﻿namespace Trung_tam_quan_ly_ngoai_ngu;
 
 partial class FrmTeacherManagement
 {
@@ -117,13 +117,13 @@ partial class FrmTeacherManagement
         lblTeacherKeyword.Name = "lblTeacherKeyword";
         lblTeacherKeyword.Size = new Size(95, 20);
         lblTeacherKeyword.TabIndex = 0;
-        lblTeacherKeyword.Text = "Từ khóa tìm";
+        lblTeacherKeyword.Text = "Tá»« khÃ³a tÃ¬m";
         // 
         // txtTeacherKeyword
         // 
         txtTeacherKeyword.Location = new Point(16, 41);
         txtTeacherKeyword.Name = "txtTeacherKeyword";
-        txtTeacherKeyword.PlaceholderText = "Mã giáo viên, họ tên hoặc điện thoại";
+        txtTeacherKeyword.PlaceholderText = "MÃ£ giÃ¡o viÃªn, há» tÃªn hoáº·c Ä‘iá»‡n thoáº¡i";
         txtTeacherKeyword.Size = new Size(280, 27);
         txtTeacherKeyword.TabIndex = 1;
         // 
@@ -134,13 +134,13 @@ partial class FrmTeacherManagement
         lblTeacherStatus.Name = "lblTeacherStatus";
         lblTeacherStatus.Size = new Size(78, 20);
         lblTeacherStatus.TabIndex = 2;
-        lblTeacherStatus.Text = "Trạng thái";
+        lblTeacherStatus.Text = "Tráº¡ng thÃ¡i";
         // 
         // cboTeacherStatusFilter
         // 
         cboTeacherStatusFilter.DropDownStyle = ComboBoxStyle.DropDownList;
         cboTeacherStatusFilter.FormattingEnabled = true;
-        cboTeacherStatusFilter.Items.AddRange(new object[] { "Tất cả", "Đang dạy", "Tạm nghỉ" });
+        cboTeacherStatusFilter.Items.AddRange(new object[] { "Táº¥t cáº£", "Äang dáº¡y", "Táº¡m nghá»‰" });
         cboTeacherStatusFilter.Location = new Point(318, 41);
         cboTeacherStatusFilter.Name = "cboTeacherStatusFilter";
         cboTeacherStatusFilter.Size = new Size(190, 28);
@@ -152,7 +152,7 @@ partial class FrmTeacherManagement
         btnSearchTeacher.Name = "btnSearchTeacher";
         btnSearchTeacher.Size = new Size(100, 30);
         btnSearchTeacher.TabIndex = 4;
-        btnSearchTeacher.Text = "Tìm kiếm";
+        btnSearchTeacher.Text = "TÃ¬m kiáº¿m";
         btnSearchTeacher.UseVisualStyleBackColor = true;
         // 
         // btnRefreshTeacher
@@ -161,7 +161,7 @@ partial class FrmTeacherManagement
         btnRefreshTeacher.Name = "btnRefreshTeacher";
         btnRefreshTeacher.Size = new Size(108, 30);
         btnRefreshTeacher.TabIndex = 5;
-        btnRefreshTeacher.Text = "Làm mới";
+        btnRefreshTeacher.Text = "LÃ m má»›i";
         btnRefreshTeacher.UseVisualStyleBackColor = true;
         // 
         // dgvTeacherList
@@ -192,7 +192,7 @@ partial class FrmTeacherManagement
         grpTeacherInfo.Size = new Size(580, 458);
         grpTeacherInfo.TabIndex = 0;
         grpTeacherInfo.TabStop = false;
-        grpTeacherInfo.Text = "Thông tin giáo viên";
+        grpTeacherInfo.Text = "ThÃ´ng tin giÃ¡o viÃªn";
         // 
         // tblTeacherDetail
         // 
@@ -235,7 +235,7 @@ partial class FrmTeacherManagement
         lblTeacherCode.Name = "lblTeacherCode";
         lblTeacherCode.Size = new Size(99, 20);
         lblTeacherCode.TabIndex = 0;
-        lblTeacherCode.Text = "Mã giáo viên";
+        lblTeacherCode.Text = "MÃ£ giÃ¡o viÃªn";
         // 
         // txtTeacherCode
         // 
@@ -253,7 +253,7 @@ partial class FrmTeacherManagement
         lblTeacherName.Name = "lblTeacherName";
         lblTeacherName.Size = new Size(54, 20);
         lblTeacherName.TabIndex = 2;
-        lblTeacherName.Text = "Họ tên";
+        lblTeacherName.Text = "Há» tÃªn";
         // 
         // txtTeacherName
         // 
@@ -271,7 +271,7 @@ partial class FrmTeacherManagement
         lblTeacherPhone.Name = "lblTeacherPhone";
         lblTeacherPhone.Size = new Size(95, 20);
         lblTeacherPhone.TabIndex = 4;
-        lblTeacherPhone.Text = "Số điện thoại";
+        lblTeacherPhone.Text = "Sá»‘ Ä‘iá»‡n thoáº¡i";
         // 
         // txtTeacherPhone
         // 
@@ -307,7 +307,7 @@ partial class FrmTeacherManagement
         lblTeacherSpecialty.Name = "lblTeacherSpecialty";
         lblTeacherSpecialty.Size = new Size(82, 20);
         lblTeacherSpecialty.TabIndex = 8;
-        lblTeacherSpecialty.Text = "Chuyên môn";
+        lblTeacherSpecialty.Text = "ChuyÃªn mÃ´n";
         // 
         // txtTeacherSpecialty
         // 
@@ -325,7 +325,7 @@ partial class FrmTeacherManagement
         lblTeacherAddress.Name = "lblTeacherAddress";
         lblTeacherAddress.Size = new Size(55, 20);
         lblTeacherAddress.TabIndex = 10;
-        lblTeacherAddress.Text = "Địa chỉ";
+        lblTeacherAddress.Text = "Äá»‹a chá»‰";
         // 
         // txtTeacherAddress
         // 
@@ -344,7 +344,7 @@ partial class FrmTeacherManagement
         lblTeacherNote.Name = "lblTeacherNote";
         lblTeacherNote.Size = new Size(57, 20);
         lblTeacherNote.TabIndex = 12;
-        lblTeacherNote.Text = "Ghi chú";
+        lblTeacherNote.Text = "Ghi chÃº";
         // 
         // txtTeacherNote
         // 
@@ -366,7 +366,7 @@ partial class FrmTeacherManagement
         btnCreateTeacher.Name = "btnCreateTeacher";
         btnCreateTeacher.Size = new Size(110, 34);
         btnCreateTeacher.TabIndex = 0;
-        btnCreateTeacher.Text = "Thêm mới";
+        btnCreateTeacher.Text = "ThÃªm má»›i";
         btnCreateTeacher.UseVisualStyleBackColor = true;
         // 
         // btnSaveTeacher
@@ -375,7 +375,7 @@ partial class FrmTeacherManagement
         btnSaveTeacher.Name = "btnSaveTeacher";
         btnSaveTeacher.Size = new Size(110, 34);
         btnSaveTeacher.TabIndex = 1;
-        btnSaveTeacher.Text = "Lưu";
+        btnSaveTeacher.Text = "LÆ°u";
         btnSaveTeacher.UseVisualStyleBackColor = true;
         // 
         // btnUpdateTeacher
@@ -384,7 +384,7 @@ partial class FrmTeacherManagement
         btnUpdateTeacher.Name = "btnUpdateTeacher";
         btnUpdateTeacher.Size = new Size(110, 34);
         btnUpdateTeacher.TabIndex = 2;
-        btnUpdateTeacher.Text = "Cập nhật";
+        btnUpdateTeacher.Text = "Cáº­p nháº­t";
         btnUpdateTeacher.UseVisualStyleBackColor = true;
         // 
         // btnDeleteTeacher
@@ -393,7 +393,7 @@ partial class FrmTeacherManagement
         btnDeleteTeacher.Name = "btnDeleteTeacher";
         btnDeleteTeacher.Size = new Size(110, 34);
         btnDeleteTeacher.TabIndex = 3;
-        btnDeleteTeacher.Text = "Xóa mềm";
+        btnDeleteTeacher.Text = "XÃ³a má»m";
         btnDeleteTeacher.UseVisualStyleBackColor = true;
         // 
         // tblTeacherRoot
@@ -448,12 +448,13 @@ partial class FrmTeacherManagement
         // 
         // FrmTeacherManagement
         // 
-        AutoScaleMode = AutoScaleMode.None;
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(1004, 640);
         Controls.Add(tblTeacherRoot);
         Name = "FrmTeacherManagement";
         Padding = new Padding(12);
-        Text = "Quản lý giáo viên";
+        Text = "Quáº£n lÃ½ giÃ¡o viÃªn";
         pnlTeacherFilterCard.ResumeLayout(false);
         pnlTeacherFilterCard.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)dgvTeacherList).EndInit();
@@ -471,3 +472,4 @@ partial class FrmTeacherManagement
         ResumeLayout(false);
     }
 }
+

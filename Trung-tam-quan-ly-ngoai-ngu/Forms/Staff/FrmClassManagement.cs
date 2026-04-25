@@ -1,30 +1,26 @@
 using System.Data;
+using TrungTamNgoaiNgu.Application.Infrastructure;
+using TrungTamNgoaiNgu.Domain.Entities;
 
 namespace Trung_tam_quan_ly_ngoai_ngu;
 
 public partial class FrmClassManagement : Form
 {
+    private readonly ErrorProvider _errClass = new();
     private DataTable _classTable = new();
 
     public FrmClassManagement()
     {
         InitializeComponent();
-        FormHostHelpers.ConfigureModuleSurface(this, "Quản lý lớp học");
+        FormHostHelpers.ConfigureModuleSurface(this, "Quan ly lop hoc");
         ConfigureView();
-        BindMockData();
+        LoadClasses();
         WireEvents();
-        ApplyResponsiveLayout();
     }
 
     private void ConfigureView()
     {
-        BuildFilterLayout();
         LocalizeLabels();
-
-        cboClassStatusFilter.SelectedIndex = 0;
-        cboClassDetailStatus.SelectedIndex = 0;
-        dtpClassStartDate.Value = DateTime.Today;
-        dtpClassEndDate.Value = DateTime.Today.AddMonths(3);
 
         AppTheme.StyleGrid(dgvClassList);
         AppTheme.StyleGrid(dgvClassStudentList);
@@ -33,308 +29,357 @@ public partial class FrmClassManagement : Form
         AppTheme.StyleSecondaryButton(btnRefreshClass);
         AppTheme.StylePrimaryButton(btnCreateClass);
         AppTheme.StylePrimaryButton(btnSaveClass);
-        AppTheme.StyleSecondaryButton(btnUpdateClass);
-        AppTheme.StyleSecondaryButton(btnGenerateSessions);
+        AppTheme.StylePrimaryButton(btnUpdateClass);
         AppTheme.StyleSecondaryButton(btnOpenEnrollmentFromClass);
+        AppTheme.StyleDangerButton(btnGenerateSessions);
 
-        dgvClassList.RowTemplate.Height = 42;
-        dgvClassStudentList.RowTemplate.Height = 40;
-        dgvClassSessionList.RowTemplate.Height = 40;
+        dgvClassList.AutoGenerateColumns = true;
+        dgvClassStudentList.AutoGenerateColumns = true;
+        dgvClassSessionList.AutoGenerateColumns = true;
+        dgvClassList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        dgvClassStudentList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        dgvClassSessionList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-        splClassContent.Panel1MinSize = 320;
-        splClassContent.Panel2MinSize = 380;
-        splClassContent.FixedPanel = FixedPanel.None;
-
-        if (tblClassInfo.ColumnStyles.Count > 0)
-        {
-            tblClassInfo.ColumnStyles[0].Width = 146F;
-        }
-        tblClassInfo.RowStyles.Clear();
-        for (var index = 0; index < 10; index++)
-        {
-            tblClassInfo.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-        }
-
-        flpClassActions.AutoSize = true;
-        flpClassActions.WrapContents = true;
-        flpClassActions.Dock = DockStyle.Fill;
-        flpClassActions.Margin = new Padding(0, 12, 0, 0);
-        flpClassActions.Padding = new Padding(0, 4, 0, 0);
-
-        foreach (Control control in flpClassActions.Controls)
-        {
-            control.Margin = new Padding(0, 0, 10, 10);
-        }
-    }
-
-    private void BindMockData()
-    {
-        _classTable = DemoDataFactory.GetClassList();
-        dgvClassList.DataSource = _classTable;
-        dgvClassStudentList.DataSource = DemoDataFactory.GetClassStudents();
-        dgvClassSessionList.DataSource = DemoDataFactory.GetSessions();
-        if (dgvClassList.Rows.Count > 0)
-        {
-            dgvClassList.Rows[0].Selected = true;
-            PopulateClassDetail();
-        }
+        txtClassCourse.PlaceholderText = "Nhap ma khoa hoac ten khoa";
+        txtClassTeacher.PlaceholderText = "Nhap ma GV hoac ho ten";
+        cboClassStatusFilter.SelectedIndex = 0;
+        cboClassDetailStatus.SelectedIndex = 0;
+        _errClass.BlinkStyle = ErrorBlinkStyle.NeverBlink;
     }
 
     private void WireEvents()
     {
-        dgvClassList.SelectionChanged += (_, _) => PopulateClassDetail();
-        btnSearchClass.Click += (_, _) => ApplyFilters();
+        dgvClassList.SelectionChanged += (_, _) => PopulateDetailFromSelection();
+        btnSearchClass.Click += (_, _) => LoadClasses(txtClassKeyword.Text.Trim(), cboClassStatusFilter.Text);
         btnRefreshClass.Click += (_, _) => ResetFilters();
-        btnCreateClass.Click += (_, _) =>
-        {
-            txtClassCode.Text = $"LP{_classTable.Rows.Count + 1:000}";
-            txtClassName.Clear();
-            txtClassCourse.Clear();
-            txtClassTeacher.Clear();
-            txtClassSchedule.Clear();
-            txtClassRoom.Clear();
-            txtClassSize.Clear();
-            dtpClassStartDate.Value = DateTime.Today;
-            dtpClassEndDate.Value = DateTime.Today.AddMonths(3);
-            cboClassDetailStatus.SelectedIndex = 0;
-            tabClassManagement.SelectedTab = tpClassInfo;
-            txtClassName.Focus();
-        };
-        btnSaveClass.Click += (_, _) =>
-        {
-            using var dialog = new FrmStatusDialog("Lưu lớp học", "UI demo đã lưu trạng thái lớp học trong phiên làm việc hiện tại.");
-            dialog.ShowDialog(this);
-        };
-        btnUpdateClass.Click += (_, _) =>
-        {
-            using var dialog = new FrmStatusDialog("Cập nhật lớp học", "Thông tin lớp học đang chọn đã được cập nhật ở tầng giao diện.");
-            dialog.ShowDialog(this);
-        };
-        btnGenerateSessions.Click += (_, _) => tabClassManagement.SelectedTab = tpClassSessions;
+        btnCreateClass.Click += (_, _) => StartCreateClass();
+        btnSaveClass.Click += (_, _) => SaveCurrentClass();
+        btnUpdateClass.Click += (_, _) => SaveCurrentClass();
+        btnGenerateSessions.Click += (_, _) => DeleteSelectedClass();
         btnOpenEnrollmentFromClass.Click += (_, _) =>
         {
-            using var dialog = new FrmStatusDialog("Mở ghi danh lớp", "UI demo đã sẵn sàng chuyển sang nghiệp vụ ghi danh / xếp lớp.");
-            dialog.ShowDialog(this);
+            using var form = new FrmEnrollment();
+            form.ShowDialog(this);
         };
-        Resize += (_, _) => ApplyResponsiveLayout();
     }
 
-    private void ApplyFilters()
+    private void LoadClasses(string? keyword = null, string? status = null)
     {
-        var keyword = txtClassKeyword.Text.Trim();
-        var status = cboClassStatusFilter.Text;
-        var filteredTable = _classTable.Clone();
-
-        foreach (DataRow row in _classTable.Rows)
+        try
         {
-            var matchesKeyword =
-                string.IsNullOrWhiteSpace(keyword) ||
-                row["Mã lớp"].ToString()!.Contains(keyword, StringComparison.OrdinalIgnoreCase) ||
-                row["Tên lớp"].ToString()!.Contains(keyword, StringComparison.OrdinalIgnoreCase);
-            var matchesStatus = status == "Tất cả" || row["Trạng thái"].ToString() == status;
+            _classTable = AppRuntime.DataService.GetClassList(
+                string.IsNullOrWhiteSpace(keyword) ? null : keyword,
+                string.IsNullOrWhiteSpace(status) || status == "Tat ca" ? null : status);
 
-            if (matchesKeyword && matchesStatus)
+            dgvClassList.DataSource = _classTable;
+            SelectFirstClass();
+        }
+        catch (Exception ex)
+        {
+            ErrorLogger.Log(ex, nameof(FrmClassManagement));
+            MessageBox.Show(this, "Khong tai duoc danh sach lop hoc. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private void StartCreateClass()
+    {
+        ResetDetailEditor();
+        txtClassCode.Text = AppRuntime.DataService.GetNextClassId();
+        cboClassDetailStatus.Text = "Dang mo";
+        dtpClassStartDate.Value = DateTime.Today;
+        dtpClassEndDate.Value = DateTime.Today.AddMonths(2);
+        txtClassName.Focus();
+    }
+
+    private void SaveCurrentClass()
+    {
+        if (!ValidateEditor(out var courseId, out var teacherId, out var maxStudents))
+        {
+            return;
+        }
+
+        try
+        {
+            var entity = new ClassEntity
             {
-                filteredTable.ImportRow(row);
-            }
-        }
+                Id = txtClassCode.Text.Trim(),
+                Name = txtClassName.Text.Trim(),
+                CourseId = courseId,
+                TeacherId = teacherId,
+                StartDate = dtpClassStartDate.Value.Date,
+                EndDate = dtpClassEndDate.Value.Date,
+                Schedule = txtClassSchedule.Text.Trim(),
+                Room = txtClassRoom.Text.Trim(),
+                MaxStudents = maxStudents,
+                Status = cboClassDetailStatus.Text,
+                IsDeleted = false
+            };
 
-        dgvClassList.DataSource = filteredTable;
-        if (dgvClassList.Rows.Count > 0)
+            entity = AppRuntime.DataService.SaveClass(entity);
+            LoadClasses(txtClassKeyword.Text.Trim(), cboClassStatusFilter.Text);
+            FocusClass(entity.Id);
+            MessageBox.Show(this, "Da luu lop hoc thanh cong.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        catch (Exception ex)
         {
-            dgvClassList.Rows[0].Selected = true;
-            PopulateClassDetail();
+            ErrorLogger.Log(ex, nameof(FrmClassManagement));
+            MessageBox.Show(this, "Khong luu duoc lop hoc. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
-    private void ResetFilters()
+    private void DeleteSelectedClass()
     {
-        txtClassKeyword.Clear();
-        cboClassStatusFilter.SelectedIndex = 0;
-        dgvClassList.DataSource = _classTable;
-        if (dgvClassList.Rows.Count > 0)
+        if (string.IsNullOrWhiteSpace(txtClassCode.Text))
         {
-            dgvClassList.Rows[0].Selected = true;
-            PopulateClassDetail();
+            return;
+        }
+
+        using var dialog = new FrmConfirmDialog("Xoa lop hoc", "Ban co chac muon xoa mem lop hoc dang chon khong?");
+        if (dialog.ShowDialog(this) != DialogResult.OK)
+        {
+            return;
+        }
+
+        try
+        {
+            AppRuntime.DataService.SoftDeleteClass(txtClassCode.Text.Trim());
+            LoadClasses(txtClassKeyword.Text.Trim(), cboClassStatusFilter.Text);
+            ResetDetailEditor();
+        }
+        catch (Exception ex)
+        {
+            ErrorLogger.Log(ex, nameof(FrmClassManagement));
+            MessageBox.Show(this, "Khong xoa duoc lop hoc. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
-    private void PopulateClassDetail()
+    private void PopulateDetailFromSelection()
     {
         if (dgvClassList.CurrentRow?.DataBoundItem is not DataRowView rowView)
         {
             return;
         }
 
-        var row = rowView.Row;
-        txtClassCode.Text = row["Mã lớp"].ToString();
-        txtClassName.Text = row["Tên lớp"].ToString();
-        txtClassCourse.Text = row["Khóa học"].ToString();
-        txtClassTeacher.Text = row["Giáo viên"].ToString();
-        txtClassSchedule.Text = row["Lịch học"].ToString();
-        txtClassRoom.Text = "P201";
+        var classId = rowView.Row[0]?.ToString();
+        if (string.IsNullOrWhiteSpace(classId))
+        {
+            return;
+        }
+
+        try
+        {
+            var entity = AppRuntime.DataService.GetClassById(classId);
+            if (entity is null)
+            {
+                return;
+            }
+
+            txtClassCode.Text = entity.Id;
+            txtClassName.Text = entity.Name;
+            txtClassSchedule.Text = entity.Schedule ?? string.Empty;
+            txtClassRoom.Text = entity.Room ?? string.Empty;
+            txtClassSize.Text = entity.MaxStudents.ToString();
+            dtpClassStartDate.Value = entity.StartDate == default ? DateTime.Today : entity.StartDate;
+            dtpClassEndDate.Value = entity.EndDate == default ? DateTime.Today : entity.EndDate;
+            cboClassDetailStatus.Text = string.IsNullOrWhiteSpace(entity.Status) ? "Dang mo" : entity.Status;
+
+            var course = AppRuntime.DataService.GetCourseById(entity.CourseId);
+            var teacher = AppRuntime.DataService.GetTeacherById(entity.TeacherId);
+            txtClassCourse.Text = course is null ? entity.CourseId : $"{course.Id} - {course.Name}";
+            txtClassTeacher.Text = teacher is null ? entity.TeacherId : $"{teacher.Id} - {teacher.FullName}";
+
+            dgvClassStudentList.DataSource = AppRuntime.DataService.GetClassStudents(entity.Id);
+            dgvClassSessionList.DataSource = AppRuntime.DataService.GetSessions(entity.Id);
+        }
+        catch (Exception ex)
+        {
+            ErrorLogger.Log(ex, nameof(FrmClassManagement));
+            MessageBox.Show(this, "Khong tai duoc chi tiet lop hoc. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private void SelectFirstClass()
+    {
+        if (dgvClassList.Rows.Count > 0)
+        {
+            dgvClassList.Rows[0].Selected = true;
+            PopulateDetailFromSelection();
+            return;
+        }
+
+        ResetDetailEditor();
+    }
+
+    private void FocusClass(string classId)
+    {
+        foreach (DataGridViewRow row in dgvClassList.Rows)
+        {
+            if ((row.Cells[0].Value?.ToString() ?? string.Empty).Equals(classId, StringComparison.OrdinalIgnoreCase))
+            {
+                row.Selected = true;
+                dgvClassList.CurrentCell = row.Cells[0];
+                PopulateDetailFromSelection();
+                return;
+            }
+        }
+    }
+
+    private bool ValidateEditor(out string courseId, out string teacherId, out int maxStudents)
+    {
+        _errClass.Clear();
+        courseId = string.Empty;
+        teacherId = string.Empty;
+        maxStudents = 0;
+
+        if (string.IsNullOrWhiteSpace(txtClassCode.Text))
+        {
+            _errClass.SetError(txtClassCode, "Ma lop khong duoc de trong.");
+        }
+
+        if (string.IsNullOrWhiteSpace(txtClassName.Text))
+        {
+            _errClass.SetError(txtClassName, "Ten lop khong duoc de trong.");
+        }
+
+        courseId = ResolveCourseId(txtClassCourse.Text.Trim());
+        if (string.IsNullOrWhiteSpace(courseId))
+        {
+            _errClass.SetError(txtClassCourse, "Khong tim thay khoa hoc.");
+        }
+
+        teacherId = ResolveTeacherId(txtClassTeacher.Text.Trim());
+        if (string.IsNullOrWhiteSpace(teacherId))
+        {
+            _errClass.SetError(txtClassTeacher, "Khong tim thay giao vien.");
+        }
+
+        if (!int.TryParse(txtClassSize.Text.Trim(), out maxStudents) || maxStudents <= 0)
+        {
+            _errClass.SetError(txtClassSize, "Si so toi da phai > 0.");
+        }
+
+        if (dtpClassStartDate.Value.Date > dtpClassEndDate.Value.Date)
+        {
+            _errClass.SetError(dtpClassEndDate, "Ngay ket thuc phai >= ngay bat dau.");
+        }
+
+        return string.IsNullOrWhiteSpace(_errClass.GetError(txtClassCode))
+            && string.IsNullOrWhiteSpace(_errClass.GetError(txtClassName))
+            && string.IsNullOrWhiteSpace(_errClass.GetError(txtClassCourse))
+            && string.IsNullOrWhiteSpace(_errClass.GetError(txtClassTeacher))
+            && string.IsNullOrWhiteSpace(_errClass.GetError(txtClassSize))
+            && string.IsNullOrWhiteSpace(_errClass.GetError(dtpClassEndDate));
+    }
+
+    private string ResolveCourseId(string input)
+    {
+        if (string.IsNullOrWhiteSpace(input))
+        {
+            return string.Empty;
+        }
+
+        var exactId = input.Split('-', 2)[0].Trim();
+        if (AppRuntime.DataService.GetCourseById(exactId) is not null)
+        {
+            return exactId;
+        }
+
+        var table = AppRuntime.DataService.GetCourseList();
+        foreach (DataRow row in table.Rows)
+        {
+            var id = row[0]?.ToString() ?? string.Empty;
+            var name = row[1]?.ToString() ?? string.Empty;
+            if (id.Equals(input, StringComparison.OrdinalIgnoreCase)
+                || name.Equals(input, StringComparison.OrdinalIgnoreCase)
+                || $"{id} - {name}".Equals(input, StringComparison.OrdinalIgnoreCase))
+            {
+                return id;
+            }
+        }
+
+        return string.Empty;
+    }
+
+    private string ResolveTeacherId(string input)
+    {
+        if (string.IsNullOrWhiteSpace(input))
+        {
+            return string.Empty;
+        }
+
+        var exactId = input.Split('-', 2)[0].Trim();
+        if (AppRuntime.DataService.GetTeacherById(exactId) is not null)
+        {
+            return exactId;
+        }
+
+        var table = AppRuntime.DataService.GetTeacherList();
+        foreach (DataRow row in table.Rows)
+        {
+            var id = row[0]?.ToString() ?? string.Empty;
+            var name = row[1]?.ToString() ?? string.Empty;
+            if (id.Equals(input, StringComparison.OrdinalIgnoreCase)
+                || name.Equals(input, StringComparison.OrdinalIgnoreCase)
+                || $"{id} - {name}".Equals(input, StringComparison.OrdinalIgnoreCase))
+            {
+                return id;
+            }
+        }
+
+        return string.Empty;
+    }
+
+    private void ResetDetailEditor()
+    {
+        _errClass.Clear();
+        txtClassCode.Clear();
+        txtClassName.Clear();
+        txtClassCourse.Clear();
+        txtClassTeacher.Clear();
+        txtClassSchedule.Clear();
+        txtClassRoom.Clear();
+        txtClassSize.Clear();
+        cboClassDetailStatus.SelectedIndex = 0;
         dtpClassStartDate.Value = DateTime.Today;
-        dtpClassEndDate.Value = DateTime.Today.AddMonths(3);
-        txtClassSize.Text = row["Sĩ số"].ToString();
-        cboClassDetailStatus.Text = row["Trạng thái"].ToString();
+        dtpClassEndDate.Value = DateTime.Today;
+        dgvClassStudentList.DataSource = null;
+        dgvClassSessionList.DataSource = null;
+    }
+
+    private void ResetFilters()
+    {
+        txtClassKeyword.Clear();
+        cboClassStatusFilter.SelectedIndex = 0;
+        LoadClasses();
     }
 
     private void LocalizeLabels()
     {
-        lblClassKeyword.Text = "Từ khóa tìm kiếm";
-        txtClassKeyword.PlaceholderText = "Mã lớp hoặc tên lớp";
-        lblClassStatus.Text = "Trạng thái";
+        lblClassKeyword.Text = "Tu khoa";
+        txtClassKeyword.PlaceholderText = "Ma lop hoac ten lop";
+        lblClassStatus.Text = "Trang thai";
         cboClassStatusFilter.Items.Clear();
-        cboClassStatusFilter.Items.AddRange(["Tất cả", "Đang mở", "Đầy", "Đã đóng"]);
-
-        tpClassInfo.Text = "Thông tin lớp";
-        tpClassStudents.Text = "Danh sách học viên";
-        tpClassSessions.Text = "Lịch học";
-        lblClassCode.Text = "Mã lớp";
-        lblClassName.Text = "Tên lớp";
-        lblClassCourse.Text = "Khóa học";
-        lblClassTeacher.Text = "Giáo viên";
-        lblClassSchedule.Text = "Lịch học";
-        lblClassRoom.Text = "Phòng học";
-        lblClassStartDate.Text = "Ngày khai giảng";
-        lblClassEndDate.Text = "Ngày kết thúc";
-        lblClassSize.Text = "Sĩ số";
-        lblClassDetailStatus.Text = "Trạng thái";
+        cboClassStatusFilter.Items.AddRange(["Tat ca", "Dang mo", "Dang hoc", "Day", "Da dong", "Hoan thanh", "Da huy"]);
         cboClassDetailStatus.Items.Clear();
-        cboClassDetailStatus.Items.AddRange(["Đang mở", "Đầy", "Đã đóng"]);
+        cboClassDetailStatus.Items.AddRange(["Dang mo", "Dang hoc", "Da dong", "Hoan thanh", "Da huy"]);
 
-        btnSearchClass.Text = "Tìm kiếm";
-        btnRefreshClass.Text = "Làm mới";
-        btnCreateClass.Text = "Thêm lớp";
-        btnSaveClass.Text = "Lưu";
-        btnUpdateClass.Text = "Cập nhật";
-        btnGenerateSessions.Text = "Tạo lịch học";
-        btnOpenEnrollmentFromClass.Text = "Mở ghi danh";
-    }
+        lblClassCode.Text = "Ma lop";
+        lblClassName.Text = "Ten lop";
+        lblClassCourse.Text = "Khoa hoc";
+        lblClassTeacher.Text = "Giao vien";
+        lblClassSchedule.Text = "Lich hoc";
+        lblClassSize.Text = "Si so toi da";
+        lblClassDetailStatus.Text = "Trang thai";
+        lblClassRoom.Text = "Phong hoc";
+        lblClassStartDate.Text = "Ngay bat dau";
+        lblClassEndDate.Text = "Ngay ket thuc";
 
-    private void BuildFilterLayout()
-    {
-        var filterLayout = new TableLayoutPanel
-        {
-            Dock = DockStyle.Fill,
-            ColumnCount = 3,
-            RowCount = 2,
-            BackColor = Color.Transparent,
-            Margin = Padding.Empty
-        };
-        filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 52F));
-        filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 24F));
-        filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 24F));
-        filterLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-        filterLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-
-        var actionBar = new FlowLayoutPanel
-        {
-            Dock = DockStyle.Fill,
-            FlowDirection = FlowDirection.LeftToRight,
-            WrapContents = true,
-            AutoSize = true,
-            Margin = new Padding(0, 22, 0, 0)
-        };
-        actionBar.Controls.Add(btnSearchClass);
-        actionBar.Controls.Add(btnRefreshClass);
-
-        txtClassKeyword.Dock = DockStyle.Fill;
-        cboClassStatusFilter.Dock = DockStyle.Fill;
-
-        pnlClassFilterCard.Controls.Clear();
-        pnlClassFilterCard.Controls.Add(filterLayout);
-        pnlClassFilterCard.Padding = new Padding(18, 16, 18, 14);
-        pnlClassFilterCard.Height = 112;
-        pnlClassFilterCard.MinimumSize = new Size(0, 112);
-
-        filterLayout.Controls.Add(lblClassKeyword, 0, 0);
-        filterLayout.Controls.Add(lblClassStatus, 1, 0);
-        filterLayout.Controls.Add(txtClassKeyword, 0, 1);
-        filterLayout.Controls.Add(cboClassStatusFilter, 1, 1);
-        filterLayout.Controls.Add(actionBar, 2, 1);
-    }
-
-    private void ApplyResponsiveLayout()
-    {
-        var actionBar = btnSearchClass.Parent;
-        if (pnlClassFilterCard.Controls.Count > 0 && pnlClassFilterCard.Controls[0] is TableLayoutPanel filterLayout)
-        {
-            if (ClientSize.Width < 980)
-            {
-                filterLayout.ColumnCount = 2;
-                filterLayout.RowCount = 3;
-                filterLayout.ColumnStyles.Clear();
-                filterLayout.RowStyles.Clear();
-                filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));
-                filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
-                filterLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                filterLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                filterLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                filterLayout.SetColumn(lblClassKeyword, 0);
-                filterLayout.SetRow(lblClassKeyword, 0);
-                filterLayout.SetColumn(lblClassStatus, 1);
-                filterLayout.SetRow(lblClassStatus, 0);
-                filterLayout.SetColumn(txtClassKeyword, 0);
-                filterLayout.SetRow(txtClassKeyword, 1);
-                filterLayout.SetColumn(cboClassStatusFilter, 1);
-                filterLayout.SetRow(cboClassStatusFilter, 1);
-                if (actionBar is not null)
-                {
-                    filterLayout.SetColumn(actionBar, 0);
-                    filterLayout.SetRow(actionBar, 2);
-                    filterLayout.SetColumnSpan(actionBar, 2);
-                }
-                pnlClassFilterCard.Height = 128;
-            }
-            else
-            {
-                filterLayout.ColumnCount = 3;
-                filterLayout.RowCount = 2;
-                filterLayout.ColumnStyles.Clear();
-                filterLayout.RowStyles.Clear();
-                filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 52F));
-                filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 24F));
-                filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 24F));
-                filterLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                filterLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                filterLayout.SetColumn(lblClassKeyword, 0);
-                filterLayout.SetRow(lblClassKeyword, 0);
-                filterLayout.SetColumn(lblClassStatus, 1);
-                filterLayout.SetRow(lblClassStatus, 0);
-                filterLayout.SetColumn(txtClassKeyword, 0);
-                filterLayout.SetRow(txtClassKeyword, 1);
-                filterLayout.SetColumn(cboClassStatusFilter, 1);
-                filterLayout.SetRow(cboClassStatusFilter, 1);
-                if (actionBar is not null)
-                {
-                    filterLayout.SetColumn(actionBar, 2);
-                    filterLayout.SetRow(actionBar, 1);
-                    filterLayout.SetColumnSpan(actionBar, 1);
-                }
-                pnlClassFilterCard.Height = 112;
-            }
-        }
-
-        if (ClientSize.Width < 980)
-        {
-            splClassContent.Orientation = Orientation.Horizontal;
-            splClassContent.SplitterDistance = Math.Max(220, (int)(splClassContent.Height * 0.38));
-
-            if (tblClassInfo.ColumnStyles.Count > 0)
-            {
-                tblClassInfo.ColumnStyles[0].Width = 132F;
-            }
-        }
-        else
-        {
-            splClassContent.Orientation = Orientation.Vertical;
-            splClassContent.SplitterDistance = Math.Max(360, (int)(splClassContent.Width * 0.42));
-
-            if (tblClassInfo.ColumnStyles.Count > 0)
-            {
-                tblClassInfo.ColumnStyles[0].Width = 146F;
-            }
-        }
+        btnSearchClass.Text = "Tim kiem";
+        btnRefreshClass.Text = "Lam moi";
+        btnCreateClass.Text = "Them lop";
+        btnSaveClass.Text = "Luu";
+        btnUpdateClass.Text = "Cap nhat";
+        btnGenerateSessions.Text = "Xoa mem lop";
+        btnOpenEnrollmentFromClass.Text = "Mo ghi danh";
     }
 }

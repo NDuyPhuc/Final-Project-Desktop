@@ -1,4 +1,4 @@
-namespace Trung_tam_quan_ly_ngoai_ngu;
+﻿namespace Trung_tam_quan_ly_ngoai_ngu;
 
 partial class FrmAccessMatrix
 {
@@ -128,7 +128,7 @@ partial class FrmAccessMatrix
         tblAccessRoot.RowStyles.Add(new RowStyle());
         tblAccessRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 220F));
         tblAccessRoot.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-        tblAccessRoot.Size = new Size(1088, 618);
+        tblAccessRoot.Size = new Size(1146, 618);
         tblAccessRoot.TabIndex = 0;
         // 
         // pnlAccessHeader
@@ -139,7 +139,7 @@ partial class FrmAccessMatrix
         pnlAccessHeader.Location = new Point(3, 3);
         pnlAccessHeader.Name = "pnlAccessHeader";
         pnlAccessHeader.Padding = new Padding(0, 4, 0, 10);
-        pnlAccessHeader.Size = new Size(1082, 82);
+        pnlAccessHeader.Size = new Size(1140, 82);
         pnlAccessHeader.TabIndex = 0;
         // 
         // lblAccessSubtitle
@@ -149,9 +149,9 @@ partial class FrmAccessMatrix
         lblAccessSubtitle.ForeColor = Color.FromArgb(42, 51, 64);
         lblAccessSubtitle.Location = new Point(3, 50);
         lblAccessSubtitle.Name = "lblAccessSubtitle";
-        lblAccessSubtitle.Size = new Size(642, 25);
+        lblAccessSubtitle.Size = new Size(731, 30);
         lblAccessSubtitle.TabIndex = 1;
-        lblAccessSubtitle.Text = "Cấu hình phân quyền hệ thống và phân cấp kiến trúc trung tâm ngoại ngữ.";
+        lblAccessSubtitle.Text = "Cáº¥u hÃ¬nh phÃ¢n quyá»n há»‡ thá»‘ng vÃ  phÃ¢n cáº¥p kiáº¿n trÃºc trung tÃ¢m ngoáº¡i ngá»¯.";
         // 
         // lblAccessTitle
         // 
@@ -160,9 +160,9 @@ partial class FrmAccessMatrix
         lblAccessTitle.ForeColor = Color.FromArgb(7, 30, 39);
         lblAccessTitle.Location = new Point(0, 0);
         lblAccessTitle.Name = "lblAccessTitle";
-        lblAccessTitle.Size = new Size(525, 46);
+        lblAccessTitle.Size = new Size(614, 54);
         lblAccessTitle.TabIndex = 0;
-        lblAccessTitle.Text = "TỔNG QUAN QUYỀN TRUY CẬP";
+        lblAccessTitle.Text = "Tá»”NG QUAN QUYá»€N TRUY Cáº¬P";
         // 
         // tblAccessCards
         // 
@@ -178,7 +178,7 @@ partial class FrmAccessMatrix
         tblAccessCards.Name = "tblAccessCards";
         tblAccessCards.RowCount = 1;
         tblAccessCards.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-        tblAccessCards.Size = new Size(1082, 214);
+        tblAccessCards.Size = new Size(1140, 214);
         tblAccessCards.TabIndex = 1;
         // 
         // pnlAdminRoleCard
@@ -196,7 +196,7 @@ partial class FrmAccessMatrix
         pnlAdminRoleCard.Location = new Point(3, 3);
         pnlAdminRoleCard.Name = "pnlAdminRoleCard";
         pnlAdminRoleCard.Padding = new Padding(18);
-        pnlAdminRoleCard.Size = new Size(354, 208);
+        pnlAdminRoleCard.Size = new Size(374, 208);
         pnlAdminRoleCard.TabIndex = 0;
         // 
         // lblAdminRoleTagPrimary
@@ -209,9 +209,9 @@ partial class FrmAccessMatrix
         lblAdminRoleTagPrimary.Margin = new Padding(0);
         lblAdminRoleTagPrimary.Name = "lblAdminRoleTagPrimary";
         lblAdminRoleTagPrimary.Padding = new Padding(8, 4, 8, 4);
-        lblAdminRoleTagPrimary.Size = new Size(107, 27);
+        lblAdminRoleTagPrimary.Size = new Size(119, 29);
         lblAdminRoleTagPrimary.TabIndex = 4;
-        lblAdminRoleTagPrimary.Text = "QUYỀN GỐC";
+        lblAdminRoleTagPrimary.Text = "QUYá»€N Gá»C";
         // 
         // flpAdminRoleTags
         // 
@@ -234,9 +234,9 @@ partial class FrmAccessMatrix
         lblAdminRoleTagSecondary.Margin = new Padding(6, 0, 0, 0);
         lblAdminRoleTagSecondary.Name = "lblAdminRoleTagSecondary";
         lblAdminRoleTagSecondary.Padding = new Padding(8, 4, 8, 4);
-        lblAdminRoleTagSecondary.Size = new Size(101, 27);
+        lblAdminRoleTagSecondary.Size = new Size(113, 29);
         lblAdminRoleTagSecondary.TabIndex = 5;
-        lblAdminRoleTagSecondary.Text = "KIỂM TOÁN";
+        lblAdminRoleTagSecondary.Text = "KIá»‚M TOÃN";
         // 
         // lblAdminRoleBody
         // 
@@ -246,7 +246,7 @@ partial class FrmAccessMatrix
         lblAdminRoleBody.Name = "lblAdminRoleBody";
         lblAdminRoleBody.Size = new Size(255, 76);
         lblAdminRoleBody.TabIndex = 3;
-        lblAdminRoleBody.Text = "Toàn quyền điều hành hệ thống. Giám sát phân quyền, nhân viên và tính toàn vẹn dữ liệu.";
+        lblAdminRoleBody.Text = "ToÃ n quyá»n Ä‘iá»u hÃ nh há»‡ thá»‘ng. GiÃ¡m sÃ¡t phÃ¢n quyá»n, nhÃ¢n viÃªn vÃ  tÃ­nh toÃ n váº¹n dá»¯ liá»‡u.";
         // 
         // lblAdminRoleTitle
         // 
@@ -255,9 +255,9 @@ partial class FrmAccessMatrix
         lblAdminRoleTitle.ForeColor = Color.FromArgb(0, 66, 118);
         lblAdminRoleTitle.Location = new Point(20, 51);
         lblAdminRoleTitle.Name = "lblAdminRoleTitle";
-        lblAdminRoleTitle.Size = new Size(180, 28);
+        lblAdminRoleTitle.Size = new Size(215, 32);
         lblAdminRoleTitle.TabIndex = 2;
-        lblAdminRoleTitle.Text = "Quản lý & Giám sát";
+        lblAdminRoleTitle.Text = "Quáº£n lÃ½ & GiÃ¡m sÃ¡t";
         // 
         // lblAdminRoleCaption
         // 
@@ -266,20 +266,20 @@ partial class FrmAccessMatrix
         lblAdminRoleCaption.ForeColor = Color.FromArgb(7, 30, 39);
         lblAdminRoleCaption.Location = new Point(20, 18);
         lblAdminRoleCaption.Name = "lblAdminRoleCaption";
-        lblAdminRoleCaption.Size = new Size(121, 20);
+        lblAdminRoleCaption.Size = new Size(147, 25);
         lblAdminRoleCaption.TabIndex = 1;
-        lblAdminRoleCaption.Text = "QUẢN TRỊ VIÊN";
+        lblAdminRoleCaption.Text = "QUáº¢N TRá»Š VIÃŠN";
         // 
         // lblAdminRoleGlyph
         // 
         lblAdminRoleGlyph.Anchor = AnchorStyles.Top | AnchorStyles.Right;
         lblAdminRoleGlyph.Font = new Font("Segoe UI Symbol", 42F);
         lblAdminRoleGlyph.ForeColor = Color.FromArgb(227, 232, 239);
-        lblAdminRoleGlyph.Location = new Point(283, 18);
+        lblAdminRoleGlyph.Location = new Point(303, 18);
         lblAdminRoleGlyph.Name = "lblAdminRoleGlyph";
         lblAdminRoleGlyph.Size = new Size(49, 70);
         lblAdminRoleGlyph.TabIndex = 0;
-        lblAdminRoleGlyph.Text = "◔";
+        lblAdminRoleGlyph.Text = "â—”";
         lblAdminRoleGlyph.TextAlign = ContentAlignment.MiddleCenter;
         // 
         // pnlStaffRoleCard
@@ -294,10 +294,10 @@ partial class FrmAccessMatrix
         pnlStaffRoleCard.Controls.Add(lblStaffRoleCaption);
         pnlStaffRoleCard.Controls.Add(lblStaffRoleGlyph);
         pnlStaffRoleCard.Dock = DockStyle.Fill;
-        pnlStaffRoleCard.Location = new Point(363, 3);
+        pnlStaffRoleCard.Location = new Point(383, 3);
         pnlStaffRoleCard.Name = "pnlStaffRoleCard";
         pnlStaffRoleCard.Padding = new Padding(18);
-        pnlStaffRoleCard.Size = new Size(354, 208);
+        pnlStaffRoleCard.Size = new Size(374, 208);
         pnlStaffRoleCard.TabIndex = 1;
         // 
         // lblStaffRoleTagPrimary
@@ -310,9 +310,9 @@ partial class FrmAccessMatrix
         lblStaffRoleTagPrimary.Margin = new Padding(0);
         lblStaffRoleTagPrimary.Name = "lblStaffRoleTagPrimary";
         lblStaffRoleTagPrimary.Padding = new Padding(8, 4, 8, 4);
-        lblStaffRoleTagPrimary.Size = new Size(102, 27);
+        lblStaffRoleTagPrimary.Size = new Size(113, 29);
         lblStaffRoleTagPrimary.TabIndex = 4;
-        lblStaffRoleTagPrimary.Text = "VẬN HÀNH";
+        lblStaffRoleTagPrimary.Text = "Váº¬N HÃ€NH";
         // 
         // flpStaffRoleTags
         // 
@@ -335,9 +335,9 @@ partial class FrmAccessMatrix
         lblStaffRoleTagSecondary.Margin = new Padding(6, 0, 0, 0);
         lblStaffRoleTagSecondary.Name = "lblStaffRoleTagSecondary";
         lblStaffRoleTagSecondary.Padding = new Padding(8, 4, 8, 4);
-        lblStaffRoleTagSecondary.Size = new Size(90, 27);
+        lblStaffRoleTagSecondary.Size = new Size(99, 29);
         lblStaffRoleTagSecondary.TabIndex = 5;
-        lblStaffRoleTagSecondary.Text = "HẬU CẦN";
+        lblStaffRoleTagSecondary.Text = "Háº¬U Cáº¦N";
         // 
         // lblStaffRoleBody
         // 
@@ -347,7 +347,7 @@ partial class FrmAccessMatrix
         lblStaffRoleBody.Name = "lblStaffRoleBody";
         lblStaffRoleBody.Size = new Size(255, 76);
         lblStaffRoleBody.TabIndex = 3;
-        lblStaffRoleBody.Text = "Thực hiện nghiệp vụ ghi danh, thanh toán và hậu cần. Là đầu mối vận hành toàn trung tâm.";
+        lblStaffRoleBody.Text = "Thá»±c hiá»‡n nghiá»‡p vá»¥ ghi danh, thanh toÃ¡n vÃ  háº­u cáº§n. LÃ  Ä‘áº§u má»‘i váº­n hÃ nh toÃ n trung tÃ¢m.";
         // 
         // lblStaffRoleTitle
         // 
@@ -356,9 +356,9 @@ partial class FrmAccessMatrix
         lblStaffRoleTitle.ForeColor = Color.FromArgb(0, 110, 110);
         lblStaffRoleTitle.Location = new Point(20, 51);
         lblStaffRoleTitle.Name = "lblStaffRoleTitle";
-        lblStaffRoleTitle.Size = new Size(195, 28);
+        lblStaffRoleTitle.Size = new Size(233, 32);
         lblStaffRoleTitle.TabIndex = 2;
-        lblStaffRoleTitle.Text = "Quy trình vận hành";
+        lblStaffRoleTitle.Text = "Quy trÃ¬nh váº­n hÃ nh";
         // 
         // lblStaffRoleCaption
         // 
@@ -367,20 +367,20 @@ partial class FrmAccessMatrix
         lblStaffRoleCaption.ForeColor = Color.FromArgb(7, 30, 39);
         lblStaffRoleCaption.Location = new Point(20, 18);
         lblStaffRoleCaption.Name = "lblStaffRoleCaption";
-        lblStaffRoleCaption.Size = new Size(94, 20);
+        lblStaffRoleCaption.Size = new Size(114, 25);
         lblStaffRoleCaption.TabIndex = 1;
-        lblStaffRoleCaption.Text = "NHÂN VIÊN";
+        lblStaffRoleCaption.Text = "NHÃ‚N VIÃŠN";
         // 
         // lblStaffRoleGlyph
         // 
         lblStaffRoleGlyph.Anchor = AnchorStyles.Top | AnchorStyles.Right;
         lblStaffRoleGlyph.Font = new Font("Segoe UI Symbol", 36F);
         lblStaffRoleGlyph.ForeColor = Color.FromArgb(227, 232, 239);
-        lblStaffRoleGlyph.Location = new Point(285, 20);
+        lblStaffRoleGlyph.Location = new Point(305, 20);
         lblStaffRoleGlyph.Name = "lblStaffRoleGlyph";
         lblStaffRoleGlyph.Size = new Size(47, 60);
         lblStaffRoleGlyph.TabIndex = 0;
-        lblStaffRoleGlyph.Text = "⚙";
+        lblStaffRoleGlyph.Text = "âš™";
         lblStaffRoleGlyph.TextAlign = ContentAlignment.MiddleCenter;
         // 
         // pnlTeacherRoleCard
@@ -395,10 +395,10 @@ partial class FrmAccessMatrix
         pnlTeacherRoleCard.Controls.Add(lblTeacherRoleCaption);
         pnlTeacherRoleCard.Controls.Add(lblTeacherRoleGlyph);
         pnlTeacherRoleCard.Dock = DockStyle.Fill;
-        pnlTeacherRoleCard.Location = new Point(723, 3);
+        pnlTeacherRoleCard.Location = new Point(763, 3);
         pnlTeacherRoleCard.Name = "pnlTeacherRoleCard";
         pnlTeacherRoleCard.Padding = new Padding(18);
-        pnlTeacherRoleCard.Size = new Size(356, 208);
+        pnlTeacherRoleCard.Size = new Size(374, 208);
         pnlTeacherRoleCard.TabIndex = 2;
         // 
         // lblTeacherRoleTagPrimary
@@ -411,9 +411,9 @@ partial class FrmAccessMatrix
         lblTeacherRoleTagPrimary.Margin = new Padding(0);
         lblTeacherRoleTagPrimary.Name = "lblTeacherRoleTagPrimary";
         lblTeacherRoleTagPrimary.Padding = new Padding(8, 4, 8, 4);
-        lblTeacherRoleTagPrimary.Size = new Size(107, 27);
+        lblTeacherRoleTagPrimary.Size = new Size(117, 29);
         lblTeacherRoleTagPrimary.TabIndex = 4;
-        lblTeacherRoleTagPrimary.Text = "HỌC THUẬT";
+        lblTeacherRoleTagPrimary.Text = "Há»ŒC THUáº¬T";
         // 
         // lblTeacherRoleTagSecondary
         // 
@@ -425,9 +425,9 @@ partial class FrmAccessMatrix
         lblTeacherRoleTagSecondary.Margin = new Padding(6, 0, 0, 0);
         lblTeacherRoleTagSecondary.Name = "lblTeacherRoleTagSecondary";
         lblTeacherRoleTagSecondary.Padding = new Padding(8, 4, 8, 4);
-        lblTeacherRoleTagSecondary.Size = new Size(79, 27);
+        lblTeacherRoleTagSecondary.Size = new Size(87, 29);
         lblTeacherRoleTagSecondary.TabIndex = 5;
-        lblTeacherRoleTagSecondary.Text = "CỐ VẤN";
+        lblTeacherRoleTagSecondary.Text = "Cá» Váº¤N";
         // 
         // flpTeacherRoleTags
         // 
@@ -448,7 +448,7 @@ partial class FrmAccessMatrix
         lblTeacherRoleBody.Name = "lblTeacherRoleBody";
         lblTeacherRoleBody.Size = new Size(257, 76);
         lblTeacherRoleBody.TabIndex = 3;
-        lblTeacherRoleBody.Text = "Trực tiếp giảng dạy, tập trung chấm điểm, theo dõi tiến độ và đánh giá học sinh.";
+        lblTeacherRoleBody.Text = "Trá»±c tiáº¿p giáº£ng dáº¡y, táº­p trung cháº¥m Ä‘iá»ƒm, theo dÃµi tiáº¿n Ä‘á»™ vÃ  Ä‘Ã¡nh giÃ¡ há»c sinh.";
         // 
         // lblTeacherRoleTitle
         // 
@@ -457,9 +457,9 @@ partial class FrmAccessMatrix
         lblTeacherRoleTitle.ForeColor = Color.FromArgb(124, 45, 18);
         lblTeacherRoleTitle.Location = new Point(20, 51);
         lblTeacherRoleTitle.Name = "lblTeacherRoleTitle";
-        lblTeacherRoleTitle.Size = new Size(204, 28);
+        lblTeacherRoleTitle.Size = new Size(245, 32);
         lblTeacherRoleTitle.TabIndex = 2;
-        lblTeacherRoleTitle.Text = "Giảng dạy & Đánh giá";
+        lblTeacherRoleTitle.Text = "Giáº£ng dáº¡y & ÄÃ¡nh giÃ¡";
         // 
         // lblTeacherRoleCaption
         // 
@@ -468,20 +468,20 @@ partial class FrmAccessMatrix
         lblTeacherRoleCaption.ForeColor = Color.FromArgb(7, 30, 39);
         lblTeacherRoleCaption.Location = new Point(20, 18);
         lblTeacherRoleCaption.Name = "lblTeacherRoleCaption";
-        lblTeacherRoleCaption.Size = new Size(86, 20);
+        lblTeacherRoleCaption.Size = new Size(105, 25);
         lblTeacherRoleCaption.TabIndex = 1;
-        lblTeacherRoleCaption.Text = "GIÁO VIÊN";
+        lblTeacherRoleCaption.Text = "GIÃO VIÃŠN";
         // 
         // lblTeacherRoleGlyph
         // 
         lblTeacherRoleGlyph.Anchor = AnchorStyles.Top | AnchorStyles.Right;
         lblTeacherRoleGlyph.Font = new Font("Segoe UI Symbol", 38F);
         lblTeacherRoleGlyph.ForeColor = Color.FromArgb(227, 232, 239);
-        lblTeacherRoleGlyph.Location = new Point(286, 18);
+        lblTeacherRoleGlyph.Location = new Point(304, 18);
         lblTeacherRoleGlyph.Name = "lblTeacherRoleGlyph";
         lblTeacherRoleGlyph.Size = new Size(49, 60);
         lblTeacherRoleGlyph.TabIndex = 0;
-        lblTeacherRoleGlyph.Text = "⌂";
+        lblTeacherRoleGlyph.Text = "âŒ‚";
         lblTeacherRoleGlyph.TextAlign = ContentAlignment.MiddleCenter;
         // 
         // pnlAccessMatrixCard
@@ -492,7 +492,7 @@ partial class FrmAccessMatrix
         pnlAccessMatrixCard.Dock = DockStyle.Fill;
         pnlAccessMatrixCard.Location = new Point(3, 311);
         pnlAccessMatrixCard.Name = "pnlAccessMatrixCard";
-        pnlAccessMatrixCard.Size = new Size(1082, 304);
+        pnlAccessMatrixCard.Size = new Size(1140, 304);
         pnlAccessMatrixCard.TabIndex = 2;
         // 
         // tblAccessMatrixLayout
@@ -510,7 +510,7 @@ partial class FrmAccessMatrix
         tblAccessMatrixLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 52F));
         tblAccessMatrixLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblAccessMatrixLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 42F));
-        tblAccessMatrixLayout.Size = new Size(1080, 302);
+        tblAccessMatrixLayout.Size = new Size(1138, 302);
         tblAccessMatrixLayout.TabIndex = 0;
         // 
         // pnlAccessMatrixHeader
@@ -522,7 +522,7 @@ partial class FrmAccessMatrix
         pnlAccessMatrixHeader.Location = new Point(0, 0);
         pnlAccessMatrixHeader.Margin = new Padding(0);
         pnlAccessMatrixHeader.Name = "pnlAccessMatrixHeader";
-        pnlAccessMatrixHeader.Size = new Size(1080, 52);
+        pnlAccessMatrixHeader.Size = new Size(1138, 52);
         pnlAccessMatrixHeader.TabIndex = 0;
         // 
         // flpAccessLegend
@@ -532,7 +532,7 @@ partial class FrmAccessMatrix
         flpAccessLegend.Controls.Add(lblLegendFull);
         flpAccessLegend.Controls.Add(pnlLegendNone);
         flpAccessLegend.Controls.Add(lblLegendNone);
-        flpAccessLegend.Location = new Point(749, 14);
+        flpAccessLegend.Location = new Point(807, 14);
         flpAccessLegend.Name = "flpAccessLegend";
         flpAccessLegend.Size = new Size(311, 24);
         flpAccessLegend.TabIndex = 1;
@@ -555,14 +555,14 @@ partial class FrmAccessMatrix
         lblLegendFull.Location = new Point(24, 2);
         lblLegendFull.Margin = new Padding(3, 2, 0, 0);
         lblLegendFull.Name = "lblLegendFull";
-        lblLegendFull.Size = new Size(106, 20);
+        lblLegendFull.Size = new Size(119, 23);
         lblLegendFull.TabIndex = 1;
-        lblLegendFull.Text = "TOÀN QUYỀN";
+        lblLegendFull.Text = "TOÃ€N QUYá»€N";
         // 
         // pnlLegendNone
         // 
         pnlLegendNone.BackColor = Color.FromArgb(235, 241, 247);
-        pnlLegendNone.Location = new Point(150, 6);
+        pnlLegendNone.Location = new Point(163, 6);
         pnlLegendNone.Margin = new Padding(20, 6, 4, 0);
         pnlLegendNone.Name = "pnlLegendNone";
         pnlLegendNone.Size = new Size(14, 14);
@@ -573,12 +573,12 @@ partial class FrmAccessMatrix
         lblLegendNone.AutoSize = true;
         lblLegendNone.Font = new Font("Segoe UI", 8.5F, FontStyle.Bold);
         lblLegendNone.ForeColor = Color.FromArgb(42, 51, 64);
-        lblLegendNone.Location = new Point(171, 2);
+        lblLegendNone.Location = new Point(184, 2);
         lblLegendNone.Margin = new Padding(3, 2, 0, 0);
         lblLegendNone.Name = "lblLegendNone";
-        lblLegendNone.Size = new Size(140, 20);
+        lblLegendNone.Size = new Size(158, 23);
         lblLegendNone.TabIndex = 3;
-        lblLegendNone.Text = "KHÔNG TRUY CẬP";
+        lblLegendNone.Text = "KHÃ”NG TRUY Cáº¬P";
         // 
         // lblAccessMatrixHeader
         // 
@@ -587,9 +587,9 @@ partial class FrmAccessMatrix
         lblAccessMatrixHeader.ForeColor = Color.FromArgb(7, 30, 39);
         lblAccessMatrixHeader.Location = new Point(20, 14);
         lblAccessMatrixHeader.Name = "lblAccessMatrixHeader";
-        lblAccessMatrixHeader.Size = new Size(297, 23);
+        lblAccessMatrixHeader.Size = new Size(353, 28);
         lblAccessMatrixHeader.TabIndex = 0;
-        lblAccessMatrixHeader.Text = "MA TRẬN PHÂN QUYỀN HỆ THỐNG";
+        lblAccessMatrixHeader.Text = "MA TRáº¬N PHÃ‚N QUYá»€N Há»† THá»NG";
         // 
         // dgvAccessMatrix
         // 
@@ -608,7 +608,7 @@ partial class FrmAccessMatrix
         dgvAccessMatrix.RowHeadersVisible = false;
         dgvAccessMatrix.RowHeadersWidth = 51;
         dgvAccessMatrix.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-        dgvAccessMatrix.Size = new Size(1080, 208);
+        dgvAccessMatrix.Size = new Size(1138, 208);
         dgvAccessMatrix.TabIndex = 1;
         // 
         // pnlAccessMatrixFooter
@@ -618,7 +618,7 @@ partial class FrmAccessMatrix
         pnlAccessMatrixFooter.Location = new Point(0, 260);
         pnlAccessMatrixFooter.Margin = new Padding(0);
         pnlAccessMatrixFooter.Name = "pnlAccessMatrixFooter";
-        pnlAccessMatrixFooter.Size = new Size(1080, 42);
+        pnlAccessMatrixFooter.Size = new Size(1138, 42);
         pnlAccessMatrixFooter.TabIndex = 2;
         // 
         // btnExportAccessMatrix
@@ -628,11 +628,11 @@ partial class FrmAccessMatrix
         btnExportAccessMatrix.FlatStyle = FlatStyle.Flat;
         btnExportAccessMatrix.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
         btnExportAccessMatrix.ForeColor = Color.FromArgb(0, 66, 118);
-        btnExportAccessMatrix.Location = new Point(855, 7);
+        btnExportAccessMatrix.Location = new Point(913, 7);
         btnExportAccessMatrix.Name = "btnExportAccessMatrix";
         btnExportAccessMatrix.Size = new Size(223, 28);
         btnExportAccessMatrix.TabIndex = 0;
-        btnExportAccessMatrix.Text = "XUẤT NHẬT KÝ KIỂM TOÁN";
+        btnExportAccessMatrix.Text = "XUáº¤T NHáº¬T KÃ KIá»‚M TOÃN";
         btnExportAccessMatrix.UseVisualStyleBackColor = true;
         // 
         // tblAccessMatrixHeaderLayout
@@ -644,13 +644,14 @@ partial class FrmAccessMatrix
         // 
         // FrmAccessMatrix
         // 
-        AutoScaleMode = AutoScaleMode.None;
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         BackColor = Color.FromArgb(244, 251, 255);
-        ClientSize = new Size(1120, 650);
+        ClientSize = new Size(1178, 650);
         Controls.Add(tblAccessRoot);
         Name = "FrmAccessMatrix";
         Padding = new Padding(16);
-        Text = "Tổng quan quyền truy cập";
+        Text = "Tá»•ng quan quyá»n truy cáº­p";
         tblAccessRoot.ResumeLayout(false);
         pnlAccessHeader.ResumeLayout(false);
         pnlAccessHeader.PerformLayout();
@@ -672,3 +673,4 @@ partial class FrmAccessMatrix
         ResumeLayout(false);
     }
 }
+

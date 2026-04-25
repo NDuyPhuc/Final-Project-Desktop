@@ -1,9 +1,18 @@
+using TrungTamNgoaiNgu.Application.Contracts;
+
 namespace Trung_tam_quan_ly_ngoai_ngu;
 
 public partial class FrmAccessMatrix : Form
 {
-    public FrmAccessMatrix()
+    private readonly ILanguageCenterDataService _dataService;
+
+    public FrmAccessMatrix() : this(AppRuntime.DataService)
     {
+    }
+
+    public FrmAccessMatrix(ILanguageCenterDataService dataService)
+    {
+        _dataService = dataService;
         InitializeComponent();
         FormHostHelpers.ConfigureModuleSurface(this, "Tổng quan quyền truy cập");
         BindMockData();
@@ -11,6 +20,6 @@ public partial class FrmAccessMatrix : Form
 
     private void BindMockData()
     {
-        dgvAccessMatrix.DataSource = DemoDataFactory.GetAccessMatrix();
+        dgvAccessMatrix.DataSource = _dataService.GetAccessMatrix();
     }
 }

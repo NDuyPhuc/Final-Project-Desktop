@@ -1,4 +1,4 @@
-namespace Trung_tam_quan_ly_ngoai_ngu;
+﻿namespace Trung_tam_quan_ly_ngoai_ngu;
 
 partial class FrmTeacherDashboard
 {
@@ -147,7 +147,7 @@ partial class FrmTeacherDashboard
         btnMenuTeacherDashboard.Name = "btnMenuTeacherDashboard";
         btnMenuTeacherDashboard.Size = new Size(214, 46);
         btnMenuTeacherDashboard.TabIndex = 0;
-        btnMenuTeacherDashboard.Text = "Dashboard giảng dạy";
+        btnMenuTeacherDashboard.Text = "Dashboard giáº£ng dáº¡y";
         btnMenuTeacherDashboard.UseVisualStyleBackColor = true;
         // 
         // btnMenuTeachingClasses
@@ -156,7 +156,7 @@ partial class FrmTeacherDashboard
         btnMenuTeachingClasses.Name = "btnMenuTeachingClasses";
         btnMenuTeachingClasses.Size = new Size(214, 46);
         btnMenuTeachingClasses.TabIndex = 1;
-        btnMenuTeachingClasses.Text = "Lớp đang dạy";
+        btnMenuTeachingClasses.Text = "Lá»›p Ä‘ang dáº¡y";
         btnMenuTeachingClasses.UseVisualStyleBackColor = true;
         // 
         // btnMenuClassStudentList
@@ -165,7 +165,7 @@ partial class FrmTeacherDashboard
         btnMenuClassStudentList.Name = "btnMenuClassStudentList";
         btnMenuClassStudentList.Size = new Size(214, 46);
         btnMenuClassStudentList.TabIndex = 2;
-        btnMenuClassStudentList.Text = "DS học viên lớp";
+        btnMenuClassStudentList.Text = "DS há»c viÃªn lá»›p";
         btnMenuClassStudentList.UseVisualStyleBackColor = true;
         // 
         // btnMenuAttendance
@@ -174,7 +174,7 @@ partial class FrmTeacherDashboard
         btnMenuAttendance.Name = "btnMenuAttendance";
         btnMenuAttendance.Size = new Size(214, 46);
         btnMenuAttendance.TabIndex = 3;
-        btnMenuAttendance.Text = "Điểm danh";
+        btnMenuAttendance.Text = "Äiá»ƒm danh";
         btnMenuAttendance.UseVisualStyleBackColor = true;
         // 
         // btnMenuScoreEntry
@@ -183,7 +183,7 @@ partial class FrmTeacherDashboard
         btnMenuScoreEntry.Name = "btnMenuScoreEntry";
         btnMenuScoreEntry.Size = new Size(214, 46);
         btnMenuScoreEntry.TabIndex = 4;
-        btnMenuScoreEntry.Text = "Nhập điểm";
+        btnMenuScoreEntry.Text = "Nháº­p Ä‘iá»ƒm";
         btnMenuScoreEntry.UseVisualStyleBackColor = true;
         // 
         // pnlSidebarTeacherBrand
@@ -204,7 +204,7 @@ partial class FrmTeacherDashboard
         lblSidebarTeacherSubtitle.Name = "lblSidebarTeacherSubtitle";
         lblSidebarTeacherSubtitle.Size = new Size(144, 20);
         lblSidebarTeacherSubtitle.TabIndex = 1;
-        lblSidebarTeacherSubtitle.Text = "Tập trung vào lớp được giao";
+        lblSidebarTeacherSubtitle.Text = "Táº­p trung vÃ o lá»›p Ä‘Æ°á»£c giao";
         // 
         // lblSidebarTeacherTitle
         // 
@@ -237,7 +237,7 @@ partial class FrmTeacherDashboard
         btnLogoutTeacher.Name = "btnLogoutTeacher";
         btnLogoutTeacher.Size = new Size(120, 36);
         btnLogoutTeacher.TabIndex = 2;
-        btnLogoutTeacher.Text = "Đăng xuất";
+        btnLogoutTeacher.Text = "ÄÄƒng xuáº¥t";
         btnLogoutTeacher.UseVisualStyleBackColor = true;
         // 
         // lblCurrentUserTeacher
@@ -259,7 +259,7 @@ partial class FrmTeacherDashboard
         lblCurrentRoleTeacher.Name = "lblCurrentRoleTeacher";
         lblCurrentRoleTeacher.Size = new Size(193, 20);
         lblCurrentRoleTeacher.TabIndex = 0;
-        lblCurrentRoleTeacher.Text = "Vai trò: Teacher giảng dạy";
+        lblCurrentRoleTeacher.Text = "Vai trÃ²: Teacher giáº£ng dáº¡y";
         // 
         // pnlContentHostTeacher
         // 
@@ -318,7 +318,7 @@ partial class FrmTeacherDashboard
         lblTeacherDashboardSubtitle.Name = "lblTeacherDashboardSubtitle";
         lblTeacherDashboardSubtitle.Size = new Size(425, 20);
         lblTeacherDashboardSubtitle.TabIndex = 1;
-        lblTeacherDashboardSubtitle.Text = "Theo dõi lớp đang dạy, điểm danh và nhập điểm đúng phạm vi phân công.";
+        lblTeacherDashboardSubtitle.Text = "Theo dÃµi lá»›p Ä‘ang dáº¡y, Ä‘iá»ƒm danh vÃ  nháº­p Ä‘iá»ƒm Ä‘Ãºng pháº¡m vi phÃ¢n cÃ´ng.";
         // 
         // lblTeacherDashboardTitle
         // 
@@ -329,7 +329,7 @@ partial class FrmTeacherDashboard
         lblTeacherDashboardTitle.Name = "lblTeacherDashboardTitle";
         lblTeacherDashboardTitle.Size = new Size(342, 46);
         lblTeacherDashboardTitle.TabIndex = 0;
-        lblTeacherDashboardTitle.Text = "Dashboard giảng dạy";
+        lblTeacherDashboardTitle.Text = "Dashboard giáº£ng dáº¡y";
         // 
         // tblTeacherKpi
         // 
@@ -493,7 +493,7 @@ partial class FrmTeacherDashboard
         lblTeacherClassCardHint.Name = "lblTeacherClassCardHint";
         lblTeacherClassCardHint.Size = new Size(678, 28);
         lblTeacherClassCardHint.TabIndex = 1;
-        lblTeacherClassCardHint.Text = "Chỉ hiển thị lớp giáo viên đang phụ trách theo đúng phân quyền.";
+        lblTeacherClassCardHint.Text = "Chá»‰ hiá»ƒn thá»‹ lá»›p giÃ¡o viÃªn Ä‘ang phá»¥ trÃ¡ch theo Ä‘Ãºng phÃ¢n quyá»n.";
         // 
         // lblTeacherClassCardTitle
         // 
@@ -503,7 +503,7 @@ partial class FrmTeacherDashboard
         lblTeacherClassCardTitle.Name = "lblTeacherClassCardTitle";
         lblTeacherClassCardTitle.Size = new Size(678, 23);
         lblTeacherClassCardTitle.TabIndex = 0;
-        lblTeacherClassCardTitle.Text = "Lớp được phân công";
+        lblTeacherClassCardTitle.Text = "Lá»›p Ä‘Æ°á»£c phÃ¢n cÃ´ng";
         // 
         // pnlTeacherTaskCard
         // 
@@ -524,7 +524,7 @@ partial class FrmTeacherDashboard
         lstTeacherTaskQueue.Dock = DockStyle.Fill;
         lstTeacherTaskQueue.FormattingEnabled = true;
         lstTeacherTaskQueue.ItemHeight = 20;
-        lstTeacherTaskQueue.Items.AddRange(new object[] { "3 buổi học hôm nay cần điểm danh.", "1 lớp còn thiếu điểm giữa kỳ.", "2 lớp cần rà lại danh sách học viên trước buổi học.", "Kiểm tra lại ghi chú vắng phép của buổi gần nhất." });
+        lstTeacherTaskQueue.Items.AddRange(new object[] { "3 buá»•i há»c hÃ´m nay cáº§n Ä‘iá»ƒm danh.", "1 lá»›p cÃ²n thiáº¿u Ä‘iá»ƒm giá»¯a ká»³.", "2 lá»›p cáº§n rÃ  láº¡i danh sÃ¡ch há»c viÃªn trÆ°á»›c buá»•i há»c.", "Kiá»ƒm tra láº¡i ghi chÃº váº¯ng phÃ©p cá»§a buá»•i gáº§n nháº¥t." });
         lstTeacherTaskQueue.Location = new Point(18, 69);
         lstTeacherTaskQueue.Name = "lstTeacherTaskQueue";
         lstTeacherTaskQueue.Size = new Size(292, 326);
@@ -538,7 +538,7 @@ partial class FrmTeacherDashboard
         lblTeacherTaskHint.Name = "lblTeacherTaskHint";
         lblTeacherTaskHint.Size = new Size(292, 28);
         lblTeacherTaskHint.TabIndex = 1;
-        lblTeacherTaskHint.Text = "Những việc giảng dạy cần ưu tiên xử lý.";
+        lblTeacherTaskHint.Text = "Nhá»¯ng viá»‡c giáº£ng dáº¡y cáº§n Æ°u tiÃªn xá»­ lÃ½.";
         // 
         // lblTeacherTaskTitle
         // 
@@ -548,11 +548,12 @@ partial class FrmTeacherDashboard
         lblTeacherTaskTitle.Name = "lblTeacherTaskTitle";
         lblTeacherTaskTitle.Size = new Size(292, 23);
         lblTeacherTaskTitle.TabIndex = 0;
-        lblTeacherTaskTitle.Text = "Việc cần làm";
+        lblTeacherTaskTitle.Text = "Viá»‡c cáº§n lÃ m";
         // 
         // FrmTeacherDashboard
         // 
-        AutoScaleMode = AutoScaleMode.None;
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(1372, 761);
         Controls.Add(pnlContentHostTeacher);
         Controls.Add(pnlTopbarTeacher);
@@ -584,3 +585,4 @@ partial class FrmTeacherDashboard
         ResumeLayout(false);
     }
 }
+

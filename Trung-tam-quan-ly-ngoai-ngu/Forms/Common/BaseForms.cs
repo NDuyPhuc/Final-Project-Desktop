@@ -15,6 +15,7 @@ public static class FormHostHelpers
         form.BackColor = AppTheme.Background;
         form.Font = AppTheme.FontBody;
         form.AutoScroll = true;
+        form.AutoScaleMode = AutoScaleMode.Dpi;
         EnableOptimizedRendering(form);
     }
 
@@ -24,15 +25,15 @@ public static class FormHostHelpers
         form.BackColor = AppTheme.Background;
         form.Font = AppTheme.FontBody;
         form.StartPosition = FormStartPosition.CenterScreen;
+        form.AutoScaleMode = AutoScaleMode.Dpi;
         if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
         {
             form.WindowState = FormWindowState.Normal;
-            form.AutoScaleMode = AutoScaleMode.None;
         }
         else
         {
             form.WindowState = FormWindowState.Maximized;
-            form.MinimumSize = new Size(1280, 760);
+            form.MinimumSize = new Size(1024, 700);
         }
 
         EnableOptimizedRendering(form);
@@ -81,7 +82,8 @@ public static class FormHostHelpers
     public static void OpenLoginAndClose(Form currentForm)
     {
         currentForm.Hide();
-        using var login = new FrmLogin();
+        AppRuntime.SetCurrentUser(null);
+        using var login = new FrmLogin(AppRuntime.DataService);
         login.ShowDialog();
         currentForm.Close();
     }
@@ -128,6 +130,67 @@ public static class FormHostHelpers
         }
     }
 
+    public static void ApplyResponsiveSplit(SplitContainer splitContainer, Orientation targetOrientation, int desiredDistance)
+    {
+        EnsureSafeSplitOrientation(splitContainer, targetOrientation);
+        ApplySafeSplitterDistance(splitContainer, desiredDistance);
+    }
+
+    public static void EnsureSafeSplitOrientation(SplitContainer splitContainer, Orientation targetOrientation)
+    {
+        if (splitContainer.IsDisposed || splitContainer.Orientation == targetOrientation)
+        {
+            return;
+        }
+
+        var panel1MinSize = splitContainer.Panel1MinSize;
+        var panel2MinSize = splitContainer.Panel2MinSize;
+
+        splitContainer.SuspendLayout();
+        try
+        {
+            splitContainer.Panel1MinSize = 0;
+            splitContainer.Panel2MinSize = 0;
+
+            if (GetSplitAxisLength(splitContainer, splitContainer.Orientation) > splitContainer.SplitterWidth)
+            {
+                splitContainer.SplitterDistance = 0;
+            }
+
+            splitContainer.Orientation = targetOrientation;
+        }
+        finally
+        {
+            splitContainer.Panel1MinSize = panel1MinSize;
+            splitContainer.Panel2MinSize = panel2MinSize;
+            splitContainer.ResumeLayout(true);
+        }
+    }
+
+    public static void ApplySafeSplitterDistance(SplitContainer splitContainer, int desiredDistance)
+    {
+        if (splitContainer.IsDisposed)
+        {
+            return;
+        }
+
+        var axisLength = GetSplitAxisLength(splitContainer, splitContainer.Orientation);
+        if (axisLength <= 0)
+        {
+            return;
+        }
+
+        var minimum = splitContainer.Panel1MinSize;
+        var maximum = axisLength - splitContainer.Panel2MinSize - splitContainer.SplitterWidth;
+
+        if (maximum < minimum)
+        {
+            return;
+        }
+
+        splitContainer.SplitterDistance = Math.Clamp(desiredDistance, minimum, maximum);
+    }
+
     public static void LogUi(string message)
     {
         try
@@ -156,5 +219,12 @@ public static class FormHostHelpers
         catch
         {
         }
+    }
+
+    private static int GetSplitAxisLength(SplitContainer splitContainer, Orientation orientation)
+    {
+        return orientation == Orientation.Horizontal
+            ? splitContainer.ClientSize.Height
+            : splitContainer.ClientSize.Width;
     }
 }

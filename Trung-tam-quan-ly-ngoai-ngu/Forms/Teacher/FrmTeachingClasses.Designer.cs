@@ -1,4 +1,4 @@
-namespace Trung_tam_quan_ly_ngoai_ngu;
+﻿namespace Trung_tam_quan_ly_ngoai_ngu;
 
 partial class FrmTeachingClasses
 {
@@ -70,7 +70,7 @@ partial class FrmTeachingClasses
         btnOpenScoreEntry.Name = "btnOpenScoreEntry";
         btnOpenScoreEntry.Size = new Size(110, 30);
         btnOpenScoreEntry.TabIndex = 8;
-        btnOpenScoreEntry.Text = "Nhập điểm";
+        btnOpenScoreEntry.Text = "Nháº­p Ä‘iá»ƒm";
         btnOpenScoreEntry.UseVisualStyleBackColor = true;
         // 
         // btnOpenAttendance
@@ -79,7 +79,7 @@ partial class FrmTeachingClasses
         btnOpenAttendance.Name = "btnOpenAttendance";
         btnOpenAttendance.Size = new Size(120, 30);
         btnOpenAttendance.TabIndex = 7;
-        btnOpenAttendance.Text = "Điểm danh";
+        btnOpenAttendance.Text = "Äiá»ƒm danh";
         btnOpenAttendance.UseVisualStyleBackColor = true;
         // 
         // btnOpenClassStudentList
@@ -88,7 +88,7 @@ partial class FrmTeachingClasses
         btnOpenClassStudentList.Name = "btnOpenClassStudentList";
         btnOpenClassStudentList.Size = new Size(140, 30);
         btnOpenClassStudentList.TabIndex = 6;
-        btnOpenClassStudentList.Text = "DS học viên";
+        btnOpenClassStudentList.Text = "DS há»c viÃªn";
         btnOpenClassStudentList.UseVisualStyleBackColor = true;
         // 
         // btnRefreshTeachingClass
@@ -97,7 +97,7 @@ partial class FrmTeachingClasses
         btnRefreshTeachingClass.Name = "btnRefreshTeachingClass";
         btnRefreshTeachingClass.Size = new Size(108, 30);
         btnRefreshTeachingClass.TabIndex = 5;
-        btnRefreshTeachingClass.Text = "Làm mới";
+        btnRefreshTeachingClass.Text = "LÃ m má»›i";
         btnRefreshTeachingClass.UseVisualStyleBackColor = true;
         // 
         // btnSearchTeachingClass
@@ -106,14 +106,14 @@ partial class FrmTeachingClasses
         btnSearchTeachingClass.Name = "btnSearchTeachingClass";
         btnSearchTeachingClass.Size = new Size(100, 30);
         btnSearchTeachingClass.TabIndex = 4;
-        btnSearchTeachingClass.Text = "Tìm kiếm";
+        btnSearchTeachingClass.Text = "TÃ¬m kiáº¿m";
         btnSearchTeachingClass.UseVisualStyleBackColor = true;
         // 
         // cboTeachingStatusFilter
         // 
         cboTeachingStatusFilter.DropDownStyle = ComboBoxStyle.DropDownList;
         cboTeachingStatusFilter.FormattingEnabled = true;
-        cboTeachingStatusFilter.Items.AddRange(new object[] { "Đang dạy", "Sắp khai giảng", "Đã kết thúc" });
+        cboTeachingStatusFilter.Items.AddRange(new object[] { "Äang dáº¡y", "Sáº¯p khai giáº£ng", "ÄÃ£ káº¿t thÃºc" });
         cboTeachingStatusFilter.Location = new Point(350, 41);
         cboTeachingStatusFilter.Name = "cboTeachingStatusFilter";
         cboTeachingStatusFilter.Size = new Size(180, 28);
@@ -126,13 +126,13 @@ partial class FrmTeachingClasses
         lblTeachingClassStatus.Name = "lblTeachingClassStatus";
         lblTeachingClassStatus.Size = new Size(78, 20);
         lblTeachingClassStatus.TabIndex = 2;
-        lblTeachingClassStatus.Text = "Trạng thái";
+        lblTeachingClassStatus.Text = "Tráº¡ng thÃ¡i";
         // 
         // txtTeachingClassKeyword
         // 
         txtTeachingClassKeyword.Location = new Point(16, 41);
         txtTeachingClassKeyword.Name = "txtTeachingClassKeyword";
-        txtTeachingClassKeyword.PlaceholderText = "Mã lớp hoặc tên lớp";
+        txtTeachingClassKeyword.PlaceholderText = "MÃ£ lá»›p hoáº·c tÃªn lá»›p";
         txtTeachingClassKeyword.Size = new Size(300, 27);
         txtTeachingClassKeyword.TabIndex = 1;
         // 
@@ -143,7 +143,7 @@ partial class FrmTeachingClasses
         lblTeachingClassKeyword.Name = "lblTeachingClassKeyword";
         lblTeachingClassKeyword.Size = new Size(95, 20);
         lblTeachingClassKeyword.TabIndex = 0;
-        lblTeachingClassKeyword.Text = "Từ khóa tìm";
+        lblTeachingClassKeyword.Text = "Tá»« khÃ³a tÃ¬m";
         // 
         // dgvTeachingClassList
         // 
@@ -178,12 +178,13 @@ partial class FrmTeachingClasses
         // 
         // FrmTeachingClasses
         // 
-        AutoScaleMode = AutoScaleMode.None;
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(1004, 640);
         Controls.Add(tblTeachingClassRoot);
         Name = "FrmTeachingClasses";
         Padding = new Padding(12);
-        Text = "Lớp đang dạy";
+        Text = "Lá»›p Ä‘ang dáº¡y";
         pnlTeachingClassFilterCard.ResumeLayout(false);
         pnlTeachingClassFilterCard.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)dgvTeachingClassList).EndInit();
@@ -191,3 +192,4 @@ partial class FrmTeachingClasses
         ResumeLayout(false);
     }
 }
+

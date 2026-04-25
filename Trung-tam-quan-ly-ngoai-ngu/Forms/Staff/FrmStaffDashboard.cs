@@ -150,11 +150,12 @@ public partial class FrmStaffDashboard : Form
 
     private void BindDashboardData()
     {
-        lblNewStudentsTodayValue.Text = "124";
-        lblAvailableClassesValue.Text = "18";
-        lblTodayReceiptsValue.Text = "45";
-        lblDebtStudentsValue.Text = "12";
-        dgvRecentReceipts.DataSource = BuildRecentReceiptsTable();
+        var stats = AppRuntime.DataService.GetStaffDashboardStats();
+        lblNewStudentsTodayValue.Text = stats.NewStudentsThisMonth.ToString();
+        lblAvailableClassesValue.Text = stats.TotalActiveClasses.ToString();
+        lblTodayReceiptsValue.Text = stats.TotalReceipts.ToString();
+        lblDebtStudentsValue.Text = AppRuntime.DataService.GetDebtList().Rows.Count.ToString();
+        dgvRecentReceipts.DataSource = AppRuntime.DataService.GetRecentReceipts();
 
         if (dgvRecentReceipts.Columns.Count > 0)
         {
@@ -605,24 +606,6 @@ public partial class FrmStaffDashboard : Form
         table.SetColumn(control, column);
         table.SetRow(control, row);
         control.Margin = margin;
-    }
-
-    private static DataTable BuildRecentReceiptsTable()
-    {
-        var table = new DataTable();
-        table.Columns.Add("NGÀY");
-        table.Columns.Add("HỌC VIÊN");
-        table.Columns.Add("NỘI DUNG");
-        table.Columns.Add("SỐ TIỀN");
-        table.Columns.Add("TRẠNG THÁI");
-
-        table.Rows.Add("20/10/2023", "Nguyễn Văn An", "Học phí IELTS Intensive", "12,500,000đ", "HOÀN TẤT");
-        table.Rows.Add("20/10/2023", "Trần Thị Bích", "Giáo trình & Tài liệu", "450,000đ", "HOÀN TẤT");
-        table.Rows.Add("19/10/2023", "Lê Hoàng Nam", "Đặt cọc khóa TOEIC", "2,000,000đ", "CHỜ XỬ LÝ");
-        table.Rows.Add("19/10/2023", "Phạm Minh Tuấn", "Học phí Giao tiếp Sơ cấp", "5,200,000đ", "QUÁ HẠN");
-        table.Rows.Add("18/10/2023", "Vũ Thu Hà", "Học phí IELTS Foundation", "8,900,000đ", "HOÀN TẤT");
-        table.Rows.Add("18/10/2023", "Đỗ Mạnh Hùng", "Thi thử IELTS", "500,000đ", "HOÀN TẤT");
-        return table;
     }
 
     private static (string Title, string Description, string Priority, string Deadline, string PriorityType)[] GetTaskItems()

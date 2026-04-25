@@ -142,7 +142,7 @@ partial class FrmSidebarPreview
         lblSidebarDocuments.Name = "lblSidebarDocuments";
         lblSidebarDocuments.Size = new Size(120, 20);
         lblSidebarDocuments.TabIndex = 1;
-        lblSidebarDocuments.Text = "Tài liệu";
+        lblSidebarDocuments.Text = "Tï¿½i li?u";
         lblSidebarDocuments.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // pnlSidebarSupport
@@ -171,7 +171,7 @@ partial class FrmSidebarPreview
         lblSidebarSupport.Name = "lblSidebarSupport";
         lblSidebarSupport.Size = new Size(120, 20);
         lblSidebarSupport.TabIndex = 1;
-        lblSidebarSupport.Text = "Hỗ trợ";
+        lblSidebarSupport.Text = "H? tr?";
         lblSidebarSupport.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // pnlSidebarTop
@@ -237,7 +237,7 @@ partial class FrmSidebarPreview
         lblNavDashboard.Name = "lblNavDashboard";
         lblNavDashboard.Size = new Size(144, 20);
         lblNavDashboard.TabIndex = 1;
-        lblNavDashboard.Text = "Quyền truy cập";
+        lblNavDashboard.Text = "Quy?n truy c?p";
         lblNavDashboard.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // pnlNavTeacher
@@ -274,7 +274,7 @@ partial class FrmSidebarPreview
         lblNavTeacher.Name = "lblNavTeacher";
         lblNavTeacher.Size = new Size(144, 20);
         lblNavTeacher.TabIndex = 1;
-        lblNavTeacher.Text = "Danh bạ nhân viên";
+        lblNavTeacher.Text = "Danh b? nhï¿½n viï¿½n";
         lblNavTeacher.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // pnlNavStudent
@@ -311,7 +311,7 @@ partial class FrmSidebarPreview
         lblNavStudent.Name = "lblNavStudent";
         lblNavStudent.Size = new Size(144, 20);
         lblNavStudent.TabIndex = 1;
-        lblNavStudent.Text = "Ma trận học sinh";
+        lblNavStudent.Text = "Ma tr?n h?c sinh";
         lblNavStudent.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // pnlNavSchedule
@@ -385,7 +385,7 @@ partial class FrmSidebarPreview
         lblNavFinance.Name = "lblNavFinance";
         lblNavFinance.Size = new Size(144, 20);
         lblNavFinance.TabIndex = 1;
-        lblNavFinance.Text = "Tài chính";
+        lblNavFinance.Text = "Tï¿½i chï¿½nh";
         lblNavFinance.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // pnlBrandRow
@@ -470,11 +470,12 @@ partial class FrmSidebarPreview
         lblPreviewHint.Name = "lblPreviewHint";
         lblPreviewHint.Size = new Size(281, 19);
         lblPreviewHint.TabIndex = 0;
-        lblPreviewHint.Text = "Preview form để chỉnh sidebar trong Designer";
+        lblPreviewHint.Text = "Preview form d? ch?nh sidebar trong Designer";
         // 
         // FrmSidebarPreview
         // 
-        AutoScaleMode = AutoScaleMode.None;
+        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleMode = AutoScaleMode.Dpi;
         BackColor = Color.FromArgb(245, 247, 251);
         ClientSize = new Size(1120, 760);
         Controls.Add(pnlWorkspace);
@@ -549,4 +550,5 @@ partial class FrmSidebarPreview
     private Panel pnlCanvas;
     private Label lblPreviewHint;
 }
+
 

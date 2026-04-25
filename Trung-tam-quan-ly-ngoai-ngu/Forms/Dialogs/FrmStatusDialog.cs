@@ -2,7 +2,7 @@ namespace Trung_tam_quan_ly_ngoai_ngu;
 
 public partial class FrmStatusDialog : Form
 {
-    public FrmStatusDialog() : this("Thông báo", "Thao tác đã hoàn tất.")
+    public FrmStatusDialog() : this("Thong bao", "Thao tac da hoan tat.")
     {
     }
 
