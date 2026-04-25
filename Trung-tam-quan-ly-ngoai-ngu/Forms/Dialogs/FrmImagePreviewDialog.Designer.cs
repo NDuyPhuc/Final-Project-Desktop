@@ -51,6 +51,7 @@ partial class FrmImagePreviewDialog
         tblImagePreviewRoot.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblImagePreviewRoot.RowStyles.Add(new RowStyle(SizeType.AutoSize));
         tblImagePreviewRoot.Size = new Size(624, 481);
+        tblImagePreviewRoot.AutoScroll = false;
         tblImagePreviewRoot.TabIndex = 0;
         // 
         // lblImageTitle
@@ -60,9 +61,10 @@ partial class FrmImagePreviewDialog
         lblImageTitle.Location = new Point(24, 24);
         lblImageTitle.Margin = new Padding(0, 0, 0, 12);
         lblImageTitle.Name = "lblImageTitle";
-        lblImageTitle.Size = new Size(576, 20);
+        lblImageTitle.Size = new Size(576, 28);
+        lblImageTitle.AutoSize = true;
         lblImageTitle.TabIndex = 0;
-        lblImageTitle.Text = "Anh dai dien / anh minh hoa";
+        lblImageTitle.Text = "Ảnh đại diện / ảnh minh họa";
         // 
         // picPreviewImage
         // 
@@ -89,6 +91,8 @@ partial class FrmImagePreviewDialog
         flpImagePreviewActions.Margin = new Padding(0, 12, 0, 0);
         flpImagePreviewActions.Name = "flpImagePreviewActions";
         flpImagePreviewActions.Size = new Size(576, 32);
+        flpImagePreviewActions.AutoScroll = false;
+        flpImagePreviewActions.WrapContents = true;
         flpImagePreviewActions.TabIndex = 2;
         flpImagePreviewActions.WrapContents = false;
         // 
@@ -99,7 +103,7 @@ partial class FrmImagePreviewDialog
         btnClosePreview.Name = "btnClosePreview";
         btnClosePreview.Size = new Size(120, 32);
         btnClosePreview.TabIndex = 0;
-        btnClosePreview.Text = "Dong";
+        btnClosePreview.Text = "Đóng";
         btnClosePreview.Click += (_, _) => Close();
         btnClosePreview.UseVisualStyleBackColor = true;
         // 
@@ -110,7 +114,7 @@ partial class FrmImagePreviewDialog
         btnRemoveImage.Name = "btnRemoveImage";
         btnRemoveImage.Size = new Size(120, 32);
         btnRemoveImage.TabIndex = 1;
-        btnRemoveImage.Text = "Xoa anh";
+        btnRemoveImage.Text = "Xóa ảnh";
         btnRemoveImage.UseVisualStyleBackColor = true;
         // 
         // btnChooseImage
@@ -120,7 +124,7 @@ partial class FrmImagePreviewDialog
         btnChooseImage.Name = "btnChooseImage";
         btnChooseImage.Size = new Size(120, 32);
         btnChooseImage.TabIndex = 2;
-        btnChooseImage.Text = "Chon anh";
+        btnChooseImage.Text = "Chọn ảnh";
         btnChooseImage.UseVisualStyleBackColor = true;
         // 
         // FrmImagePreviewDialog
@@ -128,15 +132,17 @@ partial class FrmImagePreviewDialog
         AutoScaleDimensions = new SizeF(96F, 96F);
         AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(624, 481);
+        Font = new Font("Segoe UI", 10F);
         Controls.Add(tblImagePreviewRoot);
         MinimumSize = new Size(640, 520);
         Name = "FrmImagePreviewDialog";
         StartPosition = FormStartPosition.CenterParent;
-        Text = "Xem truoc anh";
+        Text = "Xem trước ảnh";
         tblImagePreviewRoot.ResumeLayout(false);
         tblImagePreviewRoot.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)picPreviewImage).EndInit();
         flpImagePreviewActions.ResumeLayout(false);
+        AutoScroll = true;
         ResumeLayout(false);
     }
 }

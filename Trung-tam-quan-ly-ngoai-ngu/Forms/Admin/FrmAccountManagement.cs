@@ -60,7 +60,6 @@ public partial class FrmAccountManagement : Form
         lblPermissionTeacherTitle.Text = "GIÁO VIÊN (TEACHER)";
         lblPermissionTeacherBody.Text = "Truy cập học liệu, quản lý lớp học được giảng dạy và đánh giá học viên.";
         lblPermissionFooter.Text = "LINGUISTIC ARCHITECT SECURITY PROTOCOL V2.4";
-
         btnSearchAccount.Text = "Tìm";
         btnRefreshAccount.Text = "Mới";
 
@@ -463,7 +462,7 @@ public partial class FrmAccountManagement : Form
         cboAccountRole.SelectedItem = account.Role;
         rdoAccountActive.Checked = account.Status == "Hoạt động";
         rdoAccountLocked.Checked = account.Status != "Hoạt động";
-        btnToggleAccountStatus.Text = account.Status == "Hoạt động" ? "KHÓA TÀI KHOẢN" : "MỞ KHÓA TÀI KHOẢN";
+        btnToggleAccountStatus.Text = "KHÓA TÀI KHOẢN";
         HighlightPermissionRole(account.Role);
         RefreshCardSelection();
     }
@@ -537,12 +536,12 @@ public partial class FrmAccountManagement : Form
 
             _creatingAccount = false;
             ReloadAccounts(savedAccount.Id);
-            MessageBox.Show(this, "Da luu tai khoan thanh cong.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(this, "Đã lưu tài khoản thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         catch (Exception exception)
         {
             ErrorLogger.Log(exception, nameof(FrmAccountManagement));
-            MessageBox.Show(this, "Khong luu duoc tai khoan. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không lưu được tài khoản. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -550,7 +549,7 @@ public partial class FrmAccountManagement : Form
     {
         if (_selectedAccount is null)
         {
-            MessageBox.Show(this, "Chon tai khoan can dat lai mat khau.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(this, "Chọn tài khoản cần đặt lại mật khẩu.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             return;
         }
 
@@ -560,15 +559,15 @@ public partial class FrmAccountManagement : Form
             _dataService.ResetAccountPassword(_selectedAccount.AccountId, temporaryPassword);
             MessageBox.Show(
                 this,
-                $"Mat khau tam thoi cua tai khoan {_selectedAccount.Username} da duoc dat lai thanh {temporaryPassword}.",
-                "Dat lai mat khau",
+                $"Mật khẩu tạm thời của tài khoản {_selectedAccount.Username} đã được đặt lại thành {temporaryPassword}.",
+                "Đặt lại mật khẩu",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
         }
         catch (Exception exception)
         {
             ErrorLogger.Log(exception, nameof(FrmAccountManagement));
-            MessageBox.Show(this, "Khong dat lai duoc mat khau. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không đặt lại được mật khẩu. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -588,7 +587,7 @@ public partial class FrmAccountManagement : Form
         catch (Exception exception)
         {
             ErrorLogger.Log(exception, nameof(FrmAccountManagement));
-            MessageBox.Show(this, "Khong doi duoc trang thai tai khoan. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không đổi được trạng thái tài khoản. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -598,7 +597,6 @@ public partial class FrmAccountManagement : Form
         {
             return;
         }
-
         var status = rdoAccountActive.Checked ? "Hoạt động" : "Khóa";
 
         if (_creatingAccount || _selectedAccount is null)
@@ -684,7 +682,6 @@ public partial class FrmAccountManagement : Form
             rdoAccountLocked.Checked = !rdoAccountActive.Checked;
             return;
         }
-
         _selectedAccount.Status = _selectedAccount.Status == "Hoạt động" ? "Khóa" : "Hoạt động";
         SelectAccount(_selectedAccount);
         ApplyFilters();

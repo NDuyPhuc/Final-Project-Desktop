@@ -1,4 +1,4 @@
-﻿namespace Trung_tam_quan_ly_ngoai_ngu;
+namespace Trung_tam_quan_ly_ngoai_ngu;
 
 partial class FrmStaffDashboard
 {
@@ -204,6 +204,7 @@ partial class FrmStaffDashboard
         pnlSidebarStaff.Name = "pnlSidebarStaff";
         pnlSidebarStaff.Padding = new Padding(0, 24, 0, 24);
         pnlSidebarStaff.Size = new Size(320, 900);
+        pnlSidebarStaff.AutoScroll = false;
         pnlSidebarStaff.TabIndex = 0;
         // 
         // flpSidebarMenuStaff
@@ -222,6 +223,7 @@ partial class FrmStaffDashboard
         flpSidebarMenuStaff.Name = "flpSidebarMenuStaff";
         flpSidebarMenuStaff.Padding = new Padding(0, 12, 0, 0);
         flpSidebarMenuStaff.Size = new Size(320, 638);
+        flpSidebarMenuStaff.AutoScroll = true;
         flpSidebarMenuStaff.TabIndex = 1;
         flpSidebarMenuStaff.WrapContents = false;
         // 
@@ -242,7 +244,7 @@ partial class FrmStaffDashboard
         btnMenuStudentManagement.Name = "btnMenuStudentManagement";
         btnMenuStudentManagement.Size = new Size(320, 52);
         btnMenuStudentManagement.TabIndex = 1;
-        btnMenuStudentManagement.Text = "    Há»ŒC VIÃŠN";
+        btnMenuStudentManagement.Text = "    HỌC VIÊN";
         btnMenuStudentManagement.UseVisualStyleBackColor = true;
         // 
         // btnMenuTeacherManagement
@@ -252,7 +254,7 @@ partial class FrmStaffDashboard
         btnMenuTeacherManagement.Name = "btnMenuTeacherManagement";
         btnMenuTeacherManagement.Size = new Size(320, 52);
         btnMenuTeacherManagement.TabIndex = 2;
-        btnMenuTeacherManagement.Text = "    GIÃO VIÃŠN";
+        btnMenuTeacherManagement.Text = "    GIÁO VIÊN";
         btnMenuTeacherManagement.UseVisualStyleBackColor = true;
         // 
         // btnMenuCourseManagement
@@ -262,7 +264,7 @@ partial class FrmStaffDashboard
         btnMenuCourseManagement.Name = "btnMenuCourseManagement";
         btnMenuCourseManagement.Size = new Size(320, 52);
         btnMenuCourseManagement.TabIndex = 3;
-        btnMenuCourseManagement.Text = "    KHÃ“A Há»ŒC";
+        btnMenuCourseManagement.Text = "    KHÓA HỌC";
         btnMenuCourseManagement.UseVisualStyleBackColor = true;
         // 
         // btnMenuClassManagement
@@ -272,7 +274,7 @@ partial class FrmStaffDashboard
         btnMenuClassManagement.Name = "btnMenuClassManagement";
         btnMenuClassManagement.Size = new Size(320, 52);
         btnMenuClassManagement.TabIndex = 4;
-        btnMenuClassManagement.Text = "    Lá»šP Há»ŒC";
+        btnMenuClassManagement.Text = "    LỚP HỌC";
         btnMenuClassManagement.UseVisualStyleBackColor = true;
         // 
         // btnMenuEnrollment
@@ -292,7 +294,7 @@ partial class FrmStaffDashboard
         btnMenuTuitionReceipt.Name = "btnMenuTuitionReceipt";
         btnMenuTuitionReceipt.Size = new Size(320, 52);
         btnMenuTuitionReceipt.TabIndex = 6;
-        btnMenuTuitionReceipt.Text = "    THU Há»ŒC PHÃ";
+        btnMenuTuitionReceipt.Text = "    THU HỌC PHÍ";
         btnMenuTuitionReceipt.UseVisualStyleBackColor = true;
         // 
         // btnMenuDebtTracking
@@ -302,7 +304,7 @@ partial class FrmStaffDashboard
         btnMenuDebtTracking.Name = "btnMenuDebtTracking";
         btnMenuDebtTracking.Size = new Size(320, 52);
         btnMenuDebtTracking.TabIndex = 7;
-        btnMenuDebtTracking.Text = "    CÃ”NG Ná»¢";
+        btnMenuDebtTracking.Text = "    CÔNG NỢ";
         btnMenuDebtTracking.UseVisualStyleBackColor = true;
         // 
         // pnlSidebarFooterStaff
@@ -313,6 +315,7 @@ partial class FrmStaffDashboard
         pnlSidebarFooterStaff.Name = "pnlSidebarFooterStaff";
         pnlSidebarFooterStaff.Padding = new Padding(28, 16, 28, 0);
         pnlSidebarFooterStaff.Size = new Size(320, 64);
+        pnlSidebarFooterStaff.AutoScroll = false;
         pnlSidebarFooterStaff.TabIndex = 2;
         // 
         // btnLogoutStaff
@@ -322,7 +325,7 @@ partial class FrmStaffDashboard
         btnLogoutStaff.Name = "btnLogoutStaff";
         btnLogoutStaff.Size = new Size(132, 48);
         btnLogoutStaff.TabIndex = 0;
-        btnLogoutStaff.Text = "ÄÄƒng xuáº¥t";
+        btnLogoutStaff.Text = "Đăng xuất";
         btnLogoutStaff.UseVisualStyleBackColor = true;
         // 
         // pnlSidebarBrandStaff
@@ -335,6 +338,7 @@ partial class FrmStaffDashboard
         pnlSidebarBrandStaff.Name = "pnlSidebarBrandStaff";
         pnlSidebarBrandStaff.Padding = new Padding(30, 0, 24, 0);
         pnlSidebarBrandStaff.Size = new Size(320, 150);
+        pnlSidebarBrandStaff.AutoScroll = false;
         pnlSidebarBrandStaff.TabIndex = 0;
         // 
         // lblSidebarBrandSubtitle
@@ -379,6 +383,7 @@ partial class FrmStaffDashboard
         pnlTopbarStaff.Name = "pnlTopbarStaff";
         pnlTopbarStaff.Padding = new Padding(26, 20, 26, 20);
         pnlTopbarStaff.Size = new Size(1280, 120);
+        pnlTopbarStaff.AutoScroll = false;
         pnlTopbarStaff.TabIndex = 1;
         // 
         // tblTopbarStaff
@@ -396,6 +401,7 @@ partial class FrmStaffDashboard
         tblTopbarStaff.RowCount = 1;
         tblTopbarStaff.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblTopbarStaff.Size = new Size(1228, 80);
+        tblTopbarStaff.AutoScroll = false;
         tblTopbarStaff.TabIndex = 0;
         // 
         // lblTopbarTitleStaff
@@ -408,7 +414,7 @@ partial class FrmStaffDashboard
         lblTopbarTitleStaff.Name = "lblTopbarTitleStaff";
         lblTopbarTitleStaff.Size = new Size(790, 80);
         lblTopbarTitleStaff.TabIndex = 0;
-        lblTopbarTitleStaff.Text = "Báº¢NG ÄIá»€U KHIá»‚N Váº¬N HÃ€NH";
+        lblTopbarTitleStaff.Text = "BẢNG ĐIỀU KHIỂN VẬN HÀNH";
         lblTopbarTitleStaff.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // flpTopbarActionsStaff
@@ -422,6 +428,7 @@ partial class FrmStaffDashboard
         flpTopbarActionsStaff.Name = "flpTopbarActionsStaff";
         flpTopbarActionsStaff.Padding = new Padding(28, 14, 0, 0);
         flpTopbarActionsStaff.Size = new Size(188, 80);
+        flpTopbarActionsStaff.AutoScroll = false;
         flpTopbarActionsStaff.TabIndex = 1;
         flpTopbarActionsStaff.WrapContents = false;
         // 
@@ -432,7 +439,7 @@ partial class FrmStaffDashboard
         btnTopbarNotifyStaff.Name = "btnTopbarNotifyStaff";
         btnTopbarNotifyStaff.Size = new Size(40, 40);
         btnTopbarNotifyStaff.TabIndex = 0;
-        btnTopbarNotifyStaff.Text = "ThÃ´ng bÃ¡o";
+        btnTopbarNotifyStaff.Text = "Thông báo";
         btnTopbarNotifyStaff.UseVisualStyleBackColor = true;
         // 
         // btnTopbarSettingsStaff
@@ -442,7 +449,7 @@ partial class FrmStaffDashboard
         btnTopbarSettingsStaff.Name = "btnTopbarSettingsStaff";
         btnTopbarSettingsStaff.Size = new Size(40, 40);
         btnTopbarSettingsStaff.TabIndex = 1;
-        btnTopbarSettingsStaff.Text = "CÃ i Ä‘áº·t";
+        btnTopbarSettingsStaff.Text = "Cài đặt";
         btnTopbarSettingsStaff.UseVisualStyleBackColor = true;
         // 
         // btnTopbarHelpStaff
@@ -452,7 +459,7 @@ partial class FrmStaffDashboard
         btnTopbarHelpStaff.Name = "btnTopbarHelpStaff";
         btnTopbarHelpStaff.Size = new Size(40, 40);
         btnTopbarHelpStaff.TabIndex = 2;
-        btnTopbarHelpStaff.Text = "Há»— trá»£";
+        btnTopbarHelpStaff.Text = "Hỗ trợ";
         btnTopbarHelpStaff.UseVisualStyleBackColor = true;
         // 
         // pnlTopbarProfileStaff
@@ -466,6 +473,7 @@ partial class FrmStaffDashboard
         pnlTopbarProfileStaff.Name = "pnlTopbarProfileStaff";
         pnlTopbarProfileStaff.Padding = new Padding(18, 10, 0, 10);
         pnlTopbarProfileStaff.Size = new Size(250, 80);
+        pnlTopbarProfileStaff.AutoScroll = false;
         pnlTopbarProfileStaff.TabIndex = 2;
         // 
         // pnlTopbarAvatarStaff
@@ -475,6 +483,7 @@ partial class FrmStaffDashboard
         pnlTopbarAvatarStaff.Location = new Point(194, 10);
         pnlTopbarAvatarStaff.Name = "pnlTopbarAvatarStaff";
         pnlTopbarAvatarStaff.Size = new Size(56, 60);
+        pnlTopbarAvatarStaff.AutoScroll = false;
         pnlTopbarAvatarStaff.TabIndex = 2;
         // 
         // lblTopbarAvatarStaff
@@ -526,6 +535,7 @@ partial class FrmStaffDashboard
         pnlDashboardHome.Location = new Point(28, 0);
         pnlDashboardHome.Name = "pnlDashboardHome";
         pnlDashboardHome.Size = new Size(1224, 1180);
+        pnlDashboardHome.AutoScroll = false;
         pnlDashboardHome.TabIndex = 0;
         // 
         // tblStaffDashboardRoot
@@ -539,10 +549,11 @@ partial class FrmStaffDashboard
         tblStaffDashboardRoot.Location = new Point(0, 0);
         tblStaffDashboardRoot.Name = "tblStaffDashboardRoot";
         tblStaffDashboardRoot.RowCount = 3;
-        tblStaffDashboardRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 160F));
-        tblStaffDashboardRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 560F));
-        tblStaffDashboardRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 420F));
+        tblStaffDashboardRoot.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+        tblStaffDashboardRoot.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+        tblStaffDashboardRoot.RowStyles.Add(new RowStyle(SizeType.AutoSize));
         tblStaffDashboardRoot.Size = new Size(1224, 1180);
+        tblStaffDashboardRoot.AutoScroll = false;
         tblStaffDashboardRoot.TabIndex = 0;
         // 
         // tblStaffKpi
@@ -563,6 +574,7 @@ partial class FrmStaffDashboard
         tblStaffKpi.RowCount = 1;
         tblStaffKpi.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblStaffKpi.Size = new Size(1224, 132);
+        tblStaffKpi.AutoScroll = false;
         tblStaffKpi.TabIndex = 0;
         // 
         // pnlNewStudentsToday
@@ -577,6 +589,7 @@ partial class FrmStaffDashboard
         pnlNewStudentsToday.Name = "pnlNewStudentsToday";
         pnlNewStudentsToday.Padding = new Padding(28, 22, 22, 22);
         pnlNewStudentsToday.Size = new Size(290, 132);
+        pnlNewStudentsToday.AutoScroll = false;
         pnlNewStudentsToday.TabIndex = 0;
         // 
         // pnlNewStudentsAccent
@@ -585,6 +598,7 @@ partial class FrmStaffDashboard
         pnlNewStudentsAccent.Location = new Point(28, 22);
         pnlNewStudentsAccent.Name = "pnlNewStudentsAccent";
         pnlNewStudentsAccent.Size = new Size(4, 88);
+        pnlNewStudentsAccent.AutoScroll = false;
         pnlNewStudentsAccent.TabIndex = 0;
         // 
         // lblNewStudentsTodayTitle
@@ -595,7 +609,7 @@ partial class FrmStaffDashboard
         lblNewStudentsTodayTitle.Name = "lblNewStudentsTodayTitle";
         lblNewStudentsTodayTitle.Size = new Size(128, 25);
         lblNewStudentsTodayTitle.TabIndex = 1;
-        lblNewStudentsTodayTitle.Text = "Há»ŒC VIÃŠN Má»šI";
+        lblNewStudentsTodayTitle.Text = "HỌC VIÊN MỚI";
         // 
         // lblNewStudentsTodayValue
         // 
@@ -614,7 +628,7 @@ partial class FrmStaffDashboard
         lblNewStudentsTodayBadge.Name = "lblNewStudentsTodayBadge";
         lblNewStudentsTodayBadge.Size = new Size(117, 20);
         lblNewStudentsTodayBadge.TabIndex = 3;
-        lblNewStudentsTodayBadge.Text = "+12% THÃNG NÃ€Y";
+        lblNewStudentsTodayBadge.Text = "+12% THÁNG NÀY";
         // 
         // pnlAvailableClasses
         // 
@@ -628,6 +642,7 @@ partial class FrmStaffDashboard
         pnlAvailableClasses.Name = "pnlAvailableClasses";
         pnlAvailableClasses.Padding = new Padding(28, 22, 22, 22);
         pnlAvailableClasses.Size = new Size(290, 132);
+        pnlAvailableClasses.AutoScroll = false;
         pnlAvailableClasses.TabIndex = 1;
         // 
         // pnlAvailableClassesAccent
@@ -636,6 +651,7 @@ partial class FrmStaffDashboard
         pnlAvailableClassesAccent.Location = new Point(28, 22);
         pnlAvailableClassesAccent.Name = "pnlAvailableClassesAccent";
         pnlAvailableClassesAccent.Size = new Size(4, 88);
+        pnlAvailableClassesAccent.AutoScroll = false;
         pnlAvailableClassesAccent.TabIndex = 0;
         // 
         // lblAvailableClassesTitle
@@ -646,7 +662,7 @@ partial class FrmStaffDashboard
         lblAvailableClassesTitle.Name = "lblAvailableClassesTitle";
         lblAvailableClassesTitle.Size = new Size(118, 25);
         lblAvailableClassesTitle.TabIndex = 1;
-        lblAvailableClassesTitle.Text = "Lá»šP CÃ’N CHá»–";
+        lblAvailableClassesTitle.Text = "LỚP CÒN CHỖ";
         // 
         // lblAvailableClassesValue
         // 
@@ -665,7 +681,7 @@ partial class FrmStaffDashboard
         lblAvailableClassesBadge.Name = "lblAvailableClassesBadge";
         lblAvailableClassesBadge.Size = new Size(101, 20);
         lblAvailableClassesBadge.TabIndex = 3;
-        lblAvailableClassesBadge.Text = "42 Tá»”NG Lá»šP";
+        lblAvailableClassesBadge.Text = "42 TỔNG LỚP";
         // 
         // pnlTodayReceipts
         // 
@@ -679,6 +695,7 @@ partial class FrmStaffDashboard
         pnlTodayReceipts.Name = "pnlTodayReceipts";
         pnlTodayReceipts.Padding = new Padding(28, 22, 22, 22);
         pnlTodayReceipts.Size = new Size(290, 132);
+        pnlTodayReceipts.AutoScroll = false;
         pnlTodayReceipts.TabIndex = 2;
         // 
         // pnlTodayReceiptsAccent
@@ -687,6 +704,7 @@ partial class FrmStaffDashboard
         pnlTodayReceiptsAccent.Location = new Point(28, 22);
         pnlTodayReceiptsAccent.Name = "pnlTodayReceiptsAccent";
         pnlTodayReceiptsAccent.Size = new Size(4, 88);
+        pnlTodayReceiptsAccent.AutoScroll = false;
         pnlTodayReceiptsAccent.TabIndex = 0;
         // 
         // lblTodayReceiptsTitle
@@ -697,7 +715,7 @@ partial class FrmStaffDashboard
         lblTodayReceiptsTitle.Name = "lblTodayReceiptsTitle";
         lblTodayReceiptsTitle.Size = new Size(176, 25);
         lblTodayReceiptsTitle.TabIndex = 1;
-        lblTodayReceiptsTitle.Text = "PHIáº¾U THU HÃ”M NAY";
+        lblTodayReceiptsTitle.Text = "PHIẾU THU HÔM NAY";
         // 
         // lblTodayReceiptsValue
         // 
@@ -730,6 +748,7 @@ partial class FrmStaffDashboard
         pnlDebtStudents.Name = "pnlDebtStudents";
         pnlDebtStudents.Padding = new Padding(28, 22, 22, 22);
         pnlDebtStudents.Size = new Size(306, 132);
+        pnlDebtStudents.AutoScroll = false;
         pnlDebtStudents.TabIndex = 3;
         // 
         // pnlDebtStudentsAccent
@@ -738,6 +757,7 @@ partial class FrmStaffDashboard
         pnlDebtStudentsAccent.Location = new Point(28, 22);
         pnlDebtStudentsAccent.Name = "pnlDebtStudentsAccent";
         pnlDebtStudentsAccent.Size = new Size(4, 88);
+        pnlDebtStudentsAccent.AutoScroll = false;
         pnlDebtStudentsAccent.TabIndex = 0;
         // 
         // lblDebtStudentsTitle
@@ -748,7 +768,7 @@ partial class FrmStaffDashboard
         lblDebtStudentsTitle.Name = "lblDebtStudentsTitle";
         lblDebtStudentsTitle.Size = new Size(155, 25);
         lblDebtStudentsTitle.TabIndex = 1;
-        lblDebtStudentsTitle.Text = "Há»ŒC VIÃŠN Ná»¢ PHÃ";
+        lblDebtStudentsTitle.Text = "HỌC VIÊN NỢ PHÍ";
         // 
         // lblDebtStudentsValue
         // 
@@ -767,7 +787,7 @@ partial class FrmStaffDashboard
         lblDebtStudentsBadge.Name = "lblDebtStudentsBadge";
         lblDebtStudentsBadge.Size = new Size(72, 20);
         lblDebtStudentsBadge.TabIndex = 3;
-        lblDebtStudentsBadge.Text = "Cáº¦N Xá»¬ LÃ";
+        lblDebtStudentsBadge.Text = "CẦN XỬ LÝ";
         // 
         // tblStaffMain
         // 
@@ -783,6 +803,7 @@ partial class FrmStaffDashboard
         tblStaffMain.RowCount = 1;
         tblStaffMain.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblStaffMain.Size = new Size(1224, 532);
+        tblStaffMain.AutoScroll = true;
         tblStaffMain.TabIndex = 1;
         // 
         // pnlRecentReceiptCard
@@ -795,6 +816,7 @@ partial class FrmStaffDashboard
         pnlRecentReceiptCard.Name = "pnlRecentReceiptCard";
         pnlRecentReceiptCard.Padding = new Padding(0, 0, 0, 18);
         pnlRecentReceiptCard.Size = new Size(751, 532);
+        pnlRecentReceiptCard.AutoScroll = true;
         pnlRecentReceiptCard.TabIndex = 0;
         // 
         // dgvRecentReceipts
@@ -815,6 +837,7 @@ partial class FrmStaffDashboard
         pnlRecentReceiptHeader.Name = "pnlRecentReceiptHeader";
         pnlRecentReceiptHeader.Padding = new Padding(28, 18, 28, 16);
         pnlRecentReceiptHeader.Size = new Size(751, 64);
+        pnlRecentReceiptHeader.AutoScroll = true;
         pnlRecentReceiptHeader.TabIndex = 0;
         // 
         // lnkRecentReceiptAll
@@ -830,7 +853,7 @@ partial class FrmStaffDashboard
         lnkRecentReceiptAll.Size = new Size(85, 23);
         lnkRecentReceiptAll.TabIndex = 1;
         lnkRecentReceiptAll.TabStop = true;
-        lnkRecentReceiptAll.Text = "XEM Táº¤T Cáº¢";
+        lnkRecentReceiptAll.Text = "XEM TẤT CẢ";
         // 
         // lblRecentReceiptTitle
         // 
@@ -841,7 +864,7 @@ partial class FrmStaffDashboard
         lblRecentReceiptTitle.Name = "lblRecentReceiptTitle";
         lblRecentReceiptTitle.Size = new Size(209, 37);
         lblRecentReceiptTitle.TabIndex = 0;
-        lblRecentReceiptTitle.Text = "PHIáº¾U THU Gáº¦N ÄÃ‚Y";
+        lblRecentReceiptTitle.Text = "PHIẾU THU GẦN ĐÂY";
         // 
         // pnlStaffActionCard
         // 
@@ -854,6 +877,7 @@ partial class FrmStaffDashboard
         pnlStaffActionCard.Name = "pnlStaffActionCard";
         pnlStaffActionCard.Padding = new Padding(0);
         pnlStaffActionCard.Size = new Size(453, 532);
+        pnlStaffActionCard.AutoScroll = true;
         pnlStaffActionCard.TabIndex = 1;
         // 
         // btnAddTaskStaff
@@ -863,7 +887,7 @@ partial class FrmStaffDashboard
         btnAddTaskStaff.Name = "btnAddTaskStaff";
         btnAddTaskStaff.Size = new Size(405, 44);
         btnAddTaskStaff.TabIndex = 0;
-        btnAddTaskStaff.Text = "THÃŠM NHIá»†M Vá»¤ Má»šI";
+        btnAddTaskStaff.Text = "THÊM NHIỆM VỤ MỚI";
         btnAddTaskStaff.UseVisualStyleBackColor = true;
         // 
         // flpStaffTaskList
@@ -886,6 +910,7 @@ partial class FrmStaffDashboard
         pnlStaffActionFooter.Name = "pnlStaffActionFooter";
         pnlStaffActionFooter.Padding = new Padding(24, 16, 24, 18);
         pnlStaffActionFooter.Size = new Size(453, 78);
+        pnlStaffActionFooter.AutoScroll = true;
         pnlStaffActionFooter.TabIndex = 2;
         // 
         // pnlStaffActionHeader
@@ -896,6 +921,7 @@ partial class FrmStaffDashboard
         pnlStaffActionHeader.Name = "pnlStaffActionHeader";
         pnlStaffActionHeader.Padding = new Padding(28, 18, 28, 16);
         pnlStaffActionHeader.Size = new Size(453, 64);
+        pnlStaffActionHeader.AutoScroll = true;
         pnlStaffActionHeader.TabIndex = 0;
         // 
         // lblStaffActionTitle
@@ -906,7 +932,7 @@ partial class FrmStaffDashboard
         lblStaffActionTitle.Name = "lblStaffActionTitle";
         lblStaffActionTitle.Size = new Size(271, 37);
         lblStaffActionTitle.TabIndex = 0;
-        lblStaffActionTitle.Text = "DANH SÃCH NHIá»†M Vá»¤";
+        lblStaffActionTitle.Text = "DANH SÁCH NHIỆM VỤ";
         // 
         // pnlWeeklyProgressCard
         // 
@@ -919,6 +945,7 @@ partial class FrmStaffDashboard
         pnlWeeklyProgressCard.Name = "pnlWeeklyProgressCard";
         pnlWeeklyProgressCard.Padding = new Padding(28, 24, 28, 24);
         pnlWeeklyProgressCard.Size = new Size(1224, 478);
+        pnlWeeklyProgressCard.AutoScroll = true;
         pnlWeeklyProgressCard.TabIndex = 2;
         // 
         // lblWeeklyProgressSummary
@@ -931,7 +958,7 @@ partial class FrmStaffDashboard
         lblWeeklyProgressSummary.Padding = new Padding(8, 18, 0, 0);
         lblWeeklyProgressSummary.Size = new Size(430, 23);
         lblWeeklyProgressSummary.TabIndex = 2;
-        lblWeeklyProgressSummary.Text = "HIá»†U SUáº¤T Váº¬N HÃ€NH: 38/56 CÃ”NG VIá»†C HOÃ€N THÃ€NH (68%)";
+        lblWeeklyProgressSummary.Text = "HIỆU SUẤT VẬN HÀNH: 38/56 CÔNG VIỆC HOÀN THÀNH (68%)";
         // 
         // flpWeeklyProgressGrid
         // 
@@ -940,6 +967,7 @@ partial class FrmStaffDashboard
         flpWeeklyProgressGrid.Name = "flpWeeklyProgressGrid";
         flpWeeklyProgressGrid.Padding = new Padding(8, 16, 8, 12);
         flpWeeklyProgressGrid.Size = new Size(1168, 368);
+        flpWeeklyProgressGrid.AutoScroll = true;
         flpWeeklyProgressGrid.TabIndex = 1;
         // 
         // pnlWeeklyProgressHeader
@@ -950,6 +978,7 @@ partial class FrmStaffDashboard
         pnlWeeklyProgressHeader.Location = new Point(28, 24);
         pnlWeeklyProgressHeader.Name = "pnlWeeklyProgressHeader";
         pnlWeeklyProgressHeader.Size = new Size(1168, 62);
+        pnlWeeklyProgressHeader.AutoScroll = true;
         pnlWeeklyProgressHeader.TabIndex = 0;
         // 
         // flpWeeklyLegend
@@ -963,6 +992,7 @@ partial class FrmStaffDashboard
         flpWeeklyLegend.Name = "flpWeeklyLegend";
         flpWeeklyLegend.Padding = new Padding(0, 18, 0, 0);
         flpWeeklyLegend.Size = new Size(266, 62);
+        flpWeeklyLegend.AutoScroll = true;
         flpWeeklyLegend.TabIndex = 1;
         flpWeeklyLegend.WrapContents = false;
         // 
@@ -972,6 +1002,7 @@ partial class FrmStaffDashboard
         pnlLegendDone.Margin = new Padding(0, 18, 8, 0);
         pnlLegendDone.Name = "pnlLegendDone";
         pnlLegendDone.Size = new Size(14, 14);
+        pnlLegendDone.AutoScroll = true;
         pnlLegendDone.TabIndex = 0;
         // 
         // lblLegendDone
@@ -982,7 +1013,7 @@ partial class FrmStaffDashboard
         lblLegendDone.Name = "lblLegendDone";
         lblLegendDone.Size = new Size(65, 20);
         lblLegendDone.TabIndex = 1;
-        lblLegendDone.Text = "ÄÃƒ XONG";
+        lblLegendDone.Text = "ĐÃ XONG";
         // 
         // pnlLegendRemaining
         // 
@@ -990,6 +1021,7 @@ partial class FrmStaffDashboard
         pnlLegendRemaining.Margin = new Padding(0, 18, 8, 0);
         pnlLegendRemaining.Name = "pnlLegendRemaining";
         pnlLegendRemaining.Size = new Size(14, 14);
+        pnlLegendRemaining.AutoScroll = true;
         pnlLegendRemaining.TabIndex = 2;
         // 
         // lblLegendRemaining
@@ -1000,7 +1032,7 @@ partial class FrmStaffDashboard
         lblLegendRemaining.Name = "lblLegendRemaining";
         lblLegendRemaining.Size = new Size(69, 20);
         lblLegendRemaining.TabIndex = 3;
-        lblLegendRemaining.Text = "CÃ’N Láº I";
+        lblLegendRemaining.Text = "CÒN LẠI";
         // 
         // lblWeeklyProgressTitle
         // 
@@ -1010,16 +1042,18 @@ partial class FrmStaffDashboard
         lblWeeklyProgressTitle.Name = "lblWeeklyProgressTitle";
         lblWeeklyProgressTitle.Size = new Size(308, 37);
         lblWeeklyProgressTitle.TabIndex = 0;
-        lblWeeklyProgressTitle.Text = "TIáº¾N Äá»˜ Váº¬N HÃ€NH TUáº¦N";
+        lblWeeklyProgressTitle.Text = "TIẾN ĐỘ VẬN HÀNH TUẦN";
         // 
         // FrmStaffDashboard
         // 
         AutoScaleDimensions = new SizeF(96F, 96F);
         AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(1600, 900);
+        Font = new Font("Segoe UI", 10F);
         Controls.Add(pnlContentHostStaff);
         Controls.Add(pnlTopbarStaff);
         Controls.Add(pnlSidebarStaff);
+        MinimumSize = new Size(1180, 760);
         Name = "FrmStaffDashboard";
         pnlSidebarStaff.ResumeLayout(false);
         flpSidebarMenuStaff.ResumeLayout(false);
@@ -1059,6 +1093,7 @@ partial class FrmStaffDashboard
         pnlWeeklyProgressHeader.PerformLayout();
         flpWeeklyLegend.ResumeLayout(false);
         flpWeeklyLegend.PerformLayout();
+        AutoScroll = true;
         ResumeLayout(false);
     }
 }

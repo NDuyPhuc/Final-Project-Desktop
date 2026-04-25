@@ -460,7 +460,11 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
             .Where(x => !x.IsDeleted)
             .OrderBy(x => x.Name)
             .ToList();
-        var normalizedStatus = string.IsNullOrWhiteSpace(status) || status.Equals("Tat ca", StringComparison.OrdinalIgnoreCase) || status.Equals("Day", StringComparison.OrdinalIgnoreCase)
+        var normalizedStatus = string.IsNullOrWhiteSpace(status)
+                               || status.Equals("Tat ca", StringComparison.OrdinalIgnoreCase)
+                               || status.Equals("Tất cả", StringComparison.OrdinalIgnoreCase)
+                               || status.Equals("Day", StringComparison.OrdinalIgnoreCase)
+                               || status.Equals("Đầy", StringComparison.OrdinalIgnoreCase)
             ? null
             : LanguageCenterValueMapper.NormalizeClassStatus(status);
 
@@ -480,9 +484,11 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
                 .ToList();
         }
 
-        if (!string.IsNullOrWhiteSpace(status) && !status.Equals("Tat ca", StringComparison.OrdinalIgnoreCase))
+        if (!string.IsNullOrWhiteSpace(status)
+            && !status.Equals("Tat ca", StringComparison.OrdinalIgnoreCase)
+            && !status.Equals("Tất cả", StringComparison.OrdinalIgnoreCase))
         {
-            classes = status.Equals("Day", StringComparison.OrdinalIgnoreCase)
+            classes = status.Equals("Day", StringComparison.OrdinalIgnoreCase) || status.Equals("Đầy", StringComparison.OrdinalIgnoreCase)
                 ? classes.Where(classItem => GetEffectiveClassStatus(classItem).Equals("Day", StringComparison.OrdinalIgnoreCase)).ToList()
                 : classes.Where(classItem => LanguageCenterValueMapper.NormalizeClassStatus(classItem.Status).Equals(normalizedStatus, StringComparison.OrdinalIgnoreCase)).ToList();
         }
@@ -709,21 +715,23 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
         var teacherId = ResolveTeacherIdByAccount(context, teacherAccountId);
         var classes = context.Classes
             .AsNoTracking()
+            .Include(x => x.Course)
             .Include(x => x.Enrollments)
             .Where(x => !x.IsDeleted && (teacherId == null || x.TeacherId == teacherId))
             .OrderBy(x => x.Name)
             .ToList();
 
-        var table = CreateTable("Ma lop", "Ten lop", "Lich hoc", "So HV", "Buoi gan nhat", "Trang thai");
+        var table = CreateTable("Ma lop", "Ten lop", "Khoa hoc", "Lich hoc", "Si so", "Trang thai", "Thao tac");
         foreach (var classItem in classes)
         {
             table.Rows.Add(
                 classItem.Id,
                 classItem.Name,
+                classItem.Course?.Name ?? string.Empty,
                 classItem.Schedule ?? string.Empty,
-                GetActiveEnrollmentCount(classItem).ToString(_culture),
-                classItem.StartDate.ToString("dd/MM/yyyy", _culture),
-                GetEffectiveClassStatus(classItem));
+                $"{GetActiveEnrollmentCount(classItem)}/{classItem.MaxStudents}",
+                GetEffectiveClassStatus(classItem),
+                string.Empty);
         }
 
         return table;

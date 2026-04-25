@@ -1,4 +1,4 @@
-﻿namespace Trung_tam_quan_ly_ngoai_ngu;
+namespace Trung_tam_quan_ly_ngoai_ngu;
 
 partial class FrmSidebarPreview
 {
@@ -87,7 +87,7 @@ partial class FrmSidebarPreview
         pnlSidebar.Dock = DockStyle.Left;
         pnlSidebar.Location = new Point(0, 0);
         pnlSidebar.Name = "pnlSidebar";
-        pnlSidebar.Size = new Size(256, 900);
+        pnlSidebar.Size = new Size(256, 760);
         pnlSidebar.TabIndex = 0;
         // 
         // pnlSidebarBottom
@@ -95,7 +95,7 @@ partial class FrmSidebarPreview
         pnlSidebarBottom.BackColor = Color.Transparent;
         pnlSidebarBottom.Controls.Add(flpSidebarFooter);
         pnlSidebarBottom.Dock = DockStyle.Bottom;
-        pnlSidebarBottom.Location = new Point(0, 775);
+        pnlSidebarBottom.Location = new Point(0, 635);
         pnlSidebarBottom.Name = "pnlSidebarBottom";
         pnlSidebarBottom.Padding = new Padding(24);
         pnlSidebarBottom.Size = new Size(256, 125);
@@ -140,9 +140,10 @@ partial class FrmSidebarPreview
         lblSidebarDocuments.ForeColor = Color.FromArgb(66, 71, 80);
         lblSidebarDocuments.Location = new Point(44, 8);
         lblSidebarDocuments.Name = "lblSidebarDocuments";
-        lblSidebarDocuments.Size = new Size(120, 20);
+        lblSidebarDocuments.Size = new Size(120, 28);
+        lblSidebarDocuments.AutoSize = true;
         lblSidebarDocuments.TabIndex = 1;
-        lblSidebarDocuments.Text = "Tï¿½i li?u";
+        lblSidebarDocuments.Text = "Tài liệu";
         lblSidebarDocuments.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // pnlSidebarSupport
@@ -169,9 +170,10 @@ partial class FrmSidebarPreview
         lblSidebarSupport.ForeColor = Color.FromArgb(66, 71, 80);
         lblSidebarSupport.Location = new Point(44, 8);
         lblSidebarSupport.Name = "lblSidebarSupport";
-        lblSidebarSupport.Size = new Size(120, 20);
+        lblSidebarSupport.Size = new Size(120, 28);
+        lblSidebarSupport.AutoSize = true;
         lblSidebarSupport.TabIndex = 1;
-        lblSidebarSupport.Text = "H? tr?";
+        lblSidebarSupport.Text = "Hỗ trợ";
         lblSidebarSupport.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // pnlSidebarTop
@@ -235,9 +237,10 @@ partial class FrmSidebarPreview
         lblNavDashboard.ForeColor = Color.FromArgb(0, 110, 110);
         lblNavDashboard.Location = new Point(44, 12);
         lblNavDashboard.Name = "lblNavDashboard";
-        lblNavDashboard.Size = new Size(144, 20);
+        lblNavDashboard.Size = new Size(144, 28);
+        lblNavDashboard.AutoSize = true;
         lblNavDashboard.TabIndex = 1;
-        lblNavDashboard.Text = "Quy?n truy c?p";
+        lblNavDashboard.Text = "Quyền truy cập";
         lblNavDashboard.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // pnlNavTeacher
@@ -272,9 +275,10 @@ partial class FrmSidebarPreview
         lblNavTeacher.ForeColor = Color.FromArgb(66, 71, 80);
         lblNavTeacher.Location = new Point(44, 12);
         lblNavTeacher.Name = "lblNavTeacher";
-        lblNavTeacher.Size = new Size(144, 20);
+        lblNavTeacher.Size = new Size(144, 28);
+        lblNavTeacher.AutoSize = true;
         lblNavTeacher.TabIndex = 1;
-        lblNavTeacher.Text = "Danh b? nhï¿½n viï¿½n";
+        lblNavTeacher.Text = "Danh bạ nhân viên";
         lblNavTeacher.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // pnlNavStudent
@@ -309,9 +313,10 @@ partial class FrmSidebarPreview
         lblNavStudent.ForeColor = Color.FromArgb(66, 71, 80);
         lblNavStudent.Location = new Point(44, 12);
         lblNavStudent.Name = "lblNavStudent";
-        lblNavStudent.Size = new Size(144, 20);
+        lblNavStudent.Size = new Size(144, 28);
+        lblNavStudent.AutoSize = true;
         lblNavStudent.TabIndex = 1;
-        lblNavStudent.Text = "Ma tr?n h?c sinh";
+        lblNavStudent.Text = "Ma trận học sinh";
         lblNavStudent.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // pnlNavSchedule
@@ -346,9 +351,10 @@ partial class FrmSidebarPreview
         lblNavSchedule.ForeColor = Color.FromArgb(66, 71, 80);
         lblNavSchedule.Location = new Point(44, 12);
         lblNavSchedule.Name = "lblNavSchedule";
-        lblNavSchedule.Size = new Size(144, 20);
+        lblNavSchedule.Size = new Size(144, 28);
+        lblNavSchedule.AutoSize = true;
         lblNavSchedule.TabIndex = 1;
-        lblNavSchedule.Text = "Lá»‹ch há»c";
+        lblNavSchedule.Text = "Lịch học";
         lblNavSchedule.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // pnlNavFinance
@@ -383,9 +389,10 @@ partial class FrmSidebarPreview
         lblNavFinance.ForeColor = Color.FromArgb(66, 71, 80);
         lblNavFinance.Location = new Point(44, 12);
         lblNavFinance.Name = "lblNavFinance";
-        lblNavFinance.Size = new Size(144, 20);
+        lblNavFinance.Size = new Size(144, 28);
+        lblNavFinance.AutoSize = true;
         lblNavFinance.TabIndex = 1;
-        lblNavFinance.Text = "Tï¿½i chï¿½nh";
+        lblNavFinance.Text = "Tài chính";
         lblNavFinance.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // pnlBrandRow
@@ -449,7 +456,7 @@ partial class FrmSidebarPreview
         pnlWorkspace.Dock = DockStyle.Fill;
         pnlWorkspace.Location = new Point(256, 0);
         pnlWorkspace.Name = "pnlWorkspace";
-        pnlWorkspace.Size = new Size(1184, 900);
+        pnlWorkspace.Size = new Size(922, 760);
         pnlWorkspace.TabIndex = 1;
         // 
         // pnlCanvas
@@ -458,7 +465,7 @@ partial class FrmSidebarPreview
         pnlCanvas.BackColor = Color.White;
         pnlCanvas.Location = new Point(32, 88);
         pnlCanvas.Name = "pnlCanvas";
-        pnlCanvas.Size = new Size(1120, 780);
+        pnlCanvas.Size = new Size(858, 640);
         pnlCanvas.TabIndex = 1;
         // 
         // lblPreviewHint
@@ -468,18 +475,19 @@ partial class FrmSidebarPreview
         lblPreviewHint.ForeColor = Color.FromArgb(42, 51, 64);
         lblPreviewHint.Location = new Point(32, 32);
         lblPreviewHint.Name = "lblPreviewHint";
-        lblPreviewHint.Size = new Size(281, 19);
+        lblPreviewHint.Size = new Size(450, 28);
         lblPreviewHint.TabIndex = 0;
-        lblPreviewHint.Text = "Preview form d? ch?nh sidebar trong Designer";
+        lblPreviewHint.Text = "Preview form để chỉnh sidebar trong Designer";
         // 
         // FrmSidebarPreview
         // 
-        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleDimensions = new SizeF(144F, 144F);
         AutoScaleMode = AutoScaleMode.Dpi;
         BackColor = Color.FromArgb(245, 247, 251);
-        ClientSize = new Size(1120, 760);
+        ClientSize = new Size(1178, 760);
         Controls.Add(pnlWorkspace);
         Controls.Add(pnlSidebar);
+        Font = new Font("Segoe UI", 10F);
         MinimumSize = new Size(1200, 760);
         Name = "FrmSidebarPreview";
         StartPosition = FormStartPosition.CenterScreen;

@@ -5,6 +5,6 @@ public partial class FrmImagePreviewDialog : Form
     public FrmImagePreviewDialog()
     {
         InitializeComponent();
-        Text = "Xem truoc anh";
+        Text = "Xem trước ảnh";
     }
 }

@@ -50,12 +50,12 @@ public sealed partial class FrmLogin : Form
         btnLogin.Click += (_, _) => HandleLogin();
         lnkForgotPassword.LinkClicked += (_, _) =>
         {
-            using var dialog = new FrmStatusDialog("Ho tro dang nhap", "Lien he quan tri vien de cap tai khoan hoac cap lai mat khau. Chuoi ket noi SQL duoc cau hinh tap trung trong appsettings.json.");
+            using var dialog = new FrmStatusDialog("Hỗ trợ đăng nhập", "Liên hệ quản trị viên để cấp tài khoản hoặc cấp lại mật khẩu. Chuỗi kết nối SQL được cấu hình tập trung trong appsettings.json.");
             dialog.ShowDialog(this);
         };
 
-        ttLogin.SetToolTip(txtUsername, "Nhap ten dang nhap duoc cap tren he thong.");
-        ttLogin.SetToolTip(txtPassword, "Mat khau duoc doi chieu voi PasswordHash trong bang Accounts.");
+        ttLogin.SetToolTip(txtUsername, "Nhập tên đăng nhập được cấp trên hệ thống.");
+        ttLogin.SetToolTip(txtPassword, "Mật khẩu được đối chiếu với PasswordHash trong bảng Accounts.");
 
         LoadLoginLogoIfAvailable();
         CenterLoginPanel();
@@ -70,18 +70,18 @@ public sealed partial class FrmLogin : Form
 
     private void ApplyLocalizedText()
     {
-        Text = "Dang nhap he thong";
+        Text = "Đăng nhập hệ thống";
         lblHeaderTitle.Text = "Academic Curator";
-        lblHeaderSubtitle.Text = "DANG NHAP HE THONG";
-        lblUsername.Text = "TEN DANG NHAP";
-        lblPassword.Text = "MAT KHAU";
-        chkShowPassword.Text = "Hien mat khau";
-        lnkForgotPassword.Text = "Quen mat khau?";
-        btnExit.Text = "Thoat";
-        btnLogin.Text = "Dang nhap";
+        lblHeaderSubtitle.Text = "ĐĂNG NHẬP HỆ THỐNG";
+        lblUsername.Text = "TÊN ĐĂNG NHẬP";
+        lblPassword.Text = "MẬT KHẨU";
+        chkShowPassword.Text = "Hiện mật khẩu";
+        lnkForgotPassword.Text = "Quên mật khẩu?";
+        btnExit.Text = "Thoát";
+        btnLogin.Text = "Đăng nhập";
         lblFooterVersion.Text = "Academic Curator v2.4";
-        lblFooterSupport.Text = "Ho tro ky thuat";
-        lblErrorAlertText.Text = "Sai ten tai khoan hoac mat khau";
+        lblFooterSupport.Text = "Hỗ trợ kỹ thuật";
+        lblErrorAlertText.Text = "Sai tên tài khoản hoặc mật khẩu";
         txtUsername.Text = string.Empty;
         txtPassword.Text = string.Empty;
     }
@@ -106,24 +106,24 @@ public sealed partial class FrmLogin : Form
 
             if (string.IsNullOrWhiteSpace(txtUsername.Text))
             {
-                errLogin.SetError(txtUsername, "Ten dang nhap khong duoc de trong.");
+                errLogin.SetError(txtUsername, "Tên đăng nhập không được để trống.");
             }
 
             if (string.IsNullOrWhiteSpace(txtPassword.Text))
             {
-                errLogin.SetError(txtPassword, "Mat khau khong duoc de trong.");
+                errLogin.SetError(txtPassword, "Mật khẩu không được để trống.");
             }
 
             if (!string.IsNullOrWhiteSpace(errLogin.GetError(txtUsername)) || !string.IsNullOrWhiteSpace(errLogin.GetError(txtPassword)))
             {
-                SetErrorState("Vui long nhap day du ten dang nhap va mat khau.");
+                SetErrorState("Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu.");
                 return;
             }
 
             var account = _dataService.Authenticate(txtUsername.Text.Trim(), txtPassword.Text.Trim());
             if (account is null)
             {
-                SetErrorState("Sai ten tai khoan hoac mat khau.");
+                SetErrorState("Sai tên tài khoản hoặc mật khẩu.");
                 return;
             }
 
@@ -133,7 +133,7 @@ public sealed partial class FrmLogin : Form
                 AccountRole.Admin => new FrmAdminDashboard(account.DisplayName, _dataService),
                 AccountRole.Staff => new FrmStaffDashboard(account.DisplayName),
                 AccountRole.Teacher => new FrmTeacherDashboard(account.DisplayName),
-                _ => throw new InvalidOperationException("Vai tro khong hop le.")
+                _ => throw new InvalidOperationException("Vai trò không hợp lệ.")
             };
 
             pnlErrorAlert.Visible = false;
@@ -151,7 +151,7 @@ public sealed partial class FrmLogin : Form
         catch (Exception exception)
         {
             ErrorLogger.Log(exception, "FrmLogin.HandleLogin");
-            SetErrorState("Khong the dang nhap. Vui long kiem tra log.txt.");
+            SetErrorState("Không thể đăng nhập. Vui lòng kiểm tra log.txt.");
         }
     }
 
@@ -162,8 +162,7 @@ public sealed partial class FrmLogin : Form
             pnlErrorAlert.Visible = false;
             return;
         }
-
-        lblErrorAlertText.Text = message;
+        lblErrorAlertText.Text = "Sai tên tài khoản hoặc mật khẩu";
         pnlErrorAlert.Visible = true;
     }
 

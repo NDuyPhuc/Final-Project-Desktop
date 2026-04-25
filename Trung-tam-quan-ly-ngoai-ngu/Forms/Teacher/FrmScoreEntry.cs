@@ -13,7 +13,7 @@ public partial class FrmScoreEntry : Form
     public FrmScoreEntry()
     {
         InitializeComponent();
-        FormHostHelpers.ConfigureModuleSurface(this, "Nhap diem");
+        FormHostHelpers.ConfigureModuleSurface(this, "Nhập điểm");
         ConfigureView();
         LoadTeachingClasses();
         WireEvents();
@@ -25,11 +25,11 @@ public partial class FrmScoreEntry : Form
         AppTheme.StylePrimaryButton(btnLoadScoreList);
         AppTheme.StylePrimaryButton(btnSaveScore);
 
-        btnLoadScoreList.Text = "Tai danh sach";
-        btnSaveScore.Text = "Luu bang diem";
+        btnLoadScoreList.Text = "Tải danh sách";
+        btnSaveScore.Text = "Lưu bảng điểm";
 
         cboScoreType.Items.Clear();
-        cboScoreType.Items.AddRange(["Tong hop diem", "Midterm", "Final"]);
+        cboScoreType.Items.AddRange(["Tổng hợp điểm", "Midterm", "Final"]);
         cboScoreType.SelectedIndex = 0;
         txtScoreWeight.Text = "0-10";
         txtScoreWeight.ReadOnly = true;
@@ -59,7 +59,7 @@ public partial class FrmScoreEntry : Form
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmScoreEntry));
-            MessageBox.Show(this, "Khong tai duoc lop giang day. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không tải được lớp giảng dạy. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -75,7 +75,7 @@ public partial class FrmScoreEntry : Form
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmScoreEntry));
-            MessageBox.Show(this, "Khong tai duoc bang diem. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không tải được bảng điểm. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -99,7 +99,7 @@ public partial class FrmScoreEntry : Form
             var classId = cboScoreClass.SelectedValue?.ToString();
             if (string.IsNullOrWhiteSpace(classId))
             {
-                errScore.SetError(cboScoreClass, "Chua chon lop hoc.");
+                errScore.SetError(cboScoreClass, "Chưa chọn lớp học.");
                 return;
             }
 
@@ -130,7 +130,7 @@ public partial class FrmScoreEntry : Form
             }
 
             AppRuntime.DataService.SaveScores(classId, items);
-            MessageBox.Show(this, "Da luu bang diem thanh cong.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(this, "Đã lưu bảng điểm thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             LoadScoreList();
         }
         catch (Exception ex)
@@ -138,7 +138,7 @@ public partial class FrmScoreEntry : Form
             ErrorLogger.Log(ex, nameof(FrmScoreEntry));
             MessageBox.Show(this, ex is InvalidOperationException
                 ? ex.Message
-                : "Khong luu duoc bang diem. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                : "Không lưu được bảng điểm. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 

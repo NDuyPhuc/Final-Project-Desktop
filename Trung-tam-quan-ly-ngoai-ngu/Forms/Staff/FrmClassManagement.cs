@@ -12,7 +12,7 @@ public partial class FrmClassManagement : Form
     public FrmClassManagement()
     {
         InitializeComponent();
-        FormHostHelpers.ConfigureModuleSurface(this, "Quan ly lop hoc");
+        FormHostHelpers.ConfigureModuleSurface(this, "Quản lý lớp học");
         ConfigureView();
         LoadClasses();
         WireEvents();
@@ -40,8 +40,8 @@ public partial class FrmClassManagement : Form
         dgvClassStudentList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         dgvClassSessionList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-        txtClassCourse.PlaceholderText = "Nhap ma khoa hoac ten khoa";
-        txtClassTeacher.PlaceholderText = "Nhap ma GV hoac ho ten";
+        txtClassCourse.PlaceholderText = "Nhập mã khóa hoặc tên khóa";
+        txtClassTeacher.PlaceholderText = "Nhập mã GV hoặc họ tên";
         cboClassStatusFilter.SelectedIndex = 0;
         cboClassDetailStatus.SelectedIndex = 0;
         _errClass.BlinkStyle = ErrorBlinkStyle.NeverBlink;
@@ -69,7 +69,7 @@ public partial class FrmClassManagement : Form
         {
             _classTable = AppRuntime.DataService.GetClassList(
                 string.IsNullOrWhiteSpace(keyword) ? null : keyword,
-                string.IsNullOrWhiteSpace(status) || status == "Tat ca" ? null : status);
+                string.IsNullOrWhiteSpace(status) || status is "Tat ca" or "Tất cả" ? null : status);
 
             dgvClassList.DataSource = _classTable;
             SelectFirstClass();
@@ -77,7 +77,7 @@ public partial class FrmClassManagement : Form
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmClassManagement));
-            MessageBox.Show(this, "Khong tai duoc danh sach lop hoc. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không tải được danh sách lớp học. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -85,7 +85,7 @@ public partial class FrmClassManagement : Form
     {
         ResetDetailEditor();
         txtClassCode.Text = AppRuntime.DataService.GetNextClassId();
-        cboClassDetailStatus.Text = "Dang mo";
+        cboClassDetailStatus.Text = "Đang mở";
         dtpClassStartDate.Value = DateTime.Today;
         dtpClassEndDate.Value = DateTime.Today.AddMonths(2);
         txtClassName.Focus();
@@ -118,12 +118,12 @@ public partial class FrmClassManagement : Form
             entity = AppRuntime.DataService.SaveClass(entity);
             LoadClasses(txtClassKeyword.Text.Trim(), cboClassStatusFilter.Text);
             FocusClass(entity.Id);
-            MessageBox.Show(this, "Da luu lop hoc thanh cong.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(this, "Đã lưu lớp học thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmClassManagement));
-            MessageBox.Show(this, "Khong luu duoc lop hoc. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không lưu được lớp học. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -134,7 +134,7 @@ public partial class FrmClassManagement : Form
             return;
         }
 
-        using var dialog = new FrmConfirmDialog("Xoa lop hoc", "Ban co chac muon xoa mem lop hoc dang chon khong?");
+        using var dialog = new FrmConfirmDialog("Xóa lớp học", "Bạn có chắc muốn xóa mềm lớp học đang chọn không?");
         if (dialog.ShowDialog(this) != DialogResult.OK)
         {
             return;
@@ -149,7 +149,7 @@ public partial class FrmClassManagement : Form
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmClassManagement));
-            MessageBox.Show(this, "Khong xoa duoc lop hoc. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không xóa được lớp học. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -181,7 +181,7 @@ public partial class FrmClassManagement : Form
             txtClassSize.Text = entity.MaxStudents.ToString();
             dtpClassStartDate.Value = entity.StartDate == default ? DateTime.Today : entity.StartDate;
             dtpClassEndDate.Value = entity.EndDate == default ? DateTime.Today : entity.EndDate;
-            cboClassDetailStatus.Text = string.IsNullOrWhiteSpace(entity.Status) ? "Dang mo" : entity.Status;
+            cboClassDetailStatus.Text = string.IsNullOrWhiteSpace(entity.Status) ? "Đang mở" : entity.Status;
 
             var course = AppRuntime.DataService.GetCourseById(entity.CourseId);
             var teacher = AppRuntime.DataService.GetTeacherById(entity.TeacherId);
@@ -194,7 +194,7 @@ public partial class FrmClassManagement : Form
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmClassManagement));
-            MessageBox.Show(this, "Khong tai duoc chi tiet lop hoc. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không tải được chi tiết lớp học. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -233,34 +233,34 @@ public partial class FrmClassManagement : Form
 
         if (string.IsNullOrWhiteSpace(txtClassCode.Text))
         {
-            _errClass.SetError(txtClassCode, "Ma lop khong duoc de trong.");
+            _errClass.SetError(txtClassCode, "Mã lớp không được để trống.");
         }
 
         if (string.IsNullOrWhiteSpace(txtClassName.Text))
         {
-            _errClass.SetError(txtClassName, "Ten lop khong duoc de trong.");
+            _errClass.SetError(txtClassName, "Tên lớp không được để trống.");
         }
 
         courseId = ResolveCourseId(txtClassCourse.Text.Trim());
         if (string.IsNullOrWhiteSpace(courseId))
         {
-            _errClass.SetError(txtClassCourse, "Khong tim thay khoa hoc.");
+            _errClass.SetError(txtClassCourse, "Không tìm thấy khóa học.");
         }
 
         teacherId = ResolveTeacherId(txtClassTeacher.Text.Trim());
         if (string.IsNullOrWhiteSpace(teacherId))
         {
-            _errClass.SetError(txtClassTeacher, "Khong tim thay giao vien.");
+            _errClass.SetError(txtClassTeacher, "Không tìm thấy giáo viên.");
         }
 
         if (!int.TryParse(txtClassSize.Text.Trim(), out maxStudents) || maxStudents <= 0)
         {
-            _errClass.SetError(txtClassSize, "Si so toi da phai > 0.");
+            _errClass.SetError(txtClassSize, "Sĩ số tối đa phải > 0.");
         }
 
         if (dtpClassStartDate.Value.Date > dtpClassEndDate.Value.Date)
         {
-            _errClass.SetError(dtpClassEndDate, "Ngay ket thuc phai >= ngay bat dau.");
+            _errClass.SetError(dtpClassEndDate, "Ngày kết thúc phải >= ngày bắt đầu.");
         }
 
         return string.IsNullOrWhiteSpace(_errClass.GetError(txtClassCode))
@@ -355,31 +355,31 @@ public partial class FrmClassManagement : Form
 
     private void LocalizeLabels()
     {
-        lblClassKeyword.Text = "Tu khoa";
-        txtClassKeyword.PlaceholderText = "Ma lop hoac ten lop";
-        lblClassStatus.Text = "Trang thai";
+        lblClassKeyword.Text = "Từ khóa";
+        txtClassKeyword.PlaceholderText = "Mã lớp hoặc tên lớp";
+        lblClassStatus.Text = "Trạng thái";
         cboClassStatusFilter.Items.Clear();
-        cboClassStatusFilter.Items.AddRange(["Tat ca", "Dang mo", "Dang hoc", "Day", "Da dong", "Hoan thanh", "Da huy"]);
+        cboClassStatusFilter.Items.AddRange(["Tất cả", "Đang mở", "Đang học", "Đầy", "Đã đóng", "Hoàn thành", "Đã hủy"]);
         cboClassDetailStatus.Items.Clear();
-        cboClassDetailStatus.Items.AddRange(["Dang mo", "Dang hoc", "Da dong", "Hoan thanh", "Da huy"]);
+        cboClassDetailStatus.Items.AddRange(["Đang mở", "Đang học", "Đã đóng", "Hoàn thành", "Đã hủy"]);
 
-        lblClassCode.Text = "Ma lop";
-        lblClassName.Text = "Ten lop";
-        lblClassCourse.Text = "Khoa hoc";
-        lblClassTeacher.Text = "Giao vien";
-        lblClassSchedule.Text = "Lich hoc";
-        lblClassSize.Text = "Si so toi da";
-        lblClassDetailStatus.Text = "Trang thai";
-        lblClassRoom.Text = "Phong hoc";
-        lblClassStartDate.Text = "Ngay bat dau";
-        lblClassEndDate.Text = "Ngay ket thuc";
+        lblClassCode.Text = "Mã lớp";
+        lblClassName.Text = "Tên lớp";
+        lblClassCourse.Text = "Khóa học";
+        lblClassTeacher.Text = "Giáo viên";
+        lblClassSchedule.Text = "Lịch học";
+        lblClassSize.Text = "Sĩ số tối đa";
+        lblClassDetailStatus.Text = "Trạng thái";
+        lblClassRoom.Text = "Phòng học";
+        lblClassStartDate.Text = "Ngày bắt đầu";
+        lblClassEndDate.Text = "Ngày kết thúc";
 
-        btnSearchClass.Text = "Tim kiem";
-        btnRefreshClass.Text = "Lam moi";
-        btnCreateClass.Text = "Them lop";
-        btnSaveClass.Text = "Luu";
-        btnUpdateClass.Text = "Cap nhat";
-        btnGenerateSessions.Text = "Xoa mem lop";
-        btnOpenEnrollmentFromClass.Text = "Mo ghi danh";
+        btnSearchClass.Text = "Tìm kiếm";
+        btnRefreshClass.Text = "Làm mới";
+        btnCreateClass.Text = "Thêm lớp";
+        btnSaveClass.Text = "Lưu";
+        btnUpdateClass.Text = "Cập nhật";
+        btnGenerateSessions.Text = "Xóa mềm lớp";
+        btnOpenEnrollmentFromClass.Text = "Mở ghi danh";
     }
 }

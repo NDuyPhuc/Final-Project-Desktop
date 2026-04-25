@@ -1,4 +1,4 @@
-﻿namespace Trung_tam_quan_ly_ngoai_ngu;
+namespace Trung_tam_quan_ly_ngoai_ngu;
 
 partial class FrmCourseManagement
 {
@@ -102,6 +102,7 @@ partial class FrmCourseManagement
         pnlCourseFilterCard.Name = "pnlCourseFilterCard";
         pnlCourseFilterCard.Padding = new Padding(16, 14, 16, 14);
         pnlCourseFilterCard.Size = new Size(974, 82);
+        pnlCourseFilterCard.AutoScroll = false;
         pnlCourseFilterCard.TabIndex = 0;
         // 
         // lblCourseKeyword
@@ -109,15 +110,16 @@ partial class FrmCourseManagement
         lblCourseKeyword.AutoSize = true;
         lblCourseKeyword.Location = new Point(16, 18);
         lblCourseKeyword.Name = "lblCourseKeyword";
-        lblCourseKeyword.Size = new Size(95, 20);
+        lblCourseKeyword.Size = new Size(95, 28);
+        lblCourseKeyword.AutoSize = true;
         lblCourseKeyword.TabIndex = 0;
-        lblCourseKeyword.Text = "Tá»« khÃ³a tÃ¬m";
+        lblCourseKeyword.Text = "Từ khóa tìm";
         // 
         // txtCourseKeyword
         // 
         txtCourseKeyword.Location = new Point(16, 41);
         txtCourseKeyword.Name = "txtCourseKeyword";
-        txtCourseKeyword.PlaceholderText = "MÃ£ khÃ³a hoáº·c tÃªn khÃ³a há»c";
+        txtCourseKeyword.PlaceholderText = "Mã khóa hoặc tên khóa học";
         txtCourseKeyword.Size = new Size(280, 27);
         txtCourseKeyword.TabIndex = 1;
         // 
@@ -126,15 +128,16 @@ partial class FrmCourseManagement
         lblCourseStatus.AutoSize = true;
         lblCourseStatus.Location = new Point(318, 18);
         lblCourseStatus.Name = "lblCourseStatus";
-        lblCourseStatus.Size = new Size(78, 20);
+        lblCourseStatus.Size = new Size(78, 28);
+        lblCourseStatus.AutoSize = true;
         lblCourseStatus.TabIndex = 2;
-        lblCourseStatus.Text = "Tráº¡ng thÃ¡i";
+        lblCourseStatus.Text = "Trạng thái";
         // 
         // cboCourseStatusFilter
         // 
         cboCourseStatusFilter.DropDownStyle = ComboBoxStyle.DropDownList;
         cboCourseStatusFilter.FormattingEnabled = true;
-        cboCourseStatusFilter.Items.AddRange(new object[] { "Táº¥t cáº£", "CÃ²n má»Ÿ", "Táº¡m dá»«ng" });
+        cboCourseStatusFilter.Items.AddRange(new object[] { "Tất cả", "Còn mở", "Tạm dừng" });
         cboCourseStatusFilter.Location = new Point(318, 41);
         cboCourseStatusFilter.Name = "cboCourseStatusFilter";
         cboCourseStatusFilter.Size = new Size(190, 28);
@@ -146,7 +149,7 @@ partial class FrmCourseManagement
         btnSearchCourse.Name = "btnSearchCourse";
         btnSearchCourse.Size = new Size(100, 30);
         btnSearchCourse.TabIndex = 4;
-        btnSearchCourse.Text = "TÃ¬m kiáº¿m";
+        btnSearchCourse.Text = "Tìm kiếm";
         btnSearchCourse.UseVisualStyleBackColor = true;
         // 
         // btnRefreshCourse
@@ -155,7 +158,7 @@ partial class FrmCourseManagement
         btnRefreshCourse.Name = "btnRefreshCourse";
         btnRefreshCourse.Size = new Size(108, 30);
         btnRefreshCourse.TabIndex = 5;
-        btnRefreshCourse.Text = "LÃ m má»›i";
+        btnRefreshCourse.Text = "Làm mới";
         btnRefreshCourse.UseVisualStyleBackColor = true;
         // 
         // dgvCourseList
@@ -186,7 +189,7 @@ partial class FrmCourseManagement
         grpCourseInfo.Size = new Size(580, 248);
         grpCourseInfo.TabIndex = 0;
         grpCourseInfo.TabStop = false;
-        grpCourseInfo.Text = "ThÃ´ng tin khÃ³a há»c";
+        grpCourseInfo.Text = "Thông tin khóa học";
         // 
         // tblCourseDetail
         // 
@@ -213,6 +216,7 @@ partial class FrmCourseManagement
         tblCourseDetail.RowStyles.Add(new RowStyle());
         tblCourseDetail.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblCourseDetail.Size = new Size(552, 202);
+        tblCourseDetail.AutoScroll = true;
         tblCourseDetail.TabIndex = 0;
         // 
         // lblCourseCode
@@ -223,7 +227,7 @@ partial class FrmCourseManagement
         lblCourseCode.Name = "lblCourseCode";
         lblCourseCode.Size = new Size(65, 20);
         lblCourseCode.TabIndex = 0;
-        lblCourseCode.Text = "MÃ£ khÃ³a";
+        lblCourseCode.Text = "Mã khóa";
         // 
         // txtCourseCode
         // 
@@ -241,7 +245,7 @@ partial class FrmCourseManagement
         lblCourseName.Name = "lblCourseName";
         lblCourseName.Size = new Size(91, 20);
         lblCourseName.TabIndex = 2;
-        lblCourseName.Text = "TÃªn khÃ³a há»c";
+        lblCourseName.Text = "Tên khóa học";
         // 
         // txtCourseName
         // 
@@ -259,7 +263,7 @@ partial class FrmCourseManagement
         lblCourseLevel.Name = "lblCourseLevel";
         lblCourseLevel.Size = new Size(48, 20);
         lblCourseLevel.TabIndex = 4;
-        lblCourseLevel.Text = "TrÃ¬nh Ä‘á»™";
+        lblCourseLevel.Text = "Trình độ";
         // 
         // txtCourseLevel
         // 
@@ -277,7 +281,7 @@ partial class FrmCourseManagement
         lblCourseFee.Name = "lblCourseFee";
         lblCourseFee.Size = new Size(60, 20);
         lblCourseFee.TabIndex = 6;
-        lblCourseFee.Text = "Há»c phÃ­";
+        lblCourseFee.Text = "Học phí";
         // 
         // txtCourseFee
         // 
@@ -295,7 +299,7 @@ partial class FrmCourseManagement
         lblCourseDescription.Name = "lblCourseDescription";
         lblCourseDescription.Size = new Size(48, 20);
         lblCourseDescription.TabIndex = 8;
-        lblCourseDescription.Text = "MÃ´ táº£";
+        lblCourseDescription.Text = "Mô tả";
         // 
         // txtCourseDescription
         // 
@@ -313,7 +317,7 @@ partial class FrmCourseManagement
         btnCreateCourse.Name = "btnCreateCourse";
         btnCreateCourse.Size = new Size(110, 34);
         btnCreateCourse.TabIndex = 0;
-        btnCreateCourse.Text = "ThÃªm má»›i";
+        btnCreateCourse.Text = "Thêm mới";
         btnCreateCourse.UseVisualStyleBackColor = true;
         // 
         // btnSaveCourse
@@ -322,7 +326,7 @@ partial class FrmCourseManagement
         btnSaveCourse.Name = "btnSaveCourse";
         btnSaveCourse.Size = new Size(110, 34);
         btnSaveCourse.TabIndex = 1;
-        btnSaveCourse.Text = "LÆ°u";
+        btnSaveCourse.Text = "Lưu";
         btnSaveCourse.UseVisualStyleBackColor = true;
         // 
         // btnUpdateCourse
@@ -331,7 +335,7 @@ partial class FrmCourseManagement
         btnUpdateCourse.Name = "btnUpdateCourse";
         btnUpdateCourse.Size = new Size(110, 34);
         btnUpdateCourse.TabIndex = 2;
-        btnUpdateCourse.Text = "Cáº­p nháº­t";
+        btnUpdateCourse.Text = "Cập nhật";
         btnUpdateCourse.UseVisualStyleBackColor = true;
         // 
         // btnDeleteCourse
@@ -340,7 +344,7 @@ partial class FrmCourseManagement
         btnDeleteCourse.Name = "btnDeleteCourse";
         btnDeleteCourse.Size = new Size(110, 34);
         btnDeleteCourse.TabIndex = 3;
-        btnDeleteCourse.Text = "XÃ³a má»m";
+        btnDeleteCourse.Text = "Xóa mềm";
         btnDeleteCourse.UseVisualStyleBackColor = true;
         // 
         // tblCourseRoot
@@ -358,6 +362,7 @@ partial class FrmCourseManagement
         tblCourseRoot.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblCourseRoot.RowStyles.Add(new RowStyle());
         tblCourseRoot.Size = new Size(980, 616);
+        tblCourseRoot.AutoScroll = false;
         tblCourseRoot.TabIndex = 0;
         // 
         // splCourseContent
@@ -378,6 +383,7 @@ partial class FrmCourseManagement
         splCourseContent.Panel2.Padding = new Padding(6, 0, 0, 0);
         splCourseContent.Size = new Size(974, 458);
         splCourseContent.SplitterDistance = 382;
+        splCourseContent.AutoScroll = false;
         splCourseContent.TabIndex = 1;
         // 
         // grpCourseClassList
@@ -390,7 +396,7 @@ partial class FrmCourseManagement
         grpCourseClassList.Size = new Size(580, 210);
         grpCourseClassList.TabIndex = 1;
         grpCourseClassList.TabStop = false;
-        grpCourseClassList.Text = "Danh sÃ¡ch lá»›p thuá»™c khÃ³a";
+        grpCourseClassList.Text = "Danh sách lớp thuộc khóa";
         // 
         // dgvCourseClassList
         // 
@@ -419,6 +425,7 @@ partial class FrmCourseManagement
         flpCourseActions.Location = new Point(3, 555);
         flpCourseActions.Name = "flpCourseActions";
         flpCourseActions.Size = new Size(974, 58);
+        flpCourseActions.AutoScroll = false;
         flpCourseActions.TabIndex = 2;
         flpCourseActions.WrapContents = false;
         // 
@@ -427,10 +434,12 @@ partial class FrmCourseManagement
         AutoScaleDimensions = new SizeF(96F, 96F);
         AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(1004, 640);
+        Font = new Font("Segoe UI", 10F);
         Controls.Add(tblCourseRoot);
+        MinimumSize = new Size(920, 620);
         Name = "FrmCourseManagement";
         Padding = new Padding(12);
-        Text = "Quáº£n lÃ½ khÃ³a há»c";
+        Text = "Quản lý khóa học";
         pnlCourseFilterCard.ResumeLayout(false);
         pnlCourseFilterCard.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)dgvCourseList).EndInit();
@@ -446,6 +455,7 @@ partial class FrmCourseManagement
         grpCourseClassList.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)dgvCourseClassList).EndInit();
         flpCourseActions.ResumeLayout(false);
+        AutoScroll = true;
         ResumeLayout(false);
     }
 }

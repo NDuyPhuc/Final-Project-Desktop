@@ -1,4 +1,4 @@
-﻿namespace Trung_tam_quan_ly_ngoai_ngu;
+namespace Trung_tam_quan_ly_ngoai_ngu;
 
 partial class FrmSystemMonitor
 {
@@ -221,11 +221,12 @@ partial class FrmSystemMonitor
         tblMonitorRoot.Location = new Point(16, 16);
         tblMonitorRoot.Name = "tblMonitorRoot";
         tblMonitorRoot.RowCount = 4;
-        tblMonitorRoot.RowStyles.Add(new RowStyle());
-        tblMonitorRoot.RowStyles.Add(new RowStyle());
-        tblMonitorRoot.RowStyles.Add(new RowStyle());
+        tblMonitorRoot.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+        tblMonitorRoot.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+        tblMonitorRoot.RowStyles.Add(new RowStyle(SizeType.AutoSize));
         tblMonitorRoot.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblMonitorRoot.Size = new Size(1088, 688);
+        tblMonitorRoot.AutoScroll = true;
         tblMonitorRoot.TabIndex = 0;
         // 
         // pnlMonitorHeader
@@ -240,6 +241,7 @@ partial class FrmSystemMonitor
         pnlMonitorHeader.Name = "pnlMonitorHeader";
         pnlMonitorHeader.Padding = new Padding(4, 0, 4, 10);
         pnlMonitorHeader.Size = new Size(1088, 114);
+        pnlMonitorHeader.AutoScroll = false;
         pnlMonitorHeader.TabIndex = 0;
         // 
         // btnMonitorToday
@@ -250,7 +252,7 @@ partial class FrmSystemMonitor
         btnMonitorToday.Name = "btnMonitorToday";
         btnMonitorToday.Size = new Size(146, 42);
         btnMonitorToday.TabIndex = 3;
-        btnMonitorToday.Text = "HÃ”M NAY";
+        btnMonitorToday.Text = "HÔM NAY";
         btnMonitorToday.UseVisualStyleBackColor = true;
         // 
         // lblMonitorSubtitle
@@ -258,9 +260,9 @@ partial class FrmSystemMonitor
         lblMonitorSubtitle.AutoSize = true;
         lblMonitorSubtitle.Location = new Point(8, 67);
         lblMonitorSubtitle.Name = "lblMonitorSubtitle";
-        lblMonitorSubtitle.Size = new Size(408, 20);
+        lblMonitorSubtitle.Size = new Size(540, 28);
         lblMonitorSubtitle.TabIndex = 2;
-        lblMonitorSubtitle.Text = "PhiÃªn lÃ m viá»‡c hiá»‡n táº¡i: 08:45:12 GMT+7 | Tráº¡ng thÃ¡i: á»”n Ä‘á»‹nh";
+        lblMonitorSubtitle.Text = "Phiên làm việc hiện tại: 08:45:12 GMT+7 | Trạng thái: Ổn định";
         // 
         // lblMonitorTitle
         // 
@@ -268,9 +270,9 @@ partial class FrmSystemMonitor
         lblMonitorTitle.Font = new Font("Segoe UI", 24F, FontStyle.Bold | FontStyle.Italic);
         lblMonitorTitle.Location = new Point(4, 10);
         lblMonitorTitle.Name = "lblMonitorTitle";
-        lblMonitorTitle.Size = new Size(428, 54);
+        lblMonitorTitle.Size = new Size(515, 65);
         lblMonitorTitle.TabIndex = 1;
-        lblMonitorTitle.Text = "GIÃM SÃT Há»† THá»NG";
+        lblMonitorTitle.Text = "GIÁM SÁT HỆ THỐNG";
         // 
         // lblMonitorEyebrow
         // 
@@ -278,6 +280,7 @@ partial class FrmSystemMonitor
         lblMonitorEyebrow.Location = new Point(4, 91);
         lblMonitorEyebrow.Name = "lblMonitorEyebrow";
         lblMonitorEyebrow.Size = new Size(1080, 13);
+        lblMonitorEyebrow.AutoSize = true;
         lblMonitorEyebrow.TabIndex = 0;
         // 
         // pnlSystemMonitorFilterCard
@@ -289,6 +292,7 @@ partial class FrmSystemMonitor
         pnlSystemMonitorFilterCard.Name = "pnlSystemMonitorFilterCard";
         pnlSystemMonitorFilterCard.Padding = new Padding(18);
         pnlSystemMonitorFilterCard.Size = new Size(1088, 114);
+        pnlSystemMonitorFilterCard.AutoScroll = false;
         pnlSystemMonitorFilterCard.TabIndex = 1;
         // 
         // tblMonitorFilter
@@ -312,6 +316,7 @@ partial class FrmSystemMonitor
         tblMonitorFilter.RowStyles.Add(new RowStyle());
         tblMonitorFilter.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblMonitorFilter.Size = new Size(1052, 78);
+        tblMonitorFilter.AutoScroll = false;
         tblMonitorFilter.TabIndex = 0;
         // 
         // lblMonitorPeriod
@@ -320,19 +325,19 @@ partial class FrmSystemMonitor
         lblMonitorPeriod.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
         lblMonitorPeriod.Location = new Point(3, 0);
         lblMonitorPeriod.Name = "lblMonitorPeriod";
-        lblMonitorPeriod.Size = new Size(159, 20);
+        lblMonitorPeriod.Size = new Size(193, 25);
         lblMonitorPeriod.TabIndex = 0;
-        lblMonitorPeriod.Text = "KHOáº¢NG THá»œI GIAN";
+        lblMonitorPeriod.Text = "KHOẢNG THỜI GIAN";
         // 
         // cboMonitorPeriod
         // 
         cboMonitorPeriod.Dock = DockStyle.Fill;
         cboMonitorPeriod.DropDownStyle = ComboBoxStyle.DropDownList;
         cboMonitorPeriod.FormattingEnabled = true;
-        cboMonitorPeriod.Items.AddRange(new object[] { "24 giá» qua", "7 ngÃ y qua", "30 ngÃ y qua" });
-        cboMonitorPeriod.Location = new Point(3, 23);
+        cboMonitorPeriod.Items.AddRange(new object[] { "24 giờ qua", "7 ngày qua", "30 ngày qua" });
+        cboMonitorPeriod.Location = new Point(3, 28);
         cboMonitorPeriod.Name = "cboMonitorPeriod";
-        cboMonitorPeriod.Size = new Size(288, 28);
+        cboMonitorPeriod.Size = new Size(288, 36);
         cboMonitorPeriod.TabIndex = 1;
         // 
         // lblMonitorDepartment
@@ -341,19 +346,19 @@ partial class FrmSystemMonitor
         lblMonitorDepartment.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
         lblMonitorDepartment.Location = new Point(297, 0);
         lblMonitorDepartment.Name = "lblMonitorDepartment";
-        lblMonitorDepartment.Size = new Size(146, 20);
+        lblMonitorDepartment.Size = new Size(178, 25);
         lblMonitorDepartment.TabIndex = 2;
-        lblMonitorDepartment.Text = "Bá»˜ PHáº¬N QUáº¢N LÃ";
+        lblMonitorDepartment.Text = "BỘ PHẬN QUẢN LÝ";
         // 
         // cboMonitorDepartment
         // 
         cboMonitorDepartment.Dock = DockStyle.Fill;
         cboMonitorDepartment.DropDownStyle = ComboBoxStyle.DropDownList;
         cboMonitorDepartment.FormattingEnabled = true;
-        cboMonitorDepartment.Items.AddRange(new object[] { "NhÃ¢n viÃªn & Giáº£ng viÃªn", "NhÃ¢n viÃªn", "Giáº£ng viÃªn", "ToÃ n há»‡ thá»‘ng" });
-        cboMonitorDepartment.Location = new Point(297, 23);
+        cboMonitorDepartment.Items.AddRange(new object[] { "Nhân viên & Giảng viên", "Nhân viên", "Giảng viên", "Toàn hệ thống" });
+        cboMonitorDepartment.Location = new Point(297, 28);
         cboMonitorDepartment.Name = "cboMonitorDepartment";
-        cboMonitorDepartment.Size = new Size(288, 28);
+        cboMonitorDepartment.Size = new Size(288, 36);
         cboMonitorDepartment.TabIndex = 3;
         // 
         // lblMonitorViewType
@@ -362,19 +367,19 @@ partial class FrmSystemMonitor
         lblMonitorViewType.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
         lblMonitorViewType.Location = new Point(591, 0);
         lblMonitorViewType.Name = "lblMonitorViewType";
-        lblMonitorViewType.Size = new Size(139, 20);
+        lblMonitorViewType.Size = new Size(170, 25);
         lblMonitorViewType.TabIndex = 4;
-        lblMonitorViewType.Text = "LOáº I HOáº T Äá»˜NG";
+        lblMonitorViewType.Text = "LOẠI HOẠT ĐỘNG";
         // 
         // cboMonitorViewType
         // 
         cboMonitorViewType.Dock = DockStyle.Fill;
         cboMonitorViewType.DropDownStyle = ComboBoxStyle.DropDownList;
         cboMonitorViewType.FormattingEnabled = true;
-        cboMonitorViewType.Items.AddRange(new object[] { "Táº¥t cáº£ hoáº¡t Ä‘á»™ng", "Thanh toÃ¡n", "Äiá»ƒm danh", "Ghi danh", "Cáº¥u hÃ¬nh" });
-        cboMonitorViewType.Location = new Point(591, 23);
+        cboMonitorViewType.Items.AddRange(new object[] { "Tất cả hoạt động", "Thanh toán", "Điểm danh", "Ghi danh", "Cấu hình" });
+        cboMonitorViewType.Location = new Point(591, 28);
         cboMonitorViewType.Name = "cboMonitorViewType";
-        cboMonitorViewType.Size = new Size(288, 28);
+        cboMonitorViewType.Size = new Size(288, 36);
         cboMonitorViewType.TabIndex = 5;
         // 
         // flpMonitorActions
@@ -383,9 +388,10 @@ partial class FrmSystemMonitor
         flpMonitorActions.Controls.Add(btnQuickExportMonitor);
         flpMonitorActions.Dock = DockStyle.Fill;
         flpMonitorActions.FlowDirection = FlowDirection.TopDown;
-        flpMonitorActions.Location = new Point(885, 23);
+        flpMonitorActions.Location = new Point(885, 28);
         flpMonitorActions.Name = "flpMonitorActions";
-        flpMonitorActions.Size = new Size(164, 52);
+        flpMonitorActions.Size = new Size(164, 47);
+        flpMonitorActions.AutoScroll = false;
         flpMonitorActions.TabIndex = 6;
         flpMonitorActions.WrapContents = false;
         // 
@@ -395,7 +401,7 @@ partial class FrmSystemMonitor
         btnViewMonitor.Name = "btnViewMonitor";
         btnViewMonitor.Size = new Size(158, 46);
         btnViewMonitor.TabIndex = 0;
-        btnViewMonitor.Text = "LÃ€M Má»šI";
+        btnViewMonitor.Text = "LÀM MỚI";
         btnViewMonitor.UseVisualStyleBackColor = true;
         // 
         // btnQuickExportMonitor
@@ -404,7 +410,7 @@ partial class FrmSystemMonitor
         btnQuickExportMonitor.Name = "btnQuickExportMonitor";
         btnQuickExportMonitor.Size = new Size(160, 46);
         btnQuickExportMonitor.TabIndex = 1;
-        btnQuickExportMonitor.Text = "XUáº¤T NHANH";
+        btnQuickExportMonitor.Text = "XUẤT NHANH";
         btnQuickExportMonitor.UseVisualStyleBackColor = true;
         btnQuickExportMonitor.Visible = false;
         // 
@@ -426,6 +432,7 @@ partial class FrmSystemMonitor
         tblMonitorKpi.RowCount = 1;
         tblMonitorKpi.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblMonitorKpi.Size = new Size(1088, 128);
+        tblMonitorKpi.AutoScroll = false;
         tblMonitorKpi.TabIndex = 2;
         // 
         // pnlMonitorStudentCount
@@ -439,6 +446,7 @@ partial class FrmSystemMonitor
         pnlMonitorStudentCount.Name = "pnlMonitorStudentCount";
         pnlMonitorStudentCount.Padding = new Padding(20, 18, 20, 16);
         pnlMonitorStudentCount.Size = new Size(258, 128);
+        pnlMonitorStudentCount.AutoScroll = false;
         pnlMonitorStudentCount.TabIndex = 0;
         // 
         // lblMonitorStudentCountTag
@@ -446,9 +454,9 @@ partial class FrmSystemMonitor
         lblMonitorStudentCountTag.AutoSize = true;
         lblMonitorStudentCountTag.Location = new Point(39, 92);
         lblMonitorStudentCountTag.Name = "lblMonitorStudentCountTag";
-        lblMonitorStudentCountTag.Size = new Size(72, 20);
+        lblMonitorStudentCountTag.Size = new Size(95, 28);
         lblMonitorStudentCountTag.TabIndex = 2;
-        lblMonitorStudentCountTag.Text = "á»”N Äá»ŠNH";
+        lblMonitorStudentCountTag.Text = "ỔN ĐỊNH";
         lblMonitorStudentCountTag.Click += lblMonitorStudentCountTag_Click;
         // 
         // lblMonitorStudentCountValue
@@ -457,7 +465,7 @@ partial class FrmSystemMonitor
         lblMonitorStudentCountValue.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
         lblMonitorStudentCountValue.Location = new Point(39, 42);
         lblMonitorStudentCountValue.Name = "lblMonitorStudentCountValue";
-        lblMonitorStudentCountValue.Size = new Size(127, 50);
+        lblMonitorStudentCountValue.Size = new Size(150, 60);
         lblMonitorStudentCountValue.TabIndex = 1;
         lblMonitorStudentCountValue.Text = "99.9%";
         // 
@@ -467,9 +475,9 @@ partial class FrmSystemMonitor
         lblMonitorStudentCountTitle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
         lblMonitorStudentCountTitle.Location = new Point(20, 16);
         lblMonitorStudentCountTitle.Name = "lblMonitorStudentCountTitle";
-        lblMonitorStudentCountTitle.Size = new Size(207, 23);
+        lblMonitorStudentCountTitle.Size = new Size(245, 28);
         lblMonitorStudentCountTitle.TabIndex = 0;
-        lblMonitorStudentCountTitle.Text = "THá»œI GIAN HOáº T Äá»˜NG";
+        lblMonitorStudentCountTitle.Text = "THỜI GIAN HOẠT ĐỘNG";
         // 
         // pnlMonitorEnrollmentCount
         // 
@@ -482,6 +490,7 @@ partial class FrmSystemMonitor
         pnlMonitorEnrollmentCount.Name = "pnlMonitorEnrollmentCount";
         pnlMonitorEnrollmentCount.Padding = new Padding(20, 18, 20, 16);
         pnlMonitorEnrollmentCount.Size = new Size(258, 128);
+        pnlMonitorEnrollmentCount.AutoScroll = false;
         pnlMonitorEnrollmentCount.TabIndex = 1;
         // 
         // lblMonitorEnrollmentCountTag
@@ -489,9 +498,9 @@ partial class FrmSystemMonitor
         lblMonitorEnrollmentCountTag.AutoSize = true;
         lblMonitorEnrollmentCountTag.Location = new Point(43, 93);
         lblMonitorEnrollmentCountTag.Name = "lblMonitorEnrollmentCountTag";
-        lblMonitorEnrollmentCountTag.Size = new Size(102, 20);
+        lblMonitorEnrollmentCountTag.Size = new Size(137, 28);
         lblMonitorEnrollmentCountTag.TabIndex = 2;
-        lblMonitorEnrollmentCountTag.Text = "NGÆ¯á»œI DÃ™NG";
+        lblMonitorEnrollmentCountTag.Text = "NGƯỜI DÙNG";
         lblMonitorEnrollmentCountTag.Click += lblMonitorEnrollmentCountTag_Click;
         // 
         // lblMonitorEnrollmentCountValue
@@ -500,7 +509,7 @@ partial class FrmSystemMonitor
         lblMonitorEnrollmentCountValue.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
         lblMonitorEnrollmentCountValue.Location = new Point(43, 43);
         lblMonitorEnrollmentCountValue.Name = "lblMonitorEnrollmentCountValue";
-        lblMonitorEnrollmentCountValue.Size = new Size(85, 50);
+        lblMonitorEnrollmentCountValue.Size = new Size(100, 60);
         lblMonitorEnrollmentCountValue.TabIndex = 1;
         lblMonitorEnrollmentCountValue.Text = "142";
         // 
@@ -510,9 +519,9 @@ partial class FrmSystemMonitor
         lblMonitorEnrollmentCountTitle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
         lblMonitorEnrollmentCountTitle.Location = new Point(20, 16);
         lblMonitorEnrollmentCountTitle.Name = "lblMonitorEnrollmentCountTitle";
-        lblMonitorEnrollmentCountTitle.Size = new Size(169, 23);
+        lblMonitorEnrollmentCountTitle.Size = new Size(200, 28);
         lblMonitorEnrollmentCountTitle.TabIndex = 0;
-        lblMonitorEnrollmentCountTitle.Text = "PHIÃŠN HOáº T Äá»˜NG";
+        lblMonitorEnrollmentCountTitle.Text = "PHIÊN HOẠT ĐỘNG";
         // 
         // pnlMonitorReceiptCount
         // 
@@ -525,6 +534,7 @@ partial class FrmSystemMonitor
         pnlMonitorReceiptCount.Name = "pnlMonitorReceiptCount";
         pnlMonitorReceiptCount.Padding = new Padding(20, 18, 20, 16);
         pnlMonitorReceiptCount.Size = new Size(258, 128);
+        pnlMonitorReceiptCount.AutoScroll = false;
         pnlMonitorReceiptCount.TabIndex = 2;
         // 
         // lblMonitorReceiptCountTag
@@ -532,9 +542,9 @@ partial class FrmSystemMonitor
         lblMonitorReceiptCountTag.AutoSize = true;
         lblMonitorReceiptCountTag.Location = new Point(49, 93);
         lblMonitorReceiptCountTag.Name = "lblMonitorReceiptCountTag";
-        lblMonitorReceiptCountTag.Size = new Size(83, 20);
+        lblMonitorReceiptCountTag.Size = new Size(109, 28);
         lblMonitorReceiptCountTag.TabIndex = 2;
-        lblMonitorReceiptCountTag.Text = "GIAO Dá»ŠCH";
+        lblMonitorReceiptCountTag.Text = "GIAO DỊCH";
         // 
         // lblMonitorReceiptCountValue
         // 
@@ -542,7 +552,7 @@ partial class FrmSystemMonitor
         lblMonitorReceiptCountValue.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
         lblMonitorReceiptCountValue.Location = new Point(49, 39);
         lblMonitorReceiptCountValue.Name = "lblMonitorReceiptCountValue";
-        lblMonitorReceiptCountValue.Size = new Size(116, 50);
+        lblMonitorReceiptCountValue.Size = new Size(137, 60);
         lblMonitorReceiptCountValue.TabIndex = 1;
         lblMonitorReceiptCountValue.Text = "1,240";
         // 
@@ -552,9 +562,9 @@ partial class FrmSystemMonitor
         lblMonitorReceiptCountTitle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
         lblMonitorReceiptCountTitle.Location = new Point(20, 16);
         lblMonitorReceiptCountTitle.Name = "lblMonitorReceiptCountTitle";
-        lblMonitorReceiptCountTitle.Size = new Size(145, 23);
+        lblMonitorReceiptCountTitle.Size = new Size(172, 28);
         lblMonitorReceiptCountTitle.TabIndex = 0;
-        lblMonitorReceiptCountTitle.Text = "NV Xá»¬ LÃ Há»’ SÆ ";
+        lblMonitorReceiptCountTitle.Text = "NV XỬ LÝ HỒ SƠ";
         // 
         // pnlMonitorDebtTotal
         // 
@@ -567,6 +577,7 @@ partial class FrmSystemMonitor
         pnlMonitorDebtTotal.Name = "pnlMonitorDebtTotal";
         pnlMonitorDebtTotal.Padding = new Padding(20, 18, 20, 16);
         pnlMonitorDebtTotal.Size = new Size(272, 128);
+        pnlMonitorDebtTotal.AutoScroll = false;
         pnlMonitorDebtTotal.TabIndex = 3;
         // 
         // lblMonitorDebtTotalTag
@@ -574,9 +585,9 @@ partial class FrmSystemMonitor
         lblMonitorDebtTotalTag.AutoSize = true;
         lblMonitorDebtTotalTag.Location = new Point(56, 92);
         lblMonitorDebtTotalTag.Name = "lblMonitorDebtTotalTag";
-        lblMonitorDebtTotalTag.Size = new Size(68, 20);
+        lblMonitorDebtTotalTag.Size = new Size(89, 28);
         lblMonitorDebtTotalTag.TabIndex = 2;
-        lblMonitorDebtTotalTag.Text = "Báº¢N GHI";
+        lblMonitorDebtTotalTag.Text = "BẢN GHI";
         // 
         // lblMonitorDebtTotalValue
         // 
@@ -584,7 +595,7 @@ partial class FrmSystemMonitor
         lblMonitorDebtTotalValue.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
         lblMonitorDebtTotalValue.Location = new Point(56, 42);
         lblMonitorDebtTotalValue.Name = "lblMonitorDebtTotalValue";
-        lblMonitorDebtTotalValue.Size = new Size(85, 50);
+        lblMonitorDebtTotalValue.Size = new Size(100, 60);
         lblMonitorDebtTotalValue.TabIndex = 1;
         lblMonitorDebtTotalValue.Text = "856";
         // 
@@ -594,9 +605,9 @@ partial class FrmSystemMonitor
         lblMonitorDebtTotalTitle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
         lblMonitorDebtTotalTitle.Location = new Point(20, 16);
         lblMonitorDebtTotalTitle.Name = "lblMonitorDebtTotalTitle";
-        lblMonitorDebtTotalTitle.Size = new Size(211, 23);
+        lblMonitorDebtTotalTitle.Size = new Size(250, 28);
         lblMonitorDebtTotalTitle.TabIndex = 0;
-        lblMonitorDebtTotalTitle.Text = "GV NHáº¬T KÃ GIáº¢NG Dáº Y";
+        lblMonitorDebtTotalTitle.Text = "GV NHẬT KÝ GIẢNG DẠY";
         // 
         // splMonitorMain
         // 
@@ -616,6 +627,7 @@ partial class FrmSystemMonitor
         splMonitorMain.Panel2.Padding = new Padding(16, 0, 0, 0);
         splMonitorMain.Size = new Size(1088, 284);
         splMonitorMain.SplitterDistance = 756;
+        splMonitorMain.AutoScroll = false;
         splMonitorMain.TabIndex = 3;
         // 
         // pnlMonitorActivityCard
@@ -628,6 +640,7 @@ partial class FrmSystemMonitor
         pnlMonitorActivityCard.Name = "pnlMonitorActivityCard";
         pnlMonitorActivityCard.Padding = new Padding(16, 14, 16, 14);
         pnlMonitorActivityCard.Size = new Size(740, 284);
+        pnlMonitorActivityCard.AutoScroll = false;
         pnlMonitorActivityCard.TabIndex = 0;
         // 
         // dgvMonitorActivity
@@ -648,6 +661,7 @@ partial class FrmSystemMonitor
         pnlMonitorActivityFooter.Location = new Point(16, 216);
         pnlMonitorActivityFooter.Name = "pnlMonitorActivityFooter";
         pnlMonitorActivityFooter.Size = new Size(708, 54);
+        pnlMonitorActivityFooter.AutoScroll = false;
         pnlMonitorActivityFooter.TabIndex = 1;
         // 
         // flpMonitorPagination
@@ -659,6 +673,7 @@ partial class FrmSystemMonitor
         flpMonitorPagination.Location = new Point(548, 9);
         flpMonitorPagination.Name = "flpMonitorPagination";
         flpMonitorPagination.Size = new Size(160, 36);
+        flpMonitorPagination.AutoScroll = false;
         flpMonitorPagination.TabIndex = 1;
         flpMonitorPagination.WrapContents = false;
         // 
@@ -694,9 +709,9 @@ partial class FrmSystemMonitor
         lblMonitorActivityFooter.AutoSize = true;
         lblMonitorActivityFooter.Location = new Point(6, 16);
         lblMonitorActivityFooter.Name = "lblMonitorActivityFooter";
-        lblMonitorActivityFooter.Size = new Size(224, 20);
+        lblMonitorActivityFooter.Size = new Size(293, 28);
         lblMonitorActivityFooter.TabIndex = 0;
-        lblMonitorActivityFooter.Text = "HIá»‚N THá»Š 5 TRÃŠN 4,208 Báº¢N GHI";
+        lblMonitorActivityFooter.Text = "HIỂN THỊ 5 TRÊN 4,208 BẢN GHI";
         // 
         // lblMonitorActivityTitle
         // 
@@ -706,7 +721,7 @@ partial class FrmSystemMonitor
         lblMonitorActivityTitle.Name = "lblMonitorActivityTitle";
         lblMonitorActivityTitle.Size = new Size(708, 39);
         lblMonitorActivityTitle.TabIndex = 0;
-        lblMonitorActivityTitle.Text = "NHáº¬T KÃ HOáº T Äá»˜NG CHI TIáº¾T";
+        lblMonitorActivityTitle.Text = "NHẬT KÝ HOẠT ĐỘNG CHI TIẾT";
         // 
         // pnlMonitorSourceColumn
         // 
@@ -718,6 +733,7 @@ partial class FrmSystemMonitor
         pnlMonitorSourceColumn.Location = new Point(16, 0);
         pnlMonitorSourceColumn.Name = "pnlMonitorSourceColumn";
         pnlMonitorSourceColumn.Size = new Size(312, 284);
+        pnlMonitorSourceColumn.AutoScroll = false;
         pnlMonitorSourceColumn.TabIndex = 0;
         // 
         // pnlMonitorHealthCard
@@ -731,6 +747,7 @@ partial class FrmSystemMonitor
         pnlMonitorHealthCard.Name = "pnlMonitorHealthCard";
         pnlMonitorHealthCard.Padding = new Padding(16, 14, 16, 16);
         pnlMonitorHealthCard.Size = new Size(312, 176);
+        pnlMonitorHealthCard.AutoScroll = false;
         pnlMonitorHealthCard.TabIndex = 3;
         // 
         // lblMonitorHealthFootnote
@@ -740,7 +757,7 @@ partial class FrmSystemMonitor
         lblMonitorHealthFootnote.Name = "lblMonitorHealthFootnote";
         lblMonitorHealthFootnote.Size = new Size(280, 20);
         lblMonitorHealthFootnote.TabIndex = 2;
-        lblMonitorHealthFootnote.Text = "* Má»—i Ã´ Ä‘áº¡i diá»‡n cho má»™t cluster logic xá»­ lÃ½ dá»¯ liá»‡u";
+        lblMonitorHealthFootnote.Text = "* Mỗi ô đại diện cho một cluster logic xử lý dữ liệu";
         // 
         // tblMonitorHealthMatrix
         // 
@@ -782,6 +799,7 @@ partial class FrmSystemMonitor
         tblMonitorHealthMatrix.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
         tblMonitorHealthMatrix.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
         tblMonitorHealthMatrix.Size = new Size(280, 84);
+        tblMonitorHealthMatrix.AutoScroll = true;
         tblMonitorHealthMatrix.TabIndex = 1;
         // 
         // pnlHealth01
@@ -790,6 +808,7 @@ partial class FrmSystemMonitor
         pnlHealth01.Location = new Point(3, 3);
         pnlHealth01.Name = "pnlHealth01";
         pnlHealth01.Size = new Size(22, 36);
+        pnlHealth01.AutoScroll = true;
         pnlHealth01.TabIndex = 0;
         // 
         // pnlHealth02
@@ -798,6 +817,7 @@ partial class FrmSystemMonitor
         pnlHealth02.Location = new Point(31, 3);
         pnlHealth02.Name = "pnlHealth02";
         pnlHealth02.Size = new Size(22, 36);
+        pnlHealth02.AutoScroll = true;
         pnlHealth02.TabIndex = 1;
         // 
         // pnlHealth03
@@ -806,6 +826,7 @@ partial class FrmSystemMonitor
         pnlHealth03.Location = new Point(59, 3);
         pnlHealth03.Name = "pnlHealth03";
         pnlHealth03.Size = new Size(22, 36);
+        pnlHealth03.AutoScroll = true;
         pnlHealth03.TabIndex = 2;
         // 
         // pnlHealth04
@@ -814,6 +835,7 @@ partial class FrmSystemMonitor
         pnlHealth04.Location = new Point(87, 3);
         pnlHealth04.Name = "pnlHealth04";
         pnlHealth04.Size = new Size(22, 36);
+        pnlHealth04.AutoScroll = true;
         pnlHealth04.TabIndex = 3;
         // 
         // pnlHealth05
@@ -822,6 +844,7 @@ partial class FrmSystemMonitor
         pnlHealth05.Location = new Point(115, 3);
         pnlHealth05.Name = "pnlHealth05";
         pnlHealth05.Size = new Size(22, 36);
+        pnlHealth05.AutoScroll = true;
         pnlHealth05.TabIndex = 4;
         // 
         // pnlHealth06
@@ -830,6 +853,7 @@ partial class FrmSystemMonitor
         pnlHealth06.Location = new Point(143, 3);
         pnlHealth06.Name = "pnlHealth06";
         pnlHealth06.Size = new Size(22, 36);
+        pnlHealth06.AutoScroll = true;
         pnlHealth06.TabIndex = 5;
         // 
         // pnlHealth07
@@ -838,6 +862,7 @@ partial class FrmSystemMonitor
         pnlHealth07.Location = new Point(171, 3);
         pnlHealth07.Name = "pnlHealth07";
         pnlHealth07.Size = new Size(22, 36);
+        pnlHealth07.AutoScroll = true;
         pnlHealth07.TabIndex = 6;
         // 
         // pnlHealth08
@@ -846,6 +871,7 @@ partial class FrmSystemMonitor
         pnlHealth08.Location = new Point(199, 3);
         pnlHealth08.Name = "pnlHealth08";
         pnlHealth08.Size = new Size(22, 36);
+        pnlHealth08.AutoScroll = true;
         pnlHealth08.TabIndex = 7;
         // 
         // pnlHealth09
@@ -854,6 +880,7 @@ partial class FrmSystemMonitor
         pnlHealth09.Location = new Point(227, 3);
         pnlHealth09.Name = "pnlHealth09";
         pnlHealth09.Size = new Size(22, 36);
+        pnlHealth09.AutoScroll = true;
         pnlHealth09.TabIndex = 8;
         // 
         // pnlHealth10
@@ -862,6 +889,7 @@ partial class FrmSystemMonitor
         pnlHealth10.Location = new Point(255, 3);
         pnlHealth10.Name = "pnlHealth10";
         pnlHealth10.Size = new Size(22, 36);
+        pnlHealth10.AutoScroll = true;
         pnlHealth10.TabIndex = 9;
         // 
         // pnlHealth11
@@ -870,6 +898,7 @@ partial class FrmSystemMonitor
         pnlHealth11.Location = new Point(3, 45);
         pnlHealth11.Name = "pnlHealth11";
         pnlHealth11.Size = new Size(22, 36);
+        pnlHealth11.AutoScroll = true;
         pnlHealth11.TabIndex = 10;
         // 
         // pnlHealth12
@@ -878,6 +907,7 @@ partial class FrmSystemMonitor
         pnlHealth12.Location = new Point(31, 45);
         pnlHealth12.Name = "pnlHealth12";
         pnlHealth12.Size = new Size(22, 36);
+        pnlHealth12.AutoScroll = true;
         pnlHealth12.TabIndex = 11;
         // 
         // pnlHealth13
@@ -886,6 +916,7 @@ partial class FrmSystemMonitor
         pnlHealth13.Location = new Point(59, 45);
         pnlHealth13.Name = "pnlHealth13";
         pnlHealth13.Size = new Size(22, 36);
+        pnlHealth13.AutoScroll = true;
         pnlHealth13.TabIndex = 12;
         // 
         // pnlHealth14
@@ -894,6 +925,7 @@ partial class FrmSystemMonitor
         pnlHealth14.Location = new Point(87, 45);
         pnlHealth14.Name = "pnlHealth14";
         pnlHealth14.Size = new Size(22, 36);
+        pnlHealth14.AutoScroll = true;
         pnlHealth14.TabIndex = 13;
         // 
         // pnlHealth15
@@ -902,6 +934,7 @@ partial class FrmSystemMonitor
         pnlHealth15.Location = new Point(115, 45);
         pnlHealth15.Name = "pnlHealth15";
         pnlHealth15.Size = new Size(22, 36);
+        pnlHealth15.AutoScroll = true;
         pnlHealth15.TabIndex = 14;
         // 
         // pnlHealth16
@@ -910,6 +943,7 @@ partial class FrmSystemMonitor
         pnlHealth16.Location = new Point(143, 45);
         pnlHealth16.Name = "pnlHealth16";
         pnlHealth16.Size = new Size(22, 36);
+        pnlHealth16.AutoScroll = true;
         pnlHealth16.TabIndex = 15;
         // 
         // pnlHealth17
@@ -918,6 +952,7 @@ partial class FrmSystemMonitor
         pnlHealth17.Location = new Point(171, 45);
         pnlHealth17.Name = "pnlHealth17";
         pnlHealth17.Size = new Size(22, 36);
+        pnlHealth17.AutoScroll = true;
         pnlHealth17.TabIndex = 16;
         // 
         // pnlHealth18
@@ -926,6 +961,7 @@ partial class FrmSystemMonitor
         pnlHealth18.Location = new Point(199, 45);
         pnlHealth18.Name = "pnlHealth18";
         pnlHealth18.Size = new Size(22, 36);
+        pnlHealth18.AutoScroll = true;
         pnlHealth18.TabIndex = 17;
         // 
         // pnlHealth19
@@ -934,6 +970,7 @@ partial class FrmSystemMonitor
         pnlHealth19.Location = new Point(227, 45);
         pnlHealth19.Name = "pnlHealth19";
         pnlHealth19.Size = new Size(22, 36);
+        pnlHealth19.AutoScroll = true;
         pnlHealth19.TabIndex = 18;
         // 
         // pnlHealth20
@@ -942,6 +979,7 @@ partial class FrmSystemMonitor
         pnlHealth20.Location = new Point(255, 45);
         pnlHealth20.Name = "pnlHealth20";
         pnlHealth20.Size = new Size(22, 36);
+        pnlHealth20.AutoScroll = true;
         pnlHealth20.TabIndex = 19;
         // 
         // lblMonitorHealthTitle
@@ -952,7 +990,7 @@ partial class FrmSystemMonitor
         lblMonitorHealthTitle.Name = "lblMonitorHealthTitle";
         lblMonitorHealthTitle.Size = new Size(280, 31);
         lblMonitorHealthTitle.TabIndex = 0;
-        lblMonitorHealthTitle.Text = "MA TRáº¬N Sá»¨C KHá»ŽE Há»† THá»NG";
+        lblMonitorHealthTitle.Text = "MA TRẬN SỨC KHỎE HỆ THỐNG";
         // 
         // pnlMonitorSourceCardTeacher
         // 
@@ -968,6 +1006,7 @@ partial class FrmSystemMonitor
         pnlMonitorSourceCardTeacher.Name = "pnlMonitorSourceCardTeacher";
         pnlMonitorSourceCardTeacher.Padding = new Padding(16, 14, 16, 16);
         pnlMonitorSourceCardTeacher.Size = new Size(312, 186);
+        pnlMonitorSourceCardTeacher.AutoScroll = true;
         pnlMonitorSourceCardTeacher.TabIndex = 2;
         // 
         // lblMonitorSourceTeacherLive
@@ -976,7 +1015,7 @@ partial class FrmSystemMonitor
         lblMonitorSourceTeacherLive.AutoSize = true;
         lblMonitorSourceTeacherLive.Location = new Point(253, 18);
         lblMonitorSourceTeacherLive.Name = "lblMonitorSourceTeacherLive";
-        lblMonitorSourceTeacherLive.Size = new Size(37, 20);
+        lblMonitorSourceTeacherLive.Size = new Size(48, 28);
         lblMonitorSourceTeacherLive.TabIndex = 5;
         lblMonitorSourceTeacherLive.Text = "LIVE";
         // 
@@ -985,9 +1024,9 @@ partial class FrmSystemMonitor
         lblMonitorSourceTeacherRate2.AutoSize = true;
         lblMonitorSourceTeacherRate2.Location = new Point(16, 113);
         lblMonitorSourceTeacherRate2.Name = "lblMonitorSourceTeacherRate2";
-        lblMonitorSourceTeacherRate2.Size = new Size(130, 20);
+        lblMonitorSourceTeacherRate2.Size = new Size(170, 28);
         lblMonitorSourceTeacherRate2.TabIndex = 4;
-        lblMonitorSourceTeacherRate2.Text = "Há»‡ thá»‘ng Äiá»ƒm sá»‘";
+        lblMonitorSourceTeacherRate2.Text = "Hệ thống Điểm số";
         // 
         // prgMonitorSourceTeacher2
         // 
@@ -1001,9 +1040,9 @@ partial class FrmSystemMonitor
         lblMonitorSourceTeacherRate1.AutoSize = true;
         lblMonitorSourceTeacherRate1.Location = new Point(16, 58);
         lblMonitorSourceTeacherRate1.Name = "lblMonitorSourceTeacherRate1";
-        lblMonitorSourceTeacherRate1.Size = new Size(136, 20);
+        lblMonitorSourceTeacherRate1.Size = new Size(180, 28);
         lblMonitorSourceTeacherRate1.TabIndex = 2;
-        lblMonitorSourceTeacherRate1.Text = "Nháº­t kÃ½ Äiá»ƒm danh";
+        lblMonitorSourceTeacherRate1.Text = "Nhật ký Điểm danh";
         // 
         // prgMonitorSourceTeacher1
         // 
@@ -1018,9 +1057,9 @@ partial class FrmSystemMonitor
         lblMonitorSourceTeacherTitle.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
         lblMonitorSourceTeacherTitle.Location = new Point(13, 31);
         lblMonitorSourceTeacherTitle.Name = "lblMonitorSourceTeacherTitle";
-        lblMonitorSourceTeacherTitle.Size = new Size(200, 25);
+        lblMonitorSourceTeacherTitle.Size = new Size(230, 30);
         lblMonitorSourceTeacherTitle.TabIndex = 0;
-        lblMonitorSourceTeacherTitle.Text = "LUá»’NG: GIáº¢NG VIÃŠN";
+        lblMonitorSourceTeacherTitle.Text = "LUỒNG: GIẢNG VIÊN";
         // 
         // pnlMonitorSourceCardStaff
         // 
@@ -1036,6 +1075,7 @@ partial class FrmSystemMonitor
         pnlMonitorSourceCardStaff.Name = "pnlMonitorSourceCardStaff";
         pnlMonitorSourceCardStaff.Padding = new Padding(16, 14, 16, 16);
         pnlMonitorSourceCardStaff.Size = new Size(312, 148);
+        pnlMonitorSourceCardStaff.AutoScroll = true;
         pnlMonitorSourceCardStaff.TabIndex = 1;
         // 
         // lblMonitorSourceStaffLive
@@ -1044,7 +1084,7 @@ partial class FrmSystemMonitor
         lblMonitorSourceStaffLive.AutoSize = true;
         lblMonitorSourceStaffLive.Location = new Point(251, 14);
         lblMonitorSourceStaffLive.Name = "lblMonitorSourceStaffLive";
-        lblMonitorSourceStaffLive.Size = new Size(37, 20);
+        lblMonitorSourceStaffLive.Size = new Size(48, 28);
         lblMonitorSourceStaffLive.TabIndex = 5;
         lblMonitorSourceStaffLive.Text = "LIVE";
         // 
@@ -1053,9 +1093,9 @@ partial class FrmSystemMonitor
         lblMonitorSourceStaffRate2.AutoSize = true;
         lblMonitorSourceStaffRate2.Location = new Point(16, 88);
         lblMonitorSourceStaffRate2.Name = "lblMonitorSourceStaffRate2";
-        lblMonitorSourceStaffRate2.Size = new Size(150, 20);
+        lblMonitorSourceStaffRate2.Size = new Size(198, 28);
         lblMonitorSourceStaffRate2.TabIndex = 4;
-        lblMonitorSourceStaffRate2.Text = "Giao dá»‹ch Thanh toÃ¡n";
+        lblMonitorSourceStaffRate2.Text = "Giao dịch Thanh toán";
         // 
         // prgMonitorSourceStaff2
         // 
@@ -1069,9 +1109,9 @@ partial class FrmSystemMonitor
         lblMonitorSourceStaffRate1.AutoSize = true;
         lblMonitorSourceStaffRate1.Location = new Point(16, 51);
         lblMonitorSourceStaffRate1.Name = "lblMonitorSourceStaffRate1";
-        lblMonitorSourceStaffRate1.Size = new Size(111, 20);
+        lblMonitorSourceStaffRate1.Size = new Size(147, 28);
         lblMonitorSourceStaffRate1.TabIndex = 2;
-        lblMonitorSourceStaffRate1.Text = "Há»“ sÆ¡ Ghi danh";
+        lblMonitorSourceStaffRate1.Text = "Hồ sơ Ghi danh";
         // 
         // prgMonitorSourceStaff1
         // 
@@ -1086,9 +1126,9 @@ partial class FrmSystemMonitor
         lblMonitorSourceStaffTitle.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
         lblMonitorSourceStaffTitle.Location = new Point(13, 26);
         lblMonitorSourceStaffTitle.Name = "lblMonitorSourceStaffTitle";
-        lblMonitorSourceStaffTitle.Size = new Size(196, 25);
+        lblMonitorSourceStaffTitle.Size = new Size(225, 30);
         lblMonitorSourceStaffTitle.TabIndex = 0;
-        lblMonitorSourceStaffTitle.Text = "LUá»’NG: NHÃ‚N VIÃŠN";
+        lblMonitorSourceStaffTitle.Text = "LUỒNG: NHÂN VIÊN";
         // 
         // lblMonitorSourceTitle
         // 
@@ -1098,18 +1138,20 @@ partial class FrmSystemMonitor
         lblMonitorSourceTitle.Name = "lblMonitorSourceTitle";
         lblMonitorSourceTitle.Size = new Size(312, 53);
         lblMonitorSourceTitle.TabIndex = 0;
-        lblMonitorSourceTitle.Text = "NGUá»’N Dá»® LIá»†U";
+        lblMonitorSourceTitle.Text = "NGUỒN DỮ LIỆU";
         // 
         // FrmSystemMonitor
         // 
-        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleDimensions = new SizeF(144F, 144F);
         AutoScaleMode = AutoScaleMode.Dpi;
         BackColor = Color.FromArgb(241, 248, 255);
         ClientSize = new Size(1120, 720);
         Controls.Add(tblMonitorRoot);
+        Font = new Font("Segoe UI", 10F);
+        MinimumSize = new Size(980, 640);
         Name = "FrmSystemMonitor";
         Padding = new Padding(16);
-        Text = "GiÃ¡m sÃ¡t há»‡ thá»‘ng";
+        Text = "Giám sát hệ thống";
         tblMonitorRoot.ResumeLayout(false);
         pnlMonitorHeader.ResumeLayout(false);
         pnlMonitorHeader.PerformLayout();
@@ -1142,6 +1184,7 @@ partial class FrmSystemMonitor
         pnlMonitorSourceCardTeacher.PerformLayout();
         pnlMonitorSourceCardStaff.ResumeLayout(false);
         pnlMonitorSourceCardStaff.PerformLayout();
+        AutoScroll = true;
         ResumeLayout(false);
     }
 }

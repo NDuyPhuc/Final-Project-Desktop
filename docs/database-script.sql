@@ -262,3 +262,27 @@ GO
 CREATE UNIQUE INDEX [IX_Scores_EnrollmentId]
 ON [Scores] ([EnrollmentId]);
 GO
+
+/*
+    Sample login accounts
+    Plain-text password for all 3 accounts: 123456
+    SHA-256(123456) = 8D969EEF6ECAD3C29A3A629280E686CF0C3F5D5A86AFF3CA12020C923ADC6C92
+*/
+SET ANSI_NULLS ON;
+SET ANSI_PADDING ON;
+SET ANSI_WARNINGS ON;
+SET ARITHABORT ON;
+SET CONCAT_NULL_YIELDS_NULL ON;
+SET QUOTED_IDENTIFIER ON;
+SET NUMERIC_ROUNDABORT OFF;
+GO
+
+IF NOT EXISTS (SELECT 1 FROM [Accounts] WHERE [Id] = N'ACC001')
+BEGIN
+    INSERT INTO [Accounts] ([Id], [Username], [PasswordHash], [DisplayName], [Email], [Phone], [Role], [Status], [IsDeleted])
+    VALUES
+        (N'ACC001', N'Admin',   N'8D969EEF6ECAD3C29A3A629280E686CF0C3F5D5A86AFF3CA12020C923ADC6C92', N'Admin Tong Quan',      N'admin@ttnn.local',   N'0909000001', N'Admin',   N'Active', 0),
+        (N'ACC002', N'Staff',   N'8D969EEF6ECAD3C29A3A629280E686CF0C3F5D5A86AFF3CA12020C923ADC6C92', N'Nhan Vien Van Hanh',  N'staff@ttnn.local',   N'0909000002', N'Staff',   N'Active', 0),
+        (N'ACC003', N'Teacher', N'8D969EEF6ECAD3C29A3A629280E686CF0C3F5D5A86AFF3CA12020C923ADC6C92', N'Tran Minh An',        N'teacher@ttnn.local', N'0909000003', N'Teacher', N'Active', 0);
+END
+GO

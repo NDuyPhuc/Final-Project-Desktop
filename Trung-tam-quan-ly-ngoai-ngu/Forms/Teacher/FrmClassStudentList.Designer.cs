@@ -1,4 +1,4 @@
-﻿namespace Trung_tam_quan_ly_ngoai_ngu;
+namespace Trung_tam_quan_ly_ngoai_ngu;
 
 partial class FrmClassStudentList
 {
@@ -84,6 +84,7 @@ partial class FrmClassStudentList
         pnlClassStudentFilterCard.Name = "pnlClassStudentFilterCard";
         pnlClassStudentFilterCard.Padding = new Padding(16, 14, 16, 14);
         pnlClassStudentFilterCard.Size = new Size(974, 86);
+        pnlClassStudentFilterCard.AutoScroll = false;
         pnlClassStudentFilterCard.TabIndex = 0;
         // 
         // lblClassStudentClass
@@ -91,9 +92,10 @@ partial class FrmClassStudentList
         lblClassStudentClass.AutoSize = true;
         lblClassStudentClass.Location = new Point(16, 18);
         lblClassStudentClass.Name = "lblClassStudentClass";
-        lblClassStudentClass.Size = new Size(58, 20);
+        lblClassStudentClass.Size = new Size(58, 28);
+        lblClassStudentClass.AutoSize = true;
         lblClassStudentClass.TabIndex = 0;
-        lblClassStudentClass.Text = "Lá»›p há»c";
+        lblClassStudentClass.Text = "Lớp học";
         // 
         // cboClassStudentClass
         // 
@@ -110,15 +112,16 @@ partial class FrmClassStudentList
         lblClassStudentContext.AutoSize = true;
         lblClassStudentContext.Location = new Point(216, 18);
         lblClassStudentContext.Name = "lblClassStudentContext";
-        lblClassStudentContext.Size = new Size(100, 20);
+        lblClassStudentContext.Size = new Size(100, 28);
+        lblClassStudentContext.AutoSize = true;
         lblClassStudentContext.TabIndex = 2;
-        lblClassStudentContext.Text = "Buá»•i / ngá»¯ cáº£nh";
+        lblClassStudentContext.Text = "Buổi / ngữ cảnh";
         // 
         // cboClassStudentContext
         // 
         cboClassStudentContext.DropDownStyle = ComboBoxStyle.DropDownList;
         cboClassStudentContext.FormattingEnabled = true;
-        cboClassStudentContext.Items.AddRange(new object[] { "Buá»•i gáº§n nháº¥t", "Buá»•i hÃ´m nay", "Danh sÃ¡ch tá»•ng quÃ¡t" });
+        cboClassStudentContext.Items.AddRange(new object[] { "Buổi gần nhất", "Buổi hôm nay", "Danh sách tổng quát" });
         cboClassStudentContext.Location = new Point(216, 41);
         cboClassStudentContext.Name = "cboClassStudentContext";
         cboClassStudentContext.Size = new Size(190, 28);
@@ -128,7 +131,7 @@ partial class FrmClassStudentList
         // 
         txtClassStudentKeyword.Location = new Point(426, 41);
         txtClassStudentKeyword.Name = "txtClassStudentKeyword";
-        txtClassStudentKeyword.PlaceholderText = "TÃ¬m theo mÃ£ hoáº·c tÃªn há»c viÃªn";
+        txtClassStudentKeyword.PlaceholderText = "Tìm theo mã hoặc tên học viên";
         txtClassStudentKeyword.Size = new Size(220, 27);
         txtClassStudentKeyword.TabIndex = 4;
         // 
@@ -138,7 +141,7 @@ partial class FrmClassStudentList
         btnSearchClassStudent.Name = "btnSearchClassStudent";
         btnSearchClassStudent.Size = new Size(90, 30);
         btnSearchClassStudent.TabIndex = 5;
-        btnSearchClassStudent.Text = "TÃ¬m kiáº¿m";
+        btnSearchClassStudent.Text = "Tìm kiếm";
         btnSearchClassStudent.UseVisualStyleBackColor = true;
         // 
         // btnRefreshClassStudent
@@ -147,7 +150,7 @@ partial class FrmClassStudentList
         btnRefreshClassStudent.Name = "btnRefreshClassStudent";
         btnRefreshClassStudent.Size = new Size(90, 30);
         btnRefreshClassStudent.TabIndex = 6;
-        btnRefreshClassStudent.Text = "LÃ m má»›i";
+        btnRefreshClassStudent.Text = "Làm mới";
         btnRefreshClassStudent.UseVisualStyleBackColor = true;
         // 
         // btnOpenAttendanceFromStudentList
@@ -156,7 +159,7 @@ partial class FrmClassStudentList
         btnOpenAttendanceFromStudentList.Name = "btnOpenAttendanceFromStudentList";
         btnOpenAttendanceFromStudentList.Size = new Size(120, 30);
         btnOpenAttendanceFromStudentList.TabIndex = 7;
-        btnOpenAttendanceFromStudentList.Text = "Äiá»ƒm danh";
+        btnOpenAttendanceFromStudentList.Text = "Điểm danh";
         btnOpenAttendanceFromStudentList.UseVisualStyleBackColor = true;
         // 
         // btnOpenScoreFromStudentList
@@ -165,7 +168,7 @@ partial class FrmClassStudentList
         btnOpenScoreFromStudentList.Name = "btnOpenScoreFromStudentList";
         btnOpenScoreFromStudentList.Size = new Size(120, 30);
         btnOpenScoreFromStudentList.TabIndex = 8;
-        btnOpenScoreFromStudentList.Text = "Nháº­p Ä‘iá»ƒm";
+        btnOpenScoreFromStudentList.Text = "Nhập điểm";
         btnOpenScoreFromStudentList.UseVisualStyleBackColor = true;
         // 
         // btnBackToTeachingClasses
@@ -174,7 +177,7 @@ partial class FrmClassStudentList
         btnBackToTeachingClasses.Name = "btnBackToTeachingClasses";
         btnBackToTeachingClasses.Size = new Size(120, 30);
         btnBackToTeachingClasses.TabIndex = 9;
-        btnBackToTeachingClasses.Text = "Quay láº¡i lá»›p";
+        btnBackToTeachingClasses.Text = "Quay lại lớp";
         btnBackToTeachingClasses.UseVisualStyleBackColor = true;
         // 
         // pnlClassStudentCount
@@ -185,6 +188,7 @@ partial class FrmClassStudentList
         pnlClassStudentCount.Location = new Point(0, 0);
         pnlClassStudentCount.Name = "pnlClassStudentCount";
         pnlClassStudentCount.Size = new Size(220, 62);
+        pnlClassStudentCount.AutoScroll = false;
         pnlClassStudentCount.TabIndex = 0;
         // 
         // lblClassStudentCountValue
@@ -206,6 +210,7 @@ partial class FrmClassStudentList
         pnlClassStudentSchedule.Location = new Point(236, 0);
         pnlClassStudentSchedule.Name = "pnlClassStudentSchedule";
         pnlClassStudentSchedule.Size = new Size(220, 62);
+        pnlClassStudentSchedule.AutoScroll = false;
         pnlClassStudentSchedule.TabIndex = 1;
         // 
         // lblClassStudentScheduleValue
@@ -248,6 +253,7 @@ partial class FrmClassStudentList
         tblClassStudentRoot.RowStyles.Add(new RowStyle());
         tblClassStudentRoot.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblClassStudentRoot.Size = new Size(980, 616);
+        tblClassStudentRoot.AutoScroll = false;
         tblClassStudentRoot.TabIndex = 0;
         // 
         // splClassStudentContent
@@ -266,6 +272,7 @@ partial class FrmClassStudentList
         splClassStudentContent.Panel2.Controls.Add(dgvClassStudentList);
         splClassStudentContent.Size = new Size(974, 518);
         splClassStudentContent.SplitterDistance = 75;
+        splClassStudentContent.AutoScroll = false;
         splClassStudentContent.TabIndex = 1;
         // 
         // pnlClassStudentSummary
@@ -277,6 +284,7 @@ partial class FrmClassStudentList
         pnlClassStudentSummary.Name = "pnlClassStudentSummary";
         pnlClassStudentSummary.Padding = new Padding(0, 0, 0, 12);
         pnlClassStudentSummary.Size = new Size(974, 75);
+        pnlClassStudentSummary.AutoScroll = false;
         pnlClassStudentSummary.TabIndex = 0;
         // 
         // FrmClassStudentList
@@ -284,10 +292,12 @@ partial class FrmClassStudentList
         AutoScaleDimensions = new SizeF(96F, 96F);
         AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(1004, 640);
+        Font = new Font("Segoe UI", 10F);
         Controls.Add(tblClassStudentRoot);
+        MinimumSize = new Size(900, 600);
         Name = "FrmClassStudentList";
         Padding = new Padding(12);
-        Text = "Danh sÃ¡ch há»c viÃªn lá»›p";
+        Text = "Danh sách học viên lớp";
         pnlClassStudentFilterCard.ResumeLayout(false);
         pnlClassStudentFilterCard.PerformLayout();
         pnlClassStudentCount.ResumeLayout(false);
@@ -299,6 +309,7 @@ partial class FrmClassStudentList
         ((System.ComponentModel.ISupportInitialize)splClassStudentContent).EndInit();
         splClassStudentContent.ResumeLayout(false);
         pnlClassStudentSummary.ResumeLayout(false);
+        AutoScroll = true;
         ResumeLayout(false);
     }
 }

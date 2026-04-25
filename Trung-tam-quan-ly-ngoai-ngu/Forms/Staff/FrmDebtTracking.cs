@@ -12,7 +12,7 @@ public partial class FrmDebtTracking : Form
     public FrmDebtTracking()
     {
         InitializeComponent();
-        FormHostHelpers.ConfigureModuleSurface(this, "Theo doi cong no");
+        FormHostHelpers.ConfigureModuleSurface(this, "Theo dõi công nợ");
         ConfigureView();
         LoadFilterSources();
         LoadDebtData();
@@ -37,7 +37,7 @@ public partial class FrmDebtTracking : Form
         btnDebtPage2.Enabled = false;
         btnDebtPage3.Enabled = false;
         btnDebtPageNext.Enabled = false;
-        lblDebtUpdatedAt.Text = $"Cap nhat: {DateTime.Now:dd/MM/yyyy HH:mm}";
+        lblDebtUpdatedAt.Text = $"Cập nhật: {DateTime.Now:dd/MM/yyyy HH:mm}";
     }
 
     private void WireEvents()
@@ -46,7 +46,7 @@ public partial class FrmDebtTracking : Form
         btnRefreshDebt.Click += (_, _) => ResetFilters();
         btnOpenTuitionFromDebt.Click += (_, _) => OpenReceiptFromDebt();
         btnExportDebt.Click += (_, _) => ExportDebtCsv();
-        btnExportPdfDebt.Click += (_, _) => MessageBox.Show(this, "Ban co the dung CSV de demo xuat file. Nut PDF dang de o muc co ban.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        btnExportPdfDebt.Click += (_, _) => MessageBox.Show(this, "Bạn có thể dùng CSV để demo xuất file. Nút PDF đang để ở mức cơ bản.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
 
     private void LoadFilterSources()
@@ -55,14 +55,14 @@ public partial class FrmDebtTracking : Form
         var classTable = AppRuntime.DataService.GetClassList();
 
         cboDebtCourseFilter.Items.Clear();
-        cboDebtCourseFilter.Items.Add("Tat ca");
+        cboDebtCourseFilter.Items.Add("Tất cả");
         foreach (DataRow row in courseTable.Rows)
         {
             cboDebtCourseFilter.Items.Add(row[1]?.ToString() ?? string.Empty);
         }
 
         cboDebtClassFilter.Items.Clear();
-        cboDebtClassFilter.Items.Add("Tat ca");
+        cboDebtClassFilter.Items.Add("Tất cả");
         foreach (DataRow row in classTable.Rows)
         {
             cboDebtClassFilter.Items.Add(row[1]?.ToString() ?? string.Empty);
@@ -79,20 +79,20 @@ public partial class FrmDebtTracking : Form
         try
         {
             _debtTable = AppRuntime.DataService.GetDebtList(
-                cboDebtCourseFilter.Text,
-                cboDebtClassFilter.Text,
+                (cboDebtCourseFilter.Text is "Tat ca" or "Tất cả" ? null : cboDebtCourseFilter.Text),
+                (cboDebtClassFilter.Text is "Tat ca" or "Tất cả" ? null : cboDebtClassFilter.Text),
                 dtpDebtFromDate.Value.Date,
                 dtpDebtToDate.Value.Date);
 
             dgvDebtTrackingList.DataSource = _debtTable;
             UpdateSummaryCards();
-            lblDebtUpdatedAt.Text = $"Cap nhat: {DateTime.Now:dd/MM/yyyy HH:mm}";
-            lblDebtFooterSummary.Text = $"Tong so ho so cong no: {_debtTable.Rows.Count}";
+            lblDebtUpdatedAt.Text = $"Cập nhật: {DateTime.Now:dd/MM/yyyy HH:mm}";
+            lblDebtFooterSummary.Text = $"Tổng số hồ sơ công nợ: {_debtTable.Rows.Count}";
         }
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmDebtTracking));
-            MessageBox.Show(this, "Khong tai duoc cong no. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không tải được công nợ. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -126,7 +126,7 @@ public partial class FrmDebtTracking : Form
     {
         if (dgvDebtTrackingList.CurrentRow?.DataBoundItem is not DataRowView rowView)
         {
-            MessageBox.Show(this, "Hay chon mot hoc vien con no.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            MessageBox.Show(this, "Hãy chọn một học viên còn nợ.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return;
         }
 
@@ -153,12 +153,12 @@ public partial class FrmDebtTracking : Form
             }
 
             File.WriteAllText(dialog.FileName, BuildCsv(_debtTable), new UTF8Encoding(true));
-            MessageBox.Show(this, "Da xuat danh sach cong no ra CSV.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(this, "Đã xuất danh sách công nợ ra CSV.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmDebtTracking));
-            MessageBox.Show(this, "Khong xuat duoc file CSV. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không xuất được file CSV. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 

@@ -1,4 +1,4 @@
-﻿namespace Trung_tam_quan_ly_ngoai_ngu;
+namespace Trung_tam_quan_ly_ngoai_ngu;
 
 partial class FrmTeacherManagement
 {
@@ -108,6 +108,7 @@ partial class FrmTeacherManagement
         pnlTeacherFilterCard.Name = "pnlTeacherFilterCard";
         pnlTeacherFilterCard.Padding = new Padding(16, 14, 16, 14);
         pnlTeacherFilterCard.Size = new Size(974, 82);
+        pnlTeacherFilterCard.AutoScroll = false;
         pnlTeacherFilterCard.TabIndex = 0;
         // 
         // lblTeacherKeyword
@@ -115,15 +116,16 @@ partial class FrmTeacherManagement
         lblTeacherKeyword.AutoSize = true;
         lblTeacherKeyword.Location = new Point(16, 18);
         lblTeacherKeyword.Name = "lblTeacherKeyword";
-        lblTeacherKeyword.Size = new Size(95, 20);
+        lblTeacherKeyword.Size = new Size(95, 28);
+        lblTeacherKeyword.AutoSize = true;
         lblTeacherKeyword.TabIndex = 0;
-        lblTeacherKeyword.Text = "Tá»« khÃ³a tÃ¬m";
+        lblTeacherKeyword.Text = "Từ khóa tìm";
         // 
         // txtTeacherKeyword
         // 
         txtTeacherKeyword.Location = new Point(16, 41);
         txtTeacherKeyword.Name = "txtTeacherKeyword";
-        txtTeacherKeyword.PlaceholderText = "MÃ£ giÃ¡o viÃªn, há» tÃªn hoáº·c Ä‘iá»‡n thoáº¡i";
+        txtTeacherKeyword.PlaceholderText = "Mã giáo viên, họ tên hoặc điện thoại";
         txtTeacherKeyword.Size = new Size(280, 27);
         txtTeacherKeyword.TabIndex = 1;
         // 
@@ -132,15 +134,16 @@ partial class FrmTeacherManagement
         lblTeacherStatus.AutoSize = true;
         lblTeacherStatus.Location = new Point(318, 18);
         lblTeacherStatus.Name = "lblTeacherStatus";
-        lblTeacherStatus.Size = new Size(78, 20);
+        lblTeacherStatus.Size = new Size(78, 28);
+        lblTeacherStatus.AutoSize = true;
         lblTeacherStatus.TabIndex = 2;
-        lblTeacherStatus.Text = "Tráº¡ng thÃ¡i";
+        lblTeacherStatus.Text = "Trạng thái";
         // 
         // cboTeacherStatusFilter
         // 
         cboTeacherStatusFilter.DropDownStyle = ComboBoxStyle.DropDownList;
         cboTeacherStatusFilter.FormattingEnabled = true;
-        cboTeacherStatusFilter.Items.AddRange(new object[] { "Táº¥t cáº£", "Äang dáº¡y", "Táº¡m nghá»‰" });
+        cboTeacherStatusFilter.Items.AddRange(new object[] { "Tất cả", "Đang dạy", "Tạm nghỉ" });
         cboTeacherStatusFilter.Location = new Point(318, 41);
         cboTeacherStatusFilter.Name = "cboTeacherStatusFilter";
         cboTeacherStatusFilter.Size = new Size(190, 28);
@@ -152,7 +155,7 @@ partial class FrmTeacherManagement
         btnSearchTeacher.Name = "btnSearchTeacher";
         btnSearchTeacher.Size = new Size(100, 30);
         btnSearchTeacher.TabIndex = 4;
-        btnSearchTeacher.Text = "TÃ¬m kiáº¿m";
+        btnSearchTeacher.Text = "Tìm kiếm";
         btnSearchTeacher.UseVisualStyleBackColor = true;
         // 
         // btnRefreshTeacher
@@ -161,7 +164,7 @@ partial class FrmTeacherManagement
         btnRefreshTeacher.Name = "btnRefreshTeacher";
         btnRefreshTeacher.Size = new Size(108, 30);
         btnRefreshTeacher.TabIndex = 5;
-        btnRefreshTeacher.Text = "LÃ m má»›i";
+        btnRefreshTeacher.Text = "Làm mới";
         btnRefreshTeacher.UseVisualStyleBackColor = true;
         // 
         // dgvTeacherList
@@ -192,7 +195,7 @@ partial class FrmTeacherManagement
         grpTeacherInfo.Size = new Size(580, 458);
         grpTeacherInfo.TabIndex = 0;
         grpTeacherInfo.TabStop = false;
-        grpTeacherInfo.Text = "ThÃ´ng tin giÃ¡o viÃªn";
+        grpTeacherInfo.Text = "Thông tin giáo viên";
         // 
         // tblTeacherDetail
         // 
@@ -225,6 +228,7 @@ partial class FrmTeacherManagement
         tblTeacherDetail.RowStyles.Add(new RowStyle());
         tblTeacherDetail.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblTeacherDetail.Size = new Size(552, 412);
+        tblTeacherDetail.AutoScroll = true;
         tblTeacherDetail.TabIndex = 0;
         // 
         // lblTeacherCode
@@ -233,9 +237,10 @@ partial class FrmTeacherManagement
         lblTeacherCode.AutoSize = true;
         lblTeacherCode.Location = new Point(3, 6);
         lblTeacherCode.Name = "lblTeacherCode";
-        lblTeacherCode.Size = new Size(99, 20);
+        lblTeacherCode.Size = new Size(99, 28);
+        lblTeacherCode.AutoSize = true;
         lblTeacherCode.TabIndex = 0;
-        lblTeacherCode.Text = "MÃ£ giÃ¡o viÃªn";
+        lblTeacherCode.Text = "Mã giáo viên";
         // 
         // txtTeacherCode
         // 
@@ -251,9 +256,10 @@ partial class FrmTeacherManagement
         lblTeacherName.AutoSize = true;
         lblTeacherName.Location = new Point(3, 39);
         lblTeacherName.Name = "lblTeacherName";
-        lblTeacherName.Size = new Size(54, 20);
+        lblTeacherName.Size = new Size(54, 28);
+        lblTeacherName.AutoSize = true;
         lblTeacherName.TabIndex = 2;
-        lblTeacherName.Text = "Há» tÃªn";
+        lblTeacherName.Text = "Họ tên";
         // 
         // txtTeacherName
         // 
@@ -269,9 +275,10 @@ partial class FrmTeacherManagement
         lblTeacherPhone.AutoSize = true;
         lblTeacherPhone.Location = new Point(3, 72);
         lblTeacherPhone.Name = "lblTeacherPhone";
-        lblTeacherPhone.Size = new Size(95, 20);
+        lblTeacherPhone.Size = new Size(95, 28);
+        lblTeacherPhone.AutoSize = true;
         lblTeacherPhone.TabIndex = 4;
-        lblTeacherPhone.Text = "Sá»‘ Ä‘iá»‡n thoáº¡i";
+        lblTeacherPhone.Text = "Số điện thoại";
         // 
         // txtTeacherPhone
         // 
@@ -287,7 +294,8 @@ partial class FrmTeacherManagement
         lblTeacherEmail.AutoSize = true;
         lblTeacherEmail.Location = new Point(3, 105);
         lblTeacherEmail.Name = "lblTeacherEmail";
-        lblTeacherEmail.Size = new Size(46, 20);
+        lblTeacherEmail.Size = new Size(46, 28);
+        lblTeacherEmail.AutoSize = true;
         lblTeacherEmail.TabIndex = 6;
         lblTeacherEmail.Text = "Email";
         // 
@@ -305,9 +313,10 @@ partial class FrmTeacherManagement
         lblTeacherSpecialty.AutoSize = true;
         lblTeacherSpecialty.Location = new Point(3, 138);
         lblTeacherSpecialty.Name = "lblTeacherSpecialty";
-        lblTeacherSpecialty.Size = new Size(82, 20);
+        lblTeacherSpecialty.Size = new Size(82, 28);
+        lblTeacherSpecialty.AutoSize = true;
         lblTeacherSpecialty.TabIndex = 8;
-        lblTeacherSpecialty.Text = "ChuyÃªn mÃ´n";
+        lblTeacherSpecialty.Text = "Chuyên môn";
         // 
         // txtTeacherSpecialty
         // 
@@ -323,9 +332,10 @@ partial class FrmTeacherManagement
         lblTeacherAddress.AutoSize = true;
         lblTeacherAddress.Location = new Point(3, 171);
         lblTeacherAddress.Name = "lblTeacherAddress";
-        lblTeacherAddress.Size = new Size(55, 20);
+        lblTeacherAddress.Size = new Size(55, 28);
+        lblTeacherAddress.AutoSize = true;
         lblTeacherAddress.TabIndex = 10;
-        lblTeacherAddress.Text = "Äá»‹a chá»‰";
+        lblTeacherAddress.Text = "Địa chỉ";
         // 
         // txtTeacherAddress
         // 
@@ -342,9 +352,10 @@ partial class FrmTeacherManagement
         lblTeacherNote.AutoSize = true;
         lblTeacherNote.Location = new Point(3, 237);
         lblTeacherNote.Name = "lblTeacherNote";
-        lblTeacherNote.Size = new Size(57, 20);
+        lblTeacherNote.Size = new Size(57, 28);
+        lblTeacherNote.AutoSize = true;
         lblTeacherNote.TabIndex = 12;
-        lblTeacherNote.Text = "Ghi chÃº";
+        lblTeacherNote.Text = "Ghi chú";
         // 
         // txtTeacherNote
         // 
@@ -366,7 +377,7 @@ partial class FrmTeacherManagement
         btnCreateTeacher.Name = "btnCreateTeacher";
         btnCreateTeacher.Size = new Size(110, 34);
         btnCreateTeacher.TabIndex = 0;
-        btnCreateTeacher.Text = "ThÃªm má»›i";
+        btnCreateTeacher.Text = "Thêm mới";
         btnCreateTeacher.UseVisualStyleBackColor = true;
         // 
         // btnSaveTeacher
@@ -375,7 +386,7 @@ partial class FrmTeacherManagement
         btnSaveTeacher.Name = "btnSaveTeacher";
         btnSaveTeacher.Size = new Size(110, 34);
         btnSaveTeacher.TabIndex = 1;
-        btnSaveTeacher.Text = "LÆ°u";
+        btnSaveTeacher.Text = "Lưu";
         btnSaveTeacher.UseVisualStyleBackColor = true;
         // 
         // btnUpdateTeacher
@@ -384,7 +395,7 @@ partial class FrmTeacherManagement
         btnUpdateTeacher.Name = "btnUpdateTeacher";
         btnUpdateTeacher.Size = new Size(110, 34);
         btnUpdateTeacher.TabIndex = 2;
-        btnUpdateTeacher.Text = "Cáº­p nháº­t";
+        btnUpdateTeacher.Text = "Cập nhật";
         btnUpdateTeacher.UseVisualStyleBackColor = true;
         // 
         // btnDeleteTeacher
@@ -393,7 +404,7 @@ partial class FrmTeacherManagement
         btnDeleteTeacher.Name = "btnDeleteTeacher";
         btnDeleteTeacher.Size = new Size(110, 34);
         btnDeleteTeacher.TabIndex = 3;
-        btnDeleteTeacher.Text = "XÃ³a má»m";
+        btnDeleteTeacher.Text = "Xóa mềm";
         btnDeleteTeacher.UseVisualStyleBackColor = true;
         // 
         // tblTeacherRoot
@@ -411,6 +422,7 @@ partial class FrmTeacherManagement
         tblTeacherRoot.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblTeacherRoot.RowStyles.Add(new RowStyle());
         tblTeacherRoot.Size = new Size(980, 616);
+        tblTeacherRoot.AutoScroll = false;
         tblTeacherRoot.TabIndex = 0;
         // 
         // splTeacherContent
@@ -430,6 +442,7 @@ partial class FrmTeacherManagement
         splTeacherContent.Panel2.Padding = new Padding(6, 0, 0, 0);
         splTeacherContent.Size = new Size(974, 458);
         splTeacherContent.SplitterDistance = 394;
+        splTeacherContent.AutoScroll = false;
         splTeacherContent.TabIndex = 1;
         // 
         // flpTeacherActions
@@ -443,6 +456,8 @@ partial class FrmTeacherManagement
         flpTeacherActions.Location = new Point(3, 555);
         flpTeacherActions.Name = "flpTeacherActions";
         flpTeacherActions.Size = new Size(974, 58);
+        flpTeacherActions.AutoScroll = false;
+        flpTeacherActions.WrapContents = true;
         flpTeacherActions.TabIndex = 2;
         flpTeacherActions.WrapContents = false;
         // 
@@ -451,10 +466,12 @@ partial class FrmTeacherManagement
         AutoScaleDimensions = new SizeF(96F, 96F);
         AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(1004, 640);
+        Font = new Font("Segoe UI", 10F);
         Controls.Add(tblTeacherRoot);
+        MinimumSize = new Size(920, 620);
         Name = "FrmTeacherManagement";
         Padding = new Padding(12);
-        Text = "Quáº£n lÃ½ giÃ¡o viÃªn";
+        Text = "Quản lý giáo viên";
         pnlTeacherFilterCard.ResumeLayout(false);
         pnlTeacherFilterCard.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)dgvTeacherList).EndInit();
@@ -469,6 +486,7 @@ partial class FrmTeacherManagement
         ((System.ComponentModel.ISupportInitialize)splTeacherContent).EndInit();
         splTeacherContent.ResumeLayout(false);
         flpTeacherActions.ResumeLayout(false);
+        AutoScroll = true;
         ResumeLayout(false);
     }
 }

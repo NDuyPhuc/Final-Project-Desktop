@@ -48,6 +48,7 @@ partial class FrmConfirmDialog
         tblConfirmRoot.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblConfirmRoot.RowStyles.Add(new RowStyle(SizeType.AutoSize));
         tblConfirmRoot.Size = new Size(444, 221);
+        tblConfirmRoot.AutoScroll = false;
         tblConfirmRoot.TabIndex = 0;
         // 
         // lblConfirmTitle
@@ -60,7 +61,7 @@ partial class FrmConfirmDialog
         lblConfirmTitle.Name = "lblConfirmTitle";
         lblConfirmTitle.Size = new Size(396, 28);
         lblConfirmTitle.TabIndex = 0;
-        lblConfirmTitle.Text = "Xac nhan thao tac";
+        lblConfirmTitle.Text = "Xác nhận thao tác";
         // 
         // lblConfirmMessage
         // 
@@ -69,8 +70,9 @@ partial class FrmConfirmDialog
         lblConfirmMessage.Margin = new Padding(0);
         lblConfirmMessage.Name = "lblConfirmMessage";
         lblConfirmMessage.Size = new Size(396, 89);
+        lblConfirmMessage.AutoSize = true;
         lblConfirmMessage.TabIndex = 1;
-        lblConfirmMessage.Text = "Ban co chac chan muon tiep tuc?";
+        lblConfirmMessage.Text = "Bạn có chắc chắn muốn tiếp tục?";
         // 
         // flpConfirmActions
         // 
@@ -83,6 +85,8 @@ partial class FrmConfirmDialog
         flpConfirmActions.Margin = new Padding(0, 12, 0, 0);
         flpConfirmActions.Name = "flpConfirmActions";
         flpConfirmActions.Size = new Size(396, 32);
+        flpConfirmActions.AutoScroll = false;
+        flpConfirmActions.WrapContents = true;
         flpConfirmActions.TabIndex = 2;
         flpConfirmActions.WrapContents = false;
         // 
@@ -94,7 +98,7 @@ partial class FrmConfirmDialog
         btnConfirmCancel.Name = "btnConfirmCancel";
         btnConfirmCancel.Size = new Size(120, 32);
         btnConfirmCancel.TabIndex = 0;
-        btnConfirmCancel.Text = "Huy";
+        btnConfirmCancel.Text = "Hủy";
         btnConfirmCancel.UseVisualStyleBackColor = true;
         // 
         // btnConfirmAccept
@@ -105,7 +109,7 @@ partial class FrmConfirmDialog
         btnConfirmAccept.Name = "btnConfirmAccept";
         btnConfirmAccept.Size = new Size(120, 32);
         btnConfirmAccept.TabIndex = 1;
-        btnConfirmAccept.Text = "Dong y";
+        btnConfirmAccept.Text = "Đồng ý";
         btnConfirmAccept.UseVisualStyleBackColor = true;
         // 
         // FrmConfirmDialog
@@ -115,6 +119,7 @@ partial class FrmConfirmDialog
         AutoScaleMode = AutoScaleMode.Dpi;
         CancelButton = btnConfirmCancel;
         ClientSize = new Size(444, 221);
+        Font = new Font("Segoe UI", 10F);
         Controls.Add(tblConfirmRoot);
         FormBorderStyle = FormBorderStyle.FixedDialog;
         MaximizeBox = false;
@@ -126,6 +131,7 @@ partial class FrmConfirmDialog
         tblConfirmRoot.ResumeLayout(false);
         tblConfirmRoot.PerformLayout();
         flpConfirmActions.ResumeLayout(false);
+        AutoScroll = true;
         ResumeLayout(false);
     }
 }

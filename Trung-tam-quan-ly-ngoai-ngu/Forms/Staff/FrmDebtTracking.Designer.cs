@@ -1,4 +1,4 @@
-﻿namespace Trung_tam_quan_ly_ngoai_ngu;
+namespace Trung_tam_quan_ly_ngoai_ngu;
 
 partial class FrmDebtTracking
 {
@@ -156,6 +156,7 @@ partial class FrmDebtTracking
         tblDebtRoot.RowStyles.Add(new RowStyle());
         tblDebtRoot.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblDebtRoot.Size = new Size(1160, 684);
+        tblDebtRoot.AutoScroll = false;
         tblDebtRoot.TabIndex = 0;
         // 
         // pnlDebtFilterCard
@@ -167,6 +168,7 @@ partial class FrmDebtTracking
         pnlDebtFilterCard.Name = "pnlDebtFilterCard";
         pnlDebtFilterCard.Padding = new Padding(20, 18, 20, 18);
         pnlDebtFilterCard.Size = new Size(1154, 130);
+        pnlDebtFilterCard.AutoScroll = false;
         pnlDebtFilterCard.TabIndex = 0;
         // 
         // tblDebtFilterShell
@@ -182,6 +184,7 @@ partial class FrmDebtTracking
         tblDebtFilterShell.RowCount = 1;
         tblDebtFilterShell.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblDebtFilterShell.Size = new Size(1112, 92);
+        tblDebtFilterShell.AutoScroll = false;
         tblDebtFilterShell.TabIndex = 0;
         // 
         // pnlDebtFilterAccent
@@ -192,6 +195,7 @@ partial class FrmDebtTracking
         pnlDebtFilterAccent.Margin = new Padding(0, 8, 18, 8);
         pnlDebtFilterAccent.Name = "pnlDebtFilterAccent";
         pnlDebtFilterAccent.Size = new Size(6, 76);
+        pnlDebtFilterAccent.AutoScroll = false;
         pnlDebtFilterAccent.TabIndex = 0;
         // 
         // tblDebtFilterLayout
@@ -219,6 +223,7 @@ partial class FrmDebtTracking
         tblDebtFilterLayout.RowStyles.Add(new RowStyle());
         tblDebtFilterLayout.RowStyles.Add(new RowStyle());
         tblDebtFilterLayout.Size = new Size(1088, 92);
+        tblDebtFilterLayout.AutoScroll = false;
         tblDebtFilterLayout.TabIndex = 1;
         // 
         // lblDebtCourseFilter
@@ -228,9 +233,10 @@ partial class FrmDebtTracking
         lblDebtCourseFilter.Location = new Point(3, 8);
         lblDebtCourseFilter.Margin = new Padding(3, 8, 3, 10);
         lblDebtCourseFilter.Name = "lblDebtCourseFilter";
-        lblDebtCourseFilter.Size = new Size(75, 20);
+        lblDebtCourseFilter.Size = new Size(75, 28);
+        lblDebtCourseFilter.AutoSize = true;
         lblDebtCourseFilter.TabIndex = 0;
-        lblDebtCourseFilter.Text = "KhÃ³a há»c";
+        lblDebtCourseFilter.Text = "Khóa học";
         // 
         // cboDebtCourseFilter
         // 
@@ -249,9 +255,10 @@ partial class FrmDebtTracking
         lblDebtClassFilter.Location = new Point(264, 8);
         lblDebtClassFilter.Margin = new Padding(3, 8, 3, 10);
         lblDebtClassFilter.Name = "lblDebtClassFilter";
-        lblDebtClassFilter.Size = new Size(65, 20);
+        lblDebtClassFilter.Size = new Size(65, 28);
+        lblDebtClassFilter.AutoSize = true;
         lblDebtClassFilter.TabIndex = 2;
-        lblDebtClassFilter.Text = "Lá»›p há»c";
+        lblDebtClassFilter.Text = "Lớp học";
         // 
         // cboDebtClassFilter
         // 
@@ -270,9 +277,10 @@ partial class FrmDebtTracking
         lblDebtFromDate.Location = new Point(525, 8);
         lblDebtFromDate.Margin = new Padding(3, 8, 3, 10);
         lblDebtFromDate.Name = "lblDebtFromDate";
-        lblDebtFromDate.Size = new Size(60, 20);
+        lblDebtFromDate.Size = new Size(60, 28);
+        lblDebtFromDate.AutoSize = true;
         lblDebtFromDate.TabIndex = 4;
-        lblDebtFromDate.Text = "Tá»« ngÃ y";
+        lblDebtFromDate.Text = "Từ ngày";
         // 
         // dtpDebtFromDate
         // 
@@ -290,9 +298,10 @@ partial class FrmDebtTracking
         lblDebtToDate.Location = new Point(742, 8);
         lblDebtToDate.Margin = new Padding(3, 8, 3, 10);
         lblDebtToDate.Name = "lblDebtToDate";
-        lblDebtToDate.Size = new Size(69, 20);
+        lblDebtToDate.Size = new Size(69, 28);
+        lblDebtToDate.AutoSize = true;
         lblDebtToDate.TabIndex = 6;
-        lblDebtToDate.Text = "Äáº¿n ngÃ y";
+        lblDebtToDate.Text = "Đến ngày";
         // 
         // dtpDebtToDate
         // 
@@ -315,6 +324,7 @@ partial class FrmDebtTracking
         flpDebtFilterActions.Name = "flpDebtFilterActions";
         tblDebtFilterLayout.SetRowSpan(flpDebtFilterActions, 2);
         flpDebtFilterActions.Size = new Size(129, 92);
+        flpDebtFilterActions.AutoScroll = false;
         flpDebtFilterActions.TabIndex = 8;
         // 
         // btnSearchDebt
@@ -323,7 +333,7 @@ partial class FrmDebtTracking
         btnSearchDebt.Name = "btnSearchDebt";
         btnSearchDebt.Size = new Size(116, 38);
         btnSearchDebt.TabIndex = 0;
-        btnSearchDebt.Text = "Lá»c dá»¯ liá»‡u";
+        btnSearchDebt.Text = "Lọc dữ liệu";
         btnSearchDebt.UseVisualStyleBackColor = true;
         // 
         // btnRefreshDebt
@@ -332,7 +342,7 @@ partial class FrmDebtTracking
         btnRefreshDebt.Name = "btnRefreshDebt";
         btnRefreshDebt.Size = new Size(116, 38);
         btnRefreshDebt.TabIndex = 1;
-        btnRefreshDebt.Text = "LÃ m má»›i";
+        btnRefreshDebt.Text = "Làm mới";
         btnRefreshDebt.UseVisualStyleBackColor = true;
         // 
         // tblDebtKpi
@@ -350,6 +360,7 @@ partial class FrmDebtTracking
         tblDebtKpi.RowCount = 1;
         tblDebtKpi.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblDebtKpi.Size = new Size(1154, 130);
+        tblDebtKpi.AutoScroll = false;
         tblDebtKpi.TabIndex = 1;
         // 
         // pnlDebtTotalCount
@@ -365,6 +376,7 @@ partial class FrmDebtTracking
         pnlDebtTotalCount.Name = "pnlDebtTotalCount";
         pnlDebtTotalCount.Padding = new Padding(22, 18, 22, 18);
         pnlDebtTotalCount.Size = new Size(368, 130);
+        pnlDebtTotalCount.AutoScroll = false;
         pnlDebtTotalCount.TabIndex = 0;
         // 
         // lblDebtTotalCountBadge
@@ -398,7 +410,7 @@ partial class FrmDebtTracking
         lblDebtTotalCountTitle.Name = "lblDebtTotalCountTitle";
         lblDebtTotalCountTitle.Size = new Size(124, 23);
         lblDebtTotalCountTitle.TabIndex = 1;
-        lblDebtTotalCountTitle.Text = "Há»c viÃªn ná»£ phÃ­";
+        lblDebtTotalCountTitle.Text = "Học viên nợ phí";
         // 
         // pnlDebtTotalCountAccent
         // 
@@ -407,6 +419,7 @@ partial class FrmDebtTracking
         pnlDebtTotalCountAccent.Location = new Point(22, 109);
         pnlDebtTotalCountAccent.Name = "pnlDebtTotalCountAccent";
         pnlDebtTotalCountAccent.Size = new Size(322, 1);
+        pnlDebtTotalCountAccent.AutoScroll = false;
         pnlDebtTotalCountAccent.TabIndex = 0;
         // 
         // pnlDebtTotalAmount
@@ -423,6 +436,7 @@ partial class FrmDebtTracking
         pnlDebtTotalAmount.Name = "pnlDebtTotalAmount";
         pnlDebtTotalAmount.Padding = new Padding(22, 18, 22, 18);
         pnlDebtTotalAmount.Size = new Size(368, 130);
+        pnlDebtTotalAmount.AutoScroll = false;
         pnlDebtTotalAmount.TabIndex = 1;
         // 
         // lblDebtTotalAmountBadge
@@ -466,7 +480,7 @@ partial class FrmDebtTracking
         lblDebtTotalAmountTitle.Name = "lblDebtTotalAmountTitle";
         lblDebtTotalAmountTitle.Size = new Size(124, 23);
         lblDebtTotalAmountTitle.TabIndex = 1;
-        lblDebtTotalAmountTitle.Text = "Tá»•ng ná»£ cÃ´ng bá»‘";
+        lblDebtTotalAmountTitle.Text = "Tổng nợ công bố";
         // 
         // pnlDebtTotalAmountAccent
         // 
@@ -475,6 +489,7 @@ partial class FrmDebtTracking
         pnlDebtTotalAmountAccent.Location = new Point(22, 109);
         pnlDebtTotalAmountAccent.Name = "pnlDebtTotalAmountAccent";
         pnlDebtTotalAmountAccent.Size = new Size(322, 1);
+        pnlDebtTotalAmountAccent.AutoScroll = false;
         pnlDebtTotalAmountAccent.TabIndex = 0;
         // 
         // pnlDebtDueSoon
@@ -490,6 +505,7 @@ partial class FrmDebtTracking
         pnlDebtDueSoon.Name = "pnlDebtDueSoon";
         pnlDebtDueSoon.Padding = new Padding(22, 18, 22, 18);
         pnlDebtDueSoon.Size = new Size(386, 130);
+        pnlDebtDueSoon.AutoScroll = false;
         pnlDebtDueSoon.TabIndex = 2;
         // 
         // lblDebtDueSoonBadge
@@ -524,7 +540,7 @@ partial class FrmDebtTracking
         lblDebtDueSoonTitle.Name = "lblDebtDueSoonTitle";
         lblDebtDueSoonTitle.Size = new Size(136, 23);
         lblDebtDueSoonTitle.TabIndex = 1;
-        lblDebtDueSoonTitle.Text = "PhÃ¡t sinh Ä‘áº¿n háº¡n";
+        lblDebtDueSoonTitle.Text = "Phát sinh đến hạn";
         // 
         // pnlDebtDueSoonAccent
         // 
@@ -533,6 +549,7 @@ partial class FrmDebtTracking
         pnlDebtDueSoonAccent.Location = new Point(22, 109);
         pnlDebtDueSoonAccent.Name = "pnlDebtDueSoonAccent";
         pnlDebtDueSoonAccent.Size = new Size(340, 1);
+        pnlDebtDueSoonAccent.AutoScroll = false;
         pnlDebtDueSoonAccent.TabIndex = 0;
         // 
         // pnlDebtSectionCard
@@ -545,6 +562,7 @@ partial class FrmDebtTracking
         pnlDebtSectionCard.Name = "pnlDebtSectionCard";
         pnlDebtSectionCard.Padding = new Padding(18, 14, 18, 12);
         pnlDebtSectionCard.Size = new Size(1154, 396);
+        pnlDebtSectionCard.AutoScroll = false;
         pnlDebtSectionCard.TabIndex = 2;
         // 
         // tblDebtSectionLayout
@@ -562,6 +580,7 @@ partial class FrmDebtTracking
         tblDebtSectionLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblDebtSectionLayout.RowStyles.Add(new RowStyle());
         tblDebtSectionLayout.Size = new Size(1116, 368);
+        tblDebtSectionLayout.AutoScroll = false;
         tblDebtSectionLayout.TabIndex = 0;
         // 
         // tblDebtSectionHeader
@@ -580,6 +599,7 @@ partial class FrmDebtTracking
         tblDebtSectionHeader.RowCount = 1;
         tblDebtSectionHeader.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblDebtSectionHeader.Size = new Size(1116, 48);
+        tblDebtSectionHeader.AutoScroll = false;
         tblDebtSectionHeader.TabIndex = 0;
         // 
         // lblDebtSectionTitle
@@ -592,7 +612,7 @@ partial class FrmDebtTracking
         lblDebtSectionTitle.Name = "lblDebtSectionTitle";
         lblDebtSectionTitle.Size = new Size(189, 25);
         lblDebtSectionTitle.TabIndex = 0;
-        lblDebtSectionTitle.Text = "Báº£ng kÃª chi tiáº¿t cÃ´ng ná»£";
+        lblDebtSectionTitle.Text = "Bảng kê chi tiết công nợ";
         // 
         // lblDebtUpdatedAt
         // 
@@ -606,7 +626,7 @@ partial class FrmDebtTracking
         lblDebtUpdatedAt.Padding = new Padding(10, 4, 10, 4);
         lblDebtUpdatedAt.Size = new Size(173, 28);
         lblDebtUpdatedAt.TabIndex = 1;
-        lblDebtUpdatedAt.Text = "Cáº­p nháº­t: 14:30 24/04/2026";
+        lblDebtUpdatedAt.Text = "Cập nhật: 14:30 24/04/2026";
         // 
         // flpDebtActions
         // 
@@ -619,6 +639,7 @@ partial class FrmDebtTracking
         flpDebtActions.Margin = new Padding(3, 0, 0, 0);
         flpDebtActions.Name = "flpDebtActions";
         flpDebtActions.Size = new Size(543, 48);
+        flpDebtActions.AutoScroll = false;
         flpDebtActions.TabIndex = 2;
         flpDebtActions.WrapContents = false;
         // 
@@ -629,7 +650,7 @@ partial class FrmDebtTracking
         btnOpenTuitionFromDebt.Name = "btnOpenTuitionFromDebt";
         btnOpenTuitionFromDebt.Size = new Size(146, 38);
         btnOpenTuitionFromDebt.TabIndex = 0;
-        btnOpenTuitionFromDebt.Text = "Má»Ÿ thu há»c phÃ­";
+        btnOpenTuitionFromDebt.Text = "Mở thu học phí";
         btnOpenTuitionFromDebt.UseVisualStyleBackColor = true;
         // 
         // btnExportDebt
@@ -639,7 +660,7 @@ partial class FrmDebtTracking
         btnExportDebt.Name = "btnExportDebt";
         btnExportDebt.Size = new Size(126, 38);
         btnExportDebt.TabIndex = 1;
-        btnExportDebt.Text = "Xuáº¥t Excel";
+        btnExportDebt.Text = "Xuất Excel";
         btnExportDebt.UseVisualStyleBackColor = true;
         // 
         // btnExportPdfDebt
@@ -649,7 +670,7 @@ partial class FrmDebtTracking
         btnExportPdfDebt.Name = "btnExportPdfDebt";
         btnExportPdfDebt.Size = new Size(120, 38);
         btnExportPdfDebt.TabIndex = 2;
-        btnExportPdfDebt.Text = "Xuáº¥t PDF";
+        btnExportPdfDebt.Text = "Xuất PDF";
         btnExportPdfDebt.UseVisualStyleBackColor = true;
         // 
         // pnlDebtGridHost
@@ -660,6 +681,7 @@ partial class FrmDebtTracking
         pnlDebtGridHost.Margin = new Padding(0);
         pnlDebtGridHost.Name = "pnlDebtGridHost";
         pnlDebtGridHost.Size = new Size(1116, 264);
+        pnlDebtGridHost.AutoScroll = false;
         pnlDebtGridHost.TabIndex = 1;
         // 
         // dgvDebtTrackingList
@@ -693,6 +715,7 @@ partial class FrmDebtTracking
         tblDebtFooter.RowCount = 1;
         tblDebtFooter.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblDebtFooter.Size = new Size(1116, 44);
+        tblDebtFooter.AutoScroll = false;
         tblDebtFooter.TabIndex = 2;
         // 
         // lblDebtFooterSummary
@@ -704,7 +727,7 @@ partial class FrmDebtTracking
         lblDebtFooterSummary.Name = "lblDebtFooterSummary";
         lblDebtFooterSummary.Size = new Size(198, 20);
         lblDebtFooterSummary.TabIndex = 0;
-        lblDebtFooterSummary.Text = "Hiá»ƒn thá»‹ 1-6 trÃªn tá»•ng sá»‘ 6 há»c viÃªn";
+        lblDebtFooterSummary.Text = "Hiển thị 1-6 trên tổng số 6 học viên";
         // 
         // flpDebtPager
         // 
@@ -720,6 +743,7 @@ partial class FrmDebtTracking
         flpDebtPager.Margin = new Padding(0);
         flpDebtPager.Name = "flpDebtPager";
         flpDebtPager.Size = new Size(248, 44);
+        flpDebtPager.AutoScroll = false;
         flpDebtPager.TabIndex = 1;
         flpDebtPager.WrapContents = false;
         // 
@@ -789,10 +813,12 @@ partial class FrmDebtTracking
         AutoScaleDimensions = new SizeF(96F, 96F);
         AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(1200, 720);
+        Font = new Font("Segoe UI", 10F);
         Controls.Add(tblDebtRoot);
+        MinimumSize = new Size(980, 640);
         Name = "FrmDebtTracking";
         Padding = new Padding(20, 18, 20, 18);
-        Text = "CÃ´ng ná»£ há»c viÃªn";
+        Text = "Công nợ học viên";
         tblDebtRoot.ResumeLayout(false);
         pnlDebtFilterCard.ResumeLayout(false);
         tblDebtFilterShell.ResumeLayout(false);
@@ -817,6 +843,7 @@ partial class FrmDebtTracking
         tblDebtFooter.PerformLayout();
         flpDebtPager.ResumeLayout(false);
         flpDebtPager.PerformLayout();
+        AutoScroll = true;
         ResumeLayout(false);
     }
 }

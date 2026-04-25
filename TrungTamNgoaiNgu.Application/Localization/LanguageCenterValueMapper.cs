@@ -7,115 +7,115 @@ public static class LanguageCenterValueMapper
     public static string NormalizeCourseStatus(string? value) => value?.Trim() switch
     {
         null or "" => "Active",
-        "Con mo" or "Active" => "Active",
-        "Tam dung" or "Inactive" => "Inactive",
+        "Con mo" or "Còn mở" or "Active" => "Active",
+        "Tam dung" or "Tạm dừng" or "Inactive" => "Inactive",
         _ => value.Trim()
     };
 
     public static string ToCourseStatusDisplay(string? value) => NormalizeCourseStatus(value) switch
     {
-        "Active" => "Con mo",
-        "Inactive" => "Tam dung",
+        "Active" => "Còn mở",
+        "Inactive" => "Tạm dừng",
         var normalized => normalized
     };
 
     public static string NormalizeStudentStatus(string? value) => value?.Trim() switch
     {
         null or "" => "Active",
-        "Dang hoc" or "Active" => "Active",
-        "Bao luu" or "Paused" => "Paused",
-        "Tam dung" or "Inactive" => "Inactive",
-        "Hoan thanh" or "Completed" => "Completed",
-        "Da nghi" or "Dropped" => "Dropped",
+        "Dang hoc" or "Đang học" or "Active" => "Active",
+        "Bao luu" or "Bảo lưu" or "Paused" => "Paused",
+        "Tam dung" or "Tạm dừng" or "Inactive" => "Inactive",
+        "Hoan thanh" or "Hoàn thành" or "Completed" => "Completed",
+        "Da nghi" or "Đã nghỉ" or "Dropped" => "Dropped",
         _ => value.Trim()
     };
 
     public static string ToStudentStatusDisplay(string? value) => NormalizeStudentStatus(value) switch
     {
-        "Active" => "Dang hoc",
-        "Paused" => "Bao luu",
-        "Inactive" => "Tam dung",
-        "Completed" => "Hoan thanh",
-        "Dropped" => "Da nghi",
+        "Active" => "Đang học",
+        "Paused" => "Bảo lưu",
+        "Inactive" => "Tạm dừng",
+        "Completed" => "Hoàn thành",
+        "Dropped" => "Đã nghỉ",
         var normalized => normalized
     };
 
     public static string NormalizeTeacherStatus(string? value) => value?.Trim() switch
     {
         null or "" => "Active",
-        "Dang day" or "Active" => "Active",
-        "Tam nghi" or "Inactive" => "Inactive",
+        "Dang day" or "Đang dạy" or "Active" => "Active",
+        "Tam nghi" or "Tạm nghỉ" or "Inactive" => "Inactive",
         _ => value.Trim()
     };
 
     public static string ToTeacherStatusDisplay(string? value) => NormalizeTeacherStatus(value) switch
     {
-        "Active" => "Dang day",
-        "Inactive" => "Tam nghi",
+        "Active" => "Đang dạy",
+        "Inactive" => "Tạm nghỉ",
         var normalized => normalized
     };
 
     public static string NormalizeClassStatus(string? value) => value?.Trim() switch
     {
         null or "" => "Open",
-        "Dang mo" or "Open" => "Open",
-        "Dang hoc" or "InProgress" => "InProgress",
-        "Da dong" or "Closed" => "Closed",
-        "Hoan thanh" or "Completed" => "Completed",
-        "Da huy" or "Cancelled" => "Cancelled",
-        "Day" => "Open",
+        "Dang mo" or "Đang mở" or "Open" => "Open",
+        "Dang hoc" or "Đang học" or "InProgress" => "InProgress",
+        "Da dong" or "Đã đóng" or "Closed" => "Closed",
+        "Hoan thanh" or "Hoàn thành" or "Completed" => "Completed",
+        "Da huy" or "Đã hủy" or "Cancelled" => "Cancelled",
+        "Day" or "Đầy" => "Open",
         _ => value.Trim()
     };
 
     public static string ToClassStatusDisplay(string? value) => NormalizeClassStatus(value) switch
     {
-        "Open" => "Dang mo",
-        "InProgress" => "Dang hoc",
-        "Closed" => "Da dong",
-        "Completed" => "Hoan thanh",
-        "Cancelled" => "Da huy",
+        "Open" => "Đang mở",
+        "InProgress" => "Đang học",
+        "Closed" => "Đã đóng",
+        "Completed" => "Hoàn thành",
+        "Cancelled" => "Đã hủy",
         var normalized => normalized
     };
 
     public static string NormalizeEnrollmentStatus(string? value) => value?.Trim() switch
     {
         null or "" => "Active",
-        "Dang hoc" or "Active" => "Active",
-        "Bao luu" or "Paused" => "Paused",
-        "Hoan thanh" or "Completed" => "Completed",
-        "Da nghi" or "Dropped" => "Dropped",
-        "Da huy" or "Cancelled" => "Cancelled",
+        "Dang hoc" or "Đang học" or "Active" => "Active",
+        "Bao luu" or "Bảo lưu" or "Paused" => "Paused",
+        "Hoan thanh" or "Hoàn thành" or "Completed" => "Completed",
+        "Da nghi" or "Đã nghỉ" or "Dropped" => "Dropped",
+        "Da huy" or "Đã hủy" or "Cancelled" => "Cancelled",
         _ => value.Trim()
     };
 
     public static string ToEnrollmentStatusDisplay(string? value) => NormalizeEnrollmentStatus(value) switch
     {
-        "Active" => "Dang hoc",
-        "Paused" => "Bao luu",
-        "Completed" => "Hoan thanh",
-        "Dropped" => "Da nghi",
-        "Cancelled" => "Da huy",
+        "Active" => "Đang học",
+        "Paused" => "Bảo lưu",
+        "Completed" => "Hoàn thành",
+        "Dropped" => "Đã nghỉ",
+        "Cancelled" => "Đã hủy",
         var normalized => normalized
     };
 
     public static string NormalizePaymentMethod(string? value) => value?.Trim() switch
     {
         null or "" => "Cash",
-        "Tien mat" or "Cash" => "Cash",
-        "Chuyen khoan" or "BankTransfer" => "BankTransfer",
-        "The" or "Card" => "Card",
-        "Vi dien tu" or "EWallet" => "EWallet",
-        "Khac" or "Other" => "Other",
+        "Tien mat" or "Tiền mặt" or "Cash" => "Cash",
+        "Chuyen khoan" or "Chuyển khoản" or "BankTransfer" => "BankTransfer",
+        "The" or "Thẻ" or "Card" => "Card",
+        "Vi dien tu" or "Ví điện tử" or "EWallet" => "EWallet",
+        "Khac" or "Khác" or "Other" => "Other",
         _ => value.Trim()
     };
 
     public static string ToPaymentMethodDisplay(string? value) => NormalizePaymentMethod(value) switch
     {
-        "Cash" => "Tien mat",
-        "BankTransfer" => "Chuyen khoan",
-        "Card" => "The",
-        "EWallet" => "Vi dien tu",
-        "Other" => "Khac",
+        "Cash" => "Tiền mặt",
+        "BankTransfer" => "Chuyển khoản",
+        "Card" => "Thẻ",
+        "EWallet" => "Ví điện tử",
+        "Other" => "Khác",
         var normalized => normalized
     };
 

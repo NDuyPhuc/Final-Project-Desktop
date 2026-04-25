@@ -1,4 +1,4 @@
-﻿using System.Data;
+using System.Data;
 
 namespace Trung_tam_quan_ly_ngoai_ngu;
 

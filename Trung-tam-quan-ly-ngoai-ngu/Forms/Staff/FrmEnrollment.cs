@@ -16,7 +16,7 @@ public partial class FrmEnrollment : Form
     public FrmEnrollment()
     {
         InitializeComponent();
-        FormHostHelpers.ConfigureModuleSurface(this, "Ghi danh hoc vien");
+        FormHostHelpers.ConfigureModuleSurface(this, "Ghi danh học viên");
         ConfigureView();
         LoadData();
         WireEvents();
@@ -81,7 +81,7 @@ public partial class FrmEnrollment : Form
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmEnrollment));
-            MessageBox.Show(this, "Khong tai duoc du lieu ghi danh. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không tải được dữ liệu ghi danh. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -133,13 +133,13 @@ public partial class FrmEnrollment : Form
         {
             if (AppRuntime.DataService.StudentAlreadyEnrolled(_selectedStudentId!, _selectedClassId!))
             {
-                MessageBox.Show(this, "Hoc vien da ton tai trong lop nay.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, "Học viên đã tồn tại trong lớp này.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             if (!AppRuntime.DataService.ClassHasAvailableSlot(_selectedClassId!))
             {
-                MessageBox.Show(this, "Lop hoc da het cho.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, "Lớp học đã hết chỗ.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -162,13 +162,13 @@ public partial class FrmEnrollment : Form
             _currentEnrollmentId = enrollment.Id;
             btnOpenTuitionReceipt.Enabled = true;
 
-            MessageBox.Show(this, "Da tao ghi danh thanh cong. Tiep tuc thu hoc phi o buoc tiep theo.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(this, "Đã tạo ghi danh thành công. Tiếp tục thu học phí ở bước tiếp theo.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             OpenTuitionReceipt();
         }
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmEnrollment));
-            MessageBox.Show(this, "Khong tao duoc ghi danh. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không tạo được ghi danh. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -176,7 +176,7 @@ public partial class FrmEnrollment : Form
     {
         if (string.IsNullOrWhiteSpace(_currentEnrollmentId))
         {
-            MessageBox.Show(this, "Hay tao ghi danh truoc khi thu hoc phi.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            MessageBox.Show(this, "Hãy tạo ghi danh trước khi thu học phí.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return;
         }
 
@@ -190,17 +190,17 @@ public partial class FrmEnrollment : Form
 
         if (string.IsNullOrWhiteSpace(_selectedStudentId))
         {
-            _errEnrollment.SetError(dgvEnrollmentStudentList, "Chua chon hoc vien.");
+            _errEnrollment.SetError(dgvEnrollmentStudentList, "Chưa chọn học viên.");
         }
 
         if (string.IsNullOrWhiteSpace(_selectedClassId))
         {
-            _errEnrollment.SetError(dgvEnrollmentClassList, "Chua chon lop hoc.");
+            _errEnrollment.SetError(dgvEnrollmentClassList, "Chưa chọn lớp học.");
         }
 
         if (ParseMoney(txtEnrollmentDiscount.Text) < 0)
         {
-            _errEnrollment.SetError(txtEnrollmentDiscount, "Muc giam phai >= 0.");
+            _errEnrollment.SetError(txtEnrollmentDiscount, "Mức giảm phải >= 0.");
         }
 
         return string.IsNullOrWhiteSpace(_errEnrollment.GetError(dgvEnrollmentStudentList))
@@ -210,21 +210,21 @@ public partial class FrmEnrollment : Form
 
     private void LocalizeLabels()
     {
-        lblEnrollmentDate.Text = "Ngay ghi danh";
-        lblEnrollmentStudent.Text = "Hoc vien";
-        lblEnrollmentCourseClass.Text = "Lop hoc / khoa hoc";
-        lblEnrollmentOriginalFee.Text = "Hoc phi goc";
-        lblEnrollmentDiscount.Text = "Giam tru";
-        lblEnrollmentFinalFee.Text = "Hoc phi tam tinh";
-        lblEnrollmentStatus.Text = "Trang thai";
-        lblEnrollmentNote.Text = "Ghi chu";
+        lblEnrollmentDate.Text = "Ngày ghi danh";
+        lblEnrollmentStudent.Text = "Học viên";
+        lblEnrollmentCourseClass.Text = "Lớp học / khóa học";
+        lblEnrollmentOriginalFee.Text = "Học phí gốc";
+        lblEnrollmentDiscount.Text = "Giảm trừ";
+        lblEnrollmentFinalFee.Text = "Học phí tạm tính";
+        lblEnrollmentStatus.Text = "Trạng thái";
+        lblEnrollmentNote.Text = "Ghi chú";
 
         cboEnrollmentStatus.Items.Clear();
-        cboEnrollmentStatus.Items.AddRange(["Dang hoc", "Bao luu", "Da nghi"]);
+        cboEnrollmentStatus.Items.AddRange(["Đang học", "Bảo lưu", "Đã nghỉ"]);
 
-        btnCreateEnrollment.Text = "Tao ghi danh";
-        btnRefreshEnrollment.Text = "Lam moi";
-        btnOpenTuitionReceipt.Text = "Thu hoc phi";
+        btnCreateEnrollment.Text = "Tạo ghi danh";
+        btnRefreshEnrollment.Text = "Làm mới";
+        btnOpenTuitionReceipt.Text = "Thu học phí";
     }
 
     private static string BuildStudentSummary(DataRow row)

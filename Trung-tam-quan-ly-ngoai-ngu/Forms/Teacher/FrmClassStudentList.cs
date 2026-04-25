@@ -11,7 +11,7 @@ public partial class FrmClassStudentList : Form
     public FrmClassStudentList()
     {
         InitializeComponent();
-        FormHostHelpers.ConfigureModuleSurface(this, "Danh sach hoc vien lop");
+        FormHostHelpers.ConfigureModuleSurface(this, "Danh sách học viên lớp");
         ConfigureView();
         LoadClasses();
         WireEvents();
@@ -28,10 +28,10 @@ public partial class FrmClassStudentList : Form
 
         dgvClassStudentList.AutoGenerateColumns = true;
         dgvClassStudentList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-        txtClassStudentKeyword.PlaceholderText = "Tim theo ma hoac ten hoc vien";
+        txtClassStudentKeyword.PlaceholderText = "Tìm theo mã hoặc tên học viên";
 
         cboClassStudentContext.Items.Clear();
-        cboClassStudentContext.Items.AddRange(["Tat ca", "Dang hoc", "Bao luu", "Da nghi"]);
+        cboClassStudentContext.Items.AddRange(["Tất cả", "Đang học", "Bảo lưu", "Đã nghỉ"]);
         cboClassStudentContext.SelectedIndex = 0;
     }
 
@@ -70,7 +70,7 @@ public partial class FrmClassStudentList : Form
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmClassStudentList));
-            MessageBox.Show(this, "Khong tai duoc danh sach lop. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không tải được danh sách lớp. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -86,7 +86,7 @@ public partial class FrmClassStudentList : Form
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmClassStudentList));
-            MessageBox.Show(this, "Khong tai duoc danh sach hoc vien lop. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không tải được danh sách học viên lớp. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -105,7 +105,7 @@ public partial class FrmClassStudentList : Form
             var matchesKeyword = string.IsNullOrWhiteSpace(keyword)
                 || studentId.Contains(keyword, StringComparison.OrdinalIgnoreCase)
                 || fullName.Contains(keyword, StringComparison.OrdinalIgnoreCase);
-            var matchesStatus = status == "Tat ca" || studentStatus.Equals(status, StringComparison.OrdinalIgnoreCase);
+            var matchesStatus = status is "Tat ca" or "Tất cả" || studentStatus.Equals(status, StringComparison.OrdinalIgnoreCase);
 
             if (matchesKeyword && matchesStatus)
             {
@@ -128,7 +128,7 @@ public partial class FrmClassStudentList : Form
     private void UpdateSummary(string? classId)
     {
         lblClassStudentCountValue.Text = _studentTable.Rows.Count.ToString();
-        lblClassStudentContext.Text = "Trang thai hoc vien";
+        lblClassStudentContext.Text = "Trạng thái học viên";
 
         if (string.IsNullOrWhiteSpace(classId))
         {

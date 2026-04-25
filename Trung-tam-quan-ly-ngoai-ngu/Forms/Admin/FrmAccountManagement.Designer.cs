@@ -1,4 +1,4 @@
-﻿namespace Trung_tam_quan_ly_ngoai_ngu;
+namespace Trung_tam_quan_ly_ngoai_ngu;
 
 partial class FrmAccountManagement
 {
@@ -133,7 +133,7 @@ partial class FrmAccountManagement
         // tblAccountRoot
         // 
         tblAccountRoot.ColumnCount = 2;
-        tblAccountRoot.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 645F));
+        tblAccountRoot.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 400F));
         tblAccountRoot.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
         tblAccountRoot.Controls.Add(pnlAccountListColumn, 0, 0);
         tblAccountRoot.Controls.Add(pnlAccountDetailColumn, 1, 0);
@@ -143,11 +143,12 @@ partial class FrmAccountManagement
         tblAccountRoot.Name = "tblAccountRoot";
         tblAccountRoot.RowCount = 1;
         tblAccountRoot.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-        tblAccountRoot.Size = new Size(1632, 1032);
+        tblAccountRoot.Size = new Size(1132, 712);
         tblAccountRoot.TabIndex = 0;
         // 
         // pnlAccountListColumn
         // 
+        pnlAccountListColumn.AutoScroll = true;
         pnlAccountListColumn.Controls.Add(flpAccountCards);
         pnlAccountListColumn.Controls.Add(pnlAccountFilterCard);
         pnlAccountListColumn.Controls.Add(lblAccountListTitle);
@@ -156,19 +157,18 @@ partial class FrmAccountManagement
         pnlAccountListColumn.Margin = new Padding(0);
         pnlAccountListColumn.Name = "pnlAccountListColumn";
         pnlAccountListColumn.Padding = new Padding(0, 0, 30, 0);
-        pnlAccountListColumn.Size = new Size(645, 1032);
+        pnlAccountListColumn.Size = new Size(400, 712);
         pnlAccountListColumn.TabIndex = 0;
         // 
         // flpAccountCards
         // 
-        flpAccountCards.AutoScroll = true;
         flpAccountCards.Dock = DockStyle.Fill;
         flpAccountCards.FlowDirection = FlowDirection.TopDown;
         flpAccountCards.Location = new Point(0, 138);
         flpAccountCards.Margin = new Padding(4);
         flpAccountCards.Name = "flpAccountCards";
         flpAccountCards.Padding = new Padding(0, 6, 0, 0);
-        flpAccountCards.Size = new Size(615, 894);
+        flpAccountCards.Size = new Size(370, 574);
         flpAccountCards.TabIndex = 2;
         flpAccountCards.WrapContents = false;
         // 
@@ -183,7 +183,7 @@ partial class FrmAccountManagement
         pnlAccountFilterCard.Margin = new Padding(4);
         pnlAccountFilterCard.Name = "pnlAccountFilterCard";
         pnlAccountFilterCard.Padding = new Padding(0, 15, 0, 15);
-        pnlAccountFilterCard.Size = new Size(615, 84);
+        pnlAccountFilterCard.Size = new Size(370, 84);
         pnlAccountFilterCard.TabIndex = 1;
         // 
         // btnRefreshAccount
@@ -193,7 +193,7 @@ partial class FrmAccountManagement
         btnRefreshAccount.Name = "btnRefreshAccount";
         btnRefreshAccount.Size = new Size(82, 48);
         btnRefreshAccount.TabIndex = 3;
-        btnRefreshAccount.Text = "â†»";
+        btnRefreshAccount.Text = "↻";
         btnRefreshAccount.UseVisualStyleBackColor = true;
         // 
         // btnSearchAccount
@@ -203,18 +203,18 @@ partial class FrmAccountManagement
         btnSearchAccount.Name = "btnSearchAccount";
         btnSearchAccount.Size = new Size(82, 48);
         btnSearchAccount.TabIndex = 2;
-        btnSearchAccount.Text = "âŒ•";
+        btnSearchAccount.Text = "⌕";
         btnSearchAccount.UseVisualStyleBackColor = true;
         // 
         // cboAccountRoleFilter
         // 
         cboAccountRoleFilter.DropDownStyle = ComboBoxStyle.DropDownList;
         cboAccountRoleFilter.FormattingEnabled = true;
-        cboAccountRoleFilter.Items.AddRange(new object[] { "Táº¥t cáº£", "Admin", "Staff", "Teacher" });
+        cboAccountRoleFilter.Items.AddRange(new object[] { "Tất cả", "Admin", "Staff", "Teacher" });
         cboAccountRoleFilter.Location = new Point(0, 18);
         cboAccountRoleFilter.Margin = new Padding(4);
         cboAccountRoleFilter.Name = "cboAccountRoleFilter";
-        cboAccountRoleFilter.Size = new Size(124, 33);
+        cboAccountRoleFilter.Size = new Size(124, 36);
         cboAccountRoleFilter.TabIndex = 0;
         // 
         // txtAccountKeyword
@@ -222,8 +222,8 @@ partial class FrmAccountManagement
         txtAccountKeyword.Location = new Point(135, 18);
         txtAccountKeyword.Margin = new Padding(4);
         txtAccountKeyword.Name = "txtAccountKeyword";
-        txtAccountKeyword.PlaceholderText = "TÃ¬m kiáº¿m tÃ i khoáº£n...";
-        txtAccountKeyword.Size = new Size(284, 31);
+        txtAccountKeyword.PlaceholderText = "Tìm kiếm tài khoản...";
+        txtAccountKeyword.Size = new Size(284, 34);
         txtAccountKeyword.TabIndex = 1;
         // 
         // lblAccountListTitle
@@ -233,21 +233,22 @@ partial class FrmAccountManagement
         lblAccountListTitle.Location = new Point(0, 0);
         lblAccountListTitle.Margin = new Padding(4, 0, 4, 0);
         lblAccountListTitle.Name = "lblAccountListTitle";
-        lblAccountListTitle.Size = new Size(615, 54);
+        lblAccountListTitle.Size = new Size(370, 54);
         lblAccountListTitle.TabIndex = 0;
-        lblAccountListTitle.Text = "Danh sÃ¡ch TÃ i khoáº£n";
+        lblAccountListTitle.Text = "Danh sách Tài khoản";
         // 
         // pnlAccountDetailColumn
         // 
+        pnlAccountDetailColumn.AutoScroll = true;
         pnlAccountDetailColumn.Controls.Add(pnlPermissionRuleCard);
         pnlAccountDetailColumn.Controls.Add(pnlAccountInfoCard);
         pnlAccountDetailColumn.Controls.Add(pnlAccountHeader);
         pnlAccountDetailColumn.Dock = DockStyle.Fill;
-        pnlAccountDetailColumn.Location = new Point(645, 0);
+        pnlAccountDetailColumn.Location = new Point(400, 0);
         pnlAccountDetailColumn.Margin = new Padding(0);
         pnlAccountDetailColumn.Name = "pnlAccountDetailColumn";
         pnlAccountDetailColumn.Padding = new Padding(12, 0, 0, 0);
-        pnlAccountDetailColumn.Size = new Size(987, 1032);
+        pnlAccountDetailColumn.Size = new Size(732, 712);
         pnlAccountDetailColumn.TabIndex = 1;
         // 
         // pnlPermissionRuleCard
@@ -256,22 +257,23 @@ partial class FrmAccountManagement
         pnlPermissionRuleCard.Controls.Add(tblPermissionCards);
         pnlPermissionRuleCard.Controls.Add(lblPermissionRuleTitle);
         pnlPermissionRuleCard.Dock = DockStyle.Bottom;
-        pnlPermissionRuleCard.Location = new Point(12, 720);
+        pnlPermissionRuleCard.Location = new Point(12, 1032);
         pnlPermissionRuleCard.Margin = new Padding(4);
         pnlPermissionRuleCard.Name = "pnlPermissionRuleCard";
         pnlPermissionRuleCard.Padding = new Padding(33, 27, 33, 27);
-        pnlPermissionRuleCard.Size = new Size(975, 312);
+        pnlPermissionRuleCard.Size = new Size(694, 312);
         pnlPermissionRuleCard.TabIndex = 2;
         pnlPermissionRuleCard.Paint += pnlPermissionRuleCard_Paint;
         // 
         // lblPermissionFooter
         // 
+        lblPermissionFooter.AutoSize = true;
         lblPermissionFooter.Dock = DockStyle.Bottom;
         lblPermissionFooter.ForeColor = Color.FromArgb(102, 112, 133);
-        lblPermissionFooter.Location = new Point(33, 255);
+        lblPermissionFooter.Location = new Point(33, 257);
         lblPermissionFooter.Margin = new Padding(4, 0, 4, 0);
         lblPermissionFooter.Name = "lblPermissionFooter";
-        lblPermissionFooter.Size = new Size(909, 30);
+        lblPermissionFooter.Size = new Size(449, 28);
         lblPermissionFooter.TabIndex = 2;
         lblPermissionFooter.Text = "LINGUISTIC ARCHITECT SECURITY PROTOCOL V2.4";
         lblPermissionFooter.TextAlign = ContentAlignment.MiddleCenter;
@@ -291,7 +293,7 @@ partial class FrmAccountManagement
         tblPermissionCards.Name = "tblPermissionCards";
         tblPermissionCards.RowCount = 1;
         tblPermissionCards.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-        tblPermissionCards.Size = new Size(909, 162);
+        tblPermissionCards.Size = new Size(628, 162);
         tblPermissionCards.TabIndex = 1;
         // 
         // pnlPermissionAdmin
@@ -303,19 +305,20 @@ partial class FrmAccountManagement
         pnlPermissionAdmin.Margin = new Padding(0, 0, 18, 0);
         pnlPermissionAdmin.Name = "pnlPermissionAdmin";
         pnlPermissionAdmin.Padding = new Padding(24, 21, 24, 21);
-        pnlPermissionAdmin.Size = new Size(285, 162);
+        pnlPermissionAdmin.Size = new Size(191, 162);
         pnlPermissionAdmin.TabIndex = 0;
         // 
         // lblPermissionAdminBody
         // 
+        lblPermissionAdminBody.AutoSize = true;
         lblPermissionAdminBody.Dock = DockStyle.Fill;
         lblPermissionAdminBody.ForeColor = Color.FromArgb(42, 51, 64);
         lblPermissionAdminBody.Location = new Point(24, 59);
         lblPermissionAdminBody.Margin = new Padding(4, 0, 4, 0);
         lblPermissionAdminBody.Name = "lblPermissionAdminBody";
-        lblPermissionAdminBody.Size = new Size(237, 82);
+        lblPermissionAdminBody.Size = new Size(558, 28);
         lblPermissionAdminBody.TabIndex = 1;
-        lblPermissionAdminBody.Text = "Quáº£n trá»‹ toÃ n diá»‡n vÃ  giÃ¡m sÃ¡t cÃ¡c hoáº¡t Ä‘á»™ng há»‡ thá»‘ng tá»‘i cao.";
+        lblPermissionAdminBody.Text = "Quản trị toàn diện và giám sát các hoạt động hệ thống tối cao.";
         // 
         // lblPermissionAdminTitle
         // 
@@ -324,7 +327,7 @@ partial class FrmAccountManagement
         lblPermissionAdminTitle.Location = new Point(24, 21);
         lblPermissionAdminTitle.Margin = new Padding(4, 0, 4, 0);
         lblPermissionAdminTitle.Name = "lblPermissionAdminTitle";
-        lblPermissionAdminTitle.Size = new Size(237, 38);
+        lblPermissionAdminTitle.Size = new Size(143, 38);
         lblPermissionAdminTitle.TabIndex = 0;
         lblPermissionAdminTitle.Text = "ADMIN";
         // 
@@ -333,23 +336,24 @@ partial class FrmAccountManagement
         pnlPermissionStaff.Controls.Add(lblPermissionStaffBody);
         pnlPermissionStaff.Controls.Add(lblPermissionStaffTitle);
         pnlPermissionStaff.Dock = DockStyle.Fill;
-        pnlPermissionStaff.Location = new Point(303, 0);
+        pnlPermissionStaff.Location = new Point(209, 0);
         pnlPermissionStaff.Margin = new Padding(0, 0, 18, 0);
         pnlPermissionStaff.Name = "pnlPermissionStaff";
         pnlPermissionStaff.Padding = new Padding(24, 21, 24, 21);
-        pnlPermissionStaff.Size = new Size(285, 162);
+        pnlPermissionStaff.Size = new Size(191, 162);
         pnlPermissionStaff.TabIndex = 1;
         // 
         // lblPermissionStaffBody
         // 
+        lblPermissionStaffBody.AutoSize = true;
         lblPermissionStaffBody.Dock = DockStyle.Fill;
         lblPermissionStaffBody.ForeColor = Color.FromArgb(42, 51, 64);
         lblPermissionStaffBody.Location = new Point(24, 59);
         lblPermissionStaffBody.Margin = new Padding(4, 0, 4, 0);
         lblPermissionStaffBody.Name = "lblPermissionStaffBody";
-        lblPermissionStaffBody.Size = new Size(237, 82);
+        lblPermissionStaffBody.Size = new Size(563, 28);
         lblPermissionStaffBody.TabIndex = 1;
-        lblPermissionStaffBody.Text = "Váº­n hÃ nh cÃ¡c quy trÃ¬nh tÃ¡c nghiá»‡p: Tuyá»ƒn sinh, Thu phÃ­, Xáº¿p lá»›p.";
+        lblPermissionStaffBody.Text = "Vận hành các quy trình tác nghiệp: Tuyển sinh, Thu phí, Xếp lớp.";
         // 
         // lblPermissionStaffTitle
         // 
@@ -358,32 +362,33 @@ partial class FrmAccountManagement
         lblPermissionStaffTitle.Location = new Point(24, 21);
         lblPermissionStaffTitle.Margin = new Padding(4, 0, 4, 0);
         lblPermissionStaffTitle.Name = "lblPermissionStaffTitle";
-        lblPermissionStaffTitle.Size = new Size(237, 38);
+        lblPermissionStaffTitle.Size = new Size(143, 38);
         lblPermissionStaffTitle.TabIndex = 0;
-        lblPermissionStaffTitle.Text = "NHÃ‚N VIÃŠN (STAFF)";
+        lblPermissionStaffTitle.Text = "NHÂN VIÊN (STAFF)";
         // 
         // pnlPermissionTeacher
         // 
         pnlPermissionTeacher.Controls.Add(lblPermissionTeacherBody);
         pnlPermissionTeacher.Controls.Add(lblPermissionTeacherTitle);
         pnlPermissionTeacher.Dock = DockStyle.Fill;
-        pnlPermissionTeacher.Location = new Point(606, 0);
+        pnlPermissionTeacher.Location = new Point(418, 0);
         pnlPermissionTeacher.Margin = new Padding(0);
         pnlPermissionTeacher.Name = "pnlPermissionTeacher";
         pnlPermissionTeacher.Padding = new Padding(24, 21, 24, 21);
-        pnlPermissionTeacher.Size = new Size(303, 162);
+        pnlPermissionTeacher.Size = new Size(210, 162);
         pnlPermissionTeacher.TabIndex = 2;
         // 
         // lblPermissionTeacherBody
         // 
+        lblPermissionTeacherBody.AutoSize = true;
         lblPermissionTeacherBody.Dock = DockStyle.Fill;
         lblPermissionTeacherBody.ForeColor = Color.FromArgb(42, 51, 64);
         lblPermissionTeacherBody.Location = new Point(24, 59);
         lblPermissionTeacherBody.Margin = new Padding(4, 0, 4, 0);
         lblPermissionTeacherBody.Name = "lblPermissionTeacherBody";
-        lblPermissionTeacherBody.Size = new Size(255, 82);
+        lblPermissionTeacherBody.Size = new Size(631, 28);
         lblPermissionTeacherBody.TabIndex = 1;
-        lblPermissionTeacherBody.Text = "Truy cáº­p há»\u008dc liá»‡u, quáº£n lÃ½ lá»›p há»\u008dc Ä‘Æ°á»£c giáº£ng dáº¡y vÃ  Ä‘Ã¡nh giÃ¡ há»\u008dc viÃªn.";
+        lblPermissionTeacherBody.Text = "Truy cập học liệu, quản lý lớp học được giảng dạy và đánh giá học viên.";
         // 
         // lblPermissionTeacherTitle
         // 
@@ -392,9 +397,9 @@ partial class FrmAccountManagement
         lblPermissionTeacherTitle.Location = new Point(24, 21);
         lblPermissionTeacherTitle.Margin = new Padding(4, 0, 4, 0);
         lblPermissionTeacherTitle.Name = "lblPermissionTeacherTitle";
-        lblPermissionTeacherTitle.Size = new Size(255, 38);
+        lblPermissionTeacherTitle.Size = new Size(162, 38);
         lblPermissionTeacherTitle.TabIndex = 0;
-        lblPermissionTeacherTitle.Text = "GIÃ\u0081O VIÃŠN (TEACHER)";
+        lblPermissionTeacherTitle.Text = "GIÁO VIÊN (TEACHER)";
         // 
         // lblPermissionRuleTitle
         // 
@@ -403,9 +408,9 @@ partial class FrmAccountManagement
         lblPermissionRuleTitle.Location = new Point(33, 27);
         lblPermissionRuleTitle.Margin = new Padding(4, 0, 4, 0);
         lblPermissionRuleTitle.Name = "lblPermissionRuleTitle";
-        lblPermissionRuleTitle.Size = new Size(909, 46);
+        lblPermissionRuleTitle.Size = new Size(628, 46);
         lblPermissionRuleTitle.TabIndex = 0;
-        lblPermissionRuleTitle.Text = "QUY Táº®C PHÃ‚N QUYá»€N Há»† THá»\u0090NG";
+        lblPermissionRuleTitle.Text = "QUY TẮC PHÂN QUYỀN HỆ THỐNG";
         // 
         // pnlAccountInfoCard
         // 
@@ -416,7 +421,7 @@ partial class FrmAccountManagement
         pnlAccountInfoCard.Margin = new Padding(4);
         pnlAccountInfoCard.Name = "pnlAccountInfoCard";
         pnlAccountInfoCard.Padding = new Padding(33, 27, 33, 27);
-        pnlAccountInfoCard.Size = new Size(975, 891);
+        pnlAccountInfoCard.Size = new Size(694, 891);
         pnlAccountInfoCard.TabIndex = 1;
         // 
         // flpAccountActions
@@ -438,7 +443,7 @@ partial class FrmAccountManagement
         btnSaveAccount.Name = "btnSaveAccount";
         btnSaveAccount.Size = new Size(225, 57);
         btnSaveAccount.TabIndex = 0;
-        btnSaveAccount.Text = "LÆ¯U THAY Ä\u0090á»”I";
+        btnSaveAccount.Text = "LƯU THAY ĐỔI";
         btnSaveAccount.UseVisualStyleBackColor = true;
         // 
         // btnResetPassword
@@ -448,7 +453,7 @@ partial class FrmAccountManagement
         btnResetPassword.Name = "btnResetPassword";
         btnResetPassword.Size = new Size(255, 57);
         btnResetPassword.TabIndex = 1;
-        btnResetPassword.Text = "Ä\u0090áº¶T Láº I Máº¬T KHáº¨U";
+        btnResetPassword.Text = "ĐẶT LẠI MẬT KHẨU";
         btnResetPassword.UseVisualStyleBackColor = true;
         // 
         // btnToggleAccountStatus
@@ -458,7 +463,7 @@ partial class FrmAccountManagement
         btnToggleAccountStatus.Name = "btnToggleAccountStatus";
         btnToggleAccountStatus.Size = new Size(255, 57);
         btnToggleAccountStatus.TabIndex = 2;
-        btnToggleAccountStatus.Text = "KHÃ“A TÃ€I KHOáº¢N";
+        btnToggleAccountStatus.Text = "KHÓA TÀI KHOẢN";
         btnToggleAccountStatus.UseVisualStyleBackColor = true;
         btnToggleAccountStatus.Click += btnToggleAccountStatus_Click;
         // 
@@ -490,7 +495,7 @@ partial class FrmAccountManagement
         tblAccountInfo.RowStyles.Add(new RowStyle());
         tblAccountInfo.RowStyles.Add(new RowStyle());
         tblAccountInfo.RowStyles.Add(new RowStyle());
-        tblAccountInfo.Size = new Size(909, 837);
+        tblAccountInfo.Size = new Size(628, 837);
         tblAccountInfo.TabIndex = 0;
         // 
         // lblDisplayName
@@ -500,9 +505,9 @@ partial class FrmAccountManagement
         lblDisplayName.Location = new Point(4, 0);
         lblDisplayName.Margin = new Padding(4, 0, 4, 0);
         lblDisplayName.Name = "lblDisplayName";
-        lblDisplayName.Size = new Size(154, 25);
+        lblDisplayName.Size = new Size(109, 25);
         lblDisplayName.TabIndex = 0;
-        lblDisplayName.Text = "Há»Œ VÃ€ TÃŠN";
+        lblDisplayName.Text = "HỌ VÀ TÊN";
         // 
         // txtDisplayName
         // 
@@ -510,34 +515,34 @@ partial class FrmAccountManagement
         txtDisplayName.Location = new Point(4, 29);
         txtDisplayName.Margin = new Padding(4);
         txtDisplayName.Name = "txtDisplayName";
-        txtDisplayName.Size = new Size(446, 31);
+        txtDisplayName.Size = new Size(306, 34);
         txtDisplayName.TabIndex = 1;
         // 
         // lblUsername
         // 
         lblUsername.AutoSize = true;
         lblUsername.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-        lblUsername.Location = new Point(458, 0);
+        lblUsername.Location = new Point(318, 0);
         lblUsername.Margin = new Padding(4, 0, 4, 0);
         lblUsername.Name = "lblUsername";
-        lblUsername.Size = new Size(197, 25);
+        lblUsername.Size = new Size(162, 25);
         lblUsername.TabIndex = 2;
-        lblUsername.Text = "TÃŠN Ä\u0090Ä‚NG NHáº¬P";
+        lblUsername.Text = "TÊN ĐĂNG NHẬP";
         // 
         // txtUsername
         // 
         txtUsername.Dock = DockStyle.Fill;
-        txtUsername.Location = new Point(458, 29);
+        txtUsername.Location = new Point(318, 29);
         txtUsername.Margin = new Padding(4);
         txtUsername.Name = "txtUsername";
-        txtUsername.Size = new Size(447, 31);
+        txtUsername.Size = new Size(306, 34);
         txtUsername.TabIndex = 3;
         // 
         // lblEmail
         // 
         lblEmail.AutoSize = true;
         lblEmail.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-        lblEmail.Location = new Point(4, 64);
+        lblEmail.Location = new Point(4, 67);
         lblEmail.Margin = new Padding(4, 0, 4, 0);
         lblEmail.Name = "lblEmail";
         lblEmail.Size = new Size(67, 25);
@@ -547,42 +552,42 @@ partial class FrmAccountManagement
         // txtEmail
         // 
         txtEmail.Dock = DockStyle.Fill;
-        txtEmail.Location = new Point(4, 93);
+        txtEmail.Location = new Point(4, 96);
         txtEmail.Margin = new Padding(4);
         txtEmail.Name = "txtEmail";
-        txtEmail.Size = new Size(446, 31);
+        txtEmail.Size = new Size(306, 34);
         txtEmail.TabIndex = 5;
         // 
         // lblPhone
         // 
         lblPhone.AutoSize = true;
         lblPhone.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-        lblPhone.Location = new Point(458, 64);
+        lblPhone.Location = new Point(318, 67);
         lblPhone.Margin = new Padding(4, 0, 4, 0);
         lblPhone.Name = "lblPhone";
-        lblPhone.Size = new Size(180, 25);
+        lblPhone.Size = new Size(147, 25);
         lblPhone.TabIndex = 6;
-        lblPhone.Text = "Sá»\u0090 Ä\u0090Iá»†N THOáº I";
+        lblPhone.Text = "SỐ ĐIỆN THOẠI";
         // 
         // txtPhone
         // 
         txtPhone.Dock = DockStyle.Fill;
-        txtPhone.Location = new Point(458, 93);
+        txtPhone.Location = new Point(318, 96);
         txtPhone.Margin = new Padding(4);
         txtPhone.Name = "txtPhone";
-        txtPhone.Size = new Size(447, 31);
+        txtPhone.Size = new Size(306, 34);
         txtPhone.TabIndex = 7;
         // 
         // lblRole
         // 
         lblRole.AutoSize = true;
         lblRole.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-        lblRole.Location = new Point(4, 128);
+        lblRole.Location = new Point(4, 134);
         lblRole.Margin = new Padding(4, 0, 4, 0);
         lblRole.Name = "lblRole";
-        lblRole.Size = new Size(88, 25);
+        lblRole.Size = new Size(84, 25);
         lblRole.TabIndex = 8;
-        lblRole.Text = "VAI TRÃ’";
+        lblRole.Text = "VAI TRÒ";
         // 
         // cboAccountRole
         // 
@@ -590,31 +595,31 @@ partial class FrmAccountManagement
         cboAccountRole.DropDownStyle = ComboBoxStyle.DropDownList;
         cboAccountRole.FormattingEnabled = true;
         cboAccountRole.Items.AddRange(new object[] { "Admin", "Staff", "Teacher" });
-        cboAccountRole.Location = new Point(4, 157);
+        cboAccountRole.Location = new Point(4, 163);
         cboAccountRole.Margin = new Padding(4);
         cboAccountRole.Name = "cboAccountRole";
-        cboAccountRole.Size = new Size(306, 33);
+        cboAccountRole.Size = new Size(306, 36);
         cboAccountRole.TabIndex = 9;
         // 
         // lblStatus
         // 
         lblStatus.AutoSize = true;
         lblStatus.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-        lblStatus.Location = new Point(458, 128);
+        lblStatus.Location = new Point(318, 134);
         lblStatus.Margin = new Padding(4, 0, 4, 0);
         lblStatus.Name = "lblStatus";
-        lblStatus.Size = new Size(134, 25);
+        lblStatus.Size = new Size(124, 25);
         lblStatus.TabIndex = 10;
-        lblStatus.Text = "TRáº NG THÃ\u0081I";
+        lblStatus.Text = "TRẠNG THÁI";
         // 
         // flpAccountStatus
         // 
         flpAccountStatus.Controls.Add(rdoAccountActive);
         flpAccountStatus.Controls.Add(rdoAccountLocked);
-        flpAccountStatus.Location = new Point(458, 157);
+        flpAccountStatus.Location = new Point(318, 163);
         flpAccountStatus.Margin = new Padding(4);
         flpAccountStatus.Name = "flpAccountStatus";
-        flpAccountStatus.Size = new Size(446, 50);
+        flpAccountStatus.Size = new Size(306, 50);
         flpAccountStatus.TabIndex = 11;
         flpAccountStatus.WrapContents = false;
         // 
@@ -624,22 +629,22 @@ partial class FrmAccountManagement
         rdoAccountActive.Location = new Point(4, 4);
         rdoAccountActive.Margin = new Padding(4);
         rdoAccountActive.Name = "rdoAccountActive";
-        rdoAccountActive.Size = new Size(163, 29);
+        rdoAccountActive.Size = new Size(132, 32);
         rdoAccountActive.TabIndex = 0;
         rdoAccountActive.TabStop = true;
-        rdoAccountActive.Text = "Hoáº¡t Ä‘á»™ng";
+        rdoAccountActive.Text = "Hoạt động";
         rdoAccountActive.UseVisualStyleBackColor = true;
         // 
         // rdoAccountLocked
         // 
         rdoAccountLocked.AutoSize = true;
-        rdoAccountLocked.Location = new Point(175, 4);
+        rdoAccountLocked.Location = new Point(144, 4);
         rdoAccountLocked.Margin = new Padding(4);
         rdoAccountLocked.Name = "rdoAccountLocked";
-        rdoAccountLocked.Size = new Size(85, 29);
+        rdoAccountLocked.Size = new Size(82, 32);
         rdoAccountLocked.TabIndex = 1;
         rdoAccountLocked.TabStop = true;
-        rdoAccountLocked.Text = "KhÃ³a";
+        rdoAccountLocked.Text = "Khóa";
         rdoAccountLocked.UseVisualStyleBackColor = true;
         // 
         // pnlAccountHeader
@@ -651,18 +656,18 @@ partial class FrmAccountManagement
         pnlAccountHeader.Location = new Point(12, 0);
         pnlAccountHeader.Margin = new Padding(4);
         pnlAccountHeader.Name = "pnlAccountHeader";
-        pnlAccountHeader.Size = new Size(975, 141);
+        pnlAccountHeader.Size = new Size(694, 141);
         pnlAccountHeader.TabIndex = 0;
         // 
         // btnCreateAccount
         // 
         btnCreateAccount.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-        btnCreateAccount.Location = new Point(616, 33);
+        btnCreateAccount.Location = new Point(335, 33);
         btnCreateAccount.Margin = new Padding(4);
         btnCreateAccount.Name = "btnCreateAccount";
         btnCreateAccount.Size = new Size(326, 66);
         btnCreateAccount.TabIndex = 2;
-        btnCreateAccount.Text = "+ Táº¡o tÃ i khoáº£n má»›i";
+        btnCreateAccount.Text = "+ Tạo tài khoản mới";
         btnCreateAccount.UseVisualStyleBackColor = true;
         // 
         // lblAccountIdentifier
@@ -672,7 +677,7 @@ partial class FrmAccountManagement
         lblAccountIdentifier.Location = new Point(0, 84);
         lblAccountIdentifier.Margin = new Padding(4, 0, 4, 0);
         lblAccountIdentifier.Name = "lblAccountIdentifier";
-        lblAccountIdentifier.Size = new Size(171, 25);
+        lblAccountIdentifier.Size = new Size(187, 28);
         lblAccountIdentifier.TabIndex = 1;
         lblAccountIdentifier.Text = "ID: USER-8842-ANV";
         // 
@@ -683,9 +688,9 @@ partial class FrmAccountManagement
         lblAccountTitle.Location = new Point(0, 21);
         lblAccountTitle.Margin = new Padding(4, 0, 4, 0);
         lblAccountTitle.Name = "lblAccountTitle";
-        lblAccountTitle.Size = new Size(472, 48);
+        lblAccountTitle.Size = new Size(369, 48);
         lblAccountTitle.TabIndex = 0;
-        lblAccountTitle.Text = "CHI TIáº¾T TÃ€I KHOáº¢N";
+        lblAccountTitle.Text = "CHI TIẾT TÀI KHOẢN";
         // 
         // errAccount
         // 
@@ -695,23 +700,30 @@ partial class FrmAccountManagement
         // 
         AutoScaleDimensions = new SizeF(144F, 144F);
         AutoScaleMode = AutoScaleMode.Dpi;
+        AutoScroll = true;
         BackColor = Color.FromArgb(241, 248, 255);
-        ClientSize = new Size(1680, 1080);
+        ClientSize = new Size(1180, 760);
         Controls.Add(tblAccountRoot);
+        Font = new Font("Segoe UI", 10F);
         Margin = new Padding(4);
+        MinimumSize = new Size(980, 640);
         Name = "FrmAccountManagement";
         Padding = new Padding(24);
-        Text = "TÃ i khoáº£n vÃ  phÃ¢n quyá»\u0081n";
+        Text = "Tài khoản và phân quyền";
         tblAccountRoot.ResumeLayout(false);
         pnlAccountListColumn.ResumeLayout(false);
         pnlAccountFilterCard.ResumeLayout(false);
         pnlAccountFilterCard.PerformLayout();
         pnlAccountDetailColumn.ResumeLayout(false);
         pnlPermissionRuleCard.ResumeLayout(false);
+        pnlPermissionRuleCard.PerformLayout();
         tblPermissionCards.ResumeLayout(false);
         pnlPermissionAdmin.ResumeLayout(false);
+        pnlPermissionAdmin.PerformLayout();
         pnlPermissionStaff.ResumeLayout(false);
+        pnlPermissionStaff.PerformLayout();
         pnlPermissionTeacher.ResumeLayout(false);
+        pnlPermissionTeacher.PerformLayout();
         pnlAccountInfoCard.ResumeLayout(false);
         flpAccountActions.ResumeLayout(false);
         tblAccountInfo.ResumeLayout(false);

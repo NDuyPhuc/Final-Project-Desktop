@@ -14,7 +14,7 @@ public partial class FrmCourseManagement : Form
     public FrmCourseManagement()
     {
         InitializeComponent();
-        FormHostHelpers.ConfigureModuleSurface(this, "Quan ly khoa hoc");
+        FormHostHelpers.ConfigureModuleSurface(this, "Quản lý khóa học");
         ConfigureView();
         LoadCourses();
         WireEvents();
@@ -61,7 +61,7 @@ public partial class FrmCourseManagement : Form
         {
             _courseTable = AppRuntime.DataService.GetCourseList(
                 string.IsNullOrWhiteSpace(keyword) ? null : keyword,
-                string.IsNullOrWhiteSpace(status) || status == "Tat ca" ? null : status);
+                string.IsNullOrWhiteSpace(status) || status is "Tat ca" or "Tất cả" ? null : status);
 
             dgvCourseList.DataSource = _courseTable;
             SelectFirstCourse();
@@ -69,7 +69,7 @@ public partial class FrmCourseManagement : Form
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmCourseManagement));
-            MessageBox.Show(this, "Khong tai duoc danh sach khoa hoc. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không tải được danh sách khóa học. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -77,7 +77,7 @@ public partial class FrmCourseManagement : Form
     {
         ResetDetailEditor();
         txtCourseCode.Text = AppRuntime.DataService.GetNextCourseId();
-        _currentCourseStatus = "Con mo";
+        _currentCourseStatus = "Còn mở";
         txtCourseName.Focus();
         dgvCourseClassList.DataSource = AppRuntime.DataService.GetClassList(courseId: "__empty__");
     }
@@ -97,7 +97,7 @@ public partial class FrmCourseManagement : Form
                 Name = txtCourseName.Text.Trim(),
                 Description = BuildCourseDescription(txtCourseLevel.Text.Trim(), txtCourseDescription.Text.Trim()),
                 TuitionFee = tuitionFee,
-                Status = string.IsNullOrWhiteSpace(_currentCourseStatus) ? "Con mo" : _currentCourseStatus,
+                Status = string.IsNullOrWhiteSpace(_currentCourseStatus) ? "Còn mở" : _currentCourseStatus,
                 IsDeleted = false
             };
 
@@ -105,12 +105,12 @@ public partial class FrmCourseManagement : Form
             _currentCourseStatus = course.Status;
             LoadCourses(txtCourseKeyword.Text.Trim(), cboCourseStatusFilter.Text);
             FocusCourse(course.Id);
-            MessageBox.Show(this, "Da luu khoa hoc thanh cong.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(this, "Đã lưu khóa học thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmCourseManagement));
-            MessageBox.Show(this, "Khong luu duoc khoa hoc. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không lưu được khóa học. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -121,7 +121,7 @@ public partial class FrmCourseManagement : Form
             return;
         }
 
-        using var dialog = new FrmConfirmDialog("Xoa khoa hoc", "Ban co chac muon xoa mem khoa hoc dang chon khong?");
+        using var dialog = new FrmConfirmDialog("Xóa khóa học", "Bạn có chắc muốn xóa mềm khóa học đang chọn không?");
         if (dialog.ShowDialog(this) != DialogResult.OK)
         {
             return;
@@ -136,7 +136,7 @@ public partial class FrmCourseManagement : Form
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmCourseManagement));
-            MessageBox.Show(this, "Khong xoa duoc khoa hoc. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không xóa được khóa học. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -173,7 +173,7 @@ public partial class FrmCourseManagement : Form
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmCourseManagement));
-            MessageBox.Show(this, "Khong tai duoc chi tiet khoa hoc. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không tải được chi tiết khóa học. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -210,21 +210,21 @@ public partial class FrmCourseManagement : Form
 
         if (string.IsNullOrWhiteSpace(txtCourseCode.Text))
         {
-            _errCourse.SetError(txtCourseCode, "Ma khoa hoc khong duoc de trong.");
+            _errCourse.SetError(txtCourseCode, "Mã khóa học không được để trống.");
         }
 
         if (string.IsNullOrWhiteSpace(txtCourseName.Text))
         {
-            _errCourse.SetError(txtCourseName, "Ten khoa hoc khong duoc de trong.");
+            _errCourse.SetError(txtCourseName, "Tên khóa học không được để trống.");
         }
 
         if (string.IsNullOrWhiteSpace(txtCourseFee.Text))
         {
-            _errCourse.SetError(txtCourseFee, "Hoc phi khong duoc de trong.");
+            _errCourse.SetError(txtCourseFee, "Học phí không được để trống.");
         }
         else if (!decimal.TryParse(txtCourseFee.Text.Trim(), NumberStyles.Number, CultureInfo.InvariantCulture, out tuitionFee) || tuitionFee < 0)
         {
-            _errCourse.SetError(txtCourseFee, "Hoc phi phai la so >= 0.");
+            _errCourse.SetError(txtCourseFee, "Học phí phải là số >= 0.");
         }
 
         return string.IsNullOrWhiteSpace(_errCourse.GetError(txtCourseCode))
@@ -253,24 +253,24 @@ public partial class FrmCourseManagement : Form
 
     private void LocalizeLabels()
     {
-        lblCourseKeyword.Text = "Tu khoa";
-        txtCourseKeyword.PlaceholderText = "Ma khoa hoac ten khoa hoc";
-        lblCourseStatus.Text = "Trang thai";
+        lblCourseKeyword.Text = "Từ khóa";
+        txtCourseKeyword.PlaceholderText = "Mã khóa hoặc tên khóa học";
+        lblCourseStatus.Text = "Trạng thái";
         cboCourseStatusFilter.Items.Clear();
-        cboCourseStatusFilter.Items.AddRange(["Tat ca", "Con mo", "Tam dung"]);
+        cboCourseStatusFilter.Items.AddRange(["Tất cả", "Còn mở", "Tạm dừng"]);
 
-        lblCourseCode.Text = "Ma khoa";
-        lblCourseName.Text = "Ten khoa hoc";
+        lblCourseCode.Text = "Mã khóa";
+        lblCourseName.Text = "Tên khóa học";
         lblCourseLevel.Text = "Level";
-        lblCourseFee.Text = "Hoc phi";
-        lblCourseDescription.Text = "Mo ta";
+        lblCourseFee.Text = "Học phí";
+        lblCourseDescription.Text = "Mô tả";
 
-        btnSearchCourse.Text = "Tim kiem";
-        btnRefreshCourse.Text = "Lam moi";
-        btnCreateCourse.Text = "Them khoa";
-        btnSaveCourse.Text = "Luu";
-        btnUpdateCourse.Text = "Cap nhat";
-        btnDeleteCourse.Text = "Xoa mem";
+        btnSearchCourse.Text = "Tìm kiếm";
+        btnRefreshCourse.Text = "Làm mới";
+        btnCreateCourse.Text = "Thêm khóa";
+        btnSaveCourse.Text = "Lưu";
+        btnUpdateCourse.Text = "Cập nhật";
+        btnDeleteCourse.Text = "Xóa mềm";
     }
 
     private static string BuildCourseDescription(string level, string description)

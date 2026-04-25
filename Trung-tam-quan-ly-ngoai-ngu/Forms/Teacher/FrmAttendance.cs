@@ -13,7 +13,7 @@ public partial class FrmAttendance : Form
     public FrmAttendance()
     {
         InitializeComponent();
-        FormHostHelpers.ConfigureModuleSurface(this, "Diem danh");
+        FormHostHelpers.ConfigureModuleSurface(this, "Điểm danh");
         ConfigureView();
         LoadTeachingClasses();
         WireEvents();
@@ -27,12 +27,12 @@ public partial class FrmAttendance : Form
         AppTheme.StyleSecondaryButton(btnCheckAllAbsent);
         AppTheme.StylePrimaryButton(btnSaveAttendance);
 
-        btnSearchAttendance.Text = "Xem danh sach";
-        btnCheckAllPresent.Text = "Present all";
-        btnCheckAllAbsent.Text = "Absent all";
-        btnSaveAttendance.Text = "Luu diem danh";
+        btnSearchAttendance.Text = "Xem danh sách";
+        btnCheckAllPresent.Text = "Tất cả có mặt";
+        btnCheckAllAbsent.Text = "Tất cả vắng";
+        btnSaveAttendance.Text = "Lưu điểm danh";
 
-        ttAttendance.SetToolTip(btnSaveAttendance, "Luu lich su chuyen can vao database.");
+        ttAttendance.SetToolTip(btnSaveAttendance, "Lưu lịch sử chuyên cần vào database.");
         cboAttendanceSession.DropDownStyle = ComboBoxStyle.DropDownList;
         cboAttendanceClass.DropDownStyle = ComboBoxStyle.DropDownList;
         dtpAttendanceDate.Format = DateTimePickerFormat.Custom;
@@ -64,7 +64,7 @@ public partial class FrmAttendance : Form
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmAttendance));
-            MessageBox.Show(this, "Khong tai duoc danh sach lop dang day. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không tải được danh sách lớp đang dạy. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -83,7 +83,7 @@ public partial class FrmAttendance : Form
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmAttendance));
-            MessageBox.Show(this, "Khong tai duoc lich hoc. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không tải được lịch học. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -112,7 +112,7 @@ public partial class FrmAttendance : Form
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmAttendance));
-            MessageBox.Show(this, "Khong tai duoc danh sach diem danh. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không tải được danh sách điểm danh. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -133,7 +133,7 @@ public partial class FrmAttendance : Form
             {
                 DataPropertyName = "Trang thai",
                 Name = "Trang thai",
-                HeaderText = "Trang thai",
+                HeaderText = "Trạng thái",
                 DataSource = new[] { "Present", "Late", "Absent" },
                 FlatStyle = FlatStyle.Flat,
                 DisplayIndex = displayIndex
@@ -160,7 +160,7 @@ public partial class FrmAttendance : Form
             var classId = GetSelectedClassId();
             if (string.IsNullOrWhiteSpace(classId))
             {
-                errAttendance.SetError(cboAttendanceClass, "Chua chon lop hoc.");
+                errAttendance.SetError(cboAttendanceClass, "Chưa chọn lớp học.");
                 return;
             }
 
@@ -178,13 +178,13 @@ public partial class FrmAttendance : Form
                 .ToList();
 
             AppRuntime.DataService.SaveAttendance(classId, dtpAttendanceDate.Value.Date, items);
-            MessageBox.Show(this, "Da luu diem danh thanh cong.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(this, "Đã lưu điểm danh thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             LoadAttendanceList();
         }
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmAttendance));
-            MessageBox.Show(this, "Khong luu duoc diem danh. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không lưu được điểm danh. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 

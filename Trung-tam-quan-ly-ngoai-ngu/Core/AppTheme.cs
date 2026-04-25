@@ -2,6 +2,78 @@ namespace Trung_tam_quan_ly_ngoai_ngu;
 
 internal static class AppTheme
 {
+    private static readonly Dictionary<string, string> GridHeaderText = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ["Ma hoc vien"] = "Mã học viên",
+        ["Ma giao vien"] = "Mã giáo viên",
+        ["Ma khoa hoc"] = "Mã khóa học",
+        ["Ma lop"] = "Mã lớp",
+        ["Ma bien lai"] = "Mã biên lai",
+        ["Ho ten"] = "Họ tên",
+        ["Ho va ten"] = "Họ và tên",
+        ["Ten hoc vien"] = "Tên học viên",
+        ["Ten giao vien"] = "Tên giáo viên",
+        ["Ten khoa hoc"] = "Tên khóa học",
+        ["Ten lop"] = "Tên lớp",
+        ["Ngay sinh"] = "Ngày sinh",
+        ["Ngay hoc"] = "Ngày học",
+        ["Ngay ghi danh"] = "Ngày ghi danh",
+        ["Ngay nop"] = "Ngày nộp",
+        ["Dien thoai"] = "Điện thoại",
+        ["So dien thoai"] = "Số điện thoại",
+        ["Dia chi"] = "Địa chỉ",
+        ["Gioi tinh"] = "Giới tính",
+        ["Trang thai"] = "Trạng thái",
+        ["Khoa hoc"] = "Khóa học",
+        ["Hoc phi"] = "Học phí",
+        ["Con no"] = "Còn nợ",
+        ["Cong no"] = "Công nợ",
+        ["So tien"] = "Số tiền",
+        ["So tien thu"] = "Số tiền thu",
+        ["Phuong thuc"] = "Phương thức",
+        ["Phuong thuc thanh toan"] = "Phương thức thanh toán",
+        ["Ghi chu"] = "Ghi chú",
+        ["Chuyen mon"] = "Chuyên môn",
+        ["Lich hoc"] = "Lịch học",
+        ["Phong hoc"] = "Phòng học",
+        ["Si so"] = "Sĩ số",
+        ["Diem danh"] = "Điểm danh",
+        ["Diem"] = "Điểm",
+        ["Diem nghe"] = "Điểm nghe",
+        ["Diem noi"] = "Điểm nói",
+        ["Diem doc"] = "Điểm đọc",
+        ["Diem viet"] = "Điểm viết",
+        ["Diem tong"] = "Điểm tổng",
+        ["Nhan vien"] = "Nhân viên",
+        ["Giao vien"] = "Giáo viên",
+        ["Hoc vien"] = "Học viên"
+    };
+
+    private static readonly Dictionary<string, string> GridCellText = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ["Tat ca"] = "Tất cả",
+        ["Con mo"] = "Còn mở",
+        ["Tam dung"] = "Tạm dừng",
+        ["Dang hoc"] = "Đang học",
+        ["Bao luu"] = "Bảo lưu",
+        ["Hoan thanh"] = "Hoàn thành",
+        ["Da nghi"] = "Đã nghỉ",
+        ["Dang day"] = "Đang dạy",
+        ["Tam nghi"] = "Tạm nghỉ",
+        ["Dang mo"] = "Đang mở",
+        ["Da dong"] = "Đã đóng",
+        ["Da huy"] = "Đã hủy",
+        ["Day"] = "Đầy",
+        ["Da hoc"] = "Đã học",
+        ["Hom nay"] = "Hôm nay",
+        ["Sap dien ra"] = "Sắp diễn ra",
+        ["Qua han"] = "Quá hạn",
+        ["Sap den han"] = "Sắp đến hạn",
+        ["Da hoan thanh"] = "Đã hoàn thành",
+        ["Tien mat"] = "Tiền mặt",
+        ["Chuyen khoan"] = "Chuyển khoản"
+    };
+
     public static readonly Color Sidebar = Color.FromArgb(230, 246, 255);
     public static readonly Color SidebarHover = Color.FromArgb(224, 241, 250);
     public static readonly Color Accent = Color.FromArgb(0, 110, 110);
@@ -98,7 +170,9 @@ internal static class AppTheme
         grid.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(240, 244, 251);
         grid.ColumnHeadersDefaultCellStyle.ForeColor = TextPrimary;
         grid.ColumnHeadersDefaultCellStyle.Font = FontBodyBold;
+        grid.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.True;
         grid.ColumnHeadersHeight = 40;
+        grid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
         grid.RowTemplate.Height = 34;
         grid.RowHeadersVisible = false;
         grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -109,9 +183,48 @@ internal static class AppTheme
         grid.GridColor = Border;
         grid.DefaultCellStyle.SelectionBackColor = Color.FromArgb(228, 237, 255);
         grid.DefaultCellStyle.SelectionForeColor = TextPrimary;
+        grid.DataBindingComplete -= LocalizeGridHeadersOnDataBindingComplete;
+        grid.DataBindingComplete += LocalizeGridHeadersOnDataBindingComplete;
+        grid.CellFormatting -= LocalizeGridCellFormatting;
+        grid.CellFormatting += LocalizeGridCellFormatting;
+        ApplyGridHeaderText(grid);
     }
 
     public static void RoundPanelCorners(Panel panel, int radius = 10)
     {
+    }
+
+    private static void LocalizeGridHeadersOnDataBindingComplete(object? sender, DataGridViewBindingCompleteEventArgs e)
+    {
+        if (sender is DataGridView grid)
+        {
+            ApplyGridHeaderText(grid);
+        }
+    }
+
+    private static void ApplyGridHeaderText(DataGridView grid)
+    {
+        foreach (DataGridViewColumn column in grid.Columns)
+        {
+            var key = string.IsNullOrWhiteSpace(column.HeaderText)
+                ? column.DataPropertyName
+                : column.HeaderText;
+
+            if (GridHeaderText.TryGetValue(key, out var headerText))
+            {
+                column.HeaderText = headerText;
+            }
+
+            column.MinimumWidth = Math.Max(column.MinimumWidth, Math.Min(180, 36 + column.HeaderText.Length * 7));
+        }
+    }
+
+    private static void LocalizeGridCellFormatting(object? sender, DataGridViewCellFormattingEventArgs e)
+    {
+        if (e.Value is string text && GridCellText.TryGetValue(text, out var displayText))
+        {
+            e.Value = displayText;
+            e.FormattingApplied = true;
+        }
     }
 }

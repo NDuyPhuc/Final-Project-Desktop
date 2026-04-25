@@ -46,6 +46,7 @@ partial class FrmStatusDialog
         tblStatusRoot.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblStatusRoot.RowStyles.Add(new RowStyle(SizeType.AutoSize));
         tblStatusRoot.Size = new Size(424, 221);
+        tblStatusRoot.AutoScroll = false;
         tblStatusRoot.TabIndex = 0;
         // 
         // lblStatusTitle
@@ -58,7 +59,7 @@ partial class FrmStatusDialog
         lblStatusTitle.Name = "lblStatusTitle";
         lblStatusTitle.Size = new Size(376, 28);
         lblStatusTitle.TabIndex = 0;
-        lblStatusTitle.Text = "Thong bao";
+        lblStatusTitle.Text = "Thông báo";
         // 
         // lblStatusMessage
         // 
@@ -67,8 +68,9 @@ partial class FrmStatusDialog
         lblStatusMessage.Margin = new Padding(0);
         lblStatusMessage.Name = "lblStatusMessage";
         lblStatusMessage.Size = new Size(376, 89);
+        lblStatusMessage.AutoSize = true;
         lblStatusMessage.TabIndex = 1;
-        lblStatusMessage.Text = "Noi dung thong bao";
+        lblStatusMessage.Text = "Nội dung thông báo";
         // 
         // flpStatusActions
         // 
@@ -80,6 +82,8 @@ partial class FrmStatusDialog
         flpStatusActions.Margin = new Padding(0, 12, 0, 0);
         flpStatusActions.Name = "flpStatusActions";
         flpStatusActions.Size = new Size(376, 32);
+        flpStatusActions.AutoScroll = false;
+        flpStatusActions.WrapContents = true;
         flpStatusActions.TabIndex = 2;
         flpStatusActions.WrapContents = false;
         // 
@@ -90,7 +94,7 @@ partial class FrmStatusDialog
         btnCloseStatusDialog.Name = "btnCloseStatusDialog";
         btnCloseStatusDialog.Size = new Size(120, 32);
         btnCloseStatusDialog.TabIndex = 0;
-        btnCloseStatusDialog.Text = "Dong";
+        btnCloseStatusDialog.Text = "Đóng";
         btnCloseStatusDialog.Click += (_, _) => Close();
         btnCloseStatusDialog.UseVisualStyleBackColor = true;
         // 
@@ -99,6 +103,7 @@ partial class FrmStatusDialog
         AutoScaleDimensions = new SizeF(96F, 96F);
         AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(424, 221);
+        Font = new Font("Segoe UI", 10F);
         Controls.Add(tblStatusRoot);
         FormBorderStyle = FormBorderStyle.FixedDialog;
         MaximizeBox = false;
@@ -110,6 +115,7 @@ partial class FrmStatusDialog
         tblStatusRoot.ResumeLayout(false);
         tblStatusRoot.PerformLayout();
         flpStatusActions.ResumeLayout(false);
+        AutoScroll = true;
         ResumeLayout(false);
     }
 }

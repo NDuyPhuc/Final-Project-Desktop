@@ -1,4 +1,4 @@
-﻿namespace Trung_tam_quan_ly_ngoai_ngu;
+namespace Trung_tam_quan_ly_ngoai_ngu;
 
 partial class FrmLogin
 {
@@ -108,6 +108,7 @@ partial class FrmLogin
         pnlLoginContainer.Location = new Point(266, 21);
         pnlLoginContainer.Name = "pnlLoginContainer";
         pnlLoginContainer.Size = new Size(448, 678);
+        pnlLoginContainer.AutoScroll = false;
         pnlLoginContainer.TabIndex = 0;
         // 
         // pnlLoginFooter
@@ -117,6 +118,7 @@ partial class FrmLogin
         pnlLoginFooter.Dock = DockStyle.Bottom;
         pnlLoginFooter.Name = "pnlLoginFooter";
         pnlLoginFooter.Size = new Size(448, 56);
+        pnlLoginFooter.AutoScroll = false;
         pnlLoginFooter.TabIndex = 2;
         // 
         // tblFooter
@@ -134,6 +136,7 @@ partial class FrmLogin
         tblFooter.RowCount = 1;
         tblFooter.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblFooter.Size = new Size(448, 56);
+        tblFooter.AutoScroll = false;
         tblFooter.TabIndex = 0;
         // 
         // lblFooterVersion
@@ -144,6 +147,7 @@ partial class FrmLogin
         lblFooterVersion.Margin = new Padding(0);
         lblFooterVersion.Name = "lblFooterVersion";
         lblFooterVersion.Size = new Size(192, 32);
+        lblFooterVersion.AutoSize = true;
         lblFooterVersion.TabIndex = 0;
         lblFooterVersion.Text = "Academic Curator v2.4";
         lblFooterVersion.TextAlign = ContentAlignment.MiddleLeft;
@@ -156,8 +160,9 @@ partial class FrmLogin
         lblFooterSupport.Margin = new Padding(0);
         lblFooterSupport.Name = "lblFooterSupport";
         lblFooterSupport.Size = new Size(192, 32);
+        lblFooterSupport.AutoSize = true;
         lblFooterSupport.TabIndex = 1;
-        lblFooterSupport.Text = "Há»— trá»£ ká»¹ thuáº­t";
+        lblFooterSupport.Text = "Hỗ trợ kỹ thuật";
         lblFooterSupport.TextAlign = ContentAlignment.MiddleRight;
         // 
         // pnlLoginFormContent
@@ -173,6 +178,7 @@ partial class FrmLogin
         pnlLoginFormContent.Dock = DockStyle.Fill;
         pnlLoginFormContent.Name = "pnlLoginFormContent";
         pnlLoginFormContent.Size = new Size(448, 430);
+        pnlLoginFormContent.AutoScroll = true;
         pnlLoginFormContent.TabIndex = 1;
         // 
         // pnlActionButtons
@@ -184,6 +190,7 @@ partial class FrmLogin
         pnlActionButtons.Location = new Point(32, 318);
         pnlActionButtons.Name = "pnlActionButtons";
         pnlActionButtons.Size = new Size(384, 44);
+        pnlActionButtons.AutoScroll = false;
         pnlActionButtons.TabIndex = 6;
         // 
         // btnExit
@@ -197,7 +204,7 @@ partial class FrmLogin
         btnExit.Name = "btnExit";
         btnExit.Size = new Size(184, 44);
         btnExit.TabIndex = 0;
-        btnExit.Text = "ThoÃ¡t";
+        btnExit.Text = "Thoát";
         btnExit.UseVisualStyleBackColor = false;
         // 
         // btnLogin
@@ -211,7 +218,7 @@ partial class FrmLogin
         btnLogin.Name = "btnLogin";
         btnLogin.Size = new Size(184, 44);
         btnLogin.TabIndex = 1;
-        btnLogin.Text = "ÄÄƒng nháº­p";
+        btnLogin.Text = "Đăng nhập";
         btnLogin.UseVisualStyleBackColor = false;
         // 
         // pnlSubControls
@@ -222,6 +229,7 @@ partial class FrmLogin
         pnlSubControls.Location = new Point(32, 258);
         pnlSubControls.Name = "pnlSubControls";
         pnlSubControls.Size = new Size(384, 28);
+        pnlSubControls.AutoScroll = false;
         pnlSubControls.TabIndex = 5;
         // 
         // tblSubControls
@@ -238,6 +246,7 @@ partial class FrmLogin
         tblSubControls.RowCount = 1;
         tblSubControls.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblSubControls.Size = new Size(384, 28);
+        tblSubControls.AutoScroll = false;
         tblSubControls.TabIndex = 0;
         // 
         // chkShowPassword
@@ -252,7 +261,7 @@ partial class FrmLogin
         chkShowPassword.Name = "chkShowPassword";
         chkShowPassword.Size = new Size(156, 28);
         chkShowPassword.TabIndex = 0;
-        chkShowPassword.Text = "Hiá»‡n máº­t kháº©u";
+        chkShowPassword.Text = "Hiện mật khẩu";
         chkShowPassword.UseVisualStyleBackColor = false;
         // 
         // lnkForgotPassword
@@ -265,9 +274,10 @@ partial class FrmLogin
         lnkForgotPassword.Margin = new Padding(0);
         lnkForgotPassword.Name = "lnkForgotPassword";
         lnkForgotPassword.Size = new Size(156, 25);
+        lnkForgotPassword.AutoSize = true;
         lnkForgotPassword.TabIndex = 1;
         lnkForgotPassword.TabStop = true;
-        lnkForgotPassword.Text = "QuÃªn máº­t kháº©u?";
+        lnkForgotPassword.Text = "Quên mật khẩu?";
         lnkForgotPassword.TextAlign = ContentAlignment.MiddleRight;
         lnkForgotPassword.VisitedLinkColor = Color.FromArgb(0, 106, 106);
         // 
@@ -280,6 +290,7 @@ partial class FrmLogin
         pnlPasswordInput.Location = new Point(32, 208);
         pnlPasswordInput.Name = "pnlPasswordInput";
         pnlPasswordInput.Size = new Size(384, 40);
+        pnlPasswordInput.AutoScroll = false;
         pnlPasswordInput.TabIndex = 4;
         // 
         // txtPassword
@@ -293,7 +304,7 @@ partial class FrmLogin
         txtPassword.Name = "txtPassword";
         txtPassword.Size = new Size(332, 27);
         txtPassword.TabIndex = 1;
-        txtPassword.Text = "â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢";
+        txtPassword.Text = "••••••••";
         txtPassword.UseSystemPasswordChar = true;
         // 
         // pnlPasswordIcon
@@ -302,6 +313,7 @@ partial class FrmLogin
         pnlPasswordIcon.Location = new Point(12, 12);
         pnlPasswordIcon.Name = "pnlPasswordIcon";
         pnlPasswordIcon.Size = new Size(16, 16);
+        pnlPasswordIcon.AutoScroll = true;
         pnlPasswordIcon.TabIndex = 0;
         // 
         // lblPassword
@@ -312,8 +324,9 @@ partial class FrmLogin
         lblPassword.Location = new Point(32, 180);
         lblPassword.Name = "lblPassword";
         lblPassword.Size = new Size(384, 25);
+        lblPassword.AutoSize = true;
         lblPassword.TabIndex = 3;
-        lblPassword.Text = "Máº¬T KHáº¨U";
+        lblPassword.Text = "MẬT KHẨU";
         lblPassword.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // pnlUsernameInput
@@ -325,6 +338,7 @@ partial class FrmLogin
         pnlUsernameInput.Location = new Point(32, 124);
         pnlUsernameInput.Name = "pnlUsernameInput";
         pnlUsernameInput.Size = new Size(384, 40);
+        pnlUsernameInput.AutoScroll = false;
         pnlUsernameInput.TabIndex = 2;
         // 
         // txtUsername
@@ -346,6 +360,7 @@ partial class FrmLogin
         pnlUsernameIcon.Location = new Point(12, 12);
         pnlUsernameIcon.Name = "pnlUsernameIcon";
         pnlUsernameIcon.Size = new Size(16, 16);
+        pnlUsernameIcon.AutoScroll = true;
         pnlUsernameIcon.TabIndex = 0;
         // 
         // lblUsername
@@ -356,8 +371,9 @@ partial class FrmLogin
         lblUsername.Location = new Point(32, 96);
         lblUsername.Name = "lblUsername";
         lblUsername.Size = new Size(384, 25);
+        lblUsername.AutoSize = true;
         lblUsername.TabIndex = 1;
-        lblUsername.Text = "TÃŠN ÄÄ‚NG NHáº¬P";
+        lblUsername.Text = "TÊN ĐĂNG NHẬP";
         lblUsername.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // pnlErrorAlert
@@ -370,6 +386,7 @@ partial class FrmLogin
         pnlErrorAlert.Location = new Point(32, 24);
         pnlErrorAlert.Name = "pnlErrorAlert";
         pnlErrorAlert.Size = new Size(384, 54);
+        pnlErrorAlert.AutoScroll = false;
         pnlErrorAlert.TabIndex = 0;
         pnlErrorAlert.Visible = false;
         // 
@@ -380,8 +397,9 @@ partial class FrmLogin
         lblErrorAlertText.Location = new Point(48, 17);
         lblErrorAlertText.Name = "lblErrorAlertText";
         lblErrorAlertText.Size = new Size(300, 20);
+        lblErrorAlertText.AutoSize = true;
         lblErrorAlertText.TabIndex = 2;
-        lblErrorAlertText.Text = "Sai tÃªn tÃ i khoáº£n hoáº·c máº­t kháº©u";
+        lblErrorAlertText.Text = "Sai tên tài khoản hoặc mật khẩu";
         lblErrorAlertText.TextAlign = ContentAlignment.MiddleLeft;
         // 
         // pnlErrorIcon
@@ -390,6 +408,7 @@ partial class FrmLogin
         pnlErrorIcon.Location = new Point(16, 17);
         pnlErrorIcon.Name = "pnlErrorIcon";
         pnlErrorIcon.Size = new Size(20, 20);
+        pnlErrorIcon.AutoScroll = false;
         pnlErrorIcon.TabIndex = 1;
         // 
         // pnlErrorAccent
@@ -398,6 +417,7 @@ partial class FrmLogin
         pnlErrorAccent.Location = new Point(0, 0);
         pnlErrorAccent.Name = "pnlErrorAccent";
         pnlErrorAccent.Size = new Size(4, 54);
+        pnlErrorAccent.AutoScroll = false;
         pnlErrorAccent.TabIndex = 0;
         // 
         // pnlLoginHeader
@@ -407,6 +427,7 @@ partial class FrmLogin
         pnlLoginHeader.Dock = DockStyle.Top;
         pnlLoginHeader.Name = "pnlLoginHeader";
         pnlLoginHeader.Size = new Size(448, 200);
+        pnlLoginHeader.AutoScroll = false;
         pnlLoginHeader.TabIndex = 0;
         // 
         // pnlLoginHeaderOverlay
@@ -418,6 +439,7 @@ partial class FrmLogin
         pnlLoginHeaderOverlay.Dock = DockStyle.Fill;
         pnlLoginHeaderOverlay.Name = "pnlLoginHeaderOverlay";
         pnlLoginHeaderOverlay.Size = new Size(448, 200);
+        pnlLoginHeaderOverlay.AutoScroll = false;
         pnlLoginHeaderOverlay.TabIndex = 0;
         // 
         // lblHeaderSubtitle
@@ -427,8 +449,9 @@ partial class FrmLogin
         lblHeaderSubtitle.Location = new Point(44, 155);
         lblHeaderSubtitle.Name = "lblHeaderSubtitle";
         lblHeaderSubtitle.Size = new Size(360, 24);
+        lblHeaderSubtitle.AutoSize = true;
         lblHeaderSubtitle.TabIndex = 2;
-        lblHeaderSubtitle.Text = "ÄÄ‚NG NHáº¬P Há»† THá»NG";
+        lblHeaderSubtitle.Text = "ĐĂNG NHẬP HỆ THỐNG";
         lblHeaderSubtitle.TextAlign = ContentAlignment.MiddleCenter;
         // 
         // lblHeaderTitle
@@ -439,6 +462,7 @@ partial class FrmLogin
         lblHeaderTitle.Location = new Point(44, 95);
         lblHeaderTitle.Name = "lblHeaderTitle";
         lblHeaderTitle.Size = new Size(360, 54);
+        lblHeaderTitle.AutoSize = true;
         lblHeaderTitle.TabIndex = 1;
         lblHeaderTitle.Text = "Academic Curator";
         lblHeaderTitle.TextAlign = ContentAlignment.MiddleCenter;
@@ -465,11 +489,12 @@ partial class FrmLogin
         AutoScaleMode = AutoScaleMode.Dpi;
         BackColor = Color.FromArgb(233, 237, 244);
         ClientSize = new Size(980, 720);
+        Font = new Font("Segoe UI", 10F);
         Controls.Add(pnlLoginContainer);
         MinimumSize = new Size(760, 620);
         Name = "FrmLogin";
         StartPosition = FormStartPosition.CenterScreen;
-        Text = "ÄÄƒng nháº­p há»‡ thá»‘ng";
+        Text = "Đăng nhập hệ thống";
         pnlLoginContainer.ResumeLayout(false);
         pnlLoginFooter.ResumeLayout(false);
         tblFooter.ResumeLayout(false);
@@ -487,6 +512,7 @@ partial class FrmLogin
         pnlLoginHeaderOverlay.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)picHeaderLogo).EndInit();
         ((System.ComponentModel.ISupportInitialize)errLogin).EndInit();
+        AutoScroll = true;
         ResumeLayout(false);
     }
 }

@@ -10,7 +10,7 @@ public partial class FrmTeachingClasses : Form
     public FrmTeachingClasses()
     {
         InitializeComponent();
-        FormHostHelpers.ConfigureModuleSurface(this, "Lop dang day");
+        FormHostHelpers.ConfigureModuleSurface(this, "Lớp đang dạy");
         ConfigureView();
         LoadTeachingClasses();
         WireEvents();
@@ -27,10 +27,10 @@ public partial class FrmTeachingClasses : Form
 
         dgvTeachingClassList.AutoGenerateColumns = true;
         dgvTeachingClassList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-        txtTeachingClassKeyword.PlaceholderText = "Nhap ma hoac ten lop";
+        txtTeachingClassKeyword.PlaceholderText = "Nhập mã hoặc tên lớp";
 
         cboTeachingStatusFilter.Items.Clear();
-        cboTeachingStatusFilter.Items.AddRange(["Tat ca", "Dang mo", "Da dong"]);
+        cboTeachingStatusFilter.Items.AddRange(["Tất cả", "Đang mở", "Đã đóng"]);
         cboTeachingStatusFilter.SelectedIndex = 0;
     }
 
@@ -65,7 +65,7 @@ public partial class FrmTeachingClasses : Form
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmTeachingClasses));
-            MessageBox.Show(this, "Khong tai duoc danh sach lop dang day. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không tải được danh sách lớp đang dạy. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -85,7 +85,7 @@ public partial class FrmTeachingClasses : Form
                 || classId.Contains(keyword, StringComparison.OrdinalIgnoreCase)
                 || className.Contains(keyword, StringComparison.OrdinalIgnoreCase);
 
-            var matchesStatus = status == "Tat ca" || classStatus.Equals(status, StringComparison.OrdinalIgnoreCase);
+            var matchesStatus = status is "Tat ca" or "Tất cả" || classStatus.Equals(status, StringComparison.OrdinalIgnoreCase);
             if (matchesKeyword && matchesStatus)
             {
                 filtered.ImportRow(row);

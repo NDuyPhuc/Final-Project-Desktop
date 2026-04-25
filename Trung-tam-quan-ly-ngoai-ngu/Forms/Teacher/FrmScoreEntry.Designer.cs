@@ -1,4 +1,4 @@
-﻿namespace Trung_tam_quan_ly_ngoai_ngu;
+namespace Trung_tam_quan_ly_ngoai_ngu;
 
 partial class FrmScoreEntry
 {
@@ -63,6 +63,7 @@ partial class FrmScoreEntry
         pnlScoreFilterCard.Name = "pnlScoreFilterCard";
         pnlScoreFilterCard.Padding = new Padding(16, 14, 16, 14);
         pnlScoreFilterCard.Size = new Size(974, 90);
+        pnlScoreFilterCard.AutoScroll = false;
         pnlScoreFilterCard.TabIndex = 0;
         // 
         // btnSaveScore
@@ -71,7 +72,7 @@ partial class FrmScoreEntry
         btnSaveScore.Name = "btnSaveScore";
         btnSaveScore.Size = new Size(120, 32);
         btnSaveScore.TabIndex = 7;
-        btnSaveScore.Text = "LÆ°u Ä‘iá»ƒm";
+        btnSaveScore.Text = "Lưu điểm";
         btnSaveScore.UseVisualStyleBackColor = true;
         // 
         // btnLoadScoreList
@@ -80,7 +81,7 @@ partial class FrmScoreEntry
         btnLoadScoreList.Name = "btnLoadScoreList";
         btnLoadScoreList.Size = new Size(120, 32);
         btnLoadScoreList.TabIndex = 6;
-        btnLoadScoreList.Text = "Táº£i danh sÃ¡ch";
+        btnLoadScoreList.Text = "Tải danh sách";
         btnLoadScoreList.UseVisualStyleBackColor = true;
         // 
         // txtScoreWeight
@@ -95,15 +96,16 @@ partial class FrmScoreEntry
         lblScoreWeight.AutoSize = true;
         lblScoreWeight.Location = new Point(490, 18);
         lblScoreWeight.Name = "lblScoreWeight";
-        lblScoreWeight.Size = new Size(44, 20);
+        lblScoreWeight.Size = new Size(44, 28);
+        lblScoreWeight.AutoSize = true;
         lblScoreWeight.TabIndex = 4;
-        lblScoreWeight.Text = "Há»‡ sá»‘";
+        lblScoreWeight.Text = "Hệ số";
         // 
         // cboScoreType
         // 
         cboScoreType.DropDownStyle = ComboBoxStyle.DropDownList;
         cboScoreType.FormattingEnabled = true;
-        cboScoreType.Items.AddRange(new object[] { "Giá»¯a ká»³", "Cuá»‘i ká»³", "Thá»±c hÃ nh" });
+        cboScoreType.Items.AddRange(new object[] { "Giữa kỳ", "Cuối kỳ", "Thực hành" });
         cboScoreType.Location = new Point(250, 41);
         cboScoreType.Name = "cboScoreType";
         cboScoreType.Size = new Size(210, 28);
@@ -114,9 +116,10 @@ partial class FrmScoreEntry
         lblScoreType.AutoSize = true;
         lblScoreType.Location = new Point(250, 18);
         lblScoreType.Name = "lblScoreType";
-        lblScoreType.Size = new Size(73, 20);
+        lblScoreType.Size = new Size(73, 28);
+        lblScoreType.AutoSize = true;
         lblScoreType.TabIndex = 2;
-        lblScoreType.Text = "Loáº¡i Ä‘iá»ƒm";
+        lblScoreType.Text = "Loại điểm";
         // 
         // cboScoreClass
         // 
@@ -133,9 +136,10 @@ partial class FrmScoreEntry
         lblScoreClass.AutoSize = true;
         lblScoreClass.Location = new Point(16, 18);
         lblScoreClass.Name = "lblScoreClass";
-        lblScoreClass.Size = new Size(58, 20);
+        lblScoreClass.Size = new Size(58, 28);
+        lblScoreClass.AutoSize = true;
         lblScoreClass.TabIndex = 0;
-        lblScoreClass.Text = "Lá»›p há»c";
+        lblScoreClass.Text = "Lớp học";
         // 
         // dgvScoreList
         // 
@@ -168,6 +172,7 @@ partial class FrmScoreEntry
         tblScoreRoot.RowStyles.Add(new RowStyle());
         tblScoreRoot.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblScoreRoot.Size = new Size(980, 616);
+        tblScoreRoot.AutoScroll = false;
         tblScoreRoot.TabIndex = 0;
         // 
         // FrmScoreEntry
@@ -175,15 +180,18 @@ partial class FrmScoreEntry
         AutoScaleDimensions = new SizeF(96F, 96F);
         AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(1004, 640);
+        Font = new Font("Segoe UI", 10F);
         Controls.Add(tblScoreRoot);
+        MinimumSize = new Size(900, 600);
         Name = "FrmScoreEntry";
         Padding = new Padding(12);
-        Text = "Nháº­p Ä‘iá»ƒm";
+        Text = "Nhập điểm";
         pnlScoreFilterCard.ResumeLayout(false);
         pnlScoreFilterCard.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)dgvScoreList).EndInit();
         ((System.ComponentModel.ISupportInitialize)errScore).EndInit();
         tblScoreRoot.ResumeLayout(false);
+        AutoScroll = true;
         ResumeLayout(false);
     }
 }

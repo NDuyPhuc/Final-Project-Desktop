@@ -1,4 +1,4 @@
-﻿namespace Trung_tam_quan_ly_ngoai_ngu;
+namespace Trung_tam_quan_ly_ngoai_ngu;
 
 partial class FrmTeacherDashboard
 {
@@ -124,6 +124,7 @@ partial class FrmTeacherDashboard
         pnlSidebarTeacher.Name = "pnlSidebarTeacher";
         pnlSidebarTeacher.Padding = new Padding(18);
         pnlSidebarTeacher.Size = new Size(256, 761);
+        pnlSidebarTeacher.AutoScroll = false;
         pnlSidebarTeacher.TabIndex = 0;
         // 
         // flpSidebarTeacherMenu
@@ -138,6 +139,7 @@ partial class FrmTeacherDashboard
         flpSidebarTeacherMenu.Location = new Point(18, 106);
         flpSidebarTeacherMenu.Name = "flpSidebarTeacherMenu";
         flpSidebarTeacherMenu.Size = new Size(220, 274);
+        flpSidebarTeacherMenu.AutoScroll = true;
         flpSidebarTeacherMenu.TabIndex = 1;
         flpSidebarTeacherMenu.WrapContents = false;
         // 
@@ -147,7 +149,7 @@ partial class FrmTeacherDashboard
         btnMenuTeacherDashboard.Name = "btnMenuTeacherDashboard";
         btnMenuTeacherDashboard.Size = new Size(214, 46);
         btnMenuTeacherDashboard.TabIndex = 0;
-        btnMenuTeacherDashboard.Text = "Dashboard giáº£ng dáº¡y";
+        btnMenuTeacherDashboard.Text = "Dashboard giảng dạy";
         btnMenuTeacherDashboard.UseVisualStyleBackColor = true;
         // 
         // btnMenuTeachingClasses
@@ -156,7 +158,7 @@ partial class FrmTeacherDashboard
         btnMenuTeachingClasses.Name = "btnMenuTeachingClasses";
         btnMenuTeachingClasses.Size = new Size(214, 46);
         btnMenuTeachingClasses.TabIndex = 1;
-        btnMenuTeachingClasses.Text = "Lá»›p Ä‘ang dáº¡y";
+        btnMenuTeachingClasses.Text = "Lớp đang dạy";
         btnMenuTeachingClasses.UseVisualStyleBackColor = true;
         // 
         // btnMenuClassStudentList
@@ -165,7 +167,7 @@ partial class FrmTeacherDashboard
         btnMenuClassStudentList.Name = "btnMenuClassStudentList";
         btnMenuClassStudentList.Size = new Size(214, 46);
         btnMenuClassStudentList.TabIndex = 2;
-        btnMenuClassStudentList.Text = "DS há»c viÃªn lá»›p";
+        btnMenuClassStudentList.Text = "DS học viên lớp";
         btnMenuClassStudentList.UseVisualStyleBackColor = true;
         // 
         // btnMenuAttendance
@@ -174,7 +176,7 @@ partial class FrmTeacherDashboard
         btnMenuAttendance.Name = "btnMenuAttendance";
         btnMenuAttendance.Size = new Size(214, 46);
         btnMenuAttendance.TabIndex = 3;
-        btnMenuAttendance.Text = "Äiá»ƒm danh";
+        btnMenuAttendance.Text = "Điểm danh";
         btnMenuAttendance.UseVisualStyleBackColor = true;
         // 
         // btnMenuScoreEntry
@@ -183,7 +185,7 @@ partial class FrmTeacherDashboard
         btnMenuScoreEntry.Name = "btnMenuScoreEntry";
         btnMenuScoreEntry.Size = new Size(214, 46);
         btnMenuScoreEntry.TabIndex = 4;
-        btnMenuScoreEntry.Text = "Nháº­p Ä‘iá»ƒm";
+        btnMenuScoreEntry.Text = "Nhập điểm";
         btnMenuScoreEntry.UseVisualStyleBackColor = true;
         // 
         // pnlSidebarTeacherBrand
@@ -194,6 +196,7 @@ partial class FrmTeacherDashboard
         pnlSidebarTeacherBrand.Location = new Point(18, 18);
         pnlSidebarTeacherBrand.Name = "pnlSidebarTeacherBrand";
         pnlSidebarTeacherBrand.Size = new Size(220, 88);
+        pnlSidebarTeacherBrand.AutoScroll = false;
         pnlSidebarTeacherBrand.TabIndex = 0;
         // 
         // lblSidebarTeacherSubtitle
@@ -202,9 +205,10 @@ partial class FrmTeacherDashboard
         lblSidebarTeacherSubtitle.ForeColor = Color.FromArgb(0, 110, 110);
         lblSidebarTeacherSubtitle.Location = new Point(0, 34);
         lblSidebarTeacherSubtitle.Name = "lblSidebarTeacherSubtitle";
-        lblSidebarTeacherSubtitle.Size = new Size(144, 20);
+        lblSidebarTeacherSubtitle.Size = new Size(144, 28);
+        lblSidebarTeacherSubtitle.AutoSize = true;
         lblSidebarTeacherSubtitle.TabIndex = 1;
-        lblSidebarTeacherSubtitle.Text = "Táº­p trung vÃ o lá»›p Ä‘Æ°á»£c giao";
+        lblSidebarTeacherSubtitle.Text = "Tập trung vào lớp được giao";
         // 
         // lblSidebarTeacherTitle
         // 
@@ -228,6 +232,7 @@ partial class FrmTeacherDashboard
         pnlTopbarTeacher.Name = "pnlTopbarTeacher";
         pnlTopbarTeacher.Padding = new Padding(24, 18, 24, 18);
         pnlTopbarTeacher.Size = new Size(1116, 74);
+        pnlTopbarTeacher.AutoScroll = false;
         pnlTopbarTeacher.TabIndex = 1;
         // 
         // btnLogoutTeacher
@@ -237,7 +242,7 @@ partial class FrmTeacherDashboard
         btnLogoutTeacher.Name = "btnLogoutTeacher";
         btnLogoutTeacher.Size = new Size(120, 36);
         btnLogoutTeacher.TabIndex = 2;
-        btnLogoutTeacher.Text = "ÄÄƒng xuáº¥t";
+        btnLogoutTeacher.Text = "Đăng xuất";
         btnLogoutTeacher.UseVisualStyleBackColor = true;
         // 
         // lblCurrentUserTeacher
@@ -257,9 +262,10 @@ partial class FrmTeacherDashboard
         lblCurrentRoleTeacher.ForeColor = Color.FromArgb(102, 112, 133);
         lblCurrentRoleTeacher.Location = new Point(24, 24);
         lblCurrentRoleTeacher.Name = "lblCurrentRoleTeacher";
-        lblCurrentRoleTeacher.Size = new Size(193, 20);
+        lblCurrentRoleTeacher.Size = new Size(193, 28);
+        lblCurrentRoleTeacher.AutoSize = true;
         lblCurrentRoleTeacher.TabIndex = 0;
-        lblCurrentRoleTeacher.Text = "Vai trÃ²: Teacher giáº£ng dáº¡y";
+        lblCurrentRoleTeacher.Text = "Vai trò: Teacher giảng dạy";
         // 
         // pnlContentHostTeacher
         // 
@@ -269,6 +275,7 @@ partial class FrmTeacherDashboard
         pnlContentHostTeacher.Name = "pnlContentHostTeacher";
         pnlContentHostTeacher.Padding = new Padding(20, 0, 20, 20);
         pnlContentHostTeacher.Size = new Size(1116, 687);
+        pnlContentHostTeacher.AutoScroll = false;
         pnlContentHostTeacher.TabIndex = 2;
         // 
         // pnlDashboardHome
@@ -278,6 +285,7 @@ partial class FrmTeacherDashboard
         pnlDashboardHome.Location = new Point(20, 0);
         pnlDashboardHome.Name = "pnlDashboardHome";
         pnlDashboardHome.Size = new Size(1076, 667);
+        pnlDashboardHome.AutoScroll = false;
         pnlDashboardHome.TabIndex = 0;
         // 
         // tblTeacherDashboardRoot
@@ -295,6 +303,7 @@ partial class FrmTeacherDashboard
         tblTeacherDashboardRoot.RowStyles.Add(new RowStyle());
         tblTeacherDashboardRoot.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblTeacherDashboardRoot.Size = new Size(1076, 667);
+        tblTeacherDashboardRoot.AutoScroll = false;
         tblTeacherDashboardRoot.TabIndex = 0;
         // 
         // pnlTeacherHeroCard
@@ -308,6 +317,7 @@ partial class FrmTeacherDashboard
         pnlTeacherHeroCard.Name = "pnlTeacherHeroCard";
         pnlTeacherHeroCard.Padding = new Padding(24, 20, 24, 20);
         pnlTeacherHeroCard.Size = new Size(1076, 104);
+        pnlTeacherHeroCard.AutoScroll = false;
         pnlTeacherHeroCard.TabIndex = 0;
         // 
         // lblTeacherDashboardSubtitle
@@ -316,9 +326,10 @@ partial class FrmTeacherDashboard
         lblTeacherDashboardSubtitle.ForeColor = Color.FromArgb(102, 112, 133);
         lblTeacherDashboardSubtitle.Location = new Point(24, 58);
         lblTeacherDashboardSubtitle.Name = "lblTeacherDashboardSubtitle";
-        lblTeacherDashboardSubtitle.Size = new Size(425, 20);
+        lblTeacherDashboardSubtitle.Size = new Size(425, 28);
+        lblTeacherDashboardSubtitle.AutoSize = true;
         lblTeacherDashboardSubtitle.TabIndex = 1;
-        lblTeacherDashboardSubtitle.Text = "Theo dÃµi lá»›p Ä‘ang dáº¡y, Ä‘iá»ƒm danh vÃ  nháº­p Ä‘iá»ƒm Ä‘Ãºng pháº¡m vi phÃ¢n cÃ´ng.";
+        lblTeacherDashboardSubtitle.Text = "Theo dõi lớp đang dạy, điểm danh và nhập điểm đúng phạm vi phân công.";
         // 
         // lblTeacherDashboardTitle
         // 
@@ -329,7 +340,7 @@ partial class FrmTeacherDashboard
         lblTeacherDashboardTitle.Name = "lblTeacherDashboardTitle";
         lblTeacherDashboardTitle.Size = new Size(342, 46);
         lblTeacherDashboardTitle.TabIndex = 0;
-        lblTeacherDashboardTitle.Text = "Dashboard giáº£ng dáº¡y";
+        lblTeacherDashboardTitle.Text = "Dashboard giảng dạy";
         // 
         // tblTeacherKpi
         // 
@@ -349,6 +360,7 @@ partial class FrmTeacherDashboard
         tblTeacherKpi.RowCount = 1;
         tblTeacherKpi.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblTeacherKpi.Size = new Size(1076, 118);
+        tblTeacherKpi.AutoScroll = false;
         tblTeacherKpi.TabIndex = 1;
         // 
         // pnlTeachingClassesCount
@@ -361,6 +373,7 @@ partial class FrmTeacherDashboard
         pnlTeachingClassesCount.Name = "pnlTeachingClassesCount";
         pnlTeachingClassesCount.Padding = new Padding(18);
         pnlTeachingClassesCount.Size = new Size(257, 118);
+        pnlTeachingClassesCount.AutoScroll = false;
         pnlTeachingClassesCount.TabIndex = 0;
         // 
         // lblTeachingClassesCountValue
@@ -384,6 +397,7 @@ partial class FrmTeacherDashboard
         pnlTeachingStudentCount.Name = "pnlTeachingStudentCount";
         pnlTeachingStudentCount.Padding = new Padding(18);
         pnlTeachingStudentCount.Size = new Size(257, 118);
+        pnlTeachingStudentCount.AutoScroll = false;
         pnlTeachingStudentCount.TabIndex = 1;
         // 
         // lblTeachingStudentCountValue
@@ -407,6 +421,7 @@ partial class FrmTeacherDashboard
         pnlTeachingTodaySessions.Name = "pnlTeachingTodaySessions";
         pnlTeachingTodaySessions.Padding = new Padding(18);
         pnlTeachingTodaySessions.Size = new Size(257, 118);
+        pnlTeachingTodaySessions.AutoScroll = false;
         pnlTeachingTodaySessions.TabIndex = 2;
         // 
         // lblTeachingTodaySessionsValue
@@ -430,6 +445,7 @@ partial class FrmTeacherDashboard
         pnlTeachingPendingScores.Name = "pnlTeachingPendingScores";
         pnlTeachingPendingScores.Padding = new Padding(18);
         pnlTeachingPendingScores.Size = new Size(269, 118);
+        pnlTeachingPendingScores.AutoScroll = false;
         pnlTeachingPendingScores.TabIndex = 3;
         // 
         // lblTeachingPendingScoresValue
@@ -461,6 +477,7 @@ partial class FrmTeacherDashboard
         splTeacherDashboard.Panel2.Padding = new Padding(10, 0, 0, 0);
         splTeacherDashboard.Size = new Size(1076, 413);
         splTeacherDashboard.SplitterDistance = 724;
+        splTeacherDashboard.AutoScroll = false;
         splTeacherDashboard.TabIndex = 2;
         // 
         // pnlTeacherClassCard
@@ -474,6 +491,7 @@ partial class FrmTeacherDashboard
         pnlTeacherClassCard.Name = "pnlTeacherClassCard";
         pnlTeacherClassCard.Padding = new Padding(18);
         pnlTeacherClassCard.Size = new Size(714, 413);
+        pnlTeacherClassCard.AutoScroll = false;
         pnlTeacherClassCard.TabIndex = 0;
         // 
         // dgvTeacherClassOverview
@@ -493,7 +511,7 @@ partial class FrmTeacherDashboard
         lblTeacherClassCardHint.Name = "lblTeacherClassCardHint";
         lblTeacherClassCardHint.Size = new Size(678, 28);
         lblTeacherClassCardHint.TabIndex = 1;
-        lblTeacherClassCardHint.Text = "Chá»‰ hiá»ƒn thá»‹ lá»›p giÃ¡o viÃªn Ä‘ang phá»¥ trÃ¡ch theo Ä‘Ãºng phÃ¢n quyá»n.";
+        lblTeacherClassCardHint.Text = "Chỉ hiển thị lớp giáo viên đang phụ trách theo đúng phân quyền.";
         // 
         // lblTeacherClassCardTitle
         // 
@@ -503,7 +521,7 @@ partial class FrmTeacherDashboard
         lblTeacherClassCardTitle.Name = "lblTeacherClassCardTitle";
         lblTeacherClassCardTitle.Size = new Size(678, 23);
         lblTeacherClassCardTitle.TabIndex = 0;
-        lblTeacherClassCardTitle.Text = "Lá»›p Ä‘Æ°á»£c phÃ¢n cÃ´ng";
+        lblTeacherClassCardTitle.Text = "Lớp được phân công";
         // 
         // pnlTeacherTaskCard
         // 
@@ -516,6 +534,7 @@ partial class FrmTeacherDashboard
         pnlTeacherTaskCard.Name = "pnlTeacherTaskCard";
         pnlTeacherTaskCard.Padding = new Padding(18);
         pnlTeacherTaskCard.Size = new Size(328, 413);
+        pnlTeacherTaskCard.AutoScroll = false;
         pnlTeacherTaskCard.TabIndex = 0;
         // 
         // lstTeacherTaskQueue
@@ -524,7 +543,7 @@ partial class FrmTeacherDashboard
         lstTeacherTaskQueue.Dock = DockStyle.Fill;
         lstTeacherTaskQueue.FormattingEnabled = true;
         lstTeacherTaskQueue.ItemHeight = 20;
-        lstTeacherTaskQueue.Items.AddRange(new object[] { "3 buá»•i há»c hÃ´m nay cáº§n Ä‘iá»ƒm danh.", "1 lá»›p cÃ²n thiáº¿u Ä‘iá»ƒm giá»¯a ká»³.", "2 lá»›p cáº§n rÃ  láº¡i danh sÃ¡ch há»c viÃªn trÆ°á»›c buá»•i há»c.", "Kiá»ƒm tra láº¡i ghi chÃº váº¯ng phÃ©p cá»§a buá»•i gáº§n nháº¥t." });
+        lstTeacherTaskQueue.Items.AddRange(new object[] { "3 buổi học hôm nay cần điểm danh.", "1 lớp còn thiếu điểm giữa kỳ.", "2 lớp cần rà lại danh sách học viên trước buổi học.", "Kiểm tra lại ghi chú vắng phép của buổi gần nhất." });
         lstTeacherTaskQueue.Location = new Point(18, 69);
         lstTeacherTaskQueue.Name = "lstTeacherTaskQueue";
         lstTeacherTaskQueue.Size = new Size(292, 326);
@@ -538,7 +557,7 @@ partial class FrmTeacherDashboard
         lblTeacherTaskHint.Name = "lblTeacherTaskHint";
         lblTeacherTaskHint.Size = new Size(292, 28);
         lblTeacherTaskHint.TabIndex = 1;
-        lblTeacherTaskHint.Text = "Nhá»¯ng viá»‡c giáº£ng dáº¡y cáº§n Æ°u tiÃªn xá»­ lÃ½.";
+        lblTeacherTaskHint.Text = "Những việc giảng dạy cần ưu tiên xử lý.";
         // 
         // lblTeacherTaskTitle
         // 
@@ -548,16 +567,18 @@ partial class FrmTeacherDashboard
         lblTeacherTaskTitle.Name = "lblTeacherTaskTitle";
         lblTeacherTaskTitle.Size = new Size(292, 23);
         lblTeacherTaskTitle.TabIndex = 0;
-        lblTeacherTaskTitle.Text = "Viá»‡c cáº§n lÃ m";
+        lblTeacherTaskTitle.Text = "Việc cần làm";
         // 
         // FrmTeacherDashboard
         // 
         AutoScaleDimensions = new SizeF(96F, 96F);
         AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(1372, 761);
+        Font = new Font("Segoe UI", 10F);
         Controls.Add(pnlContentHostTeacher);
         Controls.Add(pnlTopbarTeacher);
         Controls.Add(pnlSidebarTeacher);
+        MinimumSize = new Size(1180, 760);
         Name = "FrmTeacherDashboard";
         pnlSidebarTeacher.ResumeLayout(false);
         flpSidebarTeacherMenu.ResumeLayout(false);
@@ -582,6 +603,7 @@ partial class FrmTeacherDashboard
         pnlTeacherClassCard.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)dgvTeacherClassOverview).EndInit();
         pnlTeacherTaskCard.ResumeLayout(false);
+        AutoScroll = true;
         ResumeLayout(false);
     }
 }

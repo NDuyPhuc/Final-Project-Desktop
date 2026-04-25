@@ -1,4 +1,4 @@
-﻿using System.Windows.Forms.DataVisualization.Charting;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Trung_tam_quan_ly_ngoai_ngu;
 
@@ -211,6 +211,7 @@ partial class FrmAdminReports
         // 
         // tblAdminReportRoot
         // 
+        tblAdminReportRoot.AutoScroll = true;
         tblAdminReportRoot.ColumnCount = 1;
         tblAdminReportRoot.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
         tblAdminReportRoot.Controls.Add(pnlAdminReportHeader, 0, 0);
@@ -223,11 +224,11 @@ partial class FrmAdminReports
         tblAdminReportRoot.Margin = new Padding(0);
         tblAdminReportRoot.Name = "tblAdminReportRoot";
         tblAdminReportRoot.RowCount = 5;
-        tblAdminReportRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 92F));
-        tblAdminReportRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 128F));
-        tblAdminReportRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 130F));
+        tblAdminReportRoot.RowStyles.Add(new RowStyle());
+        tblAdminReportRoot.RowStyles.Add(new RowStyle());
+        tblAdminReportRoot.RowStyles.Add(new RowStyle());
         tblAdminReportRoot.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-        tblAdminReportRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 300F));
+        tblAdminReportRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 350F));
         tblAdminReportRoot.Size = new Size(1224, 804);
         tblAdminReportRoot.TabIndex = 0;
         // 
@@ -290,7 +291,7 @@ partial class FrmAdminReports
         lblAdminReportSession.Name = "lblAdminReportSession";
         lblAdminReportSession.Size = new Size(243, 30);
         lblAdminReportSession.TabIndex = 0;
-        lblAdminReportSession.Text = "PHIÃŠN: 24/05/2024 14:30";
+        lblAdminReportSession.Text = "PHIÊN: 24/05/2024 14:30";
         // 
         // lblAdminReportStatus
         // 
@@ -302,7 +303,7 @@ partial class FrmAdminReports
         lblAdminReportStatus.Name = "lblAdminReportStatus";
         lblAdminReportStatus.Size = new Size(306, 30);
         lblAdminReportStatus.TabIndex = 1;
-        lblAdminReportStatus.Text = "TRáº NG THÃI: ADMINISTRATOR";
+        lblAdminReportStatus.Text = "TRẠNG THÁI: ADMINISTRATOR";
         // 
         // lblAdminReportTitle
         // 
@@ -314,7 +315,7 @@ partial class FrmAdminReports
         lblAdminReportTitle.Name = "lblAdminReportTitle";
         lblAdminReportTitle.Size = new Size(578, 74);
         lblAdminReportTitle.TabIndex = 0;
-        lblAdminReportTitle.Text = "BÃO CÃO THá»NG KÃŠ";
+        lblAdminReportTitle.Text = "BÁO CÁO THỐNG KÊ";
         // 
         // flpAdminReportHeaderActions
         // 
@@ -339,7 +340,7 @@ partial class FrmAdminReports
         btnPrintReport.Name = "btnPrintReport";
         btnPrintReport.Size = new Size(180, 52);
         btnPrintReport.TabIndex = 0;
-        btnPrintReport.Text = "IN BÃO CÃO";
+        btnPrintReport.Text = "IN BÁO CÁO";
         btnPrintReport.UseVisualStyleBackColor = true;
         // 
         // btnRefreshData
@@ -350,7 +351,7 @@ partial class FrmAdminReports
         btnRefreshData.Name = "btnRefreshData";
         btnRefreshData.Size = new Size(180, 52);
         btnRefreshData.TabIndex = 1;
-        btnRefreshData.Text = "Cáº¬P NHáº¬T Dá»® LIá»†U";
+        btnRefreshData.Text = "CẬP NHẬT DỮ LIỆU";
         btnRefreshData.UseVisualStyleBackColor = true;
         // 
         // btnExportReportCsv
@@ -362,7 +363,7 @@ partial class FrmAdminReports
         btnExportReportCsv.Name = "btnExportReportCsv";
         btnExportReportCsv.Size = new Size(190, 48);
         btnExportReportCsv.TabIndex = 7;
-        btnExportReportCsv.Text = "XUáº¤T FILE (.CSV)";
+        btnExportReportCsv.Text = "XUẤT FILE (.CSV)";
         btnExportReportCsv.UseVisualStyleBackColor = true;
         // 
         // pnlAdminReportFilterCard
@@ -383,7 +384,7 @@ partial class FrmAdminReports
         tblAdminReportFilter.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 210F));
         tblAdminReportFilter.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 210F));
         tblAdminReportFilter.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-        tblAdminReportFilter.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 446F));
+        tblAdminReportFilter.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 200F));
         tblAdminReportFilter.Controls.Add(lblReportType, 0, 0);
         tblAdminReportFilter.Controls.Add(lblReportFromDate, 1, 0);
         tblAdminReportFilter.Controls.Add(lblReportToDate, 2, 0);
@@ -410,7 +411,7 @@ partial class FrmAdminReports
         lblReportType.Name = "lblReportType";
         lblReportType.Size = new Size(143, 25);
         lblReportType.TabIndex = 0;
-        lblReportType.Text = "LOáº I BÃO CÃO";
+        lblReportType.Text = "LOẠI BÁO CÁO";
         // 
         // lblReportFromDate
         // 
@@ -421,7 +422,7 @@ partial class FrmAdminReports
         lblReportFromDate.Name = "lblReportFromDate";
         lblReportFromDate.Size = new Size(96, 25);
         lblReportFromDate.TabIndex = 1;
-        lblReportFromDate.Text = "Tá»ª NGÃ€Y";
+        lblReportFromDate.Text = "TỪ NGÀY";
         // 
         // lblReportToDate
         // 
@@ -432,7 +433,7 @@ partial class FrmAdminReports
         lblReportToDate.Name = "lblReportToDate";
         lblReportToDate.Size = new Size(109, 25);
         lblReportToDate.TabIndex = 2;
-        lblReportToDate.Text = "Äáº¾N NGÃ€Y";
+        lblReportToDate.Text = "ĐẾN NGÀY";
         // 
         // cboReportType
         // 
@@ -442,7 +443,7 @@ partial class FrmAdminReports
         cboReportType.Location = new Point(0, 35);
         cboReportType.Margin = new Padding(0, 0, 22, 0);
         cboReportType.Name = "cboReportType";
-        cboReportType.Size = new Size(278, 33);
+        cboReportType.Size = new Size(278, 36);
         cboReportType.TabIndex = 3;
         // 
         // dtpReportFromDate
@@ -454,7 +455,7 @@ partial class FrmAdminReports
         dtpReportFromDate.Location = new Point(300, 35);
         dtpReportFromDate.Margin = new Padding(0, 0, 22, 0);
         dtpReportFromDate.Name = "dtpReportFromDate";
-        dtpReportFromDate.Size = new Size(188, 31);
+        dtpReportFromDate.Size = new Size(188, 34);
         dtpReportFromDate.TabIndex = 4;
         // 
         // dtpReportToDate
@@ -466,19 +467,19 @@ partial class FrmAdminReports
         dtpReportToDate.Location = new Point(510, 35);
         dtpReportToDate.Margin = new Padding(0, 0, 22, 0);
         dtpReportToDate.Name = "dtpReportToDate";
-        dtpReportToDate.Size = new Size(188, 31);
+        dtpReportToDate.Size = new Size(188, 34);
         dtpReportToDate.TabIndex = 5;
         // 
         // btnViewReport
         // 
         btnViewReport.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
         btnViewReport.FlatStyle = FlatStyle.Flat;
-        btnViewReport.Location = new Point(720, 35);
+        btnViewReport.Location = new Point(804, 35);
         btnViewReport.Margin = new Padding(0);
         btnViewReport.Name = "btnViewReport";
-        btnViewReport.Size = new Size(18, 37);
+        btnViewReport.Size = new Size(180, 37);
         btnViewReport.TabIndex = 6;
-        btnViewReport.Text = "XEM BÃO CÃO";
+        btnViewReport.Text = "XEM BÁO CÁO";
         btnViewReport.UseVisualStyleBackColor = true;
         // 
         // tblReportKpi
@@ -520,7 +521,7 @@ partial class FrmAdminReports
         // 
         lblReportRevenueIcon.Anchor = AnchorStyles.Top | AnchorStyles.Right;
         lblReportRevenueIcon.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-        lblReportRevenueIcon.Location = new Point(230, 18);
+        lblReportRevenueIcon.Location = new Point(233, 18);
         lblReportRevenueIcon.Name = "lblReportRevenueIcon";
         lblReportRevenueIcon.Size = new Size(34, 34);
         lblReportRevenueIcon.TabIndex = 4;
@@ -535,7 +536,7 @@ partial class FrmAdminReports
         lblReportRevenueTrend.Name = "lblReportRevenueTrend";
         lblReportRevenueTrend.Size = new Size(85, 28);
         lblReportRevenueTrend.TabIndex = 3;
-        lblReportRevenueTrend.Text = "â†‘ 12.4%";
+        lblReportRevenueTrend.Text = "↑ 12.4%";
         // 
         // lblReportRevenueValue
         // 
@@ -555,10 +556,11 @@ partial class FrmAdminReports
         lblReportRevenueTitle.Name = "lblReportRevenueTitle";
         lblReportRevenueTitle.Size = new Size(197, 28);
         lblReportRevenueTitle.TabIndex = 1;
-        lblReportRevenueTitle.Text = "Tá»”NG DOANH THU";
+        lblReportRevenueTitle.Text = "TỔNG DOANH THU";
         // 
         // pnlReportRevenueAccent
         // 
+        pnlReportRevenueAccent.AutoScroll = true;
         pnlReportRevenueAccent.Dock = DockStyle.Left;
         pnlReportRevenueAccent.Location = new Point(20, 18);
         pnlReportRevenueAccent.Name = "pnlReportRevenueAccent";
@@ -584,7 +586,7 @@ partial class FrmAdminReports
         // 
         lblReportEnrollmentIcon.Anchor = AnchorStyles.Top | AnchorStyles.Right;
         lblReportEnrollmentIcon.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-        lblReportEnrollmentIcon.Location = new Point(232, 18);
+        lblReportEnrollmentIcon.Location = new Point(206, 18);
         lblReportEnrollmentIcon.Name = "lblReportEnrollmentIcon";
         lblReportEnrollmentIcon.Size = new Size(34, 34);
         lblReportEnrollmentIcon.TabIndex = 4;
@@ -599,7 +601,7 @@ partial class FrmAdminReports
         lblReportEnrollmentTrend.Name = "lblReportEnrollmentTrend";
         lblReportEnrollmentTrend.Size = new Size(73, 28);
         lblReportEnrollmentTrend.TabIndex = 3;
-        lblReportEnrollmentTrend.Text = "â†‘ 5.2%";
+        lblReportEnrollmentTrend.Text = "↑ 5.2%";
         // 
         // lblReportEnrollmentValue
         // 
@@ -619,10 +621,11 @@ partial class FrmAdminReports
         lblReportEnrollmentTitle.Name = "lblReportEnrollmentTitle";
         lblReportEnrollmentTitle.Size = new Size(153, 28);
         lblReportEnrollmentTitle.TabIndex = 1;
-        lblReportEnrollmentTitle.Text = "Há»ŒC VIÃŠN Má»šI";
+        lblReportEnrollmentTitle.Text = "HỌC VIÊN MỚI";
         // 
         // pnlReportEnrollmentAccent
         // 
+        pnlReportEnrollmentAccent.AutoScroll = true;
         pnlReportEnrollmentAccent.Dock = DockStyle.Left;
         pnlReportEnrollmentAccent.Location = new Point(20, 18);
         pnlReportEnrollmentAccent.Name = "pnlReportEnrollmentAccent";
@@ -648,7 +651,7 @@ partial class FrmAdminReports
         // 
         lblReportClassCountIcon.Anchor = AnchorStyles.Top | AnchorStyles.Right;
         lblReportClassCountIcon.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-        lblReportClassCountIcon.Location = new Point(232, 18);
+        lblReportClassCountIcon.Location = new Point(206, 18);
         lblReportClassCountIcon.Name = "lblReportClassCountIcon";
         lblReportClassCountIcon.Size = new Size(34, 34);
         lblReportClassCountIcon.TabIndex = 4;
@@ -683,10 +686,11 @@ partial class FrmAdminReports
         lblReportClassCountTitle.Name = "lblReportClassCountTitle";
         lblReportClassCountTitle.Size = new Size(188, 28);
         lblReportClassCountTitle.TabIndex = 1;
-        lblReportClassCountTitle.Text = "Sá» Lá»šP ÄANG Má»ž";
+        lblReportClassCountTitle.Text = "SỐ LỚP ĐANG MỞ";
         // 
         // pnlReportClassCountAccent
         // 
+        pnlReportClassCountAccent.AutoScroll = true;
         pnlReportClassCountAccent.Dock = DockStyle.Left;
         pnlReportClassCountAccent.Location = new Point(20, 18);
         pnlReportClassCountAccent.Name = "pnlReportClassCountAccent";
@@ -712,7 +716,7 @@ partial class FrmAdminReports
         // 
         lblReportRetentionIcon.Anchor = AnchorStyles.Top | AnchorStyles.Right;
         lblReportRetentionIcon.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-        lblReportRetentionIcon.Location = new Point(250, 18);
+        lblReportRetentionIcon.Location = new Point(224, 18);
         lblReportRetentionIcon.Name = "lblReportRetentionIcon";
         lblReportRetentionIcon.Size = new Size(34, 34);
         lblReportRetentionIcon.TabIndex = 4;
@@ -727,7 +731,7 @@ partial class FrmAdminReports
         lblReportRetentionTrend.Name = "lblReportRetentionTrend";
         lblReportRetentionTrend.Size = new Size(73, 28);
         lblReportRetentionTrend.TabIndex = 3;
-        lblReportRetentionTrend.Text = "â†‘ 1.8%";
+        lblReportRetentionTrend.Text = "↑ 1.8%";
         // 
         // lblReportRetentionValue
         // 
@@ -747,10 +751,11 @@ partial class FrmAdminReports
         lblReportRetentionTitle.Name = "lblReportRetentionTitle";
         lblReportRetentionTitle.Size = new Size(147, 28);
         lblReportRetentionTitle.TabIndex = 1;
-        lblReportRetentionTitle.Text = "Tá»¶ Lá»† DUY TRÃŒ";
+        lblReportRetentionTitle.Text = "TỶ LỆ DUY TRÌ";
         // 
         // pnlReportRetentionAccent
         // 
+        pnlReportRetentionAccent.AutoScroll = true;
         pnlReportRetentionAccent.Dock = DockStyle.Left;
         pnlReportRetentionAccent.Location = new Point(20, 18);
         pnlReportRetentionAccent.Name = "pnlReportRetentionAccent";
@@ -770,11 +775,12 @@ partial class FrmAdminReports
         tblReportMiddle.Name = "tblReportMiddle";
         tblReportMiddle.RowCount = 1;
         tblReportMiddle.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-        tblReportMiddle.Size = new Size(1224, 136);
+        tblReportMiddle.Size = new Size(1224, 86);
         tblReportMiddle.TabIndex = 3;
         // 
         // pnlReportChartCard
         // 
+        pnlReportChartCard.AutoScroll = true;
         pnlReportChartCard.Controls.Add(chtAdminRevenue);
         pnlReportChartCard.Controls.Add(pnlReportChartHeader);
         pnlReportChartCard.Dock = DockStyle.Fill;
@@ -782,7 +788,7 @@ partial class FrmAdminReports
         pnlReportChartCard.Margin = new Padding(0, 0, 24, 0);
         pnlReportChartCard.Name = "pnlReportChartCard";
         pnlReportChartCard.Padding = new Padding(24, 20, 24, 20);
-        pnlReportChartCard.Size = new Size(802, 136);
+        pnlReportChartCard.Size = new Size(802, 86);
         pnlReportChartCard.TabIndex = 0;
         // 
         // chtAdminRevenue
@@ -794,7 +800,7 @@ partial class FrmAdminReports
         chtAdminRevenue.Legends.Add(legend1);
         chtAdminRevenue.Location = new Point(24, 74);
         chtAdminRevenue.Name = "chtAdminRevenue";
-        chtAdminRevenue.Size = new Size(754, 42);
+        chtAdminRevenue.Size = new Size(754, 0);
         chtAdminRevenue.TabIndex = 1;
         // 
         // pnlReportChartHeader
@@ -824,6 +830,7 @@ partial class FrmAdminReports
         // 
         // pnlChartLegendRevenue
         // 
+        pnlChartLegendRevenue.AutoScroll = true;
         pnlChartLegendRevenue.Location = new Point(0, 6);
         pnlChartLegendRevenue.Margin = new Padding(0, 6, 8, 0);
         pnlChartLegendRevenue.Name = "pnlChartLegendRevenue";
@@ -843,6 +850,7 @@ partial class FrmAdminReports
         // 
         // pnlChartLegendTarget
         // 
+        pnlChartLegendTarget.AutoScroll = true;
         pnlChartLegendTarget.Location = new Point(174, 6);
         pnlChartLegendTarget.Margin = new Padding(0, 6, 8, 0);
         pnlChartLegendTarget.Name = "pnlChartLegendTarget";
@@ -858,7 +866,7 @@ partial class FrmAdminReports
         lblChartLegendTarget.Name = "lblChartLegendTarget";
         lblChartLegendTarget.Size = new Size(106, 28);
         lblChartLegendTarget.TabIndex = 3;
-        lblChartLegendTarget.Text = "Má»¤C TIÃŠU";
+        lblChartLegendTarget.Text = "MỤC TIÊU";
         // 
         // lblReportChartTitle
         // 
@@ -869,7 +877,7 @@ partial class FrmAdminReports
         lblReportChartTitle.Name = "lblReportChartTitle";
         lblReportChartTitle.Size = new Size(631, 45);
         lblReportChartTitle.TabIndex = 0;
-        lblReportChartTitle.Text = "XU HÆ¯á»šNG DOANH THU HÃ€NG THÃNG";
+        lblReportChartTitle.Text = "XU HƯỚNG DOANH THU HÀNG THÁNG";
         // 
         // tblReportSideColumn
         // 
@@ -884,11 +892,12 @@ partial class FrmAdminReports
         tblReportSideColumn.RowCount = 2;
         tblReportSideColumn.RowStyles.Add(new RowStyle(SizeType.Percent, 63F));
         tblReportSideColumn.RowStyles.Add(new RowStyle(SizeType.Percent, 37F));
-        tblReportSideColumn.Size = new Size(398, 136);
+        tblReportSideColumn.Size = new Size(398, 86);
         tblReportSideColumn.TabIndex = 1;
         // 
         // pnlReportHighlightCard
         // 
+        pnlReportHighlightCard.AutoScroll = true;
         pnlReportHighlightCard.Controls.Add(pnlReportHighlightTrack);
         pnlReportHighlightCard.Controls.Add(lblReportHighlightBody);
         pnlReportHighlightCard.Controls.Add(lblReportHighlightTitle);
@@ -898,11 +907,12 @@ partial class FrmAdminReports
         pnlReportHighlightCard.Margin = new Padding(0, 0, 0, 22);
         pnlReportHighlightCard.Name = "pnlReportHighlightCard";
         pnlReportHighlightCard.Padding = new Padding(28, 24, 28, 26);
-        pnlReportHighlightCard.Size = new Size(398, 63);
+        pnlReportHighlightCard.Size = new Size(398, 32);
         pnlReportHighlightCard.TabIndex = 0;
         // 
         // pnlReportHighlightTrack
         // 
+        pnlReportHighlightTrack.AutoScroll = true;
         pnlReportHighlightTrack.Controls.Add(pnlReportHighlightFill);
         pnlReportHighlightTrack.Location = new Point(30, 171);
         pnlReportHighlightTrack.Name = "pnlReportHighlightTrack";
@@ -911,6 +921,7 @@ partial class FrmAdminReports
         // 
         // pnlReportHighlightFill
         // 
+        pnlReportHighlightFill.AutoScroll = true;
         pnlReportHighlightFill.Dock = DockStyle.Left;
         pnlReportHighlightFill.Location = new Point(0, 0);
         pnlReportHighlightFill.Name = "pnlReportHighlightFill";
@@ -926,7 +937,7 @@ partial class FrmAdminReports
         lblReportHighlightBody.Name = "lblReportHighlightBody";
         lblReportHighlightBody.Size = new Size(308, 96);
         lblReportHighlightBody.TabIndex = 2;
-        lblReportHighlightBody.Text = "Chiáº¿n dá»‹ch tuyá»ƒn sinh mÃ¹a hÃ¨ Ä‘áº¡t hiá»‡u quáº£ cao nháº¥t trong 3 nÄƒm qua.";
+        lblReportHighlightBody.Text = "Chiến dịch tuyển sinh mùa hè đạt hiệu quả cao nhất trong 3 năm qua.";
         // 
         // lblReportHighlightTitle
         // 
@@ -937,7 +948,7 @@ partial class FrmAdminReports
         lblReportHighlightTitle.Name = "lblReportHighlightTitle";
         lblReportHighlightTitle.Size = new Size(287, 96);
         lblReportHighlightTitle.TabIndex = 1;
-        lblReportHighlightTitle.Text = "PhÃ¡t triá»ƒn vÆ°á»£t má»©c 15%";
+        lblReportHighlightTitle.Text = "Phát triển vượt mức 15%";
         // 
         // lblReportHighlightIcon
         // 
@@ -951,14 +962,15 @@ partial class FrmAdminReports
         // 
         // pnlReportDistributionCard
         // 
+        pnlReportDistributionCard.AutoScroll = true;
         pnlReportDistributionCard.Controls.Add(tblReportDistribution);
         pnlReportDistributionCard.Controls.Add(lblReportDistributionTitle);
         pnlReportDistributionCard.Dock = DockStyle.Fill;
-        pnlReportDistributionCard.Location = new Point(0, 85);
+        pnlReportDistributionCard.Location = new Point(0, 54);
         pnlReportDistributionCard.Margin = new Padding(0);
         pnlReportDistributionCard.Name = "pnlReportDistributionCard";
         pnlReportDistributionCard.Padding = new Padding(28, 24, 28, 24);
-        pnlReportDistributionCard.Size = new Size(398, 51);
+        pnlReportDistributionCard.Size = new Size(398, 32);
         pnlReportDistributionCard.TabIndex = 1;
         // 
         // tblReportDistribution
@@ -973,13 +985,13 @@ partial class FrmAdminReports
         tblReportDistribution.Controls.Add(lblDistributionCourse3Name, 0, 2);
         tblReportDistribution.Controls.Add(lblDistributionCourse3Value, 1, 2);
         tblReportDistribution.Dock = DockStyle.Bottom;
-        tblReportDistribution.Location = new Point(28, -39);
+        tblReportDistribution.Location = new Point(28, 30);
         tblReportDistribution.Name = "tblReportDistribution";
         tblReportDistribution.RowCount = 3;
         tblReportDistribution.RowStyles.Add(new RowStyle(SizeType.Percent, 33.33333F));
         tblReportDistribution.RowStyles.Add(new RowStyle(SizeType.Percent, 33.33333F));
         tblReportDistribution.RowStyles.Add(new RowStyle(SizeType.Percent, 33.33333F));
-        tblReportDistribution.Size = new Size(342, 66);
+        tblReportDistribution.Size = new Size(316, 66);
         tblReportDistribution.TabIndex = 1;
         // 
         // lblDistributionCourse1Name
@@ -990,7 +1002,7 @@ partial class FrmAdminReports
         lblDistributionCourse1Name.Location = new Point(0, 0);
         lblDistributionCourse1Name.Margin = new Padding(0);
         lblDistributionCourse1Name.Name = "lblDistributionCourse1Name";
-        lblDistributionCourse1Name.Size = new Size(272, 22);
+        lblDistributionCourse1Name.Size = new Size(246, 22);
         lblDistributionCourse1Name.TabIndex = 0;
         lblDistributionCourse1Name.Text = "IELTS Foundation";
         lblDistributionCourse1Name.TextAlign = ContentAlignment.MiddleLeft;
@@ -1000,7 +1012,7 @@ partial class FrmAdminReports
         lblDistributionCourse1Value.AutoSize = true;
         lblDistributionCourse1Value.Dock = DockStyle.Fill;
         lblDistributionCourse1Value.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-        lblDistributionCourse1Value.Location = new Point(272, 0);
+        lblDistributionCourse1Value.Location = new Point(246, 0);
         lblDistributionCourse1Value.Margin = new Padding(0);
         lblDistributionCourse1Value.Name = "lblDistributionCourse1Value";
         lblDistributionCourse1Value.Size = new Size(70, 22);
@@ -1016,7 +1028,7 @@ partial class FrmAdminReports
         lblDistributionCourse2Name.Location = new Point(0, 22);
         lblDistributionCourse2Name.Margin = new Padding(0);
         lblDistributionCourse2Name.Name = "lblDistributionCourse2Name";
-        lblDistributionCourse2Name.Size = new Size(272, 22);
+        lblDistributionCourse2Name.Size = new Size(246, 22);
         lblDistributionCourse2Name.TabIndex = 2;
         lblDistributionCourse2Name.Text = "Business English";
         lblDistributionCourse2Name.TextAlign = ContentAlignment.MiddleLeft;
@@ -1026,7 +1038,7 @@ partial class FrmAdminReports
         lblDistributionCourse2Value.AutoSize = true;
         lblDistributionCourse2Value.Dock = DockStyle.Fill;
         lblDistributionCourse2Value.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-        lblDistributionCourse2Value.Location = new Point(272, 22);
+        lblDistributionCourse2Value.Location = new Point(246, 22);
         lblDistributionCourse2Value.Margin = new Padding(0);
         lblDistributionCourse2Value.Name = "lblDistributionCourse2Value";
         lblDistributionCourse2Value.Size = new Size(70, 22);
@@ -1042,7 +1054,7 @@ partial class FrmAdminReports
         lblDistributionCourse3Name.Location = new Point(0, 44);
         lblDistributionCourse3Name.Margin = new Padding(0);
         lblDistributionCourse3Name.Name = "lblDistributionCourse3Name";
-        lblDistributionCourse3Name.Size = new Size(272, 22);
+        lblDistributionCourse3Name.Size = new Size(246, 22);
         lblDistributionCourse3Name.TabIndex = 4;
         lblDistributionCourse3Name.Text = "Kid's Phonics";
         lblDistributionCourse3Name.TextAlign = ContentAlignment.MiddleLeft;
@@ -1052,7 +1064,7 @@ partial class FrmAdminReports
         lblDistributionCourse3Value.AutoSize = true;
         lblDistributionCourse3Value.Dock = DockStyle.Fill;
         lblDistributionCourse3Value.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-        lblDistributionCourse3Value.Location = new Point(272, 44);
+        lblDistributionCourse3Value.Location = new Point(246, 44);
         lblDistributionCourse3Value.Margin = new Padding(0);
         lblDistributionCourse3Value.Name = "lblDistributionCourse3Value";
         lblDistributionCourse3Value.Size = new Size(70, 22);
@@ -1068,17 +1080,18 @@ partial class FrmAdminReports
         lblReportDistributionTitle.Name = "lblReportDistributionTitle";
         lblReportDistributionTitle.Size = new Size(236, 30);
         lblReportDistributionTitle.TabIndex = 0;
-        lblReportDistributionTitle.Text = "PHÃ‚N Bá»” KHÃ“A Há»ŒC";
+        lblReportDistributionTitle.Text = "PHÂN BỔ KHÓA HỌC";
         // 
         // pnlReportDetailCard
         // 
+        pnlReportDetailCard.AutoScroll = true;
         pnlReportDetailCard.Controls.Add(dgvAdminReportDetail);
         pnlReportDetailCard.Controls.Add(pnlReportDetailHeader);
         pnlReportDetailCard.Dock = DockStyle.Fill;
-        pnlReportDetailCard.Location = new Point(0, 504);
+        pnlReportDetailCard.Location = new Point(0, 454);
         pnlReportDetailCard.Margin = new Padding(0);
         pnlReportDetailCard.Name = "pnlReportDetailCard";
-        pnlReportDetailCard.Size = new Size(1224, 300);
+        pnlReportDetailCard.Size = new Size(1224, 350);
         pnlReportDetailCard.TabIndex = 4;
         // 
         // dgvAdminReportDetail
@@ -1098,7 +1111,7 @@ partial class FrmAdminReports
         dgvAdminReportDetail.RowTemplate.Height = 36;
         dgvAdminReportDetail.ScrollBars = ScrollBars.Vertical;
         dgvAdminReportDetail.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-        dgvAdminReportDetail.Size = new Size(1224, 234);
+        dgvAdminReportDetail.Size = new Size(1224, 284);
         dgvAdminReportDetail.TabIndex = 1;
         // 
         // pnlReportDetailHeader
@@ -1156,7 +1169,7 @@ partial class FrmAdminReports
         lblReportDetailPaging.Name = "lblReportDetailPaging";
         lblReportDetailPaging.Size = new Size(228, 28);
         lblReportDetailPaging.TabIndex = 1;
-        lblReportDetailPaging.Text = "Hiá»ƒn thá»‹ 10 / 125 káº¿t quáº£";
+        lblReportDetailPaging.Text = "Hiển thị 10 / 125 kết quả";
         // 
         // lblReportDetailTitle
         // 
@@ -1166,19 +1179,21 @@ partial class FrmAdminReports
         lblReportDetailTitle.Name = "lblReportDetailTitle";
         lblReportDetailTitle.Size = new Size(467, 41);
         lblReportDetailTitle.TabIndex = 0;
-        lblReportDetailTitle.Text = "CHI TIáº¾T PHÃT SINH TRONG Ká»²";
+        lblReportDetailTitle.Text = "CHI TIẾT PHÁT SINH TRONG KỲ";
         // 
         // FrmAdminReports
         // 
-        AutoScaleDimensions = new SizeF(96F, 96F);
+        AutoScaleDimensions = new SizeF(144F, 144F);
         AutoScaleMode = AutoScaleMode.Dpi;
+        AutoScroll = true;
         BackColor = Color.FromArgb(239, 247, 255);
         ClientSize = new Size(1260, 840);
         Controls.Add(tblAdminReportRoot);
+        Font = new Font("Segoe UI", 10F);
         MinimumSize = new Size(1180, 760);
         Name = "FrmAdminReports";
         Padding = new Padding(18);
-        Text = "BÃ¡o cÃ¡o thá»‘ng kÃª";
+        Text = "Báo cáo thống kê";
         tblAdminReportRoot.ResumeLayout(false);
         pnlAdminReportHeader.ResumeLayout(false);
         tblAdminReportHeaderLayout.ResumeLayout(false);

@@ -29,7 +29,7 @@ public partial class FrmTuitionReceipt : Form
         _initialStudentId = studentId;
 
         InitializeComponent();
-        FormHostHelpers.ConfigureModuleSurface(this, "Thu hoc phi / bien nhan");
+        FormHostHelpers.ConfigureModuleSurface(this, "Thu học phí / biên nhận");
         ConfigureView();
         LoadInitialData();
         WireEvents();
@@ -49,8 +49,8 @@ public partial class FrmTuitionReceipt : Form
         AppTheme.StyleDangerButton(btnCancelReceipt);
 
         cboReceiptMethod.SelectedIndex = 0;
-        ttTuitionReceipt.SetToolTip(btnCollectTuition, "Luu bien lai thu hoc phi vao SQL Server.");
-        ttTuitionReceipt.SetToolTip(btnSavePrintReceipt, "Luu bien lai va mo Print Preview.");
+        ttTuitionReceipt.SetToolTip(btnCollectTuition, "Lưu biên lai thu học phí vào SQL Server.");
+        ttTuitionReceipt.SetToolTip(btnSavePrintReceipt, "Lưu biên lai và mở Print Preview.");
         prdTuitionReceipt.PrintPage += PrintReceiptPreview;
 
         flpReceiptActions.AutoSize = true;
@@ -137,7 +137,7 @@ public partial class FrmTuitionReceipt : Form
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmTuitionReceipt));
-            MessageBox.Show(this, "Khong tai duoc thong tin ghi danh. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không tải được thông tin ghi danh. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -171,7 +171,7 @@ public partial class FrmTuitionReceipt : Form
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmTuitionReceipt));
-            MessageBox.Show(this, "Khong tim thay ghi danh phu hop cho hoc vien nay.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không tìm thấy ghi danh phù hợp cho học viên này.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -186,7 +186,7 @@ public partial class FrmTuitionReceipt : Form
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmTuitionReceipt));
-            MessageBox.Show(this, "Khong tai duoc lich su bien lai. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không tải được lịch sử biên lai. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -214,7 +214,7 @@ public partial class FrmTuitionReceipt : Form
             LoadReceiptHistory();
             ResetPaymentEditor(keepAmount: true);
 
-            MessageBox.Show(this, "Da thu hoc phi va luu bien lai thanh cong.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(this, "Đã thu học phí và lưu biên lai thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             if (openPreview)
             {
@@ -224,7 +224,7 @@ public partial class FrmTuitionReceipt : Form
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmTuitionReceipt));
-            MessageBox.Show(this, "Khong luu duoc bien lai. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không lưu được biên lai. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -264,7 +264,7 @@ public partial class FrmTuitionReceipt : Form
             }
         }
 
-        MessageBox.Show(this, "Chua co bien lai nao de xem truoc.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        MessageBox.Show(this, "Chưa có biên lai nào để xem trước.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
 
     private void SyncSelectedReceipt()
@@ -282,18 +282,18 @@ public partial class FrmTuitionReceipt : Form
 
         if (string.IsNullOrWhiteSpace(_currentEnrollmentId))
         {
-            errTuitionReceipt.SetError(txtReceiptStudentCode, "Khong tim thay ghi danh de thu hoc phi.");
+            errTuitionReceipt.SetError(txtReceiptStudentCode, "Không tìm thấy ghi danh để thu học phí.");
         }
 
         var amount = ParseMoney(txtReceiptAmount.Text);
         if (amount <= 0)
         {
-            errTuitionReceipt.SetError(txtReceiptAmount, "So tien thu phai > 0.");
+            errTuitionReceipt.SetError(txtReceiptAmount, "Số tiền thu phải > 0.");
         }
 
         if (_currentContext is not null && amount > _currentContext.OutstandingBalance && _currentContext.OutstandingBalance > 0)
         {
-            errTuitionReceipt.SetError(txtReceiptAmount, "So tien thu khong duoc vuot qua cong no hien tai.");
+            errTuitionReceipt.SetError(txtReceiptAmount, "Số tiền thu không được vượt quá công nợ hiện tại.");
         }
 
         return string.IsNullOrWhiteSpace(errTuitionReceipt.GetError(txtReceiptStudentCode))
@@ -358,24 +358,24 @@ public partial class FrmTuitionReceipt : Form
 
     private void LocalizeLabels()
     {
-        grpEnrollmentInfo.Text = "Thong tin ghi danh";
-        grpPaymentInfo.Text = "Thong tin thanh toan";
+        grpEnrollmentInfo.Text = "Thông tin ghi danh";
+        grpPaymentInfo.Text = "Thông tin thanh toán";
 
-        lblReceiptStudentCode.Text = "Ma hoc vien";
-        lblReceiptStudentName.Text = "Ho va ten";
-        lblReceiptClassCode.Text = "Lop";
-        lblReceiptCourseName.Text = "Khoa hoc / cong no";
+        lblReceiptStudentCode.Text = "Mã học viên";
+        lblReceiptStudentName.Text = "Họ và tên";
+        lblReceiptClassCode.Text = "Lớp";
+        lblReceiptCourseName.Text = "Khóa học / công nợ";
 
-        lblReceiptAmount.Text = "So tien thu";
-        lblReceiptMethod.Text = "Phuong thuc thanh toan";
+        lblReceiptAmount.Text = "Số tiền thu";
+        lblReceiptMethod.Text = "Phương thức thanh toán";
         cboReceiptMethod.Items.Clear();
-        cboReceiptMethod.Items.AddRange(["Tien mat", "Chuyen khoan"]);
-        lblReceiptNote.Text = "Ghi chu";
+        cboReceiptMethod.Items.AddRange(["Tiền mặt", "Chuyển khoản"]);
+        lblReceiptNote.Text = "Ghi chú";
 
-        btnCollectTuition.Text = "Thu hoc phi";
-        btnSavePrintReceipt.Text = "Luu va in";
-        btnViewReceipt.Text = "Xem bien lai";
-        btnCancelReceipt.Text = "Huy";
+        btnCollectTuition.Text = "Thu học phí";
+        btnSavePrintReceipt.Text = "Lưu và in";
+        btnViewReceipt.Text = "Xem biên lai";
+        btnCancelReceipt.Text = "Hủy";
     }
 
     private void ApplyResponsiveLayout()

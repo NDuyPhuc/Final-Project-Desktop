@@ -1,4 +1,4 @@
-﻿namespace Trung_tam_quan_ly_ngoai_ngu;
+namespace Trung_tam_quan_ly_ngoai_ngu;
 
 partial class FrmEnrollment
 {
@@ -94,6 +94,7 @@ partial class FrmEnrollment
         tblEnrollmentRoot.RowCount = 1;
         tblEnrollmentRoot.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblEnrollmentRoot.Size = new Size(1116, 626);
+        tblEnrollmentRoot.AutoScroll = false;
         tblEnrollmentRoot.TabIndex = 0;
         // 
         // tblEnrollmentColumns
@@ -112,6 +113,7 @@ partial class FrmEnrollment
         tblEnrollmentColumns.RowCount = 1;
         tblEnrollmentColumns.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblEnrollmentColumns.Size = new Size(1116, 626);
+        tblEnrollmentColumns.AutoScroll = false;
         tblEnrollmentColumns.TabIndex = 0;
         // 
         // grpEnrollmentStudentSelect
@@ -125,7 +127,7 @@ partial class FrmEnrollment
         grpEnrollmentStudentSelect.Size = new Size(367, 626);
         grpEnrollmentStudentSelect.TabIndex = 0;
         grpEnrollmentStudentSelect.TabStop = false;
-        grpEnrollmentStudentSelect.Text = "1. Chon hoc vien";
+        grpEnrollmentStudentSelect.Text = "1. Chọn học viên";
         // 
         // dgvEnrollmentStudentList
         // 
@@ -156,7 +158,7 @@ partial class FrmEnrollment
         grpEnrollmentClassSelect.Size = new Size(367, 626);
         grpEnrollmentClassSelect.TabIndex = 1;
         grpEnrollmentClassSelect.TabStop = false;
-        grpEnrollmentClassSelect.Text = "2. Chon lop phu hop";
+        grpEnrollmentClassSelect.Text = "2. Chọn lớp phù hợp";
         // 
         // dgvEnrollmentClassList
         // 
@@ -187,7 +189,7 @@ partial class FrmEnrollment
         grpEnrollmentSummary.Size = new Size(358, 626);
         grpEnrollmentSummary.TabIndex = 2;
         grpEnrollmentSummary.TabStop = false;
-        grpEnrollmentSummary.Text = "3. Xac nhan ghi danh";
+        grpEnrollmentSummary.Text = "3. Xác nhận ghi danh";
         // 
         // tblEnrollmentSummary
         // 
@@ -225,6 +227,7 @@ partial class FrmEnrollment
         tblEnrollmentSummary.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblEnrollmentSummary.RowStyles.Add(new RowStyle());
         tblEnrollmentSummary.Size = new Size(330, 576);
+        tblEnrollmentSummary.AutoScroll = true;
         tblEnrollmentSummary.TabIndex = 0;
         // 
         // lblEnrollmentDate
@@ -233,9 +236,10 @@ partial class FrmEnrollment
         lblEnrollmentDate.AutoSize = true;
         lblEnrollmentDate.Location = new Point(3, 6);
         lblEnrollmentDate.Name = "lblEnrollmentDate";
-        lblEnrollmentDate.Size = new Size(87, 20);
+        lblEnrollmentDate.Size = new Size(87, 28);
+        lblEnrollmentDate.AutoSize = true;
         lblEnrollmentDate.TabIndex = 0;
-        lblEnrollmentDate.Text = "Ngay dang ky";
+        lblEnrollmentDate.Text = "Ngày đăng ký";
         // 
         // dtpEnrollmentDate
         // 
@@ -252,9 +256,10 @@ partial class FrmEnrollment
         lblEnrollmentStudent.AutoSize = true;
         lblEnrollmentStudent.Location = new Point(3, 39);
         lblEnrollmentStudent.Name = "lblEnrollmentStudent";
-        lblEnrollmentStudent.Size = new Size(70, 20);
+        lblEnrollmentStudent.Size = new Size(70, 28);
+        lblEnrollmentStudent.AutoSize = true;
         lblEnrollmentStudent.TabIndex = 2;
-        lblEnrollmentStudent.Text = "Hoc vien";
+        lblEnrollmentStudent.Text = "Học viên";
         // 
         // txtEnrollmentStudent
         // 
@@ -272,9 +277,10 @@ partial class FrmEnrollment
         lblEnrollmentCourseClass.AutoSize = true;
         lblEnrollmentCourseClass.Location = new Point(3, 96);
         lblEnrollmentCourseClass.Name = "lblEnrollmentCourseClass";
-        lblEnrollmentCourseClass.Size = new Size(61, 20);
+        lblEnrollmentCourseClass.Size = new Size(61, 28);
+        lblEnrollmentCourseClass.AutoSize = true;
         lblEnrollmentCourseClass.TabIndex = 4;
-        lblEnrollmentCourseClass.Text = "Lop hoc";
+        lblEnrollmentCourseClass.Text = "Lớp học";
         // 
         // txtEnrollmentCourseClass
         // 
@@ -292,7 +298,8 @@ partial class FrmEnrollment
         lblEnrollmentOriginalFee.AutoSize = true;
         lblEnrollmentOriginalFee.Location = new Point(3, 150);
         lblEnrollmentOriginalFee.Name = "lblEnrollmentOriginalFee";
-        lblEnrollmentOriginalFee.Size = new Size(85, 20);
+        lblEnrollmentOriginalFee.Size = new Size(85, 28);
+        lblEnrollmentOriginalFee.AutoSize = true;
         lblEnrollmentOriginalFee.TabIndex = 6;
         lblEnrollmentOriginalFee.Text = "Hoc phi goc";
         // 
@@ -311,7 +318,8 @@ partial class FrmEnrollment
         lblEnrollmentDiscount.AutoSize = true;
         lblEnrollmentDiscount.Location = new Point(3, 183);
         lblEnrollmentDiscount.Name = "lblEnrollmentDiscount";
-        lblEnrollmentDiscount.Size = new Size(62, 20);
+        lblEnrollmentDiscount.Size = new Size(62, 28);
+        lblEnrollmentDiscount.AutoSize = true;
         lblEnrollmentDiscount.TabIndex = 8;
         lblEnrollmentDiscount.Text = "Giam gia";
         // 
@@ -329,7 +337,8 @@ partial class FrmEnrollment
         lblEnrollmentFinalFee.AutoSize = true;
         lblEnrollmentFinalFee.Location = new Point(3, 216);
         lblEnrollmentFinalFee.Name = "lblEnrollmentFinalFee";
-        lblEnrollmentFinalFee.Size = new Size(86, 20);
+        lblEnrollmentFinalFee.Size = new Size(86, 28);
+        lblEnrollmentFinalFee.AutoSize = true;
         lblEnrollmentFinalFee.TabIndex = 10;
         lblEnrollmentFinalFee.Text = "Hoc phi cuoi";
         // 
@@ -348,7 +357,8 @@ partial class FrmEnrollment
         lblEnrollmentStatus.AutoSize = true;
         lblEnrollmentStatus.Location = new Point(3, 249);
         lblEnrollmentStatus.Name = "lblEnrollmentStatus";
-        lblEnrollmentStatus.Size = new Size(75, 20);
+        lblEnrollmentStatus.Size = new Size(75, 28);
+        lblEnrollmentStatus.AutoSize = true;
         lblEnrollmentStatus.TabIndex = 12;
         lblEnrollmentStatus.Text = "Trang thai";
         // 
@@ -357,7 +367,7 @@ partial class FrmEnrollment
         cboEnrollmentStatus.Dock = DockStyle.Left;
         cboEnrollmentStatus.DropDownStyle = ComboBoxStyle.DropDownList;
         cboEnrollmentStatus.FormattingEnabled = true;
-        cboEnrollmentStatus.Items.AddRange(new object[] { "Cho xac nhan", "Da ghi danh", "Cho thu hoc phi" });
+        cboEnrollmentStatus.Items.AddRange(new object[] { "Chờ xác nhận", "Đã ghi danh", "Chờ thu học phí" });
         cboEnrollmentStatus.Location = new Point(123, 243);
         cboEnrollmentStatus.Name = "cboEnrollmentStatus";
         cboEnrollmentStatus.Size = new Size(180, 28);
@@ -369,7 +379,8 @@ partial class FrmEnrollment
         lblEnrollmentNote.AutoSize = true;
         lblEnrollmentNote.Location = new Point(3, 279);
         lblEnrollmentNote.Name = "lblEnrollmentNote";
-        lblEnrollmentNote.Size = new Size(57, 20);
+        lblEnrollmentNote.Size = new Size(57, 28);
+        lblEnrollmentNote.AutoSize = true;
         lblEnrollmentNote.TabIndex = 14;
         lblEnrollmentNote.Text = "Ghi chu";
         // 
@@ -395,6 +406,7 @@ partial class FrmEnrollment
         flpEnrollmentActions.Margin = new Padding(0);
         flpEnrollmentActions.Name = "flpEnrollmentActions";
         flpEnrollmentActions.Size = new Size(330, 52);
+        flpEnrollmentActions.AutoScroll = false;
         flpEnrollmentActions.TabIndex = 16;
         // 
         // btnCreateEnrollment
@@ -403,7 +415,7 @@ partial class FrmEnrollment
         btnCreateEnrollment.Name = "btnCreateEnrollment";
         btnCreateEnrollment.Size = new Size(112, 40);
         btnCreateEnrollment.TabIndex = 0;
-        btnCreateEnrollment.Text = "Tao ghi danh";
+        btnCreateEnrollment.Text = "Tạo ghi danh";
         btnCreateEnrollment.UseVisualStyleBackColor = true;
         // 
         // btnRefreshEnrollment
@@ -412,7 +424,7 @@ partial class FrmEnrollment
         btnRefreshEnrollment.Name = "btnRefreshEnrollment";
         btnRefreshEnrollment.Size = new Size(100, 40);
         btnRefreshEnrollment.TabIndex = 1;
-        btnRefreshEnrollment.Text = "Lam moi";
+        btnRefreshEnrollment.Text = "Làm mới";
         btnRefreshEnrollment.UseVisualStyleBackColor = true;
         // 
         // btnOpenTuitionReceipt
@@ -421,7 +433,7 @@ partial class FrmEnrollment
         btnOpenTuitionReceipt.Name = "btnOpenTuitionReceipt";
         btnOpenTuitionReceipt.Size = new Size(170, 40);
         btnOpenTuitionReceipt.TabIndex = 2;
-        btnOpenTuitionReceipt.Text = "Sang thu hoc phi";
+        btnOpenTuitionReceipt.Text = "Sang thu học phí";
         btnOpenTuitionReceipt.UseVisualStyleBackColor = true;
         // 
         // FrmEnrollment
@@ -429,10 +441,12 @@ partial class FrmEnrollment
         AutoScaleDimensions = new SizeF(96F, 96F);
         AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(1140, 650);
+        Font = new Font("Segoe UI", 10F);
         Controls.Add(tblEnrollmentRoot);
+        MinimumSize = new Size(980, 620);
         Name = "FrmEnrollment";
         Padding = new Padding(12);
-        Text = "Ghi danh / xep lop";
+        Text = "Ghi danh / xếp lớp";
         tblEnrollmentRoot.ResumeLayout(false);
         tblEnrollmentColumns.ResumeLayout(false);
         grpEnrollmentStudentSelect.ResumeLayout(false);
@@ -443,6 +457,7 @@ partial class FrmEnrollment
         tblEnrollmentSummary.ResumeLayout(false);
         tblEnrollmentSummary.PerformLayout();
         flpEnrollmentActions.ResumeLayout(false);
+        AutoScroll = true;
         ResumeLayout(false);
     }
 }

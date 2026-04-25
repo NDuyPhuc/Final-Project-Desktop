@@ -15,7 +15,7 @@ public partial class FrmStudentManagement : Form
     public FrmStudentManagement()
     {
         InitializeComponent();
-        FormHostHelpers.ConfigureModuleSurface(this, "Quan ly hoc vien");
+        FormHostHelpers.ConfigureModuleSurface(this, "Quản lý học viên");
         ConfigureView();
         LoadStudents();
         WireEvents();
@@ -30,8 +30,8 @@ public partial class FrmStudentManagement : Form
         cboStudentStatusFilter.SelectedIndex = 0;
         cboStudentStatus.SelectedIndex = 0;
 
-        ttStudentManagement.SetToolTip(btnOpenEnrollment, "Mo man hinh ghi danh de tiep tuc xep lop va thu hoc phi.");
-        ttStudentManagement.SetToolTip(btnChooseStudentAvatar, "Chon anh avatar va luu vao thu muc Images.");
+        ttStudentManagement.SetToolTip(btnOpenEnrollment, "Mở màn hình ghi danh để tiếp tục xếp lớp và thu học phí.");
+        ttStudentManagement.SetToolTip(btnChooseStudentAvatar, "Chọn ảnh avatar và lưu vào thư mục Images.");
 
         AppTheme.StyleGroupBox(grpStudentInfo);
         AppTheme.StyleGrid(dgvStudentList);
@@ -106,7 +106,7 @@ public partial class FrmStudentManagement : Form
         {
             _studentTable = AppRuntime.DataService.GetStudentList(
                 string.IsNullOrWhiteSpace(keyword) ? null : keyword,
-                string.IsNullOrWhiteSpace(status) || status == "Tat ca" ? null : status);
+                string.IsNullOrWhiteSpace(status) || status is "Tat ca" or "Tất cả" ? null : status);
 
             dgvStudentList.DataSource = _studentTable;
             SelectFirstStudentRow();
@@ -114,7 +114,7 @@ public partial class FrmStudentManagement : Form
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmStudentManagement));
-            MessageBox.Show(this, "Khong tai duoc danh sach hoc vien. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không tải được danh sách học viên. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -158,12 +158,12 @@ public partial class FrmStudentManagement : Form
             _currentAvatarPath = student.AvatarPath;
             LoadStudents(txtStudentKeyword.Text.Trim(), cboStudentStatusFilter.Text);
             FocusStudent(student.Id);
-            MessageBox.Show(this, "Da luu hoc vien thanh cong.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(this, "Đã lưu học viên thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmStudentManagement));
-            MessageBox.Show(this, "Khong luu duoc hoc vien. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không lưu được học viên. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -174,7 +174,7 @@ public partial class FrmStudentManagement : Form
             return;
         }
 
-        using var dialog = new FrmConfirmDialog("Xoa hoc vien", "Ban co chac muon xoa mem hoc vien dang chon khong?");
+        using var dialog = new FrmConfirmDialog("Xóa học viên", "Bạn có chắc muốn xóa mềm học viên đang chọn không?");
         if (dialog.ShowDialog(this) != DialogResult.OK)
         {
             return;
@@ -189,7 +189,7 @@ public partial class FrmStudentManagement : Form
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmStudentManagement));
-            MessageBox.Show(this, "Khong xoa duoc hoc vien. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không xóa được học viên. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -200,7 +200,7 @@ public partial class FrmStudentManagement : Form
             using var dialog = new OpenFileDialog
             {
                 Filter = "Image files|*.jpg;*.jpeg;*.png;*.bmp",
-                Title = "Chon avatar hoc vien"
+                Title = "Chọn avatar học viên"
             };
 
             if (dialog.ShowDialog(this) != DialogResult.OK)
@@ -214,7 +214,7 @@ public partial class FrmStudentManagement : Form
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmStudentManagement));
-            MessageBox.Show(this, "Khong mo duoc file anh. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không mở được file ảnh. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -276,7 +276,7 @@ public partial class FrmStudentManagement : Form
             txtStudentFullName.Text = student.FullName;
             txtStudentPhone.Text = student.Phone;
             txtStudentEmail.Text = student.Email ?? string.Empty;
-            cboStudentStatus.Text = string.IsNullOrWhiteSpace(student.Status) ? "Dang hoc" : student.Status;
+            cboStudentStatus.Text = string.IsNullOrWhiteSpace(student.Status) ? "Đang học" : student.Status;
             dtpStudentBirthDate.Value = student.BirthDate == default ? DateTime.Today : student.BirthDate;
             _currentAvatarPath = student.AvatarPath;
             _pendingAvatarSourcePath = null;
@@ -285,7 +285,7 @@ public partial class FrmStudentManagement : Form
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmStudentManagement));
-            MessageBox.Show(this, "Khong tai duoc chi tiet hoc vien. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không tải được chi tiết học viên. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -308,26 +308,26 @@ public partial class FrmStudentManagement : Form
 
         if (string.IsNullOrWhiteSpace(txtStudentId.Text))
         {
-            errStudent.SetError(txtStudentId, "Ma hoc vien khong duoc de trong.");
+            errStudent.SetError(txtStudentId, "Mã học viên không được để trống.");
         }
 
         if (string.IsNullOrWhiteSpace(txtStudentFullName.Text))
         {
-            errStudent.SetError(txtStudentFullName, "Ho ten khong duoc de trong.");
+            errStudent.SetError(txtStudentFullName, "Họ tên không được để trống.");
         }
 
         if (string.IsNullOrWhiteSpace(txtStudentPhone.Text))
         {
-            errStudent.SetError(txtStudentPhone, "So dien thoai khong duoc de trong.");
+            errStudent.SetError(txtStudentPhone, "Số điện thoại không được để trống.");
         }
 
         if (string.IsNullOrWhiteSpace(txtStudentEmail.Text))
         {
-            errStudent.SetError(txtStudentEmail, "Email khong duoc de trong.");
+            errStudent.SetError(txtStudentEmail, "Email không được để trống.");
         }
         else if (!txtStudentEmail.Text.Contains('@') || !txtStudentEmail.Text.Contains('.'))
         {
-            errStudent.SetError(txtStudentEmail, "Email khong hop le.");
+            errStudent.SetError(txtStudentEmail, "Email không hợp lệ.");
         }
 
         return string.IsNullOrWhiteSpace(errStudent.GetError(txtStudentId))
@@ -359,32 +359,32 @@ public partial class FrmStudentManagement : Form
 
     private void LocalizeLabels()
     {
-        lblStudentKeyword.Text = "Tu khoa tim kiem";
-        txtStudentKeyword.PlaceholderText = "Ten hoc vien, ma hoc vien hoac so dien thoai";
-        lblStudentStatusFilter.Text = "Trang thai";
+        lblStudentKeyword.Text = "Từ khóa tìm kiếm";
+        txtStudentKeyword.PlaceholderText = "Tên học viên, mã học viên hoặc số điện thoại";
+        lblStudentStatusFilter.Text = "Trạng thái";
         cboStudentStatusFilter.Items.Clear();
-        cboStudentStatusFilter.Items.AddRange(["Tat ca", "Dang hoc", "Bao luu", "Hoan thanh", "Da nghi"]);
+        cboStudentStatusFilter.Items.AddRange(["Tất cả", "Đang học", "Bảo lưu", "Hoàn thành", "Đã nghỉ"]);
 
-        grpStudentInfo.Text = "Thong tin hoc vien";
-        lblStudentId.Text = "Ma hoc vien";
-        lblStudentFullName.Text = "Ho va ten";
-        lblStudentBirthDate.Text = "Ngay sinh";
-        lblStudentPhone.Text = "Dien thoai";
+        grpStudentInfo.Text = "Thông tin học viên";
+        lblStudentId.Text = "Mã học viên";
+        lblStudentFullName.Text = "Họ và tên";
+        lblStudentBirthDate.Text = "Ngày sinh";
+        lblStudentPhone.Text = "Điện thoại";
         lblStudentEmail.Text = "Email";
-        lblStudentStatus.Text = "Trang thai";
+        lblStudentStatus.Text = "Trạng thái";
         cboStudentStatus.Items.Clear();
-        cboStudentStatus.Items.AddRange(["Dang hoc", "Bao luu", "Hoan thanh", "Da nghi"]);
+        cboStudentStatus.Items.AddRange(["Đang học", "Bảo lưu", "Hoàn thành", "Đã nghỉ"]);
 
-        btnSearchStudent.Text = "Tim kiem";
-        btnRefreshStudent.Text = "Lam moi";
-        btnChooseStudentAvatar.Text = "Chon anh";
-        btnRemoveStudentAvatar.Text = "Bo anh";
-        btnCreateStudent.Text = "Them hoc vien";
-        btnSaveStudent.Text = "Luu";
-        btnUpdateStudent.Text = "Cap nhat";
-        btnDeleteStudent.Text = "Xoa mem";
-        btnResetStudent.Text = "Dat lai";
-        btnOpenEnrollment.Text = "Mo ghi danh";
+        btnSearchStudent.Text = "Tìm kiếm";
+        btnRefreshStudent.Text = "Làm mới";
+        btnChooseStudentAvatar.Text = "Chọn ảnh";
+        btnRemoveStudentAvatar.Text = "Bỏ ảnh";
+        btnCreateStudent.Text = "Thêm học viên";
+        btnSaveStudent.Text = "Lưu";
+        btnUpdateStudent.Text = "Cập nhật";
+        btnDeleteStudent.Text = "Xóa mềm";
+        btnResetStudent.Text = "Đặt lại";
+        btnOpenEnrollment.Text = "Mở ghi danh";
     }
 
     private void BuildFilterLayout()

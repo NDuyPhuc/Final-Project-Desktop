@@ -13,7 +13,7 @@ public partial class FrmTeacherManagement : Form
     public FrmTeacherManagement()
     {
         InitializeComponent();
-        FormHostHelpers.ConfigureModuleSurface(this, "Quan ly giao vien");
+        FormHostHelpers.ConfigureModuleSurface(this, "Quản lý giáo viên");
         ConfigureView();
         LoadTeachers();
         WireEvents();
@@ -35,7 +35,7 @@ public partial class FrmTeacherManagement : Form
         dgvTeacherList.RowTemplate.Height = 42;
 
         cboTeacherStatusFilter.SelectedIndex = 0;
-        txtTeacherNote.PlaceholderText = "Nam / Nu";
+        txtTeacherNote.PlaceholderText = "Nam / Nữ";
     }
 
     private void WireEvents()
@@ -55,7 +55,7 @@ public partial class FrmTeacherManagement : Form
         {
             _teacherTable = AppRuntime.DataService.GetTeacherList(
                 string.IsNullOrWhiteSpace(keyword) ? null : keyword,
-                string.IsNullOrWhiteSpace(status) || status == "Tat ca" ? null : status);
+                string.IsNullOrWhiteSpace(status) || status is "Tat ca" or "Tất cả" ? null : status);
 
             dgvTeacherList.DataSource = _teacherTable;
             SelectFirstTeacher();
@@ -63,7 +63,7 @@ public partial class FrmTeacherManagement : Form
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmTeacherManagement));
-            MessageBox.Show(this, "Khong tai duoc danh sach giao vien. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không tải được danh sách giáo viên. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -71,7 +71,7 @@ public partial class FrmTeacherManagement : Form
     {
         ResetDetailEditor();
         txtTeacherCode.Text = AppRuntime.DataService.GetNextTeacherId();
-        _currentTeacherStatus = "Dang day";
+        _currentTeacherStatus = "Đang dạy";
         txtTeacherName.Focus();
     }
 
@@ -95,7 +95,7 @@ public partial class FrmTeacherManagement : Form
                 Gender = txtTeacherNote.Text.Trim(),
                 AvatarPath = null,
                 AccountId = _currentTeacherAccountId,
-                Status = string.IsNullOrWhiteSpace(_currentTeacherStatus) ? "Dang day" : _currentTeacherStatus,
+                Status = string.IsNullOrWhiteSpace(_currentTeacherStatus) ? "Đang dạy" : _currentTeacherStatus,
                 IsDeleted = false
             };
 
@@ -105,12 +105,12 @@ public partial class FrmTeacherManagement : Form
 
             LoadTeachers(txtTeacherKeyword.Text.Trim(), cboTeacherStatusFilter.Text);
             FocusTeacher(teacher.Id);
-            MessageBox.Show(this, "Da luu giao vien thanh cong.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(this, "Đã lưu giáo viên thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmTeacherManagement));
-            MessageBox.Show(this, "Khong luu duoc giao vien. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không lưu được giáo viên. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -121,7 +121,7 @@ public partial class FrmTeacherManagement : Form
             return;
         }
 
-        using var dialog = new FrmConfirmDialog("Xoa giao vien", "Ban co chac muon xoa mem giao vien dang chon khong?");
+        using var dialog = new FrmConfirmDialog("Xóa giáo viên", "Bạn có chắc muốn xóa mềm giáo viên đang chọn không?");
         if (dialog.ShowDialog(this) != DialogResult.OK)
         {
             return;
@@ -136,7 +136,7 @@ public partial class FrmTeacherManagement : Form
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmTeacherManagement));
-            MessageBox.Show(this, "Khong xoa duoc giao vien. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không xóa được giáo viên. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -174,7 +174,7 @@ public partial class FrmTeacherManagement : Form
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmTeacherManagement));
-            MessageBox.Show(this, "Khong tai duoc chi tiet giao vien. Vui long kiem tra log.txt.", "Loi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không tải được chi tiết giáo viên. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -210,26 +210,26 @@ public partial class FrmTeacherManagement : Form
 
         if (string.IsNullOrWhiteSpace(txtTeacherCode.Text))
         {
-            errTeacher.SetError(txtTeacherCode, "Ma giao vien khong duoc de trong.");
+            errTeacher.SetError(txtTeacherCode, "Mã giáo viên không được để trống.");
         }
 
         if (string.IsNullOrWhiteSpace(txtTeacherName.Text))
         {
-            errTeacher.SetError(txtTeacherName, "Ho ten khong duoc de trong.");
+            errTeacher.SetError(txtTeacherName, "Họ tên không được để trống.");
         }
 
         if (string.IsNullOrWhiteSpace(txtTeacherPhone.Text))
         {
-            errTeacher.SetError(txtTeacherPhone, "So dien thoai khong duoc de trong.");
+            errTeacher.SetError(txtTeacherPhone, "Số điện thoại không được để trống.");
         }
 
         if (string.IsNullOrWhiteSpace(txtTeacherEmail.Text))
         {
-            errTeacher.SetError(txtTeacherEmail, "Email khong duoc de trong.");
+            errTeacher.SetError(txtTeacherEmail, "Email không được để trống.");
         }
         else if (!txtTeacherEmail.Text.Contains('@') || !txtTeacherEmail.Text.Contains('.'))
         {
-            errTeacher.SetError(txtTeacherEmail, "Email khong hop le.");
+            errTeacher.SetError(txtTeacherEmail, "Email không hợp lệ.");
         }
 
         return string.IsNullOrWhiteSpace(errTeacher.GetError(txtTeacherCode))
@@ -261,25 +261,25 @@ public partial class FrmTeacherManagement : Form
 
     private void LocalizeLabels()
     {
-        lblTeacherKeyword.Text = "Tu khoa";
-        txtTeacherKeyword.PlaceholderText = "Ma giao vien, ho ten hoac so dien thoai";
+        lblTeacherKeyword.Text = "Từ khóa";
+        txtTeacherKeyword.PlaceholderText = "Mã giáo viên, họ tên hoặc số điện thoại";
         cboTeacherStatusFilter.Items.Clear();
-        cboTeacherStatusFilter.Items.AddRange(["Tat ca", "Dang day", "Tam nghi"]);
+        cboTeacherStatusFilter.Items.AddRange(["Tất cả", "Đang dạy", "Tạm nghỉ"]);
 
-        lblTeacherStatus.Text = "Trang thai";
-        lblTeacherCode.Text = "Ma giao vien";
-        lblTeacherName.Text = "Ho va ten";
-        lblTeacherPhone.Text = "Dien thoai";
+        lblTeacherStatus.Text = "Trạng thái";
+        lblTeacherCode.Text = "Mã giáo viên";
+        lblTeacherName.Text = "Họ và tên";
+        lblTeacherPhone.Text = "Điện thoại";
         lblTeacherEmail.Text = "Email";
-        lblTeacherSpecialty.Text = "Chuyen mon";
-        lblTeacherAddress.Text = "Dia chi";
-        lblTeacherNote.Text = "Gioi tinh";
+        lblTeacherSpecialty.Text = "Chuyên môn";
+        lblTeacherAddress.Text = "Địa chỉ";
+        lblTeacherNote.Text = "Giới tính";
 
-        btnSearchTeacher.Text = "Tim kiem";
-        btnRefreshTeacher.Text = "Lam moi";
-        btnCreateTeacher.Text = "Them giao vien";
-        btnSaveTeacher.Text = "Luu";
-        btnUpdateTeacher.Text = "Cap nhat";
-        btnDeleteTeacher.Text = "Xoa mem";
+        btnSearchTeacher.Text = "Tìm kiếm";
+        btnRefreshTeacher.Text = "Làm mới";
+        btnCreateTeacher.Text = "Thêm giáo viên";
+        btnSaveTeacher.Text = "Lưu";
+        btnUpdateTeacher.Text = "Cập nhật";
+        btnDeleteTeacher.Text = "Xóa mềm";
     }
 }

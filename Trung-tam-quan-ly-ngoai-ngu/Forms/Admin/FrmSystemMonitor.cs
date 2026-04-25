@@ -44,7 +44,6 @@ public partial class FrmSystemMonitor : Form
         lblMonitorReceiptCountTag.Text = "GIAO DỊCH";
         lblMonitorDebtTotalTitle.Text = "GV NHẬT KÝ GIẢNG DẠY";
         lblMonitorDebtTotalTag.Text = "BẢN GHI";
-
         lblMonitorActivityTitle.Text = "NHẬT KÝ HOẠT ĐỘNG CHI TIẾT";
         lblMonitorActivityFooter.Text = "HIỂN THỊ 5 TRÊN 4,208 BẢN GHI";
         lblMonitorSourceTitle.Text = "NGUỒN DỮ LIỆU";

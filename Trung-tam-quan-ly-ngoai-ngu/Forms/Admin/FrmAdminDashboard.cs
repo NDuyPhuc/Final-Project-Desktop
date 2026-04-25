@@ -1,4 +1,5 @@
 using TrungTamNgoaiNgu.Application.Contracts;
+using System.ComponentModel;
 
 namespace Trung_tam_quan_ly_ngoai_ngu;
 
@@ -21,6 +22,12 @@ public partial class FrmAdminDashboard : Form
         _dataService = dataService;
 
         InitializeComponent();
+
+        if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
+        {
+            return;
+        }
+
         FormHostHelpers.ConfigureShellSurface(this, "Dashboard quản trị");
 
         ApplyLocalizedText();
@@ -35,7 +42,6 @@ public partial class FrmAdminDashboard : Form
     {
         lblSidebarBrandTitle.Text = "ADMIN";
         lblSidebarBrandSubtitle.Text = "Quản trị hệ thống";
-        lblCurrentRoleAdmin.Text = "Admin";
         lblAdminHeaderTitle.Text = "Dashboard Admin";
         lblAdminHeaderSubtitle.Text = "Chỉ hiển thị dữ liệu quản trị tổng hợp, không thao tác nghiệp vụ.";
         lblDashboardTitle.Text = "Dashboard quản trị";
@@ -46,7 +52,6 @@ public partial class FrmAdminDashboard : Form
         btnMenuAccountManagement.Text = "Tài khoản và phân quyền";
         btnMenuAdminReports.Text = "Báo cáo thống kê";
         btnLogoutAdmin.Text = "Đăng xuất";
-
         lblKpiAccountsTitle.Text = "Tổng tài khoản";
         lblKpiAccountsNote.Text = "Toàn bộ tài khoản hệ thống";
         lblKpiClassesTitle.Text = "Lớp đang mở";
@@ -55,7 +60,6 @@ public partial class FrmAdminDashboard : Form
         lblKpiRevenueNote.Text = "Doanh thu đã xác nhận";
         lblKpiDebtTitle.Text = "Học viên còn nợ";
         lblKpiDebtNote.Text = "Học viên còn nợ cần theo dõi";
-
         lblAdminWarningsTitle.Text = "Cảnh báo quản trị";
         lblAdminWarningsHint.Text = "Danh sách read-only các cảnh báo cần Admin theo dõi.";
         lblAdminQuickViewTitle.Text = "Số liệu nhanh";
@@ -66,19 +70,18 @@ public partial class FrmAdminDashboard : Form
     {
         MinimumSize = new Size(1080, 720);
         pnlSidebarAdmin.Width = 252;
-        pnlTopbarAdmin.Height = 104;
+        pnlTopbarAdmin.Height = 122;
         pnlSidebarAdmin.Padding = new Padding(18, 18, 18, 16);
-        pnlTopbarAdmin.Padding = new Padding(28, 18, 28, 18);
+        pnlTopbarAdmin.Padding = new Padding(28, 16, 28, 16);
         pnlContentHostAdmin.Padding = new Padding(20, 0, 20, 20);
 
-        lblCurrentUserAdmin.Text = _currentUserName;
         lblAdminUserCardName.Text = _currentUserName;
         lblAdminUserCardRole.Text = "Quản trị hệ thống";
-        lblCurrentRoleAdmin.Text = "Admin";
 
         pnlAdminUserCard.Width = 240;
-        pnlAdminUserCard.Height = 66;
+        pnlAdminUserCard.Height = 74;
         pnlAdminUserCard.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+        LayoutAdminUserCard();
 
         foreach (var card in new[]
                  {
@@ -143,8 +146,9 @@ public partial class FrmAdminDashboard : Form
         var contentWidth = Math.Max(920, pnlContentHostAdmin.ClientSize.Width);
         var compact = contentWidth < 1200;
 
-        pnlAdminUserCard.Width = compact ? 208 : 240;
+        pnlAdminUserCard.Width = compact ? 220 : 248;
         lblAdminHeaderSubtitle.MaximumSize = new Size(compact ? 560 : 760, 0);
+        LayoutAdminUserCard();
 
         ConfigureKpiLayout(compact);
 
@@ -156,6 +160,22 @@ public partial class FrmAdminDashboard : Form
             splAdminDashboardBottom,
             compact ? Orientation.Horizontal : Orientation.Vertical,
             desired);
+    }
+
+    private void LayoutAdminUserCard()
+    {
+        var contentWidth = Math.Max(120, pnlAdminUserCard.ClientSize.Width - 32);
+
+        lblAdminUserCardName.AutoSize = true;
+        lblAdminUserCardName.MaximumSize = new Size(contentWidth, 0);
+        lblAdminUserCardName.Location = new Point(16, 8);
+
+        lblAdminUserCardRole.AutoSize = true;
+        lblAdminUserCardRole.MaximumSize = new Size(contentWidth, 0);
+        lblAdminUserCardRole.Location = new Point(16, lblAdminUserCardName.Bottom + 4);
+
+        var desiredHeight = Math.Max(64, lblAdminUserCardRole.Bottom + 10);
+        pnlAdminUserCard.Height = desiredHeight;
     }
 
     private void ConfigureKpiLayout(bool compact)
@@ -272,5 +292,10 @@ public partial class FrmAdminDashboard : Form
 
     private void pnlAdminHeroCard_Paint(object sender, PaintEventArgs e)
     {
+    }
+
+    private void lblCurrentUserAdmin_Click(object sender, EventArgs e)
+    {
+
     }
 }
