@@ -25,7 +25,11 @@ public sealed partial class FrmLogin : Form
         AutoScroll = true;
         if (!IsInDesignMode())
         {
-            ClientSize = new Size(1366, 768);
+            var workingArea = Screen.FromPoint(Cursor.Position).WorkingArea;
+            var desiredSize = FormHostHelpers.ScaleSize(this, new Size(1366, 768));
+            ClientSize = new Size(
+                Math.Min(workingArea.Width, Math.Max(MinimumSize.Width, desiredSize.Width)),
+                Math.Min(workingArea.Height, Math.Max(MinimumSize.Height, desiredSize.Height)));
         }
         BackColor = Color.FromArgb(233, 237, 244);
 
@@ -58,12 +62,12 @@ public sealed partial class FrmLogin : Form
         ttLogin.SetToolTip(txtPassword, "Mật khẩu được đối chiếu với PasswordHash trong bảng Accounts.");
 
         LoadLoginLogoIfAvailable();
-        CenterLoginPanel();
+        ApplyResponsiveLayout();
 
-        Resize += (_, _) => CenterLoginPanel();
+        Resize += (_, _) => ApplyResponsiveLayout();
         Shown += (_, _) =>
         {
-            CenterLoginPanel();
+            ApplyResponsiveLayout();
             txtUsername.Focus();
         };
     }
@@ -88,8 +92,51 @@ public sealed partial class FrmLogin : Form
 
     private void CenterLoginPanel()
     {
-        pnlLoginContainer.Left = Math.Max(24, (ClientSize.Width - pnlLoginContainer.Width) / 2);
-        pnlLoginContainer.Top = Math.Max(24, (ClientSize.Height - pnlLoginContainer.Height) / 2);
+        var outerMargin = FormHostHelpers.ScaleForDpi(this, 24);
+        pnlLoginContainer.Left = Math.Max(outerMargin, (ClientSize.Width - pnlLoginContainer.Width) / 2);
+        pnlLoginContainer.Top = Math.Max(outerMargin, (ClientSize.Height - pnlLoginContainer.Height) / 2);
+    }
+
+    private void ApplyResponsiveLayout()
+    {
+        if (IsInDesignMode())
+        {
+            return;
+        }
+
+        var outerMargin = FormHostHelpers.ScaleForDpi(this, 24);
+        var compact = ClientSize.Width < FormHostHelpers.ScaleForDpi(this, 980);
+        var containerWidth = Math.Min(
+            Math.Max(pnlLoginContainer.MinimumSize.Width, ClientSize.Width - outerMargin * 2),
+            FormHostHelpers.ScaleForDpi(this, compact ? 520 : 560));
+        var containerHeight = Math.Max(
+            pnlLoginContainer.MinimumSize.Height,
+            Math.Min(ClientSize.Height - outerMargin * 2, FormHostHelpers.ScaleForDpi(this, 760)));
+
+        pnlLoginContainer.Size = new Size(containerWidth, containerHeight);
+        pnlLoginHeader.Height = FormHostHelpers.ScaleForDpi(this, compact ? 176 : 200);
+        pnlLoginFooter.Height = FormHostHelpers.ScaleForDpi(this, 56);
+        tblFooter.Padding = FormHostHelpers.ScalePadding(this, new Padding(compact ? 20 : 32, 12, compact ? 20 : 32, 12));
+        pnlLoginFormContent.Padding = FormHostHelpers.ScalePadding(this, new Padding(compact ? 24 : 32, 0, compact ? 24 : 32, 0));
+
+        var contentWidth = pnlLoginFormContent.ClientSize.Width - pnlLoginFormContent.Padding.Horizontal;
+        if (contentWidth > 0)
+        {
+            pnlErrorAlert.Width = contentWidth;
+            lblUsername.Width = contentWidth;
+            pnlUsernameInput.Width = contentWidth;
+            lblPassword.Width = contentWidth;
+            pnlPasswordInput.Width = contentWidth;
+            pnlSubControls.Width = contentWidth;
+            pnlActionButtons.Width = contentWidth;
+
+            var gap = FormHostHelpers.ScaleForDpi(this, 16);
+            var buttonWidth = Math.Max(FormHostHelpers.ScaleForDpi(this, 140), (contentWidth - gap) / 2);
+            btnExit.SetBounds(0, 0, buttonWidth, btnExit.Height);
+            btnLogin.SetBounds(contentWidth - buttonWidth, 0, buttonWidth, btnLogin.Height);
+        }
+
+        CenterLoginPanel();
     }
 
     private static bool IsInDesignMode()

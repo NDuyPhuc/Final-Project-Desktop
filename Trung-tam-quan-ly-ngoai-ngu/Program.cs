@@ -27,7 +27,7 @@ namespace Trung_tam_quan_ly_ngoai_ngu
                 }
             };
 
-            Application.Run(new FrmLogin(dataService));
+            Application.Run(new FrmLogin(AppRuntime.DataService));
         }
 
         private static bool TryInitializeRuntime(ILanguageCenterDataService dataService)
@@ -40,18 +40,19 @@ namespace Trung_tam_quan_ly_ngoai_ngu
             catch (Exception exception)
             {
                 ErrorLogger.Log(exception, "InitializeDatabase");
+                AppRuntime.Initialize(new OfflineLanguageCenterDataService());
 
-                var scriptPath = Path.Combine(AppPaths.GetWorkspaceRoot(), "docs", "database-script.sql");
-                var settingsPath = Path.Combine(AppContext.BaseDirectory, "appsettings.json");
                 var message =
                     "Khong the khoi tao ket noi SQL Server.\n\n" +
-                    $"1. Kiem tra chuoi ket noi trong: {settingsPath}\n" +
-                    $"2. Chay script: {scriptPath}\n" +
-                    "3. Neu can ghi de cau hinh, dat bien moi truong TTNN_SQL_CONNECTION_STRING va TTNN_SQL_PASSWORD roi mo lai app.\n\n" +
+                    "Ung dung se chuyen sang che do offline demo de ban tiep tuc kiem tra giao dien.\n\n" +
+                    "Tai khoan demo:\n" +
+                    "- admin / 123456\n" +
+                    "- staff / 123456\n" +
+                    "- teacher / 123456\n\n" +
                     $"Chi tiet loi da duoc ghi tai:\n{AppPaths.LogFilePath}";
 
-                MessageBox.Show(message, "Khoi tao database that bai", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
+                MessageBox.Show(message, "Khoi tao database that bai", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return true;
             }
         }
 

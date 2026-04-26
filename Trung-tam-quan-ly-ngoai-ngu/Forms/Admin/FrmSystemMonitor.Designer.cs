@@ -1142,7 +1142,7 @@ partial class FrmSystemMonitor
         // 
         // FrmSystemMonitor
         // 
-        AutoScaleDimensions = new SizeF(144F, 144F);
+        AutoScaleDimensions = new SizeF(96F, 96F);
         AutoScaleMode = AutoScaleMode.Dpi;
         BackColor = Color.FromArgb(241, 248, 255);
         ClientSize = new Size(1120, 720);

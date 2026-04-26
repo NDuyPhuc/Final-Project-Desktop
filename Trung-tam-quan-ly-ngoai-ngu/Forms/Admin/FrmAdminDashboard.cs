@@ -68,18 +68,18 @@ public partial class FrmAdminDashboard : Form
 
     private void ApplyShellStyling()
     {
-        MinimumSize = new Size(1080, 720);
-        pnlSidebarAdmin.Width = 252;
-        pnlTopbarAdmin.Height = 122;
-        pnlSidebarAdmin.Padding = new Padding(18, 18, 18, 16);
-        pnlTopbarAdmin.Padding = new Padding(28, 16, 28, 16);
-        pnlContentHostAdmin.Padding = new Padding(20, 0, 20, 20);
+        MinimumSize = FormHostHelpers.ScaleSize(this, new Size(1080, 720));
+        pnlSidebarAdmin.Width = FormHostHelpers.ScaleForDpi(this, 252);
+        pnlTopbarAdmin.Height = FormHostHelpers.ScaleForDpi(this, 122);
+        pnlSidebarAdmin.Padding = FormHostHelpers.ScalePadding(this, new Padding(18, 18, 18, 16));
+        pnlTopbarAdmin.Padding = FormHostHelpers.ScalePadding(this, new Padding(28, 16, 28, 16));
+        pnlContentHostAdmin.Padding = FormHostHelpers.ScalePadding(this, new Padding(20, 0, 20, 20));
 
         lblAdminUserCardName.Text = _currentUserName;
         lblAdminUserCardRole.Text = "Quản trị hệ thống";
 
-        pnlAdminUserCard.Width = 240;
-        pnlAdminUserCard.Height = 74;
+        pnlAdminUserCard.Width = FormHostHelpers.ScaleForDpi(this, 240);
+        pnlAdminUserCard.Height = FormHostHelpers.ScaleForDpi(this, 74);
         pnlAdminUserCard.Anchor = AnchorStyles.Top | AnchorStyles.Right;
         LayoutAdminUserCard();
 
@@ -114,7 +114,7 @@ public partial class FrmAdminDashboard : Form
         AppTheme.StyleDangerButton(btnLogoutAdmin);
 
         lblDashboardTitle.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-        lblDashboardSubtitle.MaximumSize = new Size(960, 0);
+        lblDashboardSubtitle.MaximumSize = new Size(FormHostHelpers.ScaleForDpi(this, 960), 0);
         lblDashboardSubtitle.AutoSize = true;
 
         StyleKpiValue(lblKpiAccountsValue, Color.FromArgb(0, 66, 118));
@@ -132,9 +132,9 @@ public partial class FrmAdminDashboard : Form
         tblAdminDashboardRoot.RowStyles[2] = new RowStyle(SizeType.Percent, 100F);
 
         splAdminDashboardBottom.FixedPanel = FixedPanel.None;
-        splAdminDashboardBottom.Panel1MinSize = 320;
-        splAdminDashboardBottom.Panel2MinSize = 320;
-        splAdminDashboardBottom.SplitterWidth = 10;
+        splAdminDashboardBottom.Panel1MinSize = FormHostHelpers.ScaleForDpi(this, 320);
+        splAdminDashboardBottom.Panel2MinSize = FormHostHelpers.ScaleForDpi(this, 320);
+        splAdminDashboardBottom.SplitterWidth = FormHostHelpers.ScaleForDpi(this, 10);
 
         Resize += (_, _) => ApplyResponsiveBreakpoints();
         pnlContentHostAdmin.Resize += (_, _) => ApplyResponsiveBreakpoints();
@@ -143,18 +143,18 @@ public partial class FrmAdminDashboard : Form
 
     private void ApplyResponsiveBreakpoints()
     {
-        var contentWidth = Math.Max(920, pnlContentHostAdmin.ClientSize.Width);
-        var compact = contentWidth < 1200;
+        var contentWidth = Math.Max(FormHostHelpers.ScaleForDpi(this, 920), pnlContentHostAdmin.ClientSize.Width);
+        var compact = contentWidth < FormHostHelpers.ScaleForDpi(this, 1200);
 
-        pnlAdminUserCard.Width = compact ? 220 : 248;
-        lblAdminHeaderSubtitle.MaximumSize = new Size(compact ? 560 : 760, 0);
+        pnlAdminUserCard.Width = FormHostHelpers.ScaleForDpi(this, compact ? 220 : 248);
+        lblAdminHeaderSubtitle.MaximumSize = new Size(FormHostHelpers.ScaleForDpi(this, compact ? 560 : 760), 0);
         LayoutAdminUserCard();
 
         ConfigureKpiLayout(compact);
 
         var desired = compact
-            ? Math.Max(220, splAdminDashboardBottom.ClientSize.Height / 2)
-            : Math.Max(320, splAdminDashboardBottom.ClientSize.Width / 2);
+            ? Math.Max(FormHostHelpers.ScaleForDpi(this, 220), splAdminDashboardBottom.ClientSize.Height / 2)
+            : Math.Max(FormHostHelpers.ScaleForDpi(this, 320), splAdminDashboardBottom.ClientSize.Width / 2);
 
         FormHostHelpers.ApplyResponsiveSplit(
             splAdminDashboardBottom,
@@ -164,17 +164,17 @@ public partial class FrmAdminDashboard : Form
 
     private void LayoutAdminUserCard()
     {
-        var contentWidth = Math.Max(120, pnlAdminUserCard.ClientSize.Width - 32);
+        var contentWidth = Math.Max(FormHostHelpers.ScaleForDpi(this, 120), pnlAdminUserCard.ClientSize.Width - FormHostHelpers.ScaleForDpi(this, 32));
 
         lblAdminUserCardName.AutoSize = true;
         lblAdminUserCardName.MaximumSize = new Size(contentWidth, 0);
-        lblAdminUserCardName.Location = new Point(16, 8);
+        lblAdminUserCardName.Location = new Point(FormHostHelpers.ScaleForDpi(this, 16), FormHostHelpers.ScaleForDpi(this, 8));
 
         lblAdminUserCardRole.AutoSize = true;
         lblAdminUserCardRole.MaximumSize = new Size(contentWidth, 0);
-        lblAdminUserCardRole.Location = new Point(16, lblAdminUserCardName.Bottom + 4);
+        lblAdminUserCardRole.Location = new Point(FormHostHelpers.ScaleForDpi(this, 16), lblAdminUserCardName.Bottom + FormHostHelpers.ScaleForDpi(this, 4));
 
-        var desiredHeight = Math.Max(64, lblAdminUserCardRole.Bottom + 10);
+        var desiredHeight = Math.Max(FormHostHelpers.ScaleForDpi(this, 64), lblAdminUserCardRole.Bottom + FormHostHelpers.ScaleForDpi(this, 10));
         pnlAdminUserCard.Height = desiredHeight;
     }
 

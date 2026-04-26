@@ -210,6 +210,32 @@ public static class FormHostHelpers
         ApplySafeSplitterDistance(splitContainer, desiredDistance);
     }
 
+    public static int ScaleForDpi(Control control, int logicalPixels)
+    {
+        if (logicalPixels <= 0)
+        {
+            return logicalPixels;
+        }
+
+        return (int)Math.Round(logicalPixels * control.DeviceDpi / 96F);
+    }
+
+    public static Size ScaleSize(Control control, Size logicalSize)
+    {
+        return new Size(
+            ScaleForDpi(control, logicalSize.Width),
+            ScaleForDpi(control, logicalSize.Height));
+    }
+
+    public static Padding ScalePadding(Control control, Padding logicalPadding)
+    {
+        return new Padding(
+            ScaleForDpi(control, logicalPadding.Left),
+            ScaleForDpi(control, logicalPadding.Top),
+            ScaleForDpi(control, logicalPadding.Right),
+            ScaleForDpi(control, logicalPadding.Bottom));
+    }
+
     public static void EnsureSafeSplitOrientation(SplitContainer splitContainer, Orientation targetOrientation)
     {
         if (splitContainer.IsDisposed || splitContainer.Orientation == targetOrientation)

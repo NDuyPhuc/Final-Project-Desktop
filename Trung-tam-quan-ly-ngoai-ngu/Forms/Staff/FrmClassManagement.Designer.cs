@@ -617,7 +617,7 @@ partial class FrmClassManagement
         // 
         // FrmClassManagement
         // 
-        AutoScaleDimensions = new SizeF(144F, 144F);
+        AutoScaleDimensions = new SizeF(96F, 96F);
         AutoScaleMode = AutoScaleMode.Dpi;
         ClientSize = new Size(1000, 640);
         Controls.Add(tblClassRoot);

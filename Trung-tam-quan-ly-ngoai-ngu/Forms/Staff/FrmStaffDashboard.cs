@@ -26,15 +26,15 @@ public partial class FrmStaffDashboard : Form
     private void ApplyShellStyling()
     {
         BackColor = Color.FromArgb(237, 247, 255);
-        pnlSidebarStaff.Width = 248;
-        pnlTopbarStaff.Height = 98;
-        pnlContentHostStaff.Padding = new Padding(20, 0, 20, 20);
+        pnlSidebarStaff.Width = FormHostHelpers.ScaleForDpi(this, 248);
+        pnlTopbarStaff.Height = FormHostHelpers.ScaleForDpi(this, 98);
+        pnlContentHostStaff.Padding = FormHostHelpers.ScalePadding(this, new Padding(20, 0, 20, 20));
         pnlDashboardHome.BackColor = Color.FromArgb(237, 247, 255);
         pnlContentHostStaff.BackColor = Color.FromArgb(237, 247, 255);
         pnlTopbarStaff.BackColor = Color.FromArgb(237, 247, 255);
         pnlSidebarStaff.BackColor = Color.FromArgb(226, 243, 255);
-        pnlSidebarFooterStaff.Height = 54;
-        pnlSidebarFooterStaff.Padding = new Padding(18, 0, 18, 0);
+        pnlSidebarFooterStaff.Height = FormHostHelpers.ScaleForDpi(this, 54);
+        pnlSidebarFooterStaff.Padding = FormHostHelpers.ScalePadding(this, new Padding(18, 0, 18, 0));
 
         lblCurrentUserStaff.Text = _currentUserName;
         lblCurrentRoleStaff.Text = "Linguistic Architect CMS";
@@ -89,8 +89,8 @@ public partial class FrmStaffDashboard : Form
         dgvRecentReceipts.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
         dgvRecentReceipts.RowsDefaultCellStyle.BackColor = Color.White;
         dgvRecentReceipts.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(247, 251, 255);
-        dgvRecentReceipts.DefaultCellStyle.Padding = new Padding(8, 10, 8, 10);
-        dgvRecentReceipts.RowTemplate.Height = 68;
+        dgvRecentReceipts.DefaultCellStyle.Padding = FormHostHelpers.ScalePadding(this, new Padding(8, 10, 8, 10));
+        dgvRecentReceipts.RowTemplate.Height = FormHostHelpers.ScaleForDpi(this, 68);
 
         StyleTopbarActionButton(btnTopbarNotifyStaff, "Thông tin", 124);
         StyleTopbarActionButton(btnTopbarSettingsStaff, "Cài đặt", 104);
@@ -227,24 +227,24 @@ public partial class FrmStaffDashboard : Form
         {
             var card = new Panel
             {
-                Width = Math.Max(260, flpStaffTaskList.ClientSize.Width - 56),
-                Height = 150,
+                Width = Math.Max(FormHostHelpers.ScaleForDpi(this, 260), flpStaffTaskList.ClientSize.Width - FormHostHelpers.ScaleForDpi(this, 56)),
+                Height = FormHostHelpers.ScaleForDpi(this, 150),
                 BackColor = Color.White,
                 BorderStyle = BorderStyle.FixedSingle,
-                Margin = new Padding(0, 0, 0, 18)
+                Margin = FormHostHelpers.ScalePadding(this, new Padding(0, 0, 0, 18))
             };
 
             var chk = new CheckBox
             {
-                Location = new Point(20, 28),
-                Size = new Size(28, 28)
+                Location = new Point(FormHostHelpers.ScaleForDpi(this, 20), FormHostHelpers.ScaleForDpi(this, 28)),
+                Size = FormHostHelpers.ScaleSize(this, new Size(28, 28))
             };
 
             var title = new Label
             {
                 AutoSize = false,
-                Location = new Point(64, 22),
-                Size = new Size(card.Width - 92, 32),
+                Location = new Point(FormHostHelpers.ScaleForDpi(this, 64), FormHostHelpers.ScaleForDpi(this, 22)),
+                Size = new Size(card.Width - FormHostHelpers.ScaleForDpi(this, 92), FormHostHelpers.ScaleForDpi(this, 32)),
                 Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right,
                 Font = new Font("Segoe UI", 11F, FontStyle.Bold),
                 Text = task.Title
@@ -253,8 +253,8 @@ public partial class FrmStaffDashboard : Form
             var body = new Label
             {
                 AutoSize = false,
-                Location = new Point(64, 58),
-                Size = new Size(card.Width - 92, 46),
+                Location = new Point(FormHostHelpers.ScaleForDpi(this, 64), FormHostHelpers.ScaleForDpi(this, 58)),
+                Size = new Size(card.Width - FormHostHelpers.ScaleForDpi(this, 92), FormHostHelpers.ScaleForDpi(this, 46)),
                 Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right,
                 Font = new Font("Segoe UI", 10F, FontStyle.Regular),
                 ForeColor = Color.FromArgb(72, 80, 94),
@@ -264,8 +264,8 @@ public partial class FrmStaffDashboard : Form
             var badge = new Label
             {
                 AutoSize = true,
-                Location = new Point(64, 112),
-                Padding = new Padding(10, 4, 10, 4),
+                Location = new Point(FormHostHelpers.ScaleForDpi(this, 64), FormHostHelpers.ScaleForDpi(this, 112)),
+                Padding = FormHostHelpers.ScalePadding(this, new Padding(10, 4, 10, 4)),
                 Font = new Font("Segoe UI", 9F, FontStyle.Bold),
                 Text = task.Priority
             };
@@ -273,7 +273,7 @@ public partial class FrmStaffDashboard : Form
             var due = new Label
             {
                 AutoSize = true,
-                Location = new Point(64 + badge.PreferredWidth + 12, 116),
+                Location = new Point(FormHostHelpers.ScaleForDpi(this, 64) + badge.PreferredWidth + FormHostHelpers.ScaleForDpi(this, 12), FormHostHelpers.ScaleForDpi(this, 116)),
                 Font = new Font("Segoe UI", 9.5F, FontStyle.Regular),
                 ForeColor = Color.FromArgb(85, 92, 104),
                 Text = task.Deadline
@@ -293,11 +293,11 @@ public partial class FrmStaffDashboard : Form
         {
             foreach (Control control in flpStaffTaskList.Controls)
             {
-                control.Width = Math.Max(260, flpStaffTaskList.ClientSize.Width - 56);
+                control.Width = Math.Max(FormHostHelpers.ScaleForDpi(this, 260), flpStaffTaskList.ClientSize.Width - FormHostHelpers.ScaleForDpi(this, 56));
             }
         };
 
-        flpStaffTaskList.Padding = new Padding(24, 28, 24, 28);
+        flpStaffTaskList.Padding = FormHostHelpers.ScalePadding(this, new Padding(24, 28, 24, 28));
     }
 
     private void BuildWeeklyProgressGrid()
@@ -312,8 +312,8 @@ public partial class FrmStaffDashboard : Form
             flpWeeklyProgressGrid.Controls.Add(new Panel
             {
                 BackColor = index < done ? Color.FromArgb(18, 120, 118) : Color.FromArgb(198, 225, 244),
-                Size = new Size(40, 40),
-                Margin = new Padding(8)
+                Size = FormHostHelpers.ScaleSize(this, new Size(40, 40)),
+                Margin = FormHostHelpers.ScalePadding(this, new Padding(8))
             });
         }
 
@@ -342,19 +342,27 @@ public partial class FrmStaffDashboard : Form
 
         try
         {
-            var compact = contentWidth < 1220;
-            var veryCompact = contentWidth < 980;
-            var ultraCompact = contentWidth < 760;
+            var compact = contentWidth < FormHostHelpers.ScaleForDpi(this, 1220);
+            var veryCompact = contentWidth < FormHostHelpers.ScaleForDpi(this, 980);
+            var ultraCompact = contentWidth < FormHostHelpers.ScaleForDpi(this, 760);
 
             tblStaffKpi.SuspendLayout();
             tblStaffMain.SuspendLayout();
             tblStaffDashboardRoot.SuspendLayout();
             tblTopbarStaff.SuspendLayout();
 
-            pnlSidebarStaff.Width = contentWidth < 820 ? 220 : 248;
-            pnlTopbarStaff.Height = ultraCompact ? 152 : veryCompact ? 142 : 98;
-            pnlContentHostStaff.Padding = contentWidth < 820 ? new Padding(14, 0, 14, 14) : new Padding(20, 0, 20, 20);
-            pnlSidebarFooterStaff.Height = 54;
+            pnlSidebarStaff.Width = contentWidth < FormHostHelpers.ScaleForDpi(this, 820)
+                ? FormHostHelpers.ScaleForDpi(this, 220)
+                : FormHostHelpers.ScaleForDpi(this, 248);
+            pnlTopbarStaff.Height = ultraCompact
+                ? FormHostHelpers.ScaleForDpi(this, 152)
+                : veryCompact
+                    ? FormHostHelpers.ScaleForDpi(this, 142)
+                    : FormHostHelpers.ScaleForDpi(this, 98);
+            pnlContentHostStaff.Padding = contentWidth < FormHostHelpers.ScaleForDpi(this, 820)
+                ? FormHostHelpers.ScalePadding(this, new Padding(14, 0, 14, 14))
+                : FormHostHelpers.ScalePadding(this, new Padding(20, 0, 20, 20));
+            pnlSidebarFooterStaff.Height = FormHostHelpers.ScaleForDpi(this, 54);
             lblCurrentUserStaff.Font = new Font("Segoe UI", ultraCompact ? 10.5F : 11F, FontStyle.Bold);
             lblCurrentRoleStaff.Font = new Font("Segoe UI", ultraCompact ? 8.5F : 10F, FontStyle.Regular);
 
@@ -573,26 +581,26 @@ public partial class FrmStaffDashboard : Form
 
     private static void LayoutKpiCard(Panel host, Label title, Label value, Label badge)
     {
-        var contentLeft = 54;
-        var contentWidth = Math.Max(120, host.ClientSize.Width - 86);
-        var compact = host.ClientSize.Width < 300 || host.ClientSize.Height < 118;
-        var badgeWidth = Math.Min(contentWidth, compact ? 150 : 176);
+        var contentLeft = FormHostHelpers.ScaleForDpi(host, 54);
+        var contentWidth = Math.Max(FormHostHelpers.ScaleForDpi(host, 120), host.ClientSize.Width - FormHostHelpers.ScaleForDpi(host, 86));
+        var compact = host.ClientSize.Width < FormHostHelpers.ScaleForDpi(host, 300) || host.ClientSize.Height < FormHostHelpers.ScaleForDpi(host, 118);
+        var badgeWidth = Math.Min(contentWidth, FormHostHelpers.ScaleForDpi(host, compact ? 150 : 176));
 
         title.AutoSize = false;
         title.Font = new Font("Segoe UI", compact ? 9.5F : 10.5F, FontStyle.Bold);
-        title.Location = new Point(contentLeft, compact ? 8 : 12);
-        title.Size = new Size(contentWidth, compact ? 26 : 30);
+        title.Location = new Point(contentLeft, FormHostHelpers.ScaleForDpi(host, compact ? 8 : 12));
+        title.Size = new Size(contentWidth, FormHostHelpers.ScaleForDpi(host, compact ? 26 : 30));
         title.TextAlign = ContentAlignment.MiddleCenter;
 
         value.AutoSize = false;
         value.Font = new Font("Segoe UI", compact ? 18F : 22F, FontStyle.Bold);
-        value.Location = new Point(contentLeft, compact ? 32 : 38);
-        value.Size = new Size(contentWidth, compact ? 34 : 40);
+        value.Location = new Point(contentLeft, FormHostHelpers.ScaleForDpi(host, compact ? 32 : 38));
+        value.Size = new Size(contentWidth, FormHostHelpers.ScaleForDpi(host, compact ? 34 : 40));
         value.TextAlign = ContentAlignment.MiddleCenter;
 
         badge.AutoSize = false;
-        badge.Location = new Point(contentLeft + Math.Max(0, (contentWidth - badgeWidth) / 2), host.ClientSize.Height - (compact ? 30 : 34));
-        badge.Size = new Size(badgeWidth, compact ? 22 : 24);
+        badge.Location = new Point(contentLeft + Math.Max(0, (contentWidth - badgeWidth) / 2), host.ClientSize.Height - FormHostHelpers.ScaleForDpi(host, compact ? 30 : 34));
+        badge.Size = new Size(badgeWidth, FormHostHelpers.ScaleForDpi(host, compact ? 22 : 24));
         badge.TextAlign = ContentAlignment.MiddleCenter;
     }
 
@@ -657,7 +665,7 @@ public partial class FrmStaffDashboard : Form
         button.BackColor = active ? Color.FromArgb(126, 227, 227) : Color.Transparent;
     }
 
-    private static void StyleTopbarActionButton(Button button, string text, int width)
+    private void StyleTopbarActionButton(Button button, string text, int width)
     {
         button.FlatStyle = FlatStyle.Flat;
         button.FlatAppearance.BorderSize = 0;
@@ -668,9 +676,9 @@ public partial class FrmStaffDashboard : Form
         button.TextAlign = ContentAlignment.MiddleCenter;
         button.TabStop = false;
         button.AutoSize = false;
-        button.Padding = new Padding(6, 0, 6, 0);
-        button.Width = width;
-        button.Height = 36;
+        button.Padding = FormHostHelpers.ScalePadding(this, new Padding(6, 0, 6, 0));
+        button.Width = FormHostHelpers.ScaleForDpi(this, width);
+        button.Height = FormHostHelpers.ScaleForDpi(this, 36);
     }
 
     private void SyncDashboardHomeHeight()

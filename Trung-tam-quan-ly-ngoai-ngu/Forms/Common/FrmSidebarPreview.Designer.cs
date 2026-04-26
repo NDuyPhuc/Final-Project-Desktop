@@ -481,7 +481,7 @@ partial class FrmSidebarPreview
         // 
         // FrmSidebarPreview
         // 
-        AutoScaleDimensions = new SizeF(144F, 144F);
+        AutoScaleDimensions = new SizeF(96F, 96F);
         AutoScaleMode = AutoScaleMode.Dpi;
         BackColor = Color.FromArgb(245, 247, 251);
         ClientSize = new Size(1178, 760);

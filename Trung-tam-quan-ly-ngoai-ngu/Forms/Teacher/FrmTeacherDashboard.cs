@@ -32,19 +32,19 @@ public partial class FrmTeacherDashboard : Form
 
     private void ApplyShellStyling()
     {
-        MinimumSize = new Size(1220, 780);
+        MinimumSize = FormHostHelpers.ScaleSize(this, new Size(1220, 780));
         BackColor = Color.FromArgb(236, 247, 255);
-        pnlSidebarTeacher.Width = 340;
-        pnlTopbarTeacher.Height = 104;
+        pnlSidebarTeacher.Width = FormHostHelpers.ScaleForDpi(this, 340);
+        pnlTopbarTeacher.Height = FormHostHelpers.ScaleForDpi(this, 104);
         pnlSidebarTeacher.BackColor = Color.FromArgb(225, 243, 255);
         pnlTopbarTeacher.BackColor = Color.White;
         pnlContentHostTeacher.BackColor = Color.FromArgb(236, 247, 255);
-        pnlContentHostTeacher.Padding = new Padding(18, 0, 18, 18);
+        pnlContentHostTeacher.Padding = FormHostHelpers.ScalePadding(this, new Padding(18, 0, 18, 18));
         pnlContentHostTeacher.AutoScroll = true;
         pnlDashboardHome.BackColor = Color.FromArgb(236, 247, 255);
         pnlDashboardHome.AutoScroll = true;
-        pnlSidebarTeacherBrand.Height = 110;
-        pnlSidebarTeacherBrand.Padding = new Padding(6, 0, 0, 0);
+        pnlSidebarTeacherBrand.Height = FormHostHelpers.ScaleForDpi(this, 110);
+        pnlSidebarTeacherBrand.Padding = FormHostHelpers.ScalePadding(this, new Padding(6, 0, 0, 0));
 
         lblSidebarTeacherTitle.Text = "LINGUISTIC\r\nARCHITECT";
         lblSidebarTeacherTitle.AutoSize = false;
@@ -77,14 +77,14 @@ public partial class FrmTeacherDashboard : Form
             button.FlatAppearance.MouseDownBackColor = Color.FromArgb(202, 237, 237);
             button.FlatAppearance.MouseOverBackColor = Color.FromArgb(234, 246, 250);
             button.TextAlign = ContentAlignment.MiddleLeft;
-            button.Padding = new Padding(18, 0, 12, 0);
-            button.Width = Math.Max(292, flpSidebarTeacherMenu.ClientSize.Width - 4);
-            button.Height = 58;
-            button.Margin = new Padding(0, 0, 0, 10);
+            button.Padding = FormHostHelpers.ScalePadding(this, new Padding(18, 0, 12, 0));
+            button.Width = Math.Max(FormHostHelpers.ScaleForDpi(this, 292), flpSidebarTeacherMenu.ClientSize.Width - FormHostHelpers.ScaleForDpi(this, 4));
+            button.Height = FormHostHelpers.ScaleForDpi(this, 58);
+            button.Margin = FormHostHelpers.ScalePadding(this, new Padding(0, 0, 0, 10));
             button.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
         }
 
-        flpSidebarTeacherMenu.Padding = new Padding(0, 22, 0, 0);
+        flpSidebarTeacherMenu.Padding = FormHostHelpers.ScalePadding(this, new Padding(0, 22, 0, 0));
         flpSidebarTeacherMenu.WrapContents = false;
 
         EnsureSidebarFooter();
@@ -110,9 +110,9 @@ public partial class FrmTeacherDashboard : Form
         ConfigureClassOverviewCard();
         ConfigureTaskCard();
         splTeacherDashboard.FixedPanel = FixedPanel.None;
-        splTeacherDashboard.Panel1MinSize = 540;
-        splTeacherDashboard.Panel2MinSize = 300;
-        splTeacherDashboard.SplitterWidth = 10;
+        splTeacherDashboard.Panel1MinSize = FormHostHelpers.ScaleForDpi(this, 540);
+        splTeacherDashboard.Panel2MinSize = FormHostHelpers.ScaleForDpi(this, 300);
+        splTeacherDashboard.SplitterWidth = FormHostHelpers.ScaleForDpi(this, 10);
 
         var menuButtons = GetMenuButtons();
         btnMenuTeacherDashboard.Click += (_, _) => ShowDashboardHome();
@@ -781,21 +781,21 @@ public partial class FrmTeacherDashboard : Form
         try
         {
             var width = ClientSize.Width;
-            var compact = width < 1480;
-            var veryCompact = width < 1320;
+            var compact = width < FormHostHelpers.ScaleForDpi(this, 1480);
+            var veryCompact = width < FormHostHelpers.ScaleForDpi(this, 1320);
 
-            pnlSidebarTeacher.Width = veryCompact ? 312 : 340;
-            pnlTopbarTeacher.Height = veryCompact ? 116 : 104;
+            pnlSidebarTeacher.Width = veryCompact ? FormHostHelpers.ScaleForDpi(this, 312) : FormHostHelpers.ScaleForDpi(this, 340);
+            pnlTopbarTeacher.Height = veryCompact ? FormHostHelpers.ScaleForDpi(this, 116) : FormHostHelpers.ScaleForDpi(this, 104);
 
             if (_topbarLayout is not null)
             {
-                _topbarLayout.ColumnStyles[1].Width = compact ? 96F : 112F;
-                _topbarLayout.ColumnStyles[2].Width = veryCompact ? 292F : 360F;
+                _topbarLayout.ColumnStyles[1].Width = FormHostHelpers.ScaleForDpi(this, compact ? 96 : 112);
+                _topbarLayout.ColumnStyles[2].Width = FormHostHelpers.ScaleForDpi(this, veryCompact ? 292 : 360);
             }
 
             foreach (var button in GetMenuButtons())
             {
-                button.Width = Math.Max(272, flpSidebarTeacherMenu.ClientSize.Width - 8);
+                button.Width = Math.Max(FormHostHelpers.ScaleForDpi(this, 272), flpSidebarTeacherMenu.ClientSize.Width - FormHostHelpers.ScaleForDpi(this, 8));
             }
 
             tblTeacherKpi.SuspendLayout();
@@ -807,12 +807,12 @@ public partial class FrmTeacherDashboard : Form
                 tblTeacherKpi.RowStyles.Clear();
                 tblTeacherKpi.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
                 tblTeacherKpi.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-                tblTeacherKpi.RowStyles.Add(new RowStyle(SizeType.Absolute, 118F));
-                tblTeacherKpi.RowStyles.Add(new RowStyle(SizeType.Absolute, 118F));
+                tblTeacherKpi.RowStyles.Add(new RowStyle(SizeType.Absolute, FormHostHelpers.ScaleForDpi(this, 118)));
+                tblTeacherKpi.RowStyles.Add(new RowStyle(SizeType.Absolute, FormHostHelpers.ScaleForDpi(this, 118)));
 
-                SetTablePosition(pnlTeachingClassesCount, 0, 0, new Padding(0, 0, 10, 10));
-                SetTablePosition(pnlTeachingStudentCount, 1, 0, new Padding(0, 0, 0, 10));
-                SetTablePosition(pnlTeachingTodaySessions, 0, 1, new Padding(0, 0, 10, 0));
+                SetTablePosition(pnlTeachingClassesCount, 0, 0, FormHostHelpers.ScalePadding(this, new Padding(0, 0, 10, 10)));
+                SetTablePosition(pnlTeachingStudentCount, 1, 0, FormHostHelpers.ScalePadding(this, new Padding(0, 0, 0, 10)));
+                SetTablePosition(pnlTeachingTodaySessions, 0, 1, FormHostHelpers.ScalePadding(this, new Padding(0, 0, 10, 0)));
                 SetTablePosition(pnlTeachingPendingScores, 1, 1, Padding.Empty);
             }
             else
@@ -825,11 +825,11 @@ public partial class FrmTeacherDashboard : Form
                 {
                     tblTeacherKpi.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
                 }
-                tblTeacherKpi.RowStyles.Add(new RowStyle(SizeType.Absolute, 118F));
+                tblTeacherKpi.RowStyles.Add(new RowStyle(SizeType.Absolute, FormHostHelpers.ScaleForDpi(this, 118)));
 
-                SetTablePosition(pnlTeachingClassesCount, 0, 0, new Padding(0, 0, 12, 0));
-                SetTablePosition(pnlTeachingStudentCount, 1, 0, new Padding(0, 0, 12, 0));
-                SetTablePosition(pnlTeachingTodaySessions, 2, 0, new Padding(0, 0, 12, 0));
+                SetTablePosition(pnlTeachingClassesCount, 0, 0, FormHostHelpers.ScalePadding(this, new Padding(0, 0, 12, 0)));
+                SetTablePosition(pnlTeachingStudentCount, 1, 0, FormHostHelpers.ScalePadding(this, new Padding(0, 0, 12, 0)));
+                SetTablePosition(pnlTeachingTodaySessions, 2, 0, FormHostHelpers.ScalePadding(this, new Padding(0, 0, 12, 0)));
                 SetTablePosition(pnlTeachingPendingScores, 3, 0, Padding.Empty);
             }
             tblTeacherKpi.ResumeLayout(true);
