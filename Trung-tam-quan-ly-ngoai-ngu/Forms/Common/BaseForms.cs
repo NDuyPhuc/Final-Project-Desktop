@@ -13,15 +13,15 @@ public static class FormHostHelpers
     {
         form.Text = title;
         form.BackColor = AppTheme.Background;
-        form.Font = AppTheme.FontBody;
-        form.AutoScroll = true;
+        form.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
         form.AutoScaleMode = AutoScaleMode.Dpi;
+        form.AutoScroll = false;
+        form.StartPosition = FormStartPosition.CenterScreen;
         if (form.MinimumSize == Size.Empty)
         {
-            form.MinimumSize = new Size(900, 620);
+            form.MinimumSize = ScaleSize(form, new Size(980, 620));
         }
 
-        EnableAdaptiveScrolling(form);
         EnableOptimizedRendering(form);
     }
 
@@ -29,9 +29,10 @@ public static class FormHostHelpers
     {
         form.Text = title;
         form.BackColor = AppTheme.Background;
-        form.Font = AppTheme.FontBody;
+        form.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
         form.StartPosition = FormStartPosition.CenterScreen;
         form.AutoScaleMode = AutoScaleMode.Dpi;
+        form.AutoScroll = false;
         if (LicenseManager.UsageMode == LicenseUsageMode.Designtime)
         {
             form.WindowState = FormWindowState.Normal;
@@ -39,17 +40,29 @@ public static class FormHostHelpers
         else
         {
             form.WindowState = FormWindowState.Maximized;
-            form.MinimumSize = new Size(1024, 700);
+            form.MinimumSize = ScaleSize(form, new Size(1200, 720));
         }
 
-        EnableAdaptiveScrolling(form);
+        EnableOptimizedRendering(form);
+    }
+
+    public static void ConfigureDialogSurface(Form form, string title, Size logicalMinimumSize)
+    {
+        form.Text = title;
+        form.BackColor = AppTheme.Surface;
+        form.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+        form.AutoScaleMode = AutoScaleMode.Dpi;
+        form.AutoScroll = false;
+        form.MinimumSize = ScaleSize(form, logicalMinimumSize);
+        form.StartPosition = FormStartPosition.CenterParent;
+
         EnableOptimizedRendering(form);
     }
 
     public static void OpenChildForm(Panel hostPanel, Form childForm)
     {
         LogUi($"OpenChildForm:start:{childForm.GetType().Name}");
-        hostPanel.AutoScroll = true;
+        hostPanel.AutoScroll = false;
         hostPanel.SuspendLayout();
         try
         {
@@ -72,7 +85,6 @@ public static class FormHostHelpers
             childForm.FormBorderStyle = FormBorderStyle.None;
             childForm.Dock = DockStyle.Fill;
             hostPanel.Controls.Add(childForm);
-            EnableAdaptiveScrolling(childForm);
             EnableOptimizedRendering(childForm);
             childForm.Show();
             LogUi($"OpenChildForm:shown:{childForm.GetType().Name}");
@@ -88,71 +100,6 @@ public static class FormHostHelpers
         }
     }
 
-    public static void EnableAdaptiveScrolling(Form form)
-    {
-        if (LicenseManager.UsageMode == LicenseUsageMode.Designtime || form.IsDisposed)
-        {
-            return;
-        }
-
-        form.AutoScroll = true;
-        form.Layout -= HandleAdaptiveScrollLayout;
-        form.Layout += HandleAdaptiveScrollLayout;
-        form.Resize -= HandleAdaptiveScrollResize;
-        form.Resize += HandleAdaptiveScrollResize;
-
-        UpdateAdaptiveScrollRange(form);
-    }
-
-    private static void HandleAdaptiveScrollLayout(object? sender, LayoutEventArgs _) 
-    {
-        if (sender is Form form)
-        {
-            UpdateAdaptiveScrollRange(form);
-        }
-    }
-
-    private static void HandleAdaptiveScrollResize(object? sender, EventArgs _)
-    {
-        if (sender is Form form)
-        {
-            UpdateAdaptiveScrollRange(form);
-        }
-    }
-
-    private static void UpdateAdaptiveScrollRange(Form form)
-    {
-        if (form.IsDisposed || !form.IsHandleCreated)
-        {
-            return;
-        }
-
-        var contentBounds = GetContentBounds(form.Controls);
-        var minWidth = Math.Max(form.ClientSize.Width, contentBounds.Right + form.Padding.Right + 12);
-        var minHeight = Math.Max(form.ClientSize.Height, contentBounds.Bottom + form.Padding.Bottom + 12);
-
-        form.AutoScrollMinSize = new Size(minWidth, minHeight);
-    }
-
-    private static Rectangle GetContentBounds(Control.ControlCollection controls)
-    {
-        var right = 0;
-        var bottom = 0;
-
-        foreach (Control control in controls)
-        {
-            if (!control.Visible)
-            {
-                continue;
-            }
-
-            right = Math.Max(right, control.Right + control.Margin.Right);
-            bottom = Math.Max(bottom, control.Bottom + control.Margin.Bottom);
-        }
-
-        return new Rectangle(0, 0, right, bottom);
-    }
-
     public static void OpenLoginAndClose(Form currentForm)
     {
         currentForm.Hide();
@@ -160,6 +107,13 @@ public static class FormHostHelpers
         using var login = new FrmLogin(AppRuntime.DataService);
         login.ShowDialog();
         currentForm.Close();
+    }
+
+    public static void EnableAdaptiveScrolling(Form form)
+    {
+        // Individual forms decide whether their content genuinely needs a scroll host.
+        // Keeping this as a no-op prevents module setup from accidentally disabling
+        // the report/dashboard scroll containers that are taller than the viewport.
     }
 
     public static void SetActiveMenu(Button activeButton, params Button[] menuButtons)

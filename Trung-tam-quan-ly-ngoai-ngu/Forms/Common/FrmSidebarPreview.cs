@@ -5,7 +5,33 @@ public partial class FrmSidebarPreview : Form
     public FrmSidebarPreview()
     {
         InitializeComponent();
+        FormHostHelpers.ConfigureModuleSurface(this, "Sidebar Preview");
+        StartPosition = FormStartPosition.CenterScreen;
+        MinimumSize = FormHostHelpers.ScaleSize(this, new Size(1200, 760));
+        ScalePreviewChrome();
         LoadSidebarIcons();
+    }
+
+    private void ScalePreviewChrome()
+    {
+        pnlSidebar.Width = FormHostHelpers.ScaleForDpi(this, 256);
+        pnlSidebarBottom.Height = FormHostHelpers.ScaleForDpi(this, 125);
+        pnlSidebarBottom.Padding = FormHostHelpers.ScalePadding(this, new Padding(24));
+        pnlSidebarTop.Height = FormHostHelpers.ScaleForDpi(this, 384);
+        flpSidebarMenu.Location = new Point(
+            FormHostHelpers.ScaleForDpi(this, 24),
+            FormHostHelpers.ScaleForDpi(this, 116));
+        flpSidebarMenu.Size = FormHostHelpers.ScaleSize(this, new Size(208, 236));
+        pnlBrandRow.Location = new Point(
+            FormHostHelpers.ScaleForDpi(this, 24),
+            FormHostHelpers.ScaleForDpi(this, 32));
+        pnlBrandRow.Size = FormHostHelpers.ScaleSize(this, new Size(208, 44));
+        pnlCanvas.Location = new Point(
+            FormHostHelpers.ScaleForDpi(this, 32),
+            FormHostHelpers.ScaleForDpi(this, 88));
+        lblPreviewHint.Location = new Point(
+            FormHostHelpers.ScaleForDpi(this, 32),
+            FormHostHelpers.ScaleForDpi(this, 32));
     }
 
     private void pnlSidebarBottom_Paint(object? sender, PaintEventArgs e)

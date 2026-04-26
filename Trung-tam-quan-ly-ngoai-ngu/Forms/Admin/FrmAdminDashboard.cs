@@ -68,12 +68,14 @@ public partial class FrmAdminDashboard : Form
 
     private void ApplyShellStyling()
     {
-        MinimumSize = FormHostHelpers.ScaleSize(this, new Size(1080, 720));
-        pnlSidebarAdmin.Width = FormHostHelpers.ScaleForDpi(this, 252);
-        pnlTopbarAdmin.Height = FormHostHelpers.ScaleForDpi(this, 122);
+        MinimumSize = FormHostHelpers.ScaleSize(this, new Size(1200, 720));
+        pnlSidebarAdmin.Width = FormHostHelpers.ScaleForDpi(this, 236);
+        pnlTopbarAdmin.Height = FormHostHelpers.ScaleForDpi(this, 96);
         pnlSidebarAdmin.Padding = FormHostHelpers.ScalePadding(this, new Padding(18, 18, 18, 16));
-        pnlTopbarAdmin.Padding = FormHostHelpers.ScalePadding(this, new Padding(28, 16, 28, 16));
+        pnlTopbarAdmin.Padding = FormHostHelpers.ScalePadding(this, new Padding(24, 14, 24, 14));
         pnlContentHostAdmin.Padding = FormHostHelpers.ScalePadding(this, new Padding(20, 0, 20, 20));
+        pnlSidebarAdmin.AutoScroll = false;
+        pnlContentHostAdmin.AutoScroll = false;
 
         lblAdminUserCardName.Text = _currentUserName;
         lblAdminUserCardRole.Text = "Quản trị hệ thống";
@@ -144,7 +146,7 @@ public partial class FrmAdminDashboard : Form
     private void ApplyResponsiveBreakpoints()
     {
         var contentWidth = Math.Max(FormHostHelpers.ScaleForDpi(this, 920), pnlContentHostAdmin.ClientSize.Width);
-        var compact = contentWidth < FormHostHelpers.ScaleForDpi(this, 1200);
+        var compact = contentWidth < FormHostHelpers.ScaleForDpi(this, 1080);
 
         pnlAdminUserCard.Width = FormHostHelpers.ScaleForDpi(this, compact ? 220 : 248);
         lblAdminHeaderSubtitle.MaximumSize = new Size(FormHostHelpers.ScaleForDpi(this, compact ? 560 : 760), 0);
@@ -198,7 +200,7 @@ public partial class FrmAdminDashboard : Form
             AddKpiCard(pnlKpiClasses, 1, 0, new Padding(0, 0, 0, 12));
             AddKpiCard(pnlKpiRevenue, 0, 1, new Padding(0, 0, 12, 0));
             AddKpiCard(pnlKpiDebt, 1, 1, Padding.Empty);
-            tblAdminKpi.Height = 272;
+            tblAdminKpi.Height = FormHostHelpers.ScaleForDpi(this, 280);
         }
         else
         {
@@ -215,7 +217,7 @@ public partial class FrmAdminDashboard : Form
             AddKpiCard(pnlKpiClasses, 1, 0, new Padding(0, 0, 12, 0));
             AddKpiCard(pnlKpiRevenue, 2, 0, new Padding(0, 0, 12, 0));
             AddKpiCard(pnlKpiDebt, 3, 0, Padding.Empty);
-            tblAdminKpi.Height = 128;
+            tblAdminKpi.Height = FormHostHelpers.ScaleForDpi(this, 144);
         }
 
         tblAdminKpi.ResumeLayout(true);

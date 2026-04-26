@@ -227,7 +227,7 @@ partial class FrmEnrollment
         tblEnrollmentSummary.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblEnrollmentSummary.RowStyles.Add(new RowStyle());
         tblEnrollmentSummary.Size = new Size(330, 576);
-        tblEnrollmentSummary.AutoScroll = true;
+        tblEnrollmentSummary.AutoScroll = false;
         tblEnrollmentSummary.TabIndex = 0;
         // 
         // lblEnrollmentDate
@@ -457,7 +457,7 @@ partial class FrmEnrollment
         tblEnrollmentSummary.ResumeLayout(false);
         tblEnrollmentSummary.PerformLayout();
         flpEnrollmentActions.ResumeLayout(false);
-        AutoScroll = true;
+        AutoScroll = false;
         ResumeLayout(false);
     }
 }

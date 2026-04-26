@@ -39,6 +39,7 @@ public partial class FrmTuitionReceipt : Form
     private void ConfigureView()
     {
         LocalizeLabels();
+        MinimumSize = FormHostHelpers.ScaleSize(this, new Size(1120, 680));
 
         AppTheme.StyleGroupBox(grpEnrollmentInfo);
         AppTheme.StyleGroupBox(grpPaymentInfo);
@@ -391,15 +392,15 @@ public partial class FrmTuitionReceipt : Form
 
         try
         {
-            if (ClientSize.Width < 900)
+            if (ClientSize.Width < FormHostHelpers.ScaleForDpi(this, 940))
             {
                 tblReceiptTop.ColumnCount = 1;
                 tblReceiptTop.RowCount = 2;
                 tblReceiptTop.ColumnStyles.Clear();
                 tblReceiptTop.RowStyles.Clear();
                 tblReceiptTop.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-                tblReceiptTop.RowStyles.Add(new RowStyle(SizeType.Absolute, 220F));
-                tblReceiptTop.RowStyles.Add(new RowStyle(SizeType.Absolute, 280F));
+                tblReceiptTop.RowStyles.Add(new RowStyle(SizeType.Absolute, FormHostHelpers.ScaleForDpi(this, 220)));
+                tblReceiptTop.RowStyles.Add(new RowStyle(SizeType.Absolute, FormHostHelpers.ScaleForDpi(this, 280)));
             }
             else
             {
@@ -409,7 +410,7 @@ public partial class FrmTuitionReceipt : Form
                 tblReceiptTop.RowStyles.Clear();
                 tblReceiptTop.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
                 tblReceiptTop.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-                tblReceiptTop.RowStyles.Add(new RowStyle(SizeType.Absolute, 236F));
+                tblReceiptTop.RowStyles.Add(new RowStyle(SizeType.Absolute, FormHostHelpers.ScaleForDpi(this, 236)));
             }
         }
         finally

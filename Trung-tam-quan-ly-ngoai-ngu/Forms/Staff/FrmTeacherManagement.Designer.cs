@@ -228,7 +228,7 @@ partial class FrmTeacherManagement
         tblTeacherDetail.RowStyles.Add(new RowStyle());
         tblTeacherDetail.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblTeacherDetail.Size = new Size(552, 412);
-        tblTeacherDetail.AutoScroll = true;
+        tblTeacherDetail.AutoScroll = false;
         tblTeacherDetail.TabIndex = 0;
         // 
         // lblTeacherCode
@@ -486,7 +486,7 @@ partial class FrmTeacherManagement
         ((System.ComponentModel.ISupportInitialize)splTeacherContent).EndInit();
         splTeacherContent.ResumeLayout(false);
         flpTeacherActions.ResumeLayout(false);
-        AutoScroll = true;
+        AutoScroll = false;
         ResumeLayout(false);
     }
 }

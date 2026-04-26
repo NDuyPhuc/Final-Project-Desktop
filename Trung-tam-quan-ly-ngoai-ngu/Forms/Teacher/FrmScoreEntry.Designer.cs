@@ -191,7 +191,7 @@ partial class FrmScoreEntry
         ((System.ComponentModel.ISupportInitialize)dgvScoreList).EndInit();
         ((System.ComponentModel.ISupportInitialize)errScore).EndInit();
         tblScoreRoot.ResumeLayout(false);
-        AutoScroll = true;
+        AutoScroll = false;
         ResumeLayout(false);
     }
 }

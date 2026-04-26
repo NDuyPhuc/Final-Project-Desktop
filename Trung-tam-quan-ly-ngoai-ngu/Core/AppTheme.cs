@@ -1,5 +1,7 @@
 namespace Trung_tam_quan_ly_ngoai_ngu;
 
+using TrungTamNgoaiNgu.Application.Infrastructure;
+
 internal static class AppTheme
 {
     private static readonly Dictionary<string, string> GridHeaderText = new(StringComparer.OrdinalIgnoreCase)
@@ -107,7 +109,7 @@ internal static class AppTheme
         form.BackColor = Background;
         form.Font = FontBody;
         form.AutoScaleMode = AutoScaleMode.Dpi;
-        form.MinimumSize = new Size(1024, 700);
+        form.MinimumSize = FormHostHelpers.ScaleSize(form, new Size(1024, 700));
     }
 
     public static void StylePrimaryButton(Button button)
@@ -118,7 +120,7 @@ internal static class AppTheme
         button.FlatStyle = FlatStyle.Flat;
         button.Cursor = Cursors.Hand;
         button.Font = FontBodyBold;
-        button.Height = 36;
+        button.Height = FormHostHelpers.ScaleForDpi(button, 36);
     }
 
     public static void StyleSecondaryButton(Button button)
@@ -130,7 +132,7 @@ internal static class AppTheme
         button.FlatStyle = FlatStyle.Flat;
         button.Cursor = Cursors.Hand;
         button.Font = FontBodyBold;
-        button.Height = 36;
+        button.Height = FormHostHelpers.ScaleForDpi(button, 36);
     }
 
     public static void StyleDangerButton(Button button)
@@ -141,7 +143,7 @@ internal static class AppTheme
         button.FlatStyle = FlatStyle.Flat;
         button.Cursor = Cursors.Hand;
         button.Font = FontBodyBold;
-        button.Height = 36;
+        button.Height = FormHostHelpers.ScaleForDpi(button, 36);
     }
 
     public static void StyleGroupBox(GroupBox groupBox)
@@ -149,15 +151,15 @@ internal static class AppTheme
         groupBox.BackColor = Surface;
         groupBox.ForeColor = TextPrimary;
         groupBox.Font = FontSection;
-        groupBox.Padding = new Padding(14, 12, 14, 14);
+        groupBox.Padding = FormHostHelpers.ScalePadding(groupBox, new Padding(14, 12, 14, 14));
     }
 
     public static void StyleCard(Panel panel)
     {
         panel.BackColor = Surface;
         panel.BorderStyle = BorderStyle.FixedSingle;
-        panel.Padding = new Padding(14);
-        panel.Margin = new Padding(0, 0, 12, 12);
+        panel.Padding = FormHostHelpers.ScalePadding(panel, new Padding(14));
+        panel.Margin = FormHostHelpers.ScalePadding(panel, new Padding(0, 0, 12, 12));
     }
 
     public static void StyleGrid(DataGridView grid)
@@ -171,9 +173,9 @@ internal static class AppTheme
         grid.ColumnHeadersDefaultCellStyle.ForeColor = TextPrimary;
         grid.ColumnHeadersDefaultCellStyle.Font = FontBodyBold;
         grid.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.True;
-        grid.ColumnHeadersHeight = 40;
+        grid.ColumnHeadersHeight = FormHostHelpers.ScaleForDpi(grid, 40);
         grid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-        grid.RowTemplate.Height = 34;
+        grid.RowTemplate.Height = FormHostHelpers.ScaleForDpi(grid, 34);
         grid.RowHeadersVisible = false;
         grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         grid.MultiSelect = false;
@@ -187,7 +189,16 @@ internal static class AppTheme
         grid.DataBindingComplete += LocalizeGridHeadersOnDataBindingComplete;
         grid.CellFormatting -= LocalizeGridCellFormatting;
         grid.CellFormatting += LocalizeGridCellFormatting;
-        ApplyGridHeaderText(grid);
+        grid.DataError -= HandleGridDataError;
+        grid.DataError += HandleGridDataError;
+        try
+        {
+            ApplyGridHeaderText(grid);
+        }
+        catch (Exception exception)
+        {
+            ErrorLogger.Log(exception, nameof(AppTheme));
+        }
     }
 
     public static void RoundPanelCorners(Panel panel, int radius = 10)
@@ -198,24 +209,51 @@ internal static class AppTheme
     {
         if (sender is DataGridView grid)
         {
-            ApplyGridHeaderText(grid);
+            try
+            {
+                ApplyGridHeaderText(grid);
+            }
+            catch (Exception exception)
+            {
+                ErrorLogger.Log(exception, nameof(AppTheme));
+            }
         }
     }
 
     private static void ApplyGridHeaderText(DataGridView grid)
     {
+        if (grid is null || grid.IsDisposed)
+        {
+            return;
+        }
+
         foreach (DataGridViewColumn column in grid.Columns)
         {
-            var key = string.IsNullOrWhiteSpace(column.HeaderText)
-                ? column.DataPropertyName
-                : column.HeaderText;
+            if (column is null)
+            {
+                continue;
+            }
 
-            if (GridHeaderText.TryGetValue(key, out var headerText))
+            var currentHeaderText = Convert.ToString(column.HeaderText) ?? string.Empty;
+            var dataPropertyName = Convert.ToString(column.DataPropertyName) ?? string.Empty;
+            var key = string.IsNullOrWhiteSpace(currentHeaderText)
+                ? dataPropertyName
+                : currentHeaderText;
+
+            if (!string.IsNullOrWhiteSpace(key) && GridHeaderText.TryGetValue(key, out var headerText))
             {
                 column.HeaderText = headerText;
             }
+            else if (string.IsNullOrWhiteSpace(Convert.ToString(column.HeaderText)))
+            {
+                column.HeaderText = string.IsNullOrWhiteSpace(dataPropertyName)
+                    ? $"Cot {column.Index + 1}"
+                    : dataPropertyName;
+            }
 
-            column.MinimumWidth = Math.Max(column.MinimumWidth, Math.Min(180, 36 + column.HeaderText.Length * 7));
+            // Do not set MinimumWidth here. During DataBindingComplete WinForms can
+            // still be attaching generated columns; touching DataGridViewBand
+            // thickness at that moment throws NullReferenceException internally.
         }
     }
 
@@ -225,6 +263,17 @@ internal static class AppTheme
         {
             e.Value = displayText;
             e.FormattingApplied = true;
+        }
+    }
+
+    private static void HandleGridDataError(object? sender, DataGridViewDataErrorEventArgs e)
+    {
+        e.ThrowException = false;
+        e.Cancel = true;
+
+        if (sender is DataGridView grid)
+        {
+            FormHostHelpers.LogUi($"GridDataError:{grid.FindForm()?.GetType().Name}:{grid.Name}:{e.Context}:{e.Exception?.Message}");
         }
     }
 }

@@ -30,6 +30,7 @@ public partial class FrmAdminReports : Form
         ConfigureVisualStyle();
         ConfigureChartSurface();
         ConfigureScrollableLayout();
+        FormHostHelpers.EnableAdaptiveScrolling(this);
         BindReportEvents();
         Shown += (_, _) => EnsureDefaultReportLoaded();
         Resize += (_, _) => ApplyResponsiveLayout();
@@ -43,18 +44,19 @@ public partial class FrmAdminReports : Form
     private void ConfigureScrollableLayout()
     {
         AutoScroll = true;
-        AutoScrollMinSize = new Size(0, 1220);
+        AutoScrollMinSize = FormHostHelpers.ScaleSize(this, new Size(0, 1220));
 
         tblAdminReportRoot.SuspendLayout();
         tblAdminReportRoot.Dock = DockStyle.Top;
-        tblAdminReportRoot.AutoSize = true;
+        tblAdminReportRoot.AutoScroll = false;
+        tblAdminReportRoot.AutoSize = false;
         tblAdminReportRoot.AutoSizeMode = AutoSizeMode.GrowAndShrink;
 
-        tblAdminReportRoot.RowStyles[0] = new RowStyle(SizeType.Absolute, 118F);
-        tblAdminReportRoot.RowStyles[1] = new RowStyle(SizeType.Absolute, 140F);
-        tblAdminReportRoot.RowStyles[2] = new RowStyle(SizeType.Absolute, 170F);
-        tblAdminReportRoot.RowStyles[3] = new RowStyle(SizeType.Absolute, 460F);
-        tblAdminReportRoot.RowStyles[4] = new RowStyle(SizeType.Absolute, 330F);
+        tblAdminReportRoot.RowStyles[0] = new RowStyle(SizeType.Absolute, FormHostHelpers.ScaleForDpi(this, 118));
+        tblAdminReportRoot.RowStyles[1] = new RowStyle(SizeType.Absolute, FormHostHelpers.ScaleForDpi(this, 140));
+        tblAdminReportRoot.RowStyles[2] = new RowStyle(SizeType.Absolute, FormHostHelpers.ScaleForDpi(this, 170));
+        tblAdminReportRoot.RowStyles[3] = new RowStyle(SizeType.Absolute, FormHostHelpers.ScaleForDpi(this, 460));
+        tblAdminReportRoot.RowStyles[4] = new RowStyle(SizeType.Absolute, FormHostHelpers.ScaleForDpi(this, 330));
         tblAdminReportRoot.ResumeLayout(true);
 
         tblAdminReportFilter.SuspendLayout();
@@ -69,28 +71,49 @@ public partial class FrmAdminReports : Form
         tblAdminReportFilter.ResumeLayout(true);
 
         tblReportMiddle.Dock = DockStyle.Fill;
-        tblReportMiddle.MinimumSize = new Size(0, 460);
+        tblReportMiddle.MinimumSize = FormHostHelpers.ScaleSize(this, new Size(0, 460));
 
         pnlReportChartCard.Dock = DockStyle.Fill;
-        pnlReportChartCard.MinimumSize = new Size(700, 460);
-        pnlReportHighlightCard.MinimumSize = new Size(0, 260);
-        pnlReportDistributionCard.MinimumSize = new Size(0, 180);
+        pnlReportChartCard.MinimumSize = FormHostHelpers.ScaleSize(this, new Size(700, 460));
+        pnlReportChartHeader.MinimumSize = FormHostHelpers.ScaleSize(this, new Size(0, 54));
+        chtAdminRevenue.MinimumSize = FormHostHelpers.ScaleSize(this, new Size(0, 260));
+        pnlReportHighlightCard.MinimumSize = FormHostHelpers.ScaleSize(this, new Size(0, 260));
+        pnlReportDistributionCard.MinimumSize = FormHostHelpers.ScaleSize(this, new Size(0, 180));
 
-        pnlReportHighlightCard.AutoScroll = true;
-        pnlReportDistributionCard.AutoScroll = true;
+        foreach (var panel in new[]
+        {
+            pnlReportRevenueAccent,
+            pnlReportEnrollmentAccent,
+            pnlReportClassCountAccent,
+            pnlReportRetentionAccent,
+            pnlReportChartCard,
+            pnlChartLegendRevenue,
+            pnlChartLegendTarget,
+            pnlReportHighlightCard,
+            pnlReportHighlightTrack,
+            pnlReportHighlightFill,
+            pnlReportDistributionCard,
+            pnlReportDetailCard
+        })
+        {
+            panel.AutoScroll = false;
+        }
+
+        pnlReportHighlightCard.AutoScroll = false;
+        pnlReportDistributionCard.AutoScroll = false;
 
         flpAdminReportHeaderActions.FlowDirection = FlowDirection.LeftToRight;
         flpAdminReportHeaderActions.WrapContents = true;
         flpAdminReportHeaderActions.Padding = new Padding(0, 8, 0, 0);
-        btnPrintReport.Width = 132;
-        btnRefreshData.Width = 152;
-        btnExportReportCsv.Width = 132;
-        btnPrintReport.Height = 40;
-        btnRefreshData.Height = 40;
-        btnExportReportCsv.Height = 40;
-        btnPrintReport.Margin = new Padding(0, 0, 8, 8);
-        btnRefreshData.Margin = new Padding(0, 0, 8, 8);
-        btnExportReportCsv.Margin = new Padding(0, 0, 0, 8);
+        btnPrintReport.Width = FormHostHelpers.ScaleForDpi(this, 132);
+        btnRefreshData.Width = FormHostHelpers.ScaleForDpi(this, 152);
+        btnExportReportCsv.Width = FormHostHelpers.ScaleForDpi(this, 132);
+        btnPrintReport.Height = FormHostHelpers.ScaleForDpi(this, 40);
+        btnRefreshData.Height = FormHostHelpers.ScaleForDpi(this, 40);
+        btnExportReportCsv.Height = FormHostHelpers.ScaleForDpi(this, 40);
+        btnPrintReport.Margin = FormHostHelpers.ScalePadding(this, new Padding(0, 0, 8, 8));
+        btnRefreshData.Margin = FormHostHelpers.ScalePadding(this, new Padding(0, 0, 8, 8));
+        btnExportReportCsv.Margin = FormHostHelpers.ScalePadding(this, new Padding(0, 0, 0, 8));
 
         LayoutHighlightCard();
         LayoutDistributionCard();
@@ -98,6 +121,7 @@ public partial class FrmAdminReports : Form
         LayoutChartHeader();
         LayoutDetailHeader();
         ApplyResponsiveLayout();
+        UpdateReportScrollHeight();
     }
 
     private void ApplyResponsiveLayout()
@@ -106,11 +130,11 @@ public partial class FrmAdminReports : Form
         var narrow = ClientSize.Width < 1240;
         var veryNarrow = ClientSize.Width < 1100;
 
-        tblAdminReportRoot.RowStyles[0].Height = veryNarrow ? 170F : compact ? 148F : 118F;
-        tblAdminReportRoot.RowStyles[1].Height = veryNarrow ? 180F : 140F;
-        tblAdminReportRoot.RowStyles[2].Height = compact ? 280F : 170F;
-        tblAdminReportRoot.RowStyles[3].Height = narrow ? 700F : 460F;
-        tblAdminReportRoot.RowStyles[4].Height = 330F;
+        tblAdminReportRoot.RowStyles[0].Height = FormHostHelpers.ScaleForDpi(this, veryNarrow ? 170 : compact ? 148 : 118);
+        tblAdminReportRoot.RowStyles[1].Height = FormHostHelpers.ScaleForDpi(this, veryNarrow ? 180 : 140);
+        tblAdminReportRoot.RowStyles[2].Height = FormHostHelpers.ScaleForDpi(this, compact ? 280 : 170);
+        tblAdminReportRoot.RowStyles[3].Height = FormHostHelpers.ScaleForDpi(this, narrow ? 700 : 460);
+        tblAdminReportRoot.RowStyles[4].Height = FormHostHelpers.ScaleForDpi(this, 330);
 
         ConfigureHeaderLayout(compact);
         ConfigureFilterLayout(narrow);
@@ -129,6 +153,25 @@ public partial class FrmAdminReports : Form
 
         LayoutHighlightCard();
         LayoutDistributionCard();
+        UpdateReportScrollHeight();
+    }
+
+    private void UpdateReportScrollHeight()
+    {
+        if (tblAdminReportRoot.IsDisposed)
+        {
+            return;
+        }
+
+        var contentHeight = tblAdminReportRoot.RowStyles
+            .Cast<RowStyle>()
+            .Sum(row => row.SizeType == SizeType.Absolute ? (int)Math.Ceiling(row.Height) : 0);
+        contentHeight += FormHostHelpers.ScaleForDpi(this, 36);
+
+        tblAdminReportRoot.Width = Math.Max(0, ClientSize.Width - Padding.Horizontal - SystemInformation.VerticalScrollBarWidth);
+        tblAdminReportRoot.Height = Math.Max(contentHeight, ClientSize.Height - Padding.Vertical);
+        AutoScrollMinSize = new Size(0, tblAdminReportRoot.Height + Padding.Vertical + FormHostHelpers.ScaleForDpi(this, 12));
+        AutoScroll = true;
     }
 
     private void LayoutReportTitleBlock()
@@ -392,22 +435,28 @@ public partial class FrmAdminReports : Form
 
     private void LayoutChartHeader()
     {
-        var compact = pnlReportChartHeader.ClientSize.Width < 700;
+        var headerWidth = pnlReportChartHeader.ClientSize.Width;
+        if (headerWidth <= 0 || pnlReportChartHeader.IsDisposed)
+        {
+            return;
+        }
+
+        var compact = headerWidth < FormHostHelpers.ScaleForDpi(this, 700);
         flpChartLegend.WrapContents = compact;
         flpChartLegend.Anchor = compact ? AnchorStyles.Top | AnchorStyles.Left : AnchorStyles.Top | AnchorStyles.Right;
 
         var titleMaxWidth = compact
-            ? pnlReportChartHeader.ClientSize.Width
-            : Math.Max(220, pnlReportChartHeader.ClientSize.Width - flpChartLegend.Width - 20);
+            ? headerWidth
+            : Math.Max(FormHostHelpers.ScaleForDpi(this, 220), headerWidth - flpChartLegend.Width - FormHostHelpers.ScaleForDpi(this, 20));
         lblReportChartTitle.MaximumSize = new Size(titleMaxWidth, 0);
 
         flpChartLegend.Location = compact
-            ? new Point(0, lblReportChartTitle.Bottom + 6)
-            : new Point(Math.Max(0, pnlReportChartHeader.ClientSize.Width - flpChartLegend.Width), 12);
+            ? new Point(0, lblReportChartTitle.Bottom + FormHostHelpers.ScaleForDpi(this, 6))
+            : new Point(Math.Max(0, headerWidth - flpChartLegend.Width), FormHostHelpers.ScaleForDpi(this, 12));
 
         pnlReportChartHeader.Height = compact
-            ? Math.Max(70, flpChartLegend.Bottom + 8)
-            : 54;
+            ? Math.Max(FormHostHelpers.ScaleForDpi(this, 70), flpChartLegend.Bottom + FormHostHelpers.ScaleForDpi(this, 8))
+            : FormHostHelpers.ScaleForDpi(this, 54);
     }
 
     private void LayoutDetailHeader()
@@ -522,9 +571,7 @@ public partial class FrmAdminReports : Form
     private void ConfigureVisualStyle()
     {
         BackColor = Color.FromArgb(239, 247, 255);
-        Padding = new Padding(18);
-        AutoScroll = true;
-        MinimumSize = new Size(1080, 720);
+        MinimumSize = FormHostHelpers.ScaleSize(this, new Size(1080, 720));
 
         StyleSurfaceCard(pnlAdminReportFilterCard, Color.FromArgb(223, 243, 255));
         StyleSurfaceCard(pnlReportChartCard, Color.White);
@@ -562,8 +609,8 @@ public partial class FrmAdminReports : Form
         dgvAdminReportDetail.BorderStyle = BorderStyle.None;
         dgvAdminReportDetail.AutoGenerateColumns = true;
         dgvAdminReportDetail.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-        dgvAdminReportDetail.RowTemplate.Height = 40;
-        dgvAdminReportDetail.ColumnHeadersHeight = 42;
+        dgvAdminReportDetail.RowTemplate.Height = FormHostHelpers.ScaleForDpi(this, 40);
+        dgvAdminReportDetail.ColumnHeadersHeight = FormHostHelpers.ScaleForDpi(this, 42);
         AppTheme.StyleGrid(dgvAdminReportDetail);
     }
 

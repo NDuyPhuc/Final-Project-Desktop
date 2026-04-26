@@ -56,9 +56,9 @@ public partial class FrmAttendance : Form
         try
         {
             _classTable = AppRuntime.DataService.GetTeachingClasses(AppRuntime.CurrentUser?.Id);
-            cboAttendanceClass.DataSource = _classTable;
             cboAttendanceClass.DisplayMember = "Ten lop";
             cboAttendanceClass.ValueMember = "Ma lop";
+            cboAttendanceClass.DataSource = _classTable;
             LoadSessions();
         }
         catch (Exception ex)
@@ -74,9 +74,9 @@ public partial class FrmAttendance : Form
         {
             var classId = GetSelectedClassId();
             var sessions = AppRuntime.DataService.GetSessions(classId);
-            cboAttendanceSession.DataSource = sessions;
             cboAttendanceSession.DisplayMember = "Buoi";
             cboAttendanceSession.ValueMember = "Ngay hoc";
+            cboAttendanceSession.DataSource = sessions;
             SyncDateFromSession();
             LoadAttendanceList();
         }
@@ -94,7 +94,10 @@ public partial class FrmAttendance : Form
             return;
         }
 
-        if (DateTime.TryParseExact(rowView.Row["Ngay hoc"]?.ToString(), "dd/MM/yyyy", CultureInfo.GetCultureInfo("vi-VN"), DateTimeStyles.None, out var sessionDate))
+        var dateText = rowView.Row.Table.Columns.Contains("Ngay hoc")
+            ? rowView.Row["Ngay hoc"]?.ToString()
+            : null;
+        if (DateTime.TryParseExact(dateText, "dd/MM/yyyy", CultureInfo.GetCultureInfo("vi-VN"), DateTimeStyles.None, out var sessionDate))
         {
             dtpAttendanceDate.Value = sessionDate;
         }
@@ -125,9 +128,10 @@ public partial class FrmAttendance : Form
 
         dgvAttendanceList.Columns["EnrollmentId"].Visible = false;
 
-        if (dgvAttendanceList.Columns["Trang thai"] is not null)
+        var statusColumn = dgvAttendanceList.Columns["Trang thai"];
+        if (statusColumn is not null)
         {
-            var displayIndex = dgvAttendanceList.Columns["Trang thai"].DisplayIndex;
+            var displayIndex = statusColumn.DisplayIndex;
             dgvAttendanceList.Columns.Remove("Trang thai");
             var comboColumn = new DataGridViewComboBoxColumn
             {
@@ -144,6 +148,11 @@ public partial class FrmAttendance : Form
 
     private void SetAllAttendanceStatus(string status)
     {
+        if (!dgvAttendanceList.Columns.Contains("Trang thai"))
+        {
+            return;
+        }
+
         foreach (DataGridViewRow row in dgvAttendanceList.Rows)
         {
             if (!row.IsNewRow)
@@ -164,6 +173,12 @@ public partial class FrmAttendance : Form
                 return;
             }
 
+            if (!dgvAttendanceList.Columns.Contains("EnrollmentId") || !dgvAttendanceList.Columns.Contains("Trang thai"))
+            {
+                MessageBox.Show(this, "Danh sach diem danh chua san sang de luu.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
             errAttendance.Clear();
             var items = dgvAttendanceList.Rows
                 .Cast<DataGridViewRow>()
@@ -172,7 +187,7 @@ public partial class FrmAttendance : Form
                 {
                     EnrollmentId = row.Cells["EnrollmentId"].Value?.ToString() ?? string.Empty,
                     Status = row.Cells["Trang thai"].Value?.ToString() ?? "Present",
-                    Note = row.Cells["Ghi chu"].Value?.ToString()
+                    Note = dgvAttendanceList.Columns.Contains("Ghi chu") ? row.Cells["Ghi chu"].Value?.ToString() : null
                 })
                 .Where(item => !string.IsNullOrWhiteSpace(item.EnrollmentId))
                 .ToList();
@@ -190,6 +205,10 @@ public partial class FrmAttendance : Form
 
     private string? GetSelectedClassId()
     {
-        return cboAttendanceClass.SelectedValue?.ToString();
+        return cboAttendanceClass.SelectedValue is string value
+            ? value
+            : cboAttendanceClass.SelectedItem is DataRowView rowView && rowView.Row.Table.Columns.Contains("Ma lop")
+                ? rowView.Row["Ma lop"]?.ToString()
+                : null;
     }
 }

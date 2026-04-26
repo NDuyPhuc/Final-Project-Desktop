@@ -80,9 +80,14 @@ public partial class FrmAccountManagement : Form
 
         tblAccountRoot.Padding = Padding.Empty;
         tblAccountRoot.BackColor = Color.Transparent;
+        tblAccountRoot.AutoScroll = false;
 
         pnlAccountListColumn.BackColor = Color.FromArgb(231, 244, 255);
         pnlAccountDetailColumn.BackColor = Color.Transparent;
+        pnlAccountListColumn.AutoScroll = false;
+        pnlAccountDetailColumn.AutoScroll = false;
+        pnlAccountInfoCard.Dock = DockStyle.Top;
+        pnlPermissionRuleCard.Dock = DockStyle.Fill;
 
         lblAccountListTitle.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
         lblAccountTitle.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
@@ -127,11 +132,169 @@ public partial class FrmAccountManagement : Form
         flpAccountStatus.WrapContents = true;
 
         tblAccountInfo.CellBorderStyle = TableLayoutPanelCellBorderStyle.None;
-        tblAccountInfo.AutoSize = true;
+        tblAccountInfo.AutoSize = false;
         tblAccountInfo.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-        tblAccountInfo.Dock = DockStyle.Top;
+        tblAccountInfo.Dock = DockStyle.Fill;
 
+        ConfigureAccountStructure();
         LayoutFilterCard();
+        LayoutDetailCards();
+    }
+
+    private void ConfigureAccountStructure()
+    {
+        ConfigureAccountListStructure();
+        ConfigureAccountDetailStructure();
+    }
+
+    private void ConfigureAccountListStructure()
+    {
+        var listLayout = new TableLayoutPanel
+        {
+            Name = "tblAccountListLayout",
+            BackColor = Color.Transparent,
+            Dock = DockStyle.Fill,
+            ColumnCount = 1,
+            RowCount = 3,
+            Margin = Padding.Empty,
+            Padding = Padding.Empty
+        };
+        listLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+        listLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 48F));
+        listLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 84F));
+        listLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+
+        lblAccountListTitle.AutoSize = false;
+        lblAccountListTitle.Dock = DockStyle.Fill;
+        lblAccountListTitle.TextAlign = ContentAlignment.MiddleLeft;
+        lblAccountListTitle.Margin = Padding.Empty;
+
+        pnlAccountFilterCard.Dock = DockStyle.Fill;
+        pnlAccountFilterCard.Margin = new Padding(0, 0, 0, 8);
+
+        flpAccountCards.Dock = DockStyle.Fill;
+        flpAccountCards.FlowDirection = FlowDirection.TopDown;
+        flpAccountCards.WrapContents = false;
+        flpAccountCards.AutoScroll = false;
+        flpAccountCards.AutoScrollMargin = Size.Empty;
+        flpAccountCards.AutoScrollMinSize = Size.Empty;
+        flpAccountCards.Margin = Padding.Empty;
+
+        pnlAccountListColumn.SuspendLayout();
+        pnlAccountListColumn.Controls.Clear();
+        listLayout.Controls.Add(lblAccountListTitle, 0, 0);
+        listLayout.Controls.Add(pnlAccountFilterCard, 0, 1);
+        listLayout.Controls.Add(flpAccountCards, 0, 2);
+        pnlAccountListColumn.Controls.Add(listLayout);
+        pnlAccountListColumn.ResumeLayout(true);
+    }
+
+    private void ConfigureAccountDetailStructure()
+    {
+        var detailLayout = new TableLayoutPanel
+        {
+            Name = "tblAccountDetailLayout",
+            BackColor = Color.Transparent,
+            Dock = DockStyle.Fill,
+            ColumnCount = 1,
+            RowCount = 3,
+            Margin = Padding.Empty,
+            Padding = Padding.Empty
+        };
+        detailLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+        detailLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 94F));
+        detailLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 274F));
+        detailLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+
+        pnlAccountHeader.Dock = DockStyle.Fill;
+        pnlAccountHeader.Margin = new Padding(0, 0, 0, 8);
+        pnlAccountHeader.Height = 94;
+
+        ConfigureAccountInfoCardStructure();
+        ConfigurePermissionCardStructure();
+
+        pnlAccountDetailColumn.SuspendLayout();
+        pnlAccountDetailColumn.Controls.Clear();
+        detailLayout.Controls.Add(pnlAccountHeader, 0, 0);
+        detailLayout.Controls.Add(pnlAccountInfoCard, 0, 1);
+        detailLayout.Controls.Add(pnlPermissionRuleCard, 0, 2);
+        pnlAccountDetailColumn.Controls.Add(detailLayout);
+        pnlAccountDetailColumn.ResumeLayout(true);
+    }
+
+    private void ConfigureAccountInfoCardStructure()
+    {
+        var infoLayout = new TableLayoutPanel
+        {
+            Name = "tblAccountInfoCardLayout",
+            BackColor = Color.Transparent,
+            Dock = DockStyle.Fill,
+            ColumnCount = 1,
+            RowCount = 2,
+            Margin = Padding.Empty,
+            Padding = Padding.Empty
+        };
+        infoLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+        infoLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+        infoLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 58F));
+
+        tblAccountInfo.RowStyles.Clear();
+        tblAccountInfo.RowStyles.Add(new RowStyle(SizeType.Absolute, 24F));
+        tblAccountInfo.RowStyles.Add(new RowStyle(SizeType.Absolute, 36F));
+        tblAccountInfo.RowStyles.Add(new RowStyle(SizeType.Absolute, 24F));
+        tblAccountInfo.RowStyles.Add(new RowStyle(SizeType.Absolute, 36F));
+        tblAccountInfo.RowStyles.Add(new RowStyle(SizeType.Absolute, 24F));
+        tblAccountInfo.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+        tblAccountInfo.Margin = Padding.Empty;
+        tblAccountInfo.Dock = DockStyle.Fill;
+
+        flpAccountActions.AutoSize = false;
+        flpAccountActions.Dock = DockStyle.Fill;
+        flpAccountActions.Margin = Padding.Empty;
+        flpAccountActions.Padding = new Padding(0, 10, 0, 0);
+        flpAccountActions.WrapContents = false;
+
+        pnlAccountInfoCard.Dock = DockStyle.Fill;
+        pnlAccountInfoCard.Margin = new Padding(0, 0, 0, 12);
+        pnlAccountInfoCard.Padding = new Padding(24, 20, 24, 18);
+
+        pnlAccountInfoCard.SuspendLayout();
+        pnlAccountInfoCard.Controls.Clear();
+        infoLayout.Controls.Add(tblAccountInfo, 0, 0);
+        infoLayout.Controls.Add(flpAccountActions, 0, 1);
+        pnlAccountInfoCard.Controls.Add(infoLayout);
+        pnlAccountInfoCard.ResumeLayout(true);
+    }
+
+    private void ConfigurePermissionCardStructure()
+    {
+        pnlPermissionRuleCard.Dock = DockStyle.Fill;
+        pnlPermissionRuleCard.Margin = Padding.Empty;
+        pnlPermissionRuleCard.Padding = new Padding(24, 18, 24, 16);
+        pnlPermissionRuleCard.AutoScroll = false;
+
+        lblPermissionRuleTitle.AutoSize = false;
+        lblPermissionRuleTitle.Dock = DockStyle.Top;
+        lblPermissionRuleTitle.Height = 34;
+        lblPermissionRuleTitle.TextAlign = ContentAlignment.MiddleLeft;
+
+        lblPermissionFooter.AutoSize = false;
+        lblPermissionFooter.Dock = DockStyle.Bottom;
+        lblPermissionFooter.Height = 26;
+        lblPermissionFooter.TextAlign = ContentAlignment.MiddleLeft;
+
+        tblPermissionCards.Dock = DockStyle.Fill;
+        tblPermissionCards.Margin = new Padding(0, 6, 0, 8);
+        ConfigurePermissionPanelContent(pnlPermissionAdmin, lblPermissionAdminTitle, lblPermissionAdminBody);
+        ConfigurePermissionPanelContent(pnlPermissionStaff, lblPermissionStaffTitle, lblPermissionStaffBody);
+        ConfigurePermissionPanelContent(pnlPermissionTeacher, lblPermissionTeacherTitle, lblPermissionTeacherBody);
+
+        pnlPermissionRuleCard.SuspendLayout();
+        pnlPermissionRuleCard.Controls.Clear();
+        pnlPermissionRuleCard.Controls.Add(tblPermissionCards);
+        pnlPermissionRuleCard.Controls.Add(lblPermissionFooter);
+        pnlPermissionRuleCard.Controls.Add(lblPermissionRuleTitle);
+        pnlPermissionRuleCard.ResumeLayout(true);
     }
 
     private void ConfigureResponsiveLayout()
@@ -139,11 +302,35 @@ public partial class FrmAccountManagement : Form
         Resize += (_, _) =>
         {
             LayoutFilterCard();
+            LayoutDetailCards();
             ApplyResponsiveBreakpoints();
         };
 
         flpAccountCards.Resize += (_, _) => ResizeAccountCards();
         ApplyResponsiveBreakpoints();
+    }
+
+    private static void ConfigurePermissionPanelContent(Panel panel, Label title, Label body)
+    {
+        panel.SuspendLayout();
+        panel.Controls.Clear();
+        panel.Padding = new Padding(18, 16, 18, 16);
+
+        title.AutoSize = false;
+        title.Dock = DockStyle.Top;
+        title.Height = 34;
+        title.TextAlign = ContentAlignment.MiddleLeft;
+
+        body.AutoSize = false;
+        body.Dock = DockStyle.Fill;
+        body.TextAlign = ContentAlignment.TopLeft;
+        body.MaximumSize = Size.Empty;
+        body.Padding = new Padding(0, 8, 0, 0);
+        body.Font = new Font("Segoe UI", 9.5F, FontStyle.Regular);
+
+        panel.Controls.Add(body);
+        panel.Controls.Add(title);
+        panel.ResumeLayout(true);
     }
 
     private void ApplyResponsiveBreakpoints()
@@ -152,6 +339,7 @@ public partial class FrmAccountManagement : Form
 
         ConfigureRootLayout(compact);
         ConfigurePermissionLayout(compact);
+        LayoutDetailCards();
 
         btnCreateAccount.Width = compact ? 180 : 217;
         lblAccountTitle.Font = compact
@@ -210,14 +398,13 @@ public partial class FrmAccountManagement : Form
             tblPermissionCards.ColumnCount = 1;
             tblPermissionCards.RowCount = 3;
             tblPermissionCards.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tblPermissionCards.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            tblPermissionCards.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            tblPermissionCards.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            tblPermissionCards.RowStyles.Add(new RowStyle(SizeType.Percent, 33.33333F));
+            tblPermissionCards.RowStyles.Add(new RowStyle(SizeType.Percent, 33.33333F));
+            tblPermissionCards.RowStyles.Add(new RowStyle(SizeType.Percent, 33.33333F));
 
             AddPermissionCard(pnlPermissionAdmin, 0, 0, new Padding(0, 0, 0, 12));
             AddPermissionCard(pnlPermissionStaff, 0, 1, new Padding(0, 0, 0, 12));
             AddPermissionCard(pnlPermissionTeacher, 0, 2, Padding.Empty);
-            tblPermissionCards.Height = 348;
         }
         else
         {
@@ -226,12 +413,11 @@ public partial class FrmAccountManagement : Form
             tblPermissionCards.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
             tblPermissionCards.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
             tblPermissionCards.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33333F));
-            tblPermissionCards.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            tblPermissionCards.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
 
             AddPermissionCard(pnlPermissionAdmin, 0, 0, new Padding(0, 0, 12, 0));
             AddPermissionCard(pnlPermissionStaff, 1, 0, new Padding(0, 0, 12, 0));
             AddPermissionCard(pnlPermissionTeacher, 2, 0, Padding.Empty);
-            tblPermissionCards.Height = 108;
         }
 
         tblPermissionCards.ResumeLayout(true);
@@ -246,24 +432,54 @@ public partial class FrmAccountManagement : Form
 
     private void LayoutFilterCard()
     {
-        var top = 10;
-        var controlHeight = 32;
-        var smallButtonWidth = 56;
-        var gap = 8;
-        var availableWidth = Math.Max(320, pnlAccountFilterCard.ClientSize.Width);
+        pnlAccountFilterCard.SuspendLayout();
+        pnlAccountFilterCard.Controls.Clear();
+        pnlAccountFilterCard.AutoScroll = false;
+        pnlAccountFilterCard.Padding = new Padding(0, 10, 0, 0);
 
-        cboAccountRoleFilter.Location = new Point(0, top + 2);
-        cboAccountRoleFilter.Size = new Size(88, controlHeight);
+        var filterLayout = new TableLayoutPanel
+        {
+            Dock = DockStyle.Fill,
+            ColumnCount = 4,
+            RowCount = 1,
+            Margin = Padding.Empty,
+            Padding = Padding.Empty
+        };
+        filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 88F));
+        filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+        filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 64F));
+        filterLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 56F));
+        filterLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
 
-        btnRefreshAccount.Size = new Size(smallButtonWidth, controlHeight);
-        btnSearchAccount.Size = new Size(smallButtonWidth, controlHeight);
-        btnRefreshAccount.Location = new Point(availableWidth - smallButtonWidth, top);
-        btnSearchAccount.Location = new Point(btnRefreshAccount.Left - gap - smallButtonWidth, top);
+        cboAccountRoleFilter.Dock = DockStyle.Fill;
+        cboAccountRoleFilter.Margin = new Padding(0, 2, 8, 8);
+        txtAccountKeyword.Dock = DockStyle.Fill;
+        txtAccountKeyword.Margin = new Padding(0, 1, 8, 8);
+        btnSearchAccount.Dock = DockStyle.Fill;
+        btnSearchAccount.Margin = new Padding(0, 0, 8, 8);
+        btnRefreshAccount.Dock = DockStyle.Fill;
+        btnRefreshAccount.Margin = new Padding(0, 0, 0, 8);
 
-        txtAccountKeyword.Location = new Point(cboAccountRoleFilter.Right + gap, top + 1);
-        txtAccountKeyword.Size = new Size(
-            Math.Max(160, btnSearchAccount.Left - gap - txtAccountKeyword.Left),
-            controlHeight);
+        filterLayout.Controls.Add(cboAccountRoleFilter, 0, 0);
+        filterLayout.Controls.Add(txtAccountKeyword, 1, 0);
+        filterLayout.Controls.Add(btnSearchAccount, 2, 0);
+        filterLayout.Controls.Add(btnRefreshAccount, 3, 0);
+        pnlAccountFilterCard.Controls.Add(filterLayout);
+        pnlAccountFilterCard.ResumeLayout(true);
+    }
+
+    private void LayoutDetailCards()
+    {
+        var infoHeight = tblAccountInfo.GetPreferredSize(new Size(Math.Max(420, pnlAccountInfoCard.ClientSize.Width), 0)).Height
+            + flpAccountActions.GetPreferredSize(new Size(Math.Max(420, pnlAccountInfoCard.ClientSize.Width), 0)).Height
+            + pnlAccountInfoCard.Padding.Vertical
+            + 12;
+
+        if (pnlAccountDetailColumn.Controls.OfType<TableLayoutPanel>().FirstOrDefault(panel => panel.Name == "tblAccountDetailLayout") is { } detailLayout
+            && detailLayout.RowStyles.Count > 1)
+        {
+            detailLayout.RowStyles[1].Height = Math.Clamp(infoHeight, 248, 292);
+        }
     }
 
     private void WireEvents()
@@ -436,7 +652,7 @@ public partial class FrmAccountManagement : Form
 
     private void ResizeAccountCards()
     {
-        var width = Math.Max(320, flpAccountCards.ClientSize.Width - SystemInformation.VerticalScrollBarWidth - 6);
+        var width = Math.Max(120, flpAccountCards.ClientSize.Width - 8);
         foreach (Control control in flpAccountCards.Controls)
         {
             control.Width = width;

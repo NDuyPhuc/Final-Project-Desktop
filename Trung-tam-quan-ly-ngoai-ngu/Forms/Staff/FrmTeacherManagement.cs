@@ -22,6 +22,13 @@ public partial class FrmTeacherManagement : Form
     private void ConfigureView()
     {
         LocalizeLabels();
+        MinimumSize = FormHostHelpers.ScaleSize(this, new Size(1100, 680));
+        splTeacherContent.Panel1MinSize = FormHostHelpers.ScaleForDpi(this, 360);
+        splTeacherContent.Panel2MinSize = FormHostHelpers.ScaleForDpi(this, 420);
+        splTeacherContent.SplitterWidth = FormHostHelpers.ScaleForDpi(this, 8);
+        pnlTeacherFilterCard.Height = FormHostHelpers.ScaleForDpi(this, 96);
+        flpTeacherActions.WrapContents = true;
+        flpTeacherActions.Padding = FormHostHelpers.ScalePadding(this, new Padding(0, 8, 0, 0));
         AppTheme.StyleGrid(dgvTeacherList);
         AppTheme.StyleSecondaryButton(btnSearchTeacher);
         AppTheme.StyleSecondaryButton(btnRefreshTeacher);
@@ -33,6 +40,8 @@ public partial class FrmTeacherManagement : Form
         dgvTeacherList.AutoGenerateColumns = true;
         dgvTeacherList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         dgvTeacherList.RowTemplate.Height = 42;
+        txtTeacherAddress.ScrollBars = ScrollBars.Vertical;
+        txtTeacherNote.ScrollBars = ScrollBars.Vertical;
 
         cboTeacherStatusFilter.SelectedIndex = 0;
         txtTeacherNote.PlaceholderText = "Nam / Nữ";
@@ -273,7 +282,7 @@ public partial class FrmTeacherManagement : Form
         lblTeacherEmail.Text = "Email";
         lblTeacherSpecialty.Text = "Chuyên môn";
         lblTeacherAddress.Text = "Địa chỉ";
-        lblTeacherNote.Text = "Giới tính";
+        lblTeacherNote.Text = "Ghi chú";
 
         btnSearchTeacher.Text = "Tìm kiếm";
         btnRefreshTeacher.Text = "Làm mới";

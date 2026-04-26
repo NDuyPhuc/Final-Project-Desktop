@@ -138,7 +138,7 @@ internal static class UiHelpers
         {
             Name = name,
             Dock = DockStyle.Fill,
-            AutoScroll = true,
+            AutoScroll = false,
             ColumnCount = columns,
             RowCount = rows,
             BackColor = Color.Transparent,
@@ -203,8 +203,7 @@ internal static class UiHelpers
         var panel = CreatePanel(panelName);
         AppTheme.StyleCard(panel);
         AppTheme.RoundPanelCorners(panel);
-        panel.Width = 240;
-        panel.Height = 110;
+        panel.MinimumSize = new Size(220, 120);
 
         var bar = new Panel
         {

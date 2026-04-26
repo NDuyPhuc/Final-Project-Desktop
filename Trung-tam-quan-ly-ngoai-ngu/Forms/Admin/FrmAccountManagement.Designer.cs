@@ -148,7 +148,7 @@ partial class FrmAccountManagement
         // 
         // pnlAccountListColumn
         // 
-        pnlAccountListColumn.AutoScroll = true;
+        pnlAccountListColumn.AutoScroll = false;
         pnlAccountListColumn.Controls.Add(flpAccountCards);
         pnlAccountListColumn.Controls.Add(pnlAccountFilterCard);
         pnlAccountListColumn.Controls.Add(lblAccountListTitle);
@@ -239,7 +239,7 @@ partial class FrmAccountManagement
         // 
         // pnlAccountDetailColumn
         // 
-        pnlAccountDetailColumn.AutoScroll = true;
+        pnlAccountDetailColumn.AutoScroll = false;
         pnlAccountDetailColumn.Controls.Add(pnlPermissionRuleCard);
         pnlAccountDetailColumn.Controls.Add(pnlAccountInfoCard);
         pnlAccountDetailColumn.Controls.Add(pnlAccountHeader);
@@ -700,7 +700,7 @@ partial class FrmAccountManagement
         // 
         AutoScaleDimensions = new SizeF(96F, 96F);
         AutoScaleMode = AutoScaleMode.Dpi;
-        AutoScroll = true;
+        AutoScroll = false;
         BackColor = Color.FromArgb(241, 248, 255);
         ClientSize = new Size(1180, 760);
         Controls.Add(tblAccountRoot);

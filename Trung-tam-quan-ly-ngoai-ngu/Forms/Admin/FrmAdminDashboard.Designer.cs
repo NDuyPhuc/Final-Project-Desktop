@@ -141,7 +141,7 @@ partial class FrmAdminDashboard
         // 
         // pnlSidebarAdmin
         // 
-        pnlSidebarAdmin.AutoScroll = true;
+        pnlSidebarAdmin.AutoScroll = false;
         pnlSidebarAdmin.BackColor = Color.FromArgb(230, 246, 255);
         pnlSidebarAdmin.Controls.Add(pnlSidebarFooter);
         pnlSidebarAdmin.Controls.Add(flpSidebarMenu);
@@ -322,7 +322,7 @@ partial class FrmAdminDashboard
         // 
         // pnlContentHostAdmin
         // 
-        pnlContentHostAdmin.AutoScroll = true;
+        pnlContentHostAdmin.AutoScroll = false;
         pnlContentHostAdmin.Controls.Add(pnlDashboardHome);
         pnlContentHostAdmin.Dock = DockStyle.Fill;
         pnlContentHostAdmin.Location = new Point(248, 98);
@@ -710,7 +710,7 @@ partial class FrmAdminDashboard
         // 
         AutoScaleDimensions = new SizeF(96F, 96F);
         AutoScaleMode = AutoScaleMode.Dpi;
-        AutoScroll = true;
+        AutoScroll = false;
         BackColor = Color.FromArgb(245, 247, 251);
         ClientSize = new Size(1372, 761);
         Controls.Add(pnlContentHostAdmin);

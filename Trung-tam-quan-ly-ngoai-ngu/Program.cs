@@ -9,7 +9,9 @@ namespace Trung_tam_quan_ly_ngoai_ngu
         [STAThread]
         static void Main()
         {
-            ApplicationConfiguration.Initialize();
+            Application.SetHighDpiMode(HighDpiMode.SystemAware);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
 
             ILanguageCenterDataService dataService = new SqlLanguageCenterDataService();
             if (!TryInitializeRuntime(dataService))

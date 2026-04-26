@@ -156,7 +156,7 @@ partial class FrmTuitionReceipt
         tblEnrollmentInfo.RowStyles.Add(new RowStyle());
         tblEnrollmentInfo.RowStyles.Add(new RowStyle());
         tblEnrollmentInfo.Size = new Size(445, 164);
-        tblEnrollmentInfo.AutoScroll = true;
+        tblEnrollmentInfo.AutoScroll = false;
         tblEnrollmentInfo.TabIndex = 0;
         // 
         // lblReceiptStudentCode
@@ -268,7 +268,7 @@ partial class FrmTuitionReceipt
         tblPaymentInfo.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblPaymentInfo.RowStyles.Add(new RowStyle());
         tblPaymentInfo.Size = new Size(445, 164);
-        tblPaymentInfo.AutoScroll = true;
+        tblPaymentInfo.AutoScroll = false;
         tblPaymentInfo.TabIndex = 0;
         // 
         // lblReceiptAmount
@@ -438,7 +438,7 @@ partial class FrmTuitionReceipt
         flpReceiptActions.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)dgvReceiptHistory).EndInit();
         ((System.ComponentModel.ISupportInitialize)errTuitionReceipt).EndInit();
-        AutoScroll = true;
+        AutoScroll = false;
         ResumeLayout(false);
     }
 }

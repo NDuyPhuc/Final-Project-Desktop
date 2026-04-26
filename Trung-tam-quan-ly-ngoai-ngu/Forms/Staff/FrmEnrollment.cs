@@ -25,6 +25,10 @@ public partial class FrmEnrollment : Form
     private void ConfigureView()
     {
         LocalizeLabels();
+        MinimumSize = FormHostHelpers.ScaleSize(this, new Size(1200, 700));
+        ConfigureEnrollmentLayout();
+        flpEnrollmentActions.WrapContents = true;
+        flpEnrollmentActions.Padding = FormHostHelpers.ScalePadding(this, new Padding(0, 8, 0, 0));
 
         AppTheme.StyleGrid(dgvEnrollmentStudentList);
         AppTheme.StyleGrid(dgvEnrollmentClassList);
@@ -36,13 +40,68 @@ public partial class FrmEnrollment : Form
         dgvEnrollmentClassList.AutoGenerateColumns = true;
         dgvEnrollmentStudentList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         dgvEnrollmentClassList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        dgvEnrollmentClassList.ScrollBars = ScrollBars.Vertical;
 
         cboEnrollmentStatus.SelectedIndex = 0;
         txtEnrollmentDiscount.Text = "0";
         txtEnrollmentOriginalFee.ReadOnly = true;
         txtEnrollmentFinalFee.ReadOnly = true;
+        txtEnrollmentNote.ScrollBars = ScrollBars.Vertical;
         btnOpenTuitionReceipt.Enabled = false;
         _errEnrollment.BlinkStyle = ErrorBlinkStyle.NeverBlink;
+    }
+
+    private void ConfigureEnrollmentLayout()
+    {
+        AutoScroll = false;
+        tblEnrollmentColumns.AutoScroll = false;
+        tblEnrollmentColumns.SuspendLayout();
+        try
+        {
+            tblEnrollmentColumns.Controls.Clear();
+            tblEnrollmentColumns.ColumnStyles.Clear();
+            tblEnrollmentColumns.RowStyles.Clear();
+            tblEnrollmentColumns.ColumnCount = 2;
+            tblEnrollmentColumns.RowCount = 1;
+            tblEnrollmentColumns.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 68F));
+            tblEnrollmentColumns.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 32F));
+            tblEnrollmentColumns.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+
+            var selectionStack = new TableLayoutPanel
+            {
+                Name = "tblEnrollmentSelectionStack",
+                Dock = DockStyle.Fill,
+                ColumnCount = 1,
+                RowCount = 2,
+                Margin = new Padding(0, 0, 12, 0),
+                Padding = Padding.Empty,
+                AutoScroll = false
+            };
+            selectionStack.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            selectionStack.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            selectionStack.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+
+            grpEnrollmentStudentSelect.Dock = DockStyle.Fill;
+            grpEnrollmentStudentSelect.Margin = new Padding(0, 0, 0, 10);
+            grpEnrollmentClassSelect.Dock = DockStyle.Fill;
+            grpEnrollmentClassSelect.Margin = new Padding(0);
+            grpEnrollmentSummary.Dock = DockStyle.Fill;
+            grpEnrollmentSummary.Margin = Padding.Empty;
+
+            selectionStack.Controls.Add(grpEnrollmentStudentSelect, 0, 0);
+            selectionStack.Controls.Add(grpEnrollmentClassSelect, 0, 1);
+            tblEnrollmentColumns.Controls.Add(selectionStack, 0, 0);
+            tblEnrollmentColumns.Controls.Add(grpEnrollmentSummary, 1, 0);
+        }
+        finally
+        {
+            tblEnrollmentColumns.ResumeLayout(true);
+        }
+
+        dgvEnrollmentStudentList.Dock = DockStyle.Fill;
+        dgvEnrollmentClassList.Dock = DockStyle.Fill;
+        dgvEnrollmentStudentList.ScrollBars = ScrollBars.Vertical;
+        dgvEnrollmentClassList.ScrollBars = ScrollBars.Vertical;
     }
 
     private void WireEvents()
@@ -63,6 +122,7 @@ public partial class FrmEnrollment : Form
             _classTable = AppRuntime.DataService.GetEnrollmentClasses();
             dgvEnrollmentStudentList.DataSource = _studentTable;
             dgvEnrollmentClassList.DataSource = _classTable;
+            ConfigureClassGrid();
 
             if (dgvEnrollmentStudentList.Rows.Count > 0)
             {
@@ -253,5 +313,29 @@ public partial class FrmEnrollment : Form
 
         var sanitized = input.Replace(".", string.Empty).Replace(",", string.Empty).Trim();
         return decimal.TryParse(sanitized, NumberStyles.Number, CultureInfo.InvariantCulture, out var value) ? value : 0;
+    }
+
+    private void ConfigureClassGrid()
+    {
+        foreach (DataGridViewColumn column in dgvEnrollmentClassList.Columns)
+        {
+            column.MinimumWidth = 60;
+        }
+
+        SetFillWeight("Ma lop", 70);
+        SetFillWeight("Ten lop", 110);
+        SetFillWeight("Khoa hoc", 110);
+        SetFillWeight("Giao vien", 95);
+        SetFillWeight("Lich hoc", 105);
+        SetFillWeight("Si so", 55);
+        SetFillWeight("Con cho", 55);
+    }
+
+    private void SetFillWeight(string columnName, float weight)
+    {
+        if (dgvEnrollmentClassList.Columns.Contains(columnName))
+        {
+            dgvEnrollmentClassList.Columns[columnName].FillWeight = weight;
+        }
     }
 }

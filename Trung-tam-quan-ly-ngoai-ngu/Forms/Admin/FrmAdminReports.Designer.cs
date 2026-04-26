@@ -775,7 +775,7 @@ partial class FrmAdminReports
         tblReportMiddle.Name = "tblReportMiddle";
         tblReportMiddle.RowCount = 1;
         tblReportMiddle.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-        tblReportMiddle.Size = new Size(1224, 86);
+        tblReportMiddle.Size = new Size(1224, 460);
         tblReportMiddle.TabIndex = 3;
         // 
         // pnlReportChartCard
@@ -788,7 +788,7 @@ partial class FrmAdminReports
         pnlReportChartCard.Margin = new Padding(0, 0, 24, 0);
         pnlReportChartCard.Name = "pnlReportChartCard";
         pnlReportChartCard.Padding = new Padding(24, 20, 24, 20);
-        pnlReportChartCard.Size = new Size(802, 86);
+        pnlReportChartCard.Size = new Size(802, 460);
         pnlReportChartCard.TabIndex = 0;
         // 
         // chtAdminRevenue
@@ -800,7 +800,7 @@ partial class FrmAdminReports
         chtAdminRevenue.Legends.Add(legend1);
         chtAdminRevenue.Location = new Point(24, 74);
         chtAdminRevenue.Name = "chtAdminRevenue";
-        chtAdminRevenue.Size = new Size(754, 0);
+        chtAdminRevenue.Size = new Size(754, 366);
         chtAdminRevenue.TabIndex = 1;
         // 
         // pnlReportChartHeader
@@ -892,7 +892,7 @@ partial class FrmAdminReports
         tblReportSideColumn.RowCount = 2;
         tblReportSideColumn.RowStyles.Add(new RowStyle(SizeType.Percent, 63F));
         tblReportSideColumn.RowStyles.Add(new RowStyle(SizeType.Percent, 37F));
-        tblReportSideColumn.Size = new Size(398, 86);
+        tblReportSideColumn.Size = new Size(398, 460);
         tblReportSideColumn.TabIndex = 1;
         // 
         // pnlReportHighlightCard
@@ -907,7 +907,7 @@ partial class FrmAdminReports
         pnlReportHighlightCard.Margin = new Padding(0, 0, 0, 22);
         pnlReportHighlightCard.Name = "pnlReportHighlightCard";
         pnlReportHighlightCard.Padding = new Padding(28, 24, 28, 26);
-        pnlReportHighlightCard.Size = new Size(398, 32);
+        pnlReportHighlightCard.Size = new Size(398, 290);
         pnlReportHighlightCard.TabIndex = 0;
         // 
         // pnlReportHighlightTrack
@@ -970,7 +970,7 @@ partial class FrmAdminReports
         pnlReportDistributionCard.Margin = new Padding(0);
         pnlReportDistributionCard.Name = "pnlReportDistributionCard";
         pnlReportDistributionCard.Padding = new Padding(28, 24, 28, 24);
-        pnlReportDistributionCard.Size = new Size(398, 32);
+        pnlReportDistributionCard.Size = new Size(398, 170);
         pnlReportDistributionCard.TabIndex = 1;
         // 
         // tblReportDistribution

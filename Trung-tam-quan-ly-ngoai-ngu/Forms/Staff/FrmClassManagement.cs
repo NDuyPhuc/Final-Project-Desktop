@@ -21,6 +21,13 @@ public partial class FrmClassManagement : Form
     private void ConfigureView()
     {
         LocalizeLabels();
+        MinimumSize = FormHostHelpers.ScaleSize(this, new Size(1140, 700));
+        splClassContent.Panel1MinSize = FormHostHelpers.ScaleForDpi(this, 360);
+        splClassContent.Panel2MinSize = FormHostHelpers.ScaleForDpi(this, 420);
+        splClassContent.SplitterWidth = FormHostHelpers.ScaleForDpi(this, 8);
+        pnlClassFilterCard.Height = FormHostHelpers.ScaleForDpi(this, 96);
+        flpClassActions.WrapContents = true;
+        flpClassActions.Padding = FormHostHelpers.ScalePadding(this, new Padding(0, 8, 0, 0));
 
         AppTheme.StyleGrid(dgvClassList);
         AppTheme.StyleGrid(dgvClassStudentList);

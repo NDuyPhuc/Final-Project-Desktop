@@ -139,7 +139,7 @@ partial class FrmTeacherDashboard
         flpSidebarTeacherMenu.Location = new Point(18, 106);
         flpSidebarTeacherMenu.Name = "flpSidebarTeacherMenu";
         flpSidebarTeacherMenu.Size = new Size(220, 274);
-        flpSidebarTeacherMenu.AutoScroll = true;
+        flpSidebarTeacherMenu.AutoScroll = false;
         flpSidebarTeacherMenu.TabIndex = 1;
         flpSidebarTeacherMenu.WrapContents = false;
         // 
@@ -603,7 +603,7 @@ partial class FrmTeacherDashboard
         pnlTeacherClassCard.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)dgvTeacherClassOverview).EndInit();
         pnlTeacherTaskCard.ResumeLayout(false);
-        AutoScroll = true;
+        AutoScroll = false;
         ResumeLayout(false);
     }
 }

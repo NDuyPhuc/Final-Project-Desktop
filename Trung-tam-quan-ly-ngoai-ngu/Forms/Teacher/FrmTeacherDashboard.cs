@@ -1,4 +1,5 @@
 using System.Data;
+using TrungTamNgoaiNgu.Application.Infrastructure;
 
 namespace Trung_tam_quan_ly_ngoai_ngu;
 
@@ -40,9 +41,9 @@ public partial class FrmTeacherDashboard : Form
         pnlTopbarTeacher.BackColor = Color.White;
         pnlContentHostTeacher.BackColor = Color.FromArgb(236, 247, 255);
         pnlContentHostTeacher.Padding = FormHostHelpers.ScalePadding(this, new Padding(18, 0, 18, 18));
-        pnlContentHostTeacher.AutoScroll = true;
+        pnlContentHostTeacher.AutoScroll = false;
         pnlDashboardHome.BackColor = Color.FromArgb(236, 247, 255);
-        pnlDashboardHome.AutoScroll = true;
+        pnlDashboardHome.AutoScroll = false;
         pnlSidebarTeacherBrand.Height = FormHostHelpers.ScaleForDpi(this, 110);
         pnlSidebarTeacherBrand.Padding = FormHostHelpers.ScalePadding(this, new Padding(6, 0, 0, 0));
 
@@ -68,7 +69,7 @@ public partial class FrmTeacherDashboard : Form
         btnMenuScoreEntry.Text = "    NHẬP ĐIỂM";
 
         flpSidebarTeacherMenu.Dock = DockStyle.Fill;
-        flpSidebarTeacherMenu.AutoScroll = true;
+        flpSidebarTeacherMenu.AutoScroll = false;
 
         foreach (var button in GetMenuButtons())
         {
@@ -116,10 +117,10 @@ public partial class FrmTeacherDashboard : Form
 
         var menuButtons = GetMenuButtons();
         btnMenuTeacherDashboard.Click += (_, _) => ShowDashboardHome();
-        btnMenuTeachingClasses.Click += (_, _) => OpenModule(new FrmTeachingClasses(), btnMenuTeachingClasses, menuButtons);
-        btnMenuClassStudentList.Click += (_, _) => OpenModule(new FrmClassStudentList(), btnMenuClassStudentList, menuButtons);
-        btnMenuAttendance.Click += (_, _) => OpenModule(new FrmAttendance(), btnMenuAttendance, menuButtons);
-        btnMenuScoreEntry.Click += (_, _) => OpenModule(new FrmScoreEntry(), btnMenuScoreEntry, menuButtons);
+        btnMenuTeachingClasses.Click += (_, _) => OpenModule(() => new FrmTeachingClasses(), btnMenuTeachingClasses, menuButtons);
+        btnMenuClassStudentList.Click += (_, _) => OpenModule(() => new FrmClassStudentList(), btnMenuClassStudentList, menuButtons);
+        btnMenuAttendance.Click += (_, _) => OpenModule(() => new FrmAttendance(), btnMenuAttendance, menuButtons);
+        btnMenuScoreEntry.Click += (_, _) => OpenModule(() => new FrmScoreEntry(), btnMenuScoreEntry, menuButtons);
 
         Resize += (_, _) => ApplyResponsiveLayout();
         ApplyResponsiveLayout();
@@ -146,10 +147,28 @@ public partial class FrmTeacherDashboard : Form
         FormHostHelpers.SetActiveMenu(btnMenuTeacherDashboard, GetMenuButtons());
     }
 
-    private void OpenModule(Form moduleForm, Button activeButton, Button[] allButtons)
+    private void OpenModule(Func<Form> moduleFactory, Button activeButton, Button[] allButtons)
     {
-        FormHostHelpers.OpenChildForm(pnlContentHostTeacher, moduleForm);
-        FormHostHelpers.SetActiveMenu(activeButton, allButtons);
+        FormHostHelpers.LogUi($"TeacherDashboard:OpenModule:start:{activeButton.Name}");
+        try
+        {
+            using var _ = new CursorScope(Cursors.WaitCursor);
+            var moduleForm = moduleFactory();
+            FormHostHelpers.OpenChildForm(pnlContentHostTeacher, moduleForm);
+            FormHostHelpers.SetActiveMenu(activeButton, allButtons);
+            FormHostHelpers.LogUi($"TeacherDashboard:OpenModule:done:{activeButton.Name}:{moduleForm.GetType().Name}");
+        }
+        catch (Exception exception)
+        {
+            FormHostHelpers.LogUi($"TeacherDashboard:OpenModule:error:{activeButton.Name}:{exception}");
+            ErrorLogger.Log(exception, nameof(FrmTeacherDashboard));
+            MessageBox.Show(
+                this,
+                "Khong mo duoc chuc nang nay. Ung dung se giu nguyen dashboard de tranh bi vang ra. Vui long kiem tra log.txt.",
+                "Loi chuc nang",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+        }
     }
 
     private Button[] GetMenuButtons()
@@ -960,5 +979,23 @@ public partial class FrmTeacherDashboard : Form
             ("Nhập điểm cuối khóa TOEIC-A2", "Hạn chót 20/05/2026 (đã trễ)", "NHẬP ĐIỂM", "Báo cáo trễ", Color.FromArgb(209, 53, 53)),
             ("Chuẩn bị tài liệu lớp COM-B1", "Thứ 7, lúc 08:00", "XEM CHI TIẾT", "Cần in trước buổi học", Color.FromArgb(0, 96, 168))
         ];
+    }
+    private sealed class CursorScope : IDisposable
+    {
+        private readonly Cursor? _previousCursor;
+
+        public CursorScope(Cursor nextCursor)
+        {
+            _previousCursor = Cursor.Current;
+            Cursor.Current = nextCursor;
+        }
+
+        public void Dispose()
+        {
+            if (_previousCursor is not null)
+            {
+                Cursor.Current = _previousCursor;
+            }
+        }
     }
 }

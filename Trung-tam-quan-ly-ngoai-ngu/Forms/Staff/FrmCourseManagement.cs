@@ -23,6 +23,13 @@ public partial class FrmCourseManagement : Form
     private void ConfigureView()
     {
         LocalizeLabels();
+        MinimumSize = FormHostHelpers.ScaleSize(this, new Size(1100, 680));
+        splCourseContent.Panel1MinSize = FormHostHelpers.ScaleForDpi(this, 360);
+        splCourseContent.Panel2MinSize = FormHostHelpers.ScaleForDpi(this, 420);
+        splCourseContent.SplitterWidth = FormHostHelpers.ScaleForDpi(this, 8);
+        pnlCourseFilterCard.Height = FormHostHelpers.ScaleForDpi(this, 96);
+        flpCourseActions.WrapContents = true;
+        flpCourseActions.Padding = FormHostHelpers.ScalePadding(this, new Padding(0, 8, 0, 0));
 
         AppTheme.StyleGrid(dgvCourseList);
         AppTheme.StyleGrid(dgvCourseClassList);
@@ -39,6 +46,7 @@ public partial class FrmCourseManagement : Form
         dgvCourseClassList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         dgvCourseList.RowTemplate.Height = 42;
         dgvCourseClassList.RowTemplate.Height = 38;
+        txtCourseDescription.ScrollBars = ScrollBars.Vertical;
 
         cboCourseStatusFilter.SelectedIndex = 0;
         _errCourse.BlinkStyle = ErrorBlinkStyle.NeverBlink;

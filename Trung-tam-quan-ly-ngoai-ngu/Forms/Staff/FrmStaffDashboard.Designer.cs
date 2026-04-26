@@ -519,7 +519,7 @@ partial class FrmStaffDashboard
         // 
         // pnlContentHostStaff
         // 
-        pnlContentHostStaff.AutoScroll = true;
+        pnlContentHostStaff.AutoScroll = false;
         pnlContentHostStaff.Controls.Add(pnlDashboardHome);
         pnlContentHostStaff.Dock = DockStyle.Fill;
         pnlContentHostStaff.Location = new Point(320, 120);
@@ -803,7 +803,7 @@ partial class FrmStaffDashboard
         tblStaffMain.RowCount = 1;
         tblStaffMain.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblStaffMain.Size = new Size(1224, 532);
-        tblStaffMain.AutoScroll = true;
+        tblStaffMain.AutoScroll = false;
         tblStaffMain.TabIndex = 1;
         // 
         // pnlRecentReceiptCard
@@ -816,7 +816,7 @@ partial class FrmStaffDashboard
         pnlRecentReceiptCard.Name = "pnlRecentReceiptCard";
         pnlRecentReceiptCard.Padding = new Padding(0, 0, 0, 18);
         pnlRecentReceiptCard.Size = new Size(751, 532);
-        pnlRecentReceiptCard.AutoScroll = true;
+        pnlRecentReceiptCard.AutoScroll = false;
         pnlRecentReceiptCard.TabIndex = 0;
         // 
         // dgvRecentReceipts
@@ -837,7 +837,7 @@ partial class FrmStaffDashboard
         pnlRecentReceiptHeader.Name = "pnlRecentReceiptHeader";
         pnlRecentReceiptHeader.Padding = new Padding(28, 18, 28, 16);
         pnlRecentReceiptHeader.Size = new Size(751, 64);
-        pnlRecentReceiptHeader.AutoScroll = true;
+        pnlRecentReceiptHeader.AutoScroll = false;
         pnlRecentReceiptHeader.TabIndex = 0;
         // 
         // lnkRecentReceiptAll
@@ -877,7 +877,7 @@ partial class FrmStaffDashboard
         pnlStaffActionCard.Name = "pnlStaffActionCard";
         pnlStaffActionCard.Padding = new Padding(0);
         pnlStaffActionCard.Size = new Size(453, 532);
-        pnlStaffActionCard.AutoScroll = true;
+        pnlStaffActionCard.AutoScroll = false;
         pnlStaffActionCard.TabIndex = 1;
         // 
         // btnAddTaskStaff
@@ -910,7 +910,7 @@ partial class FrmStaffDashboard
         pnlStaffActionFooter.Name = "pnlStaffActionFooter";
         pnlStaffActionFooter.Padding = new Padding(24, 16, 24, 18);
         pnlStaffActionFooter.Size = new Size(453, 78);
-        pnlStaffActionFooter.AutoScroll = true;
+        pnlStaffActionFooter.AutoScroll = false;
         pnlStaffActionFooter.TabIndex = 2;
         // 
         // pnlStaffActionHeader
@@ -921,7 +921,7 @@ partial class FrmStaffDashboard
         pnlStaffActionHeader.Name = "pnlStaffActionHeader";
         pnlStaffActionHeader.Padding = new Padding(28, 18, 28, 16);
         pnlStaffActionHeader.Size = new Size(453, 64);
-        pnlStaffActionHeader.AutoScroll = true;
+        pnlStaffActionHeader.AutoScroll = false;
         pnlStaffActionHeader.TabIndex = 0;
         // 
         // lblStaffActionTitle
@@ -945,7 +945,7 @@ partial class FrmStaffDashboard
         pnlWeeklyProgressCard.Name = "pnlWeeklyProgressCard";
         pnlWeeklyProgressCard.Padding = new Padding(28, 24, 28, 24);
         pnlWeeklyProgressCard.Size = new Size(1224, 478);
-        pnlWeeklyProgressCard.AutoScroll = true;
+        pnlWeeklyProgressCard.AutoScroll = false;
         pnlWeeklyProgressCard.TabIndex = 2;
         // 
         // lblWeeklyProgressSummary
@@ -978,7 +978,7 @@ partial class FrmStaffDashboard
         pnlWeeklyProgressHeader.Location = new Point(28, 24);
         pnlWeeklyProgressHeader.Name = "pnlWeeklyProgressHeader";
         pnlWeeklyProgressHeader.Size = new Size(1168, 62);
-        pnlWeeklyProgressHeader.AutoScroll = true;
+        pnlWeeklyProgressHeader.AutoScroll = false;
         pnlWeeklyProgressHeader.TabIndex = 0;
         // 
         // flpWeeklyLegend
@@ -992,7 +992,7 @@ partial class FrmStaffDashboard
         flpWeeklyLegend.Name = "flpWeeklyLegend";
         flpWeeklyLegend.Padding = new Padding(0, 18, 0, 0);
         flpWeeklyLegend.Size = new Size(266, 62);
-        flpWeeklyLegend.AutoScroll = true;
+        flpWeeklyLegend.AutoScroll = false;
         flpWeeklyLegend.TabIndex = 1;
         flpWeeklyLegend.WrapContents = false;
         // 
@@ -1002,7 +1002,7 @@ partial class FrmStaffDashboard
         pnlLegendDone.Margin = new Padding(0, 18, 8, 0);
         pnlLegendDone.Name = "pnlLegendDone";
         pnlLegendDone.Size = new Size(14, 14);
-        pnlLegendDone.AutoScroll = true;
+        pnlLegendDone.AutoScroll = false;
         pnlLegendDone.TabIndex = 0;
         // 
         // lblLegendDone
@@ -1021,7 +1021,7 @@ partial class FrmStaffDashboard
         pnlLegendRemaining.Margin = new Padding(0, 18, 8, 0);
         pnlLegendRemaining.Name = "pnlLegendRemaining";
         pnlLegendRemaining.Size = new Size(14, 14);
-        pnlLegendRemaining.AutoScroll = true;
+        pnlLegendRemaining.AutoScroll = false;
         pnlLegendRemaining.TabIndex = 2;
         // 
         // lblLegendRemaining
@@ -1093,7 +1093,7 @@ partial class FrmStaffDashboard
         pnlWeeklyProgressHeader.PerformLayout();
         flpWeeklyLegend.ResumeLayout(false);
         flpWeeklyLegend.PerformLayout();
-        AutoScroll = true;
+        AutoScroll = false;
         ResumeLayout(false);
     }
 }

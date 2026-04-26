@@ -51,9 +51,9 @@ public partial class FrmScoreEntry : Form
         try
         {
             _classTable = AppRuntime.DataService.GetTeachingClasses(AppRuntime.CurrentUser?.Id);
-            cboScoreClass.DataSource = _classTable;
             cboScoreClass.DisplayMember = "Ten lop";
             cboScoreClass.ValueMember = "Ma lop";
+            cboScoreClass.DataSource = _classTable;
             LoadScoreList();
         }
         catch (Exception ex)
@@ -67,7 +67,7 @@ public partial class FrmScoreEntry : Form
     {
         try
         {
-            var classId = cboScoreClass.SelectedValue?.ToString();
+            var classId = GetSelectedClassId();
             _scoreTable = AppRuntime.DataService.GetScoreList(classId);
             dgvScoreList.DataSource = _scoreTable;
             ConfigureGrid();
@@ -87,8 +87,15 @@ public partial class FrmScoreEntry : Form
         }
 
         dgvScoreList.Columns["EnrollmentId"].Visible = false;
-        dgvScoreList.Columns["Ma hoc vien"].ReadOnly = true;
-        dgvScoreList.Columns["Ho ten"].ReadOnly = true;
+        if (dgvScoreList.Columns.Contains("Ma hoc vien"))
+        {
+            dgvScoreList.Columns["Ma hoc vien"].ReadOnly = true;
+        }
+
+        if (dgvScoreList.Columns.Contains("Ho ten"))
+        {
+            dgvScoreList.Columns["Ho ten"].ReadOnly = true;
+        }
     }
 
     private void SaveScores()
@@ -96,10 +103,16 @@ public partial class FrmScoreEntry : Form
         try
         {
             errScore.Clear();
-            var classId = cboScoreClass.SelectedValue?.ToString();
+            var classId = GetSelectedClassId();
             if (string.IsNullOrWhiteSpace(classId))
             {
                 errScore.SetError(cboScoreClass, "Chưa chọn lớp học.");
+                return;
+            }
+
+            if (!dgvScoreList.Columns.Contains("EnrollmentId"))
+            {
+                MessageBox.Show(this, "Danh sach diem chua san sang de luu.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
@@ -117,15 +130,15 @@ public partial class FrmScoreEntry : Form
                     continue;
                 }
 
-                var midterm = ParseScore(row.Cells["Diem giua ky"].Value?.ToString(), "Diem giua ky");
-                var final = ParseScore(row.Cells["Diem cuoi ky"].Value?.ToString(), "Diem cuoi ky");
+                var midterm = ParseScore(GetCellValue(row, "Diem giua ky"), "Diem giua ky");
+                var final = ParseScore(GetCellValue(row, "Diem cuoi ky"), "Diem cuoi ky");
 
                 items.Add(new ScoreSaveItem
                 {
                     EnrollmentId = enrollmentId,
                     MidtermScore = midterm,
                     FinalScore = final,
-                    Note = row.Cells["Ghi chu"].Value?.ToString()
+                    Note = GetCellValue(row, "Ghi chu")
                 });
             }
 
@@ -160,5 +173,21 @@ public partial class FrmScoreEntry : Form
         }
 
         return score;
+    }
+
+    private string? GetSelectedClassId()
+    {
+        return cboScoreClass.SelectedValue is string value
+            ? value
+            : cboScoreClass.SelectedItem is DataRowView rowView && rowView.Row.Table.Columns.Contains("Ma lop")
+                ? rowView.Row["Ma lop"]?.ToString()
+                : null;
+    }
+
+    private static string? GetCellValue(DataGridViewRow row, string columnName)
+    {
+        return row.DataGridView is not null && row.DataGridView.Columns.Contains(columnName)
+            ? row.Cells[columnName].Value?.ToString()
+            : null;
     }
 }

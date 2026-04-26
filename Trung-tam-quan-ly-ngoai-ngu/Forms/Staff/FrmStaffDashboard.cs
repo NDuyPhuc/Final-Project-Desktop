@@ -1,4 +1,5 @@
 using System.Data;
+using TrungTamNgoaiNgu.Application.Infrastructure;
 
 namespace Trung_tam_quan_ly_ngoai_ngu;
 
@@ -35,6 +36,13 @@ public partial class FrmStaffDashboard : Form
         pnlSidebarStaff.BackColor = Color.FromArgb(226, 243, 255);
         pnlSidebarFooterStaff.Height = FormHostHelpers.ScaleForDpi(this, 54);
         pnlSidebarFooterStaff.Padding = FormHostHelpers.ScalePadding(this, new Padding(18, 0, 18, 0));
+        pnlContentHostStaff.AutoScroll = true;
+        pnlDashboardHome.AutoScroll = false;
+        tblStaffMain.AutoScroll = false;
+        pnlRecentReceiptCard.AutoScroll = false;
+        pnlStaffActionCard.AutoScroll = false;
+        pnlWeeklyProgressCard.AutoScroll = false;
+        flpWeeklyProgressGrid.AutoScroll = false;
 
         lblCurrentUserStaff.Text = _currentUserName;
         lblCurrentRoleStaff.Text = "Linguistic Architect CMS";
@@ -210,7 +218,13 @@ public partial class FrmStaffDashboard : Form
         catch (Exception exception)
         {
             FormHostHelpers.LogUi($"StaffDashboard:OpenModule:error:{activeButton.Name}:{exception}");
-            throw;
+            ErrorLogger.Log(exception, nameof(FrmStaffDashboard));
+            MessageBox.Show(
+                this,
+                "Khong mo duoc chuc nang nay. Ung dung se giu nguyen dashboard de tranh bi vang ra. Vui long kiem tra log.txt.",
+                "Loi chuc nang",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
         }
     }
 
@@ -342,8 +356,8 @@ public partial class FrmStaffDashboard : Form
 
         try
         {
-            var compact = contentWidth < FormHostHelpers.ScaleForDpi(this, 1220);
-            var veryCompact = contentWidth < FormHostHelpers.ScaleForDpi(this, 980);
+            var compact = contentWidth < FormHostHelpers.ScaleForDpi(this, 1040);
+            var veryCompact = contentWidth < FormHostHelpers.ScaleForDpi(this, 920);
             var ultraCompact = contentWidth < FormHostHelpers.ScaleForDpi(this, 760);
 
             tblStaffKpi.SuspendLayout();
@@ -375,9 +389,9 @@ public partial class FrmStaffDashboard : Form
             {
             tblStaffDashboardRoot.RowStyles.Clear();
             tblStaffDashboardRoot.RowCount = 3;
-            tblStaffDashboardRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 540F));
-            tblStaffDashboardRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 1040F));
-            tblStaffDashboardRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 500F));
+            tblStaffDashboardRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, FormHostHelpers.ScaleForDpi(this, 520)));
+            tblStaffDashboardRoot.RowStyles.Add(new RowStyle(SizeType.Percent, 56F));
+            tblStaffDashboardRoot.RowStyles.Add(new RowStyle(SizeType.Percent, 44F));
 
             tblStaffKpi.ColumnCount = 1;
             tblStaffKpi.RowCount = 4;
@@ -399,8 +413,8 @@ public partial class FrmStaffDashboard : Form
             tblStaffMain.ColumnStyles.Clear();
             tblStaffMain.RowStyles.Clear();
             tblStaffMain.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tblStaffMain.RowStyles.Add(new RowStyle(SizeType.Absolute, 560F));
-            tblStaffMain.RowStyles.Add(new RowStyle(SizeType.Absolute, 540F));
+            tblStaffMain.RowStyles.Add(new RowStyle(SizeType.Percent, 52F));
+            tblStaffMain.RowStyles.Add(new RowStyle(SizeType.Percent, 48F));
             tblStaffMain.SetColumn(pnlRecentReceiptCard, 0);
             tblStaffMain.SetRow(pnlRecentReceiptCard, 0);
             tblStaffMain.SetColumn(pnlStaffActionCard, 0);
@@ -440,9 +454,9 @@ public partial class FrmStaffDashboard : Form
             {
             tblStaffDashboardRoot.RowStyles.Clear();
             tblStaffDashboardRoot.RowCount = 3;
-            tblStaffDashboardRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 352F));
-            tblStaffDashboardRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 1040F));
-            tblStaffDashboardRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 500F));
+            tblStaffDashboardRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, FormHostHelpers.ScaleForDpi(this, 320)));
+            tblStaffDashboardRoot.RowStyles.Add(new RowStyle(SizeType.Percent, 56F));
+            tblStaffDashboardRoot.RowStyles.Add(new RowStyle(SizeType.Percent, 44F));
 
             tblStaffKpi.ColumnCount = 2;
             tblStaffKpi.RowCount = 2;
@@ -458,20 +472,18 @@ public partial class FrmStaffDashboard : Form
             SetGridPosition(pnlTodayReceipts, 0, 1, new Padding(0, 0, 12, 0));
             SetGridPosition(pnlDebtStudents, 1, 1, Padding.Empty);
 
-            tblStaffMain.ColumnCount = 1;
-            tblStaffMain.RowCount = 2;
+            tblStaffMain.ColumnCount = 2;
+            tblStaffMain.RowCount = 1;
             tblStaffMain.ColumnStyles.Clear();
             tblStaffMain.RowStyles.Clear();
-            tblStaffMain.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tblStaffMain.RowStyles.Add(new RowStyle(SizeType.Absolute, 540F));
-            tblStaffMain.RowStyles.Add(new RowStyle(SizeType.Absolute, 540F));
-            tblStaffMain.Controls.SetChildIndex(pnlRecentReceiptCard, 0);
-            tblStaffMain.Controls.SetChildIndex(pnlStaffActionCard, 1);
+            tblStaffMain.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));
+            tblStaffMain.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
+            tblStaffMain.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tblStaffMain.SetColumn(pnlRecentReceiptCard, 0);
             tblStaffMain.SetRow(pnlRecentReceiptCard, 0);
-            tblStaffMain.SetColumn(pnlStaffActionCard, 0);
-            tblStaffMain.SetRow(pnlStaffActionCard, 1);
-            pnlRecentReceiptCard.Margin = new Padding(0, 0, 0, 20);
+            tblStaffMain.SetColumn(pnlStaffActionCard, 1);
+            tblStaffMain.SetRow(pnlStaffActionCard, 0);
+            pnlRecentReceiptCard.Margin = new Padding(0, 0, 20, 0);
             pnlStaffActionCard.Margin = Padding.Empty;
             pnlStaffActionHeader.Height = 74;
             pnlStaffActionFooter.Height = 88;
@@ -503,9 +515,9 @@ public partial class FrmStaffDashboard : Form
             {
             tblStaffDashboardRoot.RowStyles.Clear();
             tblStaffDashboardRoot.RowCount = 3;
-            tblStaffDashboardRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 160F));
-            tblStaffDashboardRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 560F));
-            tblStaffDashboardRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, 500F));
+            tblStaffDashboardRoot.RowStyles.Add(new RowStyle(SizeType.Absolute, FormHostHelpers.ScaleForDpi(this, 148)));
+            tblStaffDashboardRoot.RowStyles.Add(new RowStyle(SizeType.Percent, 56F));
+            tblStaffDashboardRoot.RowStyles.Add(new RowStyle(SizeType.Percent, 44F));
 
             tblStaffKpi.ColumnCount = 4;
             tblStaffKpi.RowCount = 1;
@@ -566,7 +578,6 @@ public partial class FrmStaffDashboard : Form
             LayoutKpiCard(pnlTodayReceipts, lblTodayReceiptsTitle, lblTodayReceiptsValue, lblTodayReceiptsBadge);
             LayoutKpiCard(pnlDebtStudents, lblDebtStudentsTitle, lblDebtStudentsValue, lblDebtStudentsBadge);
             SyncDashboardHomeHeight();
-
             tblTopbarStaff.ResumeLayout(true);
             tblStaffKpi.ResumeLayout(true);
             tblStaffMain.ResumeLayout(true);
@@ -614,6 +625,13 @@ public partial class FrmStaffDashboard : Form
         table.SetColumn(control, column);
         table.SetRow(control, row);
         control.Margin = margin;
+    }
+
+    private void SyncDashboardHomeHeight()
+    {
+        var preferred = tblStaffDashboardRoot.GetPreferredSize(new Size(Math.Max(960, pnlContentHostStaff.ClientSize.Width - 8), 0));
+        var minimumDashboardHeight = FormHostHelpers.ScaleForDpi(this, 1160);
+        pnlDashboardHome.Height = Math.Max(Math.Max(preferred.Height + 24, minimumDashboardHeight), pnlContentHostStaff.ClientSize.Height + FormHostHelpers.ScaleForDpi(this, 240));
     }
 
     private static (string Title, string Description, string Priority, string Deadline, string PriorityType)[] GetTaskItems()
@@ -679,18 +697,6 @@ public partial class FrmStaffDashboard : Form
         button.Padding = FormHostHelpers.ScalePadding(this, new Padding(6, 0, 6, 0));
         button.Width = FormHostHelpers.ScaleForDpi(this, width);
         button.Height = FormHostHelpers.ScaleForDpi(this, 36);
-    }
-
-    private void SyncDashboardHomeHeight()
-    {
-        var totalHeight = 0;
-        foreach (RowStyle rowStyle in tblStaffDashboardRoot.RowStyles)
-        {
-            totalHeight += (int)Math.Ceiling(rowStyle.Height);
-        }
-
-        totalHeight += tblStaffDashboardRoot.Margin.Vertical;
-        pnlDashboardHome.Height = Math.Max(totalHeight, 1180);
     }
 
     private sealed class CursorScope : IDisposable

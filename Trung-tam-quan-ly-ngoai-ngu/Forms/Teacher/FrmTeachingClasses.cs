@@ -77,9 +77,9 @@ public partial class FrmTeachingClasses : Form
 
         foreach (DataRow row in _sourceTable.Rows)
         {
-            var classId = row["Ma lop"]?.ToString() ?? string.Empty;
-            var className = row["Ten lop"]?.ToString() ?? string.Empty;
-            var classStatus = row["Trang thai"]?.ToString() ?? string.Empty;
+            var classId = GetField(row, "Ma lop");
+            var className = GetField(row, "Ten lop");
+            var classStatus = GetField(row, "Trang thai");
 
             var matchesKeyword = string.IsNullOrWhiteSpace(keyword)
                 || classId.Contains(keyword, StringComparison.OrdinalIgnoreCase)
@@ -100,5 +100,12 @@ public partial class FrmTeachingClasses : Form
         txtTeachingClassKeyword.Clear();
         cboTeachingStatusFilter.SelectedIndex = 0;
         dgvTeachingClassList.DataSource = _sourceTable;
+    }
+
+    private static string GetField(DataRow row, string columnName)
+    {
+        return row.Table.Columns.Contains(columnName)
+            ? row[columnName]?.ToString() ?? string.Empty
+            : string.Empty;
     }
 }

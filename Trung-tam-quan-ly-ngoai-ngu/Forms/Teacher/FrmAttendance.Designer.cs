@@ -235,7 +235,7 @@ partial class FrmAttendance
         flpAttendanceActions.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)dgvAttendanceList).EndInit();
         ((System.ComponentModel.ISupportInitialize)errAttendance).EndInit();
-        AutoScroll = true;
+        AutoScroll = false;
         ResumeLayout(false);
     }
 }

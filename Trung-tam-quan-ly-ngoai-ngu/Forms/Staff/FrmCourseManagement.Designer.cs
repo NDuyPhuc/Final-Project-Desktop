@@ -216,7 +216,7 @@ partial class FrmCourseManagement
         tblCourseDetail.RowStyles.Add(new RowStyle());
         tblCourseDetail.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblCourseDetail.Size = new Size(552, 202);
-        tblCourseDetail.AutoScroll = true;
+        tblCourseDetail.AutoScroll = false;
         tblCourseDetail.TabIndex = 0;
         // 
         // lblCourseCode
@@ -455,7 +455,7 @@ partial class FrmCourseManagement
         grpCourseClassList.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)dgvCourseClassList).EndInit();
         flpCourseActions.ResumeLayout(false);
-        AutoScroll = true;
+        AutoScroll = false;
         ResumeLayout(false);
     }
 }

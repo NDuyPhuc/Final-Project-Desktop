@@ -309,7 +309,7 @@ partial class FrmClassManagement
         tblClassInfo.RowStyles.Add(new RowStyle());
         tblClassInfo.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         tblClassInfo.Size = new Size(538, 411);
-        tblClassInfo.AutoScroll = true;
+        tblClassInfo.AutoScroll = false;
         tblClassInfo.TabIndex = 0;
         // 
         // lblClassCode
@@ -644,7 +644,7 @@ partial class FrmClassManagement
         tpClassSessions.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)dgvClassSessionList).EndInit();
         flpClassActions.ResumeLayout(false);
-        AutoScroll = true;
+        AutoScroll = false;
         ResumeLayout(false);
     }
 }
