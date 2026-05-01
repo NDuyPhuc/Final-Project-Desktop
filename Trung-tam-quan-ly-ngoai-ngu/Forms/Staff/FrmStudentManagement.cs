@@ -11,6 +11,8 @@ public partial class FrmStudentManagement : Form
     private DataTable _studentTable = new();
     private string? _pendingAvatarSourcePath;
     private string? _currentAvatarPath;
+    private Label? _lblStudentAddress;
+    private TextBox? _txtStudentAddress;
 
     public FrmStudentManagement()
     {
@@ -25,6 +27,7 @@ public partial class FrmStudentManagement : Form
     private void ConfigureView()
     {
         BuildFilterLayout();
+        EnsureAddressControls();
         LocalizeLabels();
 
         cboStudentStatusFilter.SelectedIndex = 0;
@@ -88,7 +91,8 @@ public partial class FrmStudentManagement : Form
         btnResetStudent.Click += (_, _) => ResetDetailEditor();
         btnOpenEnrollment.Click += (_, _) =>
         {
-            using var form = new FrmEnrollment();
+            var studentId = txtStudentId.Text.Trim();
+            using var form = new FrmEnrollment(string.IsNullOrWhiteSpace(studentId) ? null : studentId, null);
             form.ShowDialog(this);
         };
         btnCreateStudent.Click += (_, _) => StartCreateStudent();
@@ -141,7 +145,7 @@ public partial class FrmStudentManagement : Form
                 BirthDate = dtpStudentBirthDate.Value.Date,
                 Phone = txtStudentPhone.Text.Trim(),
                 Email = txtStudentEmail.Text.Trim(),
-                Address = string.Empty,
+                Address = GetStudentAddressText(),
                 AvatarPath = _currentAvatarPath,
                 Status = cboStudentStatus.Text,
                 IsDeleted = false
@@ -276,6 +280,7 @@ public partial class FrmStudentManagement : Form
             txtStudentFullName.Text = student.FullName;
             txtStudentPhone.Text = student.Phone;
             txtStudentEmail.Text = student.Email ?? string.Empty;
+            SetStudentAddressText(student.Address);
             cboStudentStatus.Text = string.IsNullOrWhiteSpace(student.Status) ? "Đang học" : student.Status;
             dtpStudentBirthDate.Value = student.BirthDate == default ? DateTime.Today : student.BirthDate;
             _currentAvatarPath = student.AvatarPath;
@@ -343,6 +348,7 @@ public partial class FrmStudentManagement : Form
         txtStudentFullName.Clear();
         txtStudentPhone.Clear();
         txtStudentEmail.Clear();
+        SetStudentAddressText(string.Empty);
         cboStudentStatus.SelectedIndex = 0;
         dtpStudentBirthDate.Value = DateTime.Today;
         _pendingAvatarSourcePath = null;
@@ -371,6 +377,10 @@ public partial class FrmStudentManagement : Form
         lblStudentBirthDate.Text = "Ngày sinh";
         lblStudentPhone.Text = "Điện thoại";
         lblStudentEmail.Text = "Email";
+        if (_lblStudentAddress is not null)
+        {
+            _lblStudentAddress.Text = "Địa chỉ";
+        }
         lblStudentStatus.Text = "Trạng thái";
         cboStudentStatus.Items.Clear();
         cboStudentStatus.Items.AddRange(["Đang học", "Bảo lưu", "Hoàn thành", "Đã nghỉ"]);
@@ -508,6 +518,48 @@ public partial class FrmStudentManagement : Form
                 splStudentContent,
                 Orientation.Vertical,
                 Math.Max(420, (int)(splStudentContent.ClientSize.Width * 0.47)));
+        }
+    }
+
+    private void EnsureAddressControls()
+    {
+        if (_txtStudentAddress is not null)
+        {
+            return;
+        }
+
+        _lblStudentAddress = new Label
+        {
+            Name = "lblStudentAddressDynamic",
+            Text = "Địa chỉ",
+            Anchor = AnchorStyles.Left,
+            AutoSize = true
+        };
+
+        _txtStudentAddress = new TextBox
+        {
+            Name = "txtStudentAddressDynamic",
+            Dock = DockStyle.Fill,
+            Multiline = true,
+            Height = 52,
+            ScrollBars = ScrollBars.Vertical
+        };
+
+        tblStudentInfo.RowCount += 1;
+        tblStudentInfo.RowStyles.Add(new RowStyle(SizeType.Absolute, 58F));
+        tblStudentInfo.Controls.Add(_lblStudentAddress, 0, 7);
+        tblStudentInfo.Controls.Add(_txtStudentAddress, 1, 7);
+        tblStudentInfo.SetRow(lblStudentStatus, 8);
+        tblStudentInfo.SetRow(cboStudentStatus, 8);
+    }
+
+    private string GetStudentAddressText() => _txtStudentAddress?.Text.Trim() ?? string.Empty;
+
+    private void SetStudentAddressText(string? value)
+    {
+        if (_txtStudentAddress is not null)
+        {
+            _txtStudentAddress.Text = value ?? string.Empty;
         }
     }
 

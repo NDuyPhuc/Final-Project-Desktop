@@ -12,9 +12,14 @@ public partial class FrmEnrollment : Form
     private string? _selectedStudentId;
     private string? _selectedClassId;
     private string? _currentEnrollmentId;
+    private readonly string? _preselectedStudentId;
+    private readonly string? _preselectedClassId;
+    private ComboBox? _cboEnrollmentCourseFilter;
 
-    public FrmEnrollment()
+    public FrmEnrollment(string? preselectedStudentId = null, string? preselectedClassId = null)
     {
+        _preselectedStudentId = preselectedStudentId;
+        _preselectedClassId = preselectedClassId;
         InitializeComponent();
         FormHostHelpers.ConfigureModuleSurface(this, "Ghi danh học viên");
         ConfigureView();
@@ -35,6 +40,7 @@ public partial class FrmEnrollment : Form
         AppTheme.StylePrimaryButton(btnCreateEnrollment);
         AppTheme.StyleSecondaryButton(btnRefreshEnrollment);
         AppTheme.StyleSecondaryButton(btnOpenTuitionReceipt);
+        InitializeCourseFilterUi();
 
         dgvEnrollmentStudentList.AutoGenerateColumns = true;
         dgvEnrollmentClassList.AutoGenerateColumns = true;
@@ -112,6 +118,10 @@ public partial class FrmEnrollment : Form
         btnCreateEnrollment.Click += (_, _) => CreateEnrollment();
         btnOpenTuitionReceipt.Click += (_, _) => OpenTuitionReceipt();
         txtEnrollmentDiscount.TextChanged += (_, _) => RecalculateFinalFee();
+        if (_cboEnrollmentCourseFilter is not null)
+        {
+            _cboEnrollmentCourseFilter.SelectedIndexChanged += (_, _) => LoadClassData();
+        }
     }
 
     private void LoadData()
@@ -119,18 +129,19 @@ public partial class FrmEnrollment : Form
         try
         {
             _studentTable = AppRuntime.DataService.GetEnrollmentStudents();
-            _classTable = AppRuntime.DataService.GetEnrollmentClasses();
             dgvEnrollmentStudentList.DataSource = _studentTable;
-            dgvEnrollmentClassList.DataSource = _classTable;
-            ConfigureClassGrid();
+            BindCourseFilter();
+            LoadClassData();
 
-            if (dgvEnrollmentStudentList.Rows.Count > 0)
+            var studentFocused = !string.IsNullOrWhiteSpace(_preselectedStudentId) && FocusRowById(dgvEnrollmentStudentList, _preselectedStudentId);
+            if (!studentFocused && dgvEnrollmentStudentList.Rows.Count > 0)
             {
                 dgvEnrollmentStudentList.Rows[0].Selected = true;
                 UpdateSelectedStudent();
             }
 
-            if (dgvEnrollmentClassList.Rows.Count > 0)
+            var classFocused = !string.IsNullOrWhiteSpace(_preselectedClassId) && FocusRowById(dgvEnrollmentClassList, _preselectedClassId);
+            if (!classFocused && dgvEnrollmentClassList.Rows.Count > 0)
             {
                 dgvEnrollmentClassList.Rows[0].Selected = true;
                 UpdateSelectedClass();
@@ -143,6 +154,84 @@ public partial class FrmEnrollment : Form
             ErrorLogger.Log(ex, nameof(FrmEnrollment));
             MessageBox.Show(this, "Không tải được dữ liệu ghi danh. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+    }
+
+    private void LoadClassData()
+    {
+        var courseId = _cboEnrollmentCourseFilter?.SelectedValue?.ToString();
+        if (string.Equals(courseId, "ALL", StringComparison.OrdinalIgnoreCase))
+        {
+            courseId = null;
+        }
+
+        _classTable = AppRuntime.DataService.GetEnrollmentClasses(courseId, true);
+        dgvEnrollmentClassList.DataSource = _classTable;
+        ConfigureClassGrid();
+    }
+
+    private void InitializeCourseFilterUi()
+    {
+        if (grpEnrollmentClassSelect.Controls.ContainsKey("pnlEnrollmentCourseFilter"))
+        {
+            return;
+        }
+
+        var panel = new Panel { Name = "pnlEnrollmentCourseFilter", Dock = DockStyle.Top, Height = 38 };
+        var label = new Label { Text = "Khóa học", AutoSize = true, Dock = DockStyle.Left, Width = 80, TextAlign = ContentAlignment.MiddleLeft };
+        _cboEnrollmentCourseFilter = new ComboBox { Name = "cboEnrollmentCourseFilter", Dock = DockStyle.Fill, DropDownStyle = ComboBoxStyle.DropDownList };
+        panel.Controls.Add(_cboEnrollmentCourseFilter);
+        panel.Controls.Add(label);
+        grpEnrollmentClassSelect.Controls.Add(panel);
+        panel.BringToFront();
+    }
+
+    private void BindCourseFilter()
+    {
+        if (_cboEnrollmentCourseFilter is null)
+        {
+            return;
+        }
+
+        var courses = AppRuntime.DataService.GetCourseList();
+        var filterTable = new DataTable();
+        filterTable.Columns.Add("Id");
+        filterTable.Columns.Add("Name");
+        filterTable.Rows.Add("ALL", "Tất cả khóa học");
+        foreach (DataRow row in courses.Rows)
+        {
+            filterTable.Rows.Add(row[0]?.ToString() ?? string.Empty, row[1]?.ToString() ?? string.Empty);
+        }
+
+        _cboEnrollmentCourseFilter.DisplayMember = "Name";
+        _cboEnrollmentCourseFilter.ValueMember = "Id";
+        _cboEnrollmentCourseFilter.DataSource = filterTable;
+
+        if (!string.IsNullOrWhiteSpace(_preselectedClassId))
+        {
+            var classEntity = AppRuntime.DataService.GetClassById(_preselectedClassId);
+            if (classEntity is not null)
+            {
+                _cboEnrollmentCourseFilter.SelectedValue = classEntity.CourseId;
+                return;
+            }
+        }
+
+        _cboEnrollmentCourseFilter.SelectedValue = "ALL";
+    }
+
+    private static bool FocusRowById(DataGridView grid, string id)
+    {
+        foreach (DataGridViewRow row in grid.Rows)
+        {
+            if ((row.Cells[0].Value?.ToString() ?? string.Empty).Equals(id, StringComparison.OrdinalIgnoreCase))
+            {
+                row.Selected = true;
+                grid.CurrentCell = row.Cells[0];
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void UpdateSelectedStudent()

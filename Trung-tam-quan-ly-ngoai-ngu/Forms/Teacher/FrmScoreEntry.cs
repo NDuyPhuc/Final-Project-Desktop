@@ -29,8 +29,10 @@ public partial class FrmScoreEntry : Form
         btnSaveScore.Text = "Lưu bảng điểm";
 
         cboScoreType.Items.Clear();
-        cboScoreType.Items.AddRange(["Tổng hợp điểm", "Midterm", "Final"]);
+        cboScoreType.Items.AddRange(["Tổng hợp điểm (chưa phân loại theo DB)"]);
         cboScoreType.SelectedIndex = 0;
+        cboScoreType.Enabled = false;
+        lblScoreType.Text = "Loại điểm (chưa áp dụng)";
         txtScoreWeight.Text = "0-10";
         txtScoreWeight.ReadOnly = true;
 

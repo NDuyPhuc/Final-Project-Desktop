@@ -1,4 +1,6 @@
 using TrungTamNgoaiNgu.Application.Contracts;
+using System.Data;
+using TrungTamNgoaiNgu.Application.Infrastructure;
 
 namespace Trung_tam_quan_ly_ngoai_ngu;
 
@@ -20,14 +22,17 @@ public partial class FrmSystemMonitor : Form
         ApplyLocalizedText();
         ConfigureView();
         ConfigureResponsiveLayout();
-        BindMockData();
+        btnViewMonitor.Click += (_, _) => BindMonitorData();
+        btnMonitorToday.Click += (_, _) => BindMonitorData();
+        btnQuickExportMonitor.Click += (_, _) => ExportMonitorLog();
+        BindMonitorData();
     }
 
     private void ApplyLocalizedText()
     {
         Text = "Giám sát hệ thống";
         lblMonitorTitle.Text = "GIÁM SÁT HỆ THỐNG";
-        lblMonitorSubtitle.Text = "Phiên làm việc hiện tại: 08:45:12 GMT+7 | Trạng thái: Ổn định";
+        lblMonitorSubtitle.Text = "Dữ liệu hệ thống thời gian thực | Trạng thái: đang kiểm tra";
         btnMonitorToday.Text = "HÔM NAY";
 
         lblMonitorPeriod.Text = "KHOẢNG THỜI GIAN";
@@ -36,21 +41,21 @@ public partial class FrmSystemMonitor : Form
         btnViewMonitor.Text = "LÀM MỚI";
         btnQuickExportMonitor.Text = "XUẤT NHANH";
 
-        lblMonitorStudentCountTitle.Text = "THỜI GIAN HOẠT ĐỘNG";
-        lblMonitorStudentCountTag.Text = "ỔN ĐỊNH";
-        lblMonitorEnrollmentCountTitle.Text = "PHIÊN HOẠT ĐỘNG";
-        lblMonitorEnrollmentCountTag.Text = "NGƯỜI DÙNG";
-        lblMonitorReceiptCountTitle.Text = "NV XỬ LÝ HỒ SƠ";
-        lblMonitorReceiptCountTag.Text = "GIAO DỊCH";
-        lblMonitorDebtTotalTitle.Text = "GV NHẬT KÝ GIẢNG DẠY";
-        lblMonitorDebtTotalTag.Text = "BẢN GHI";
+        lblMonitorStudentCountTitle.Text = "TỔNG HỌC VIÊN";
+        lblMonitorStudentCountTag.Text = "DỮ LIỆU THẬT";
+        lblMonitorEnrollmentCountTitle.Text = "TÀI KHOẢN ACTIVE";
+        lblMonitorEnrollmentCountTag.Text = "DỮ LIỆU THẬT";
+        lblMonitorReceiptCountTitle.Text = "TỔNG GIÁO VIÊN";
+        lblMonitorReceiptCountTag.Text = "DỮ LIỆU THẬT";
+        lblMonitorDebtTotalTitle.Text = "TỔNG LỚP HỌC";
+        lblMonitorDebtTotalTag.Text = "DỮ LIỆU THẬT";
         lblMonitorActivityTitle.Text = "NHẬT KÝ HOẠT ĐỘNG CHI TIẾT";
-        lblMonitorActivityFooter.Text = "HIỂN THỊ 5 TRÊN 4,208 BẢN GHI";
-        lblMonitorSourceTitle.Text = "NGUỒN DỮ LIỆU";
-        lblMonitorSourceStaffTitle.Text = "LUỒNG: NHÂN VIÊN";
-        lblMonitorSourceTeacherTitle.Text = "LUỒNG: GIẢNG VIÊN";
+        lblMonitorActivityFooter.Text = "NHẬT KÝ TẢI TỪ HỆ THỐNG";
+        lblMonitorSourceTitle.Text = "NGUỒN DỮ LIỆU / CHỈ BÁO";
+        lblMonitorSourceStaffTitle.Text = "SỐ LIỆU HỆ THỐNG";
+        lblMonitorSourceTeacherTitle.Text = "CHỈ BÁO DEMO";
         lblMonitorHealthTitle.Text = "MA TRẬN SỨC KHỎE HỆ THỐNG";
-        lblMonitorHealthFootnote.Text = "* Mỗi ô đại diện cho một cluster logic xử lý dữ liệu";
+        lblMonitorHealthFootnote.Text = "* Các progress bar ở khối demo chỉ mang tính minh họa giao diện";
     }
 
     private void ConfigureView()
@@ -280,24 +285,68 @@ public partial class FrmSystemMonitor : Form
         tblMonitorKpi.Controls.Add(control, column, row);
     }
 
-    private void BindMockData()
+    private void BindMonitorData()
     {
-        dgvMonitorActivity.DataSource = _dataService.GetMonitorDetailedLog();
+        try
+        {
+            var logs = _dataService.GetMonitorDetailedLog();
+            dgvMonitorActivity.DataSource = logs;
 
-        lblMonitorStudentCountValue.Text = "99.9%";
-        lblMonitorEnrollmentCountValue.Text = "142";
-        lblMonitorReceiptCountValue.Text = "1,240";
-        lblMonitorDebtTotalValue.Text = "856";
+            var studentCount = _dataService.GetStudentList().Rows.Count;
+            var teacherCount = _dataService.GetTeacherList().Rows.Count;
+            var classCount = _dataService.GetClassList().Rows.Count;
+            var activeAccounts = _dataService.GetAccounts().Count(x => !x.IsDeleted && x.Status.ToString().Equals("Active", StringComparison.OrdinalIgnoreCase));
 
-        lblMonitorSourceStaffRate1.Text = "Hồ sơ ghi danh            482 flows/hr";
-        lblMonitorSourceStaffRate2.Text = "Giao dịch thanh toán      124 flows/hr";
-        lblMonitorSourceTeacherRate1.Text = "Nhật ký điểm danh      2,105 flows/hr";
-        lblMonitorSourceTeacherRate2.Text = "Hệ thống điểm số           15 flows/hr";
+            lblMonitorStudentCountValue.Text = studentCount.ToString("N0");
+            lblMonitorEnrollmentCountValue.Text = activeAccounts.ToString("N0");
+            lblMonitorReceiptCountValue.Text = teacherCount.ToString("N0");
+            lblMonitorDebtTotalValue.Text = classCount.ToString("N0");
+            lblMonitorSubtitle.Text = $"Lần cập nhật: {DateTime.Now:dd/MM/yyyy HH:mm:ss} | Trạng thái DB: sẵn sàng";
+            lblMonitorActivityFooter.Text = $"HIỂN THỊ {logs.Rows.Count:N0} BẢN GHI NHẬT KÝ";
 
-        prgMonitorSourceStaff1.Value = 82;
-        prgMonitorSourceStaff2.Value = 36;
-        prgMonitorSourceTeacher1.Value = 93;
-        prgMonitorSourceTeacher2.Value = 14;
+            lblMonitorSourceStaffRate1.Text = $"Học viên đang quản lý: {studentCount:N0}";
+            lblMonitorSourceStaffRate2.Text = $"Giáo viên đang quản lý: {teacherCount:N0}";
+            lblMonitorSourceTeacherRate1.Text = $"Chỉ báo giao diện 1 (mô phỏng)";
+            lblMonitorSourceTeacherRate2.Text = $"Chỉ báo giao diện 2 (mô phỏng)";
+
+            prgMonitorSourceStaff1.Value = Math.Min(100, Math.Max(5, studentCount % 101));
+            prgMonitorSourceStaff2.Value = Math.Min(100, Math.Max(5, teacherCount % 101));
+            prgMonitorSourceTeacher1.Value = 55;
+            prgMonitorSourceTeacher2.Value = 25;
+        }
+        catch (Exception ex)
+        {
+            ErrorLogger.Log(ex, nameof(FrmSystemMonitor));
+            lblMonitorSubtitle.Text = $"Lần cập nhật: {DateTime.Now:dd/MM/yyyy HH:mm:ss} | Trạng thái DB: lỗi";
+            MessageBox.Show(this, "Không tải được dữ liệu giám sát hệ thống. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private void ExportMonitorLog()
+    {
+        try
+        {
+            var table = dgvMonitorActivity.DataSource as DataTable ?? _dataService.GetMonitorDetailedLog();
+            using var dialog = new SaveFileDialog
+            {
+                Filter = "Excel files (*.xlsx)|*.xlsx",
+                FileName = $"system-monitor-{DateTime.Now:yyyyMMdd-HHmmss}.xlsx",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)
+            };
+
+            if (dialog.ShowDialog(this) != DialogResult.OK)
+            {
+                return;
+            }
+
+            ExportFileHelper.ExportDataTableToExcel(table, dialog.FileName, "SystemMonitor");
+            MessageBox.Show(this, "Đã xuất nhanh nhật ký hệ thống ra Excel.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        catch (Exception ex)
+        {
+            ErrorLogger.Log(ex, nameof(FrmSystemMonitor));
+            MessageBox.Show(this, "Không xuất được nhật ký hệ thống. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 
     private static void StyleKpiCard(Panel panel, Color accentColor, Color tagBackColor)

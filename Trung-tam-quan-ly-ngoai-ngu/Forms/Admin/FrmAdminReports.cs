@@ -640,8 +640,8 @@ public partial class FrmAdminReports : Form
     {
         btnViewReport.Click += (_, _) => ApplyReportView();
         btnRefreshData.Click += (_, _) => RefreshReportData();
-        btnExportReportCsv.Click += (_, _) => ExportCurrentReportCsv();
-        btnPrintReport.Click += (_, _) => ShowFeatureHint("In bao cao");
+        btnExportReportCsv.Click += (_, _) => ExportCurrentReportExcel();
+        btnPrintReport.Click += (_, _) => ExportCurrentReportPdf();
         cboReportType.SelectedIndexChanged += (_, _) => ApplyReportView();
         btnReportPrevPage.Click += (_, _) => ShowFeatureHint("Dieu huong trang");
         btnReportNextPage.Click += (_, _) => ShowFeatureHint("Dieu huong trang");
@@ -1002,7 +1002,7 @@ public partial class FrmAdminReports : Form
         MessageBox.Show(this, "Đã cập nhật lại dữ liệu báo cáo từ database.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
 
-    private void ExportCurrentReportCsv()
+    private void ExportCurrentReportExcel()
     {
         if (_currentScenario is null)
         {
@@ -1013,8 +1013,8 @@ public partial class FrmAdminReports : Form
         {
             using var dialog = new SaveFileDialog
             {
-                Filter = "CSV files (*.csv)|*.csv",
-                FileName = $"bao-cao-{GetSelectedReportType().ToLowerInvariant().Replace(' ', '-')}-{DateTime.Now:yyyyMMdd-HHmmss}.csv",
+                Filter = "Excel files (*.xlsx)|*.xlsx",
+                FileName = $"bao-cao-{GetSelectedReportType().ToLowerInvariant().Replace(' ', '-')}-{DateTime.Now:yyyyMMdd-HHmmss}.xlsx",
                 InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)
             };
 
@@ -1023,14 +1023,44 @@ public partial class FrmAdminReports : Form
                 return;
             }
 
-            var csv = BuildCsv(_currentScenario.DetailTable);
-            File.WriteAllText(dialog.FileName, csv, new UTF8Encoding(true));
-            MessageBox.Show(this, "Đã xuất file CSV thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            ExportFileHelper.ExportDataTableToExcel(_currentScenario.DetailTable, dialog.FileName, "BaoCao");
+            MessageBox.Show(this, "Đã xuất file Excel thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmAdminReports));
-            MessageBox.Show(this, "Không xuất được file CSV. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không xuất được file Excel. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private void ExportCurrentReportPdf()
+    {
+        if (_currentScenario is null)
+        {
+            return;
+        }
+
+        try
+        {
+            using var dialog = new SaveFileDialog
+            {
+                Filter = "PDF files (*.pdf)|*.pdf",
+                FileName = $"bao-cao-{GetSelectedReportType().ToLowerInvariant().Replace(' ', '-')}-{DateTime.Now:yyyyMMdd-HHmmss}.pdf",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)
+            };
+
+            if (dialog.ShowDialog(this) != DialogResult.OK)
+            {
+                return;
+            }
+
+            ExportFileHelper.ExportDataTableToPdf(_currentScenario.DetailTable, dialog.FileName, GetReadableReportType());
+            MessageBox.Show(this, "Đã xuất file PDF thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        catch (Exception ex)
+        {
+            ErrorLogger.Log(ex, nameof(FrmAdminReports));
+            MessageBox.Show(this, "Không xuất được file PDF. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 

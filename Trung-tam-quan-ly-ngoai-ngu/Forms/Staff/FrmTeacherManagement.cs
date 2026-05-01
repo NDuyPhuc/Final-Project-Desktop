@@ -9,6 +9,10 @@ public partial class FrmTeacherManagement : Form
     private DataTable _teacherTable = new();
     private string? _currentTeacherStatus;
     private string? _currentTeacherAccountId;
+    private string? _currentAvatarPath;
+    private string? _pendingAvatarSourcePath;
+    private PictureBox? _picTeacherAvatar;
+    private Button? _btnChooseTeacherAvatar;
 
     public FrmTeacherManagement()
     {
@@ -36,6 +40,11 @@ public partial class FrmTeacherManagement : Form
         AppTheme.StylePrimaryButton(btnSaveTeacher);
         AppTheme.StylePrimaryButton(btnUpdateTeacher);
         AppTheme.StyleDangerButton(btnDeleteTeacher);
+        InitializeAvatarControls();
+        if (_btnChooseTeacherAvatar is not null)
+        {
+            AppTheme.StyleSecondaryButton(_btnChooseTeacherAvatar);
+        }
 
         dgvTeacherList.AutoGenerateColumns = true;
         dgvTeacherList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -56,6 +65,10 @@ public partial class FrmTeacherManagement : Form
         btnSaveTeacher.Click += (_, _) => SaveCurrentTeacher();
         btnUpdateTeacher.Click += (_, _) => SaveCurrentTeacher();
         btnDeleteTeacher.Click += (_, _) => DeleteSelectedTeacher();
+        if (_btnChooseTeacherAvatar is not null)
+        {
+            _btnChooseTeacherAvatar.Click += (_, _) => ChooseTeacherAvatar();
+        }
     }
 
     private void LoadTeachers(string? keyword = null, string? status = null)
@@ -102,13 +115,21 @@ public partial class FrmTeacherManagement : Form
                 Specialization = txtTeacherSpecialty.Text.Trim(),
                 Address = txtTeacherAddress.Text.Trim(),
                 Gender = txtTeacherNote.Text.Trim(),
-                AvatarPath = null,
+                AvatarPath = _currentAvatarPath,
                 AccountId = _currentTeacherAccountId,
                 Status = string.IsNullOrWhiteSpace(_currentTeacherStatus) ? "Đang dạy" : _currentTeacherStatus,
                 IsDeleted = false
             };
 
             teacher = AppRuntime.DataService.SaveTeacher(teacher);
+            if (!string.IsNullOrWhiteSpace(_pendingAvatarSourcePath))
+            {
+                teacher.AvatarPath = AppRuntime.DataService.SaveTeacherAvatar(teacher.Id, _pendingAvatarSourcePath);
+                teacher = AppRuntime.DataService.SaveTeacher(teacher);
+                _pendingAvatarSourcePath = null;
+            }
+
+            _currentAvatarPath = teacher.AvatarPath;
             _currentTeacherStatus = teacher.Status;
             _currentTeacherAccountId = teacher.AccountId;
 
@@ -177,6 +198,9 @@ public partial class FrmTeacherManagement : Form
             txtTeacherSpecialty.Text = teacher.Specialization ?? string.Empty;
             txtTeacherAddress.Text = teacher.Address ?? string.Empty;
             txtTeacherNote.Text = teacher.Gender ?? string.Empty;
+            _currentAvatarPath = teacher.AvatarPath;
+            _pendingAvatarSourcePath = null;
+            LoadTeacherAvatarPreview(_currentAvatarPath);
             _currentTeacherStatus = teacher.Status;
             _currentTeacherAccountId = teacher.AccountId;
         }
@@ -257,6 +281,13 @@ public partial class FrmTeacherManagement : Form
         txtTeacherSpecialty.Clear();
         txtTeacherAddress.Clear();
         txtTeacherNote.Clear();
+        _currentAvatarPath = null;
+        _pendingAvatarSourcePath = null;
+        if (_picTeacherAvatar is not null)
+        {
+            _picTeacherAvatar.Image?.Dispose();
+            _picTeacherAvatar.Image = null;
+        }
         _currentTeacherStatus = null;
         _currentTeacherAccountId = null;
     }
@@ -282,7 +313,7 @@ public partial class FrmTeacherManagement : Form
         lblTeacherEmail.Text = "Email";
         lblTeacherSpecialty.Text = "Chuyên môn";
         lblTeacherAddress.Text = "Địa chỉ";
-        lblTeacherNote.Text = "Ghi chú";
+        lblTeacherNote.Text = "Giới tính";
 
         btnSearchTeacher.Text = "Tìm kiếm";
         btnRefreshTeacher.Text = "Làm mới";
@@ -290,5 +321,121 @@ public partial class FrmTeacherManagement : Form
         btnSaveTeacher.Text = "Lưu";
         btnUpdateTeacher.Text = "Cập nhật";
         btnDeleteTeacher.Text = "Xóa mềm";
+    }
+
+    private void InitializeAvatarControls()
+    {
+        _picTeacherAvatar ??= new PictureBox
+        {
+            Name = "picTeacherAvatar",
+            Dock = DockStyle.Top,
+            Height = 120,
+            BorderStyle = BorderStyle.FixedSingle,
+            BackColor = Color.FromArgb(233, 239, 248),
+            SizeMode = PictureBoxSizeMode.Zoom
+        };
+
+        _btnChooseTeacherAvatar ??= new Button
+        {
+            Name = "btnChooseTeacherAvatar",
+            Text = "Chọn ảnh",
+            Dock = DockStyle.Left,
+            Width = 120,
+            Margin = new Padding(0, 8, 0, 0)
+        };
+
+        if (tblTeacherDetail.Controls.ContainsKey("pnlTeacherAvatarHost"))
+        {
+            return;
+        }
+
+        var panel = new Panel
+        {
+            Name = "pnlTeacherAvatarHost",
+            Dock = DockStyle.Fill,
+            Height = 160
+        };
+        panel.Controls.Add(_btnChooseTeacherAvatar);
+        panel.Controls.Add(_picTeacherAvatar);
+
+        var label = new Label
+        {
+            Name = "lblTeacherAvatar",
+            Text = "Avatar",
+            Anchor = AnchorStyles.Left | AnchorStyles.Top,
+            AutoSize = true
+        };
+
+        tblTeacherDetail.RowCount += 1;
+        tblTeacherDetail.RowStyles.Add(new RowStyle(SizeType.Absolute, 170F));
+        tblTeacherDetail.Controls.Add(label, 0, tblTeacherDetail.RowCount - 1);
+        tblTeacherDetail.Controls.Add(panel, 1, tblTeacherDetail.RowCount - 1);
+    }
+
+    private void ChooseTeacherAvatar()
+    {
+        try
+        {
+            using var dialog = new OpenFileDialog
+            {
+                Filter = "Image files|*.jpg;*.jpeg;*.png;*.bmp",
+                Title = "Chọn avatar giáo viên"
+            };
+
+            if (dialog.ShowDialog(this) != DialogResult.OK)
+            {
+                return;
+            }
+
+            if (!File.Exists(dialog.FileName))
+            {
+                MessageBox.Show(this, "File ảnh không tồn tại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var extension = Path.GetExtension(dialog.FileName).ToLowerInvariant();
+            if (extension is not ".jpg" and not ".jpeg" and not ".png" and not ".bmp")
+            {
+                MessageBox.Show(this, "Chỉ hỗ trợ ảnh .jpg, .jpeg, .png, .bmp.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            _pendingAvatarSourcePath = dialog.FileName;
+            LoadTeacherAvatarPreview(dialog.FileName);
+        }
+        catch (Exception ex)
+        {
+            ErrorLogger.Log(ex, nameof(FrmTeacherManagement));
+            MessageBox.Show(this, "Không mở được ảnh giáo viên. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private void LoadTeacherAvatarPreview(string? avatarPath)
+    {
+        if (_picTeacherAvatar is null)
+        {
+            return;
+        }
+
+        _picTeacherAvatar.Image?.Dispose();
+        _picTeacherAvatar.Image = null;
+
+        if (string.IsNullOrWhiteSpace(avatarPath))
+        {
+            return;
+        }
+
+        var absolutePath = File.Exists(avatarPath)
+            ? avatarPath
+            : AppRuntime.DataService.ResolveAbsoluteImagePath(avatarPath);
+
+        if (string.IsNullOrWhiteSpace(absolutePath) || !File.Exists(absolutePath))
+        {
+            return;
+        }
+
+        using var stream = new FileStream(absolutePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+        using var image = Image.FromStream(stream);
+        _picTeacherAvatar.Image = new Bitmap(image);
     }
 }

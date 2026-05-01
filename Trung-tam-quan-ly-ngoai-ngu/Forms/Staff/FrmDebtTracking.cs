@@ -45,8 +45,8 @@ public partial class FrmDebtTracking : Form
         btnSearchDebt.Click += (_, _) => LoadDebtData();
         btnRefreshDebt.Click += (_, _) => ResetFilters();
         btnOpenTuitionFromDebt.Click += (_, _) => OpenReceiptFromDebt();
-        btnExportDebt.Click += (_, _) => ExportDebtCsv();
-        btnExportPdfDebt.Click += (_, _) => MessageBox.Show(this, "Bạn có thể dùng CSV để demo xuất file. Nút PDF đang để ở mức cơ bản.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        btnExportDebt.Click += (_, _) => ExportDebtExcel();
+        btnExportPdfDebt.Click += (_, _) => ExportDebtPdf();
     }
 
     private void LoadFilterSources()
@@ -85,6 +85,10 @@ public partial class FrmDebtTracking : Form
                 dtpDebtToDate.Value.Date);
 
             dgvDebtTrackingList.DataSource = _debtTable;
+            if (dgvDebtTrackingList.Columns.Contains("EnrollmentId"))
+            {
+                dgvDebtTrackingList.Columns["EnrollmentId"].Visible = false;
+            }
             UpdateSummaryCards();
             lblDebtUpdatedAt.Text = $"Cập nhật: {DateTime.Now:dd/MM/yyyy HH:mm}";
             lblDebtFooterSummary.Text = $"Tổng số hồ sơ công nợ: {_debtTable.Rows.Count}";
@@ -131,19 +135,20 @@ public partial class FrmDebtTracking : Form
         }
 
         var studentId = rowView.Row["Ma hoc vien"]?.ToString();
-        using var form = new FrmTuitionReceipt(null, studentId);
+        var enrollmentId = rowView.Row.Table.Columns.Contains("EnrollmentId") ? rowView.Row["EnrollmentId"]?.ToString() : null;
+        using var form = new FrmTuitionReceipt(enrollmentId, studentId);
         form.ShowDialog(this);
         LoadDebtData();
     }
 
-    private void ExportDebtCsv()
+    private void ExportDebtExcel()
     {
         try
         {
             using var dialog = new SaveFileDialog
             {
-                Filter = "CSV files (*.csv)|*.csv",
-                FileName = $"cong-no-{DateTime.Now:yyyyMMdd-HHmmss}.csv",
+                Filter = "Excel files (*.xlsx)|*.xlsx",
+                FileName = $"cong-no-{DateTime.Now:yyyyMMdd-HHmmss}.xlsx",
                 InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)
             };
 
@@ -152,13 +157,29 @@ public partial class FrmDebtTracking : Form
                 return;
             }
 
-            File.WriteAllText(dialog.FileName, BuildCsv(_debtTable), new UTF8Encoding(true));
-            MessageBox.Show(this, "Đã xuất danh sách công nợ ra CSV.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            ExportFileHelper.ExportDataTableToExcel(_debtTable, dialog.FileName, "CongNo");
+            MessageBox.Show(this, "Đã xuất danh sách công nợ ra Excel.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmDebtTracking));
-            MessageBox.Show(this, "Không xuất được file CSV. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, "Không xuất được file Excel. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private void ExportDebtPdf()
+    {
+        try
+        {
+            using var dialog = new SaveFileDialog { Filter = "PDF files (*.pdf)|*.pdf", FileName = $"cong-no-{DateTime.Now:yyyyMMdd-HHmmss}.pdf" };
+            if (dialog.ShowDialog(this) != DialogResult.OK) return;
+            ExportFileHelper.ExportDataTableToPdf(_debtTable, dialog.FileName, "Bao cao cong no");
+            MessageBox.Show(this, "Đã xuất công nợ ra PDF.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        catch (Exception ex)
+        {
+            ErrorLogger.Log(ex, nameof(FrmDebtTracking));
+            MessageBox.Show(this, "Không xuất được file PDF. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 

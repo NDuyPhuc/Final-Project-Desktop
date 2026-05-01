@@ -46,8 +46,8 @@ public partial class FrmAttendance : Form
         cboAttendanceClass.SelectedIndexChanged += (_, _) => LoadSessions();
         cboAttendanceSession.SelectedIndexChanged += (_, _) => SyncDateFromSession();
         btnSearchAttendance.Click += (_, _) => LoadAttendanceList();
-        btnCheckAllPresent.Click += (_, _) => SetAllAttendanceStatus("Present");
-        btnCheckAllAbsent.Click += (_, _) => SetAllAttendanceStatus("Absent");
+        btnCheckAllPresent.Click += (_, _) => SetAllAttendanceStatus(true);
+        btnCheckAllAbsent.Click += (_, _) => SetAllAttendanceStatus(false);
         btnSaveAttendance.Click += (_, _) => SaveAttendance();
     }
 
@@ -128,27 +128,28 @@ public partial class FrmAttendance : Form
 
         dgvAttendanceList.Columns["EnrollmentId"].Visible = false;
 
-        var statusColumn = dgvAttendanceList.Columns["Trang thai"];
-        if (statusColumn is not null)
+        var presentColumn = dgvAttendanceList.Columns.Contains("Co mat")
+            ? dgvAttendanceList.Columns["Co mat"]
+            : null;
+
+        if (presentColumn is null)
         {
-            var displayIndex = statusColumn.DisplayIndex;
-            dgvAttendanceList.Columns.Remove("Trang thai");
-            var comboColumn = new DataGridViewComboBoxColumn
+            var statusColumn = dgvAttendanceList.Columns["Trang thai"];
+            var displayIndex = statusColumn?.DisplayIndex ?? 3;
+            var checkboxColumn = new DataGridViewCheckBoxColumn
             {
-                DataPropertyName = "Trang thai",
-                Name = "Trang thai",
-                HeaderText = "Trạng thái",
-                DataSource = new[] { "Present", "Late", "Absent" },
-                FlatStyle = FlatStyle.Flat,
+                DataPropertyName = "Co mat",
+                Name = "Co mat",
+                HeaderText = "Có mặt",
                 DisplayIndex = displayIndex
             };
-            dgvAttendanceList.Columns.Insert(displayIndex, comboColumn);
+            dgvAttendanceList.Columns.Insert(displayIndex, checkboxColumn);
         }
     }
 
-    private void SetAllAttendanceStatus(string status)
+    private void SetAllAttendanceStatus(bool present)
     {
-        if (!dgvAttendanceList.Columns.Contains("Trang thai"))
+        if (!dgvAttendanceList.Columns.Contains("Co mat"))
         {
             return;
         }
@@ -157,7 +158,7 @@ public partial class FrmAttendance : Form
         {
             if (!row.IsNewRow)
             {
-                row.Cells["Trang thai"].Value = status;
+                row.Cells["Co mat"].Value = present;
             }
         }
     }
@@ -173,7 +174,7 @@ public partial class FrmAttendance : Form
                 return;
             }
 
-            if (!dgvAttendanceList.Columns.Contains("EnrollmentId") || !dgvAttendanceList.Columns.Contains("Trang thai"))
+            if (!dgvAttendanceList.Columns.Contains("EnrollmentId") || !dgvAttendanceList.Columns.Contains("Co mat"))
             {
                 MessageBox.Show(this, "Danh sach diem danh chua san sang de luu.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
@@ -186,7 +187,7 @@ public partial class FrmAttendance : Form
                 .Select(row => new AttendanceSaveItem
                 {
                     EnrollmentId = row.Cells["EnrollmentId"].Value?.ToString() ?? string.Empty,
-                    Status = row.Cells["Trang thai"].Value?.ToString() ?? "Present",
+                    Status = row.Cells["Co mat"].Value is true ? "Present" : "Absent",
                     Note = dgvAttendanceList.Columns.Contains("Ghi chu") ? row.Cells["Ghi chu"].Value?.ToString() : null
                 })
                 .Where(item => !string.IsNullOrWhiteSpace(item.EnrollmentId))

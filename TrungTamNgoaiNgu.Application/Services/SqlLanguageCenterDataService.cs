@@ -564,25 +564,36 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
             return table;
         }
 
-        var sessionDate = classItem.StartDate.Date;
-        for (var index = 1; index <= 6; index++)
+        var scheduleDays = ParseScheduleDays(classItem.Schedule, classItem.StartDate.DayOfWeek);
+        var sessionDates = new List<DateTime>();
+        for (var current = classItem.StartDate.Date; current <= classItem.EndDate.Date; current = current.AddDays(1))
         {
+            if (!scheduleDays.Contains(current.DayOfWeek))
+            {
+                continue;
+            }
+
+            sessionDates.Add(current);
+        }
+
+        if (sessionDates.Count == 0)
+        {
+            sessionDates.Add(classItem.StartDate.Date);
+        }
+
+        for (var index = 0; index < sessionDates.Count; index++)
+        {
+            var sessionDate = sessionDates[index];
             var status = sessionDate.Date < DateTime.Today
                 ? "Da hoc"
                 : sessionDate.Date == DateTime.Today ? "Hom nay" : "Sap dien ra";
 
             table.Rows.Add(
-                $"Buoi {index:00}",
+                $"Buoi {index + 1:00}",
                 sessionDate.ToString("dd/MM/yyyy", _culture),
                 classItem.Schedule ?? "18:00 - 19:30",
                 classItem.Room ?? "P101",
                 status);
-
-            sessionDate = sessionDate.AddDays(7);
-            if (sessionDate > classItem.EndDate)
-            {
-                break;
-            }
         }
 
         return table;
@@ -692,10 +703,11 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
             debtRows = debtRows.Where(x => x.ReferenceDate.Date >= start && x.ReferenceDate.Date <= end).ToList();
         }
 
-        var table = CreateTable("Ma hoc vien", "Hoc vien", "Lop", "Khoa hoc", "Phai thu", "Da thu", "Con no", "Trang thai");
+        var table = CreateTable("EnrollmentId", "Ma hoc vien", "Hoc vien", "Lop", "Khoa hoc", "Phai thu", "Da thu", "Con no", "Trang thai");
         foreach (var row in debtRows.Where(x => x.Outstanding > 0))
         {
             table.Rows.Add(
+                row.EnrollmentId,
                 row.StudentId,
                 row.StudentName,
                 row.ClassName,
@@ -712,12 +724,16 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
     public DataTable GetTeachingClasses(string? teacherAccountId = null)
     {
         using var context = CreateContext();
-        var teacherId = ResolveTeacherIdByAccount(context, teacherAccountId);
+        var teacherId = ResolveRequiredTeacherIdByAccount(context, teacherAccountId);
+        if (teacherId is null)
+        {
+            return CreateTable("Ma lop", "Ten lop", "Khoa hoc", "Lich hoc", "Si so", "Trang thai", "Thao tac");
+        }
         var classes = context.Classes
             .AsNoTracking()
             .Include(x => x.Course)
             .Include(x => x.Enrollments)
-            .Where(x => !x.IsDeleted && (teacherId == null || x.TeacherId == teacherId))
+            .Where(x => !x.IsDeleted && x.TeacherId == teacherId)
             .OrderBy(x => x.Name)
             .ToList();
 
@@ -742,7 +758,7 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
         using var context = CreateContext();
         var targetClassId = classId ?? context.Classes.Where(x => !x.IsDeleted).OrderBy(x => x.Name).Select(x => x.Id).FirstOrDefault();
         var targetDate = (attendanceDate ?? DateTime.Today).Date;
-        var table = CreateTable("EnrollmentId", "Ma hoc vien", "Ho ten", "Trang thai", "Ghi chu");
+        var table = CreateTable("EnrollmentId", "Ma hoc vien", "Ho ten", "Co mat", "Trang thai", "Ghi chu");
         if (string.IsNullOrWhiteSpace(targetClassId))
         {
             return table;
@@ -752,7 +768,7 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
             .AsNoTracking()
             .Include(x => x.Student)
             .Include(x => x.Attendances)
-            .Where(x => !x.IsDeleted && x.ClassId == targetClassId)
+            .Where(x => !x.IsDeleted && x.ClassId == targetClassId && LanguageCenterValueMapper.NormalizeEnrollmentStatus(x.Status) == "Active")
             .OrderBy(x => x.Student!.FullName)
             .ToList();
 
@@ -763,6 +779,7 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
                 enrollment.Id,
                 enrollment.Student?.Id ?? string.Empty,
                 enrollment.Student?.FullName ?? string.Empty,
+                (attendance?.Status ?? "Present").Equals("Present", StringComparison.OrdinalIgnoreCase),
                 attendance?.Status ?? "Present",
                 attendance?.Note ?? string.Empty);
         }
@@ -784,7 +801,7 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
             .AsNoTracking()
             .Include(x => x.Student)
             .Include(x => x.Score)
-            .Where(x => !x.IsDeleted && x.ClassId == targetClassId)
+            .Where(x => !x.IsDeleted && x.ClassId == targetClassId && LanguageCenterValueMapper.NormalizeEnrollmentStatus(x.Status) == "Active")
             .OrderBy(x => x.Student!.FullName)
             .ToList();
 
@@ -859,10 +876,14 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
     public TeacherDashboardStats GetTeacherDashboardStats(string? teacherAccountId = null)
     {
         using var context = CreateContext();
-        var teacherId = ResolveTeacherIdByAccount(context, teacherAccountId);
+        var teacherId = ResolveRequiredTeacherIdByAccount(context, teacherAccountId);
+        if (teacherId is null)
+        {
+            return new TeacherDashboardStats();
+        }
         var classes = context.Classes
             .Include(x => x.Enrollments)
-            .Where(x => !x.IsDeleted && (teacherId == null || x.TeacherId == teacherId))
+            .Where(x => !x.IsDeleted && x.TeacherId == teacherId)
             .ToList();
 
         var classIds = classes.Select(x => x.Id).ToList();
@@ -1352,9 +1373,9 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
     {
         try
         {
-            if (amountPaid < 0)
+            if (amountPaid <= 0)
             {
-                throw new InvalidOperationException("So tien thu phai lon hon hoac bang 0.");
+                throw new InvalidOperationException("So tien thu phai lon hon 0.");
             }
 
             var normalizedPaymentMethod = LanguageCenterValueMapper.NormalizePaymentMethod(paymentMethod);
@@ -1365,6 +1386,15 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
                 .Include(x => x.Student)
                 .FirstOrDefault(x => x.Id == enrollmentId && !x.IsDeleted)
                 ?? throw new InvalidOperationException("Ghi danh khong ton tai.");
+
+            var tuitionFee = enrollment.Class?.Course?.TuitionFee ?? 0M;
+            var paidExcludingCurrent = context.Receipts
+                .Where(x => !x.IsDeleted && x.EnrollmentId == enrollmentId && (string.IsNullOrWhiteSpace(receiptId) || x.Id != receiptId))
+                .Sum(x => (decimal?)x.AmountPaid) ?? 0M;
+            if (paidExcludingCurrent + amountPaid > tuitionFee)
+            {
+                throw new InvalidOperationException("So tien thu vuot qua hoc phi con lai cua ghi danh.");
+            }
 
             var entity = string.IsNullOrWhiteSpace(receiptId)
                 ? null
@@ -1448,7 +1478,7 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
         {
             using var context = CreateContext();
             var activeEnrollmentIds = context.Enrollments
-                .Where(x => !x.IsDeleted && x.ClassId == classId)
+                .Where(x => !x.IsDeleted && x.ClassId == classId && LanguageCenterValueMapper.NormalizeEnrollmentStatus(x.Status) == "Active")
                 .Select(x => x.Id)
                 .ToHashSet();
 
@@ -1491,7 +1521,7 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
         {
             using var context = CreateContext();
             var activeEnrollmentIds = context.Enrollments
-                .Where(x => !x.IsDeleted && x.ClassId == classId)
+                .Where(x => !x.IsDeleted && x.ClassId == classId && LanguageCenterValueMapper.NormalizeEnrollmentStatus(x.Status) == "Active")
                 .Select(x => x.Id)
                 .ToHashSet();
 
@@ -1939,6 +1969,7 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
 
             return new DebtRow
             {
+                EnrollmentId = enrollment.Id,
                 StudentId = enrollment.Student?.Id ?? string.Empty,
                 StudentName = enrollment.Student?.FullName ?? string.Empty,
                 ClassName = enrollment.Class?.Name ?? string.Empty,
@@ -2137,6 +2168,50 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
             .FirstOrDefault();
     }
 
+    private static HashSet<DayOfWeek> ParseScheduleDays(string? schedule, DayOfWeek fallbackDay)
+    {
+        var normalized = (schedule ?? string.Empty).ToLowerInvariant();
+        var mappings = new Dictionary<string, DayOfWeek>
+        {
+            ["2"] = DayOfWeek.Monday,
+            ["3"] = DayOfWeek.Tuesday,
+            ["4"] = DayOfWeek.Wednesday,
+            ["5"] = DayOfWeek.Thursday,
+            ["6"] = DayOfWeek.Friday,
+            ["7"] = DayOfWeek.Saturday,
+            ["cn"] = DayOfWeek.Sunday,
+            ["mon"] = DayOfWeek.Monday,
+            ["wed"] = DayOfWeek.Wednesday,
+            ["fri"] = DayOfWeek.Friday,
+            ["thu 2"] = DayOfWeek.Monday,
+            ["thu 3"] = DayOfWeek.Tuesday,
+            ["thu 4"] = DayOfWeek.Wednesday,
+            ["thu 5"] = DayOfWeek.Thursday,
+            ["thu 6"] = DayOfWeek.Friday,
+            ["thu 7"] = DayOfWeek.Saturday,
+            ["t2"] = DayOfWeek.Monday,
+            ["t3"] = DayOfWeek.Tuesday,
+            ["t4"] = DayOfWeek.Wednesday,
+            ["t5"] = DayOfWeek.Thursday,
+            ["t6"] = DayOfWeek.Friday,
+            ["t7"] = DayOfWeek.Saturday
+        };
+
+        var results = mappings.Where(x => normalized.Contains(x.Key)).Select(x => x.Value).ToHashSet();
+        if (results.Count == 0)
+        {
+            results.Add(fallbackDay);
+        }
+
+        return results;
+    }
+
+    private static string? ResolveRequiredTeacherIdByAccount(LanguageCenterDbContext context, string? teacherAccountId)
+    {
+        var teacherId = ResolveTeacherIdByAccount(context, teacherAccountId);
+        return string.IsNullOrWhiteSpace(teacherId) ? null : teacherId;
+    }
+
     private void SoftDeleteEntity<TEntity>(
         string id,
         Func<LanguageCenterDbContext, DbSet<TEntity>> setSelector,
@@ -2173,6 +2248,7 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
 
     private sealed class DebtRow
     {
+        public required string EnrollmentId { get; init; }
         public required string StudentId { get; init; }
         public required string StudentName { get; init; }
         public required string ClassName { get; init; }

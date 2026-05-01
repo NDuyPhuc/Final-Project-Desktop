@@ -65,7 +65,8 @@ public partial class FrmClassManagement : Form
         btnGenerateSessions.Click += (_, _) => DeleteSelectedClass();
         btnOpenEnrollmentFromClass.Click += (_, _) =>
         {
-            using var form = new FrmEnrollment();
+            var classId = txtClassCode.Text.Trim();
+            using var form = new FrmEnrollment(null, string.IsNullOrWhiteSpace(classId) ? null : classId);
             form.ShowDialog(this);
         };
     }
