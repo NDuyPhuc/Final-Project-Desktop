@@ -10,6 +10,8 @@ public sealed partial class FrmLogin : Form
 {
     private readonly ILanguageCenterDataService _dataService;
     private readonly string loginLogoPath;
+    private readonly string loginBackgroundPath;
+    private Image? loginBackgroundImage;
 
     public FrmLogin() : this(AppRuntime.DataService)
     {
@@ -19,10 +21,16 @@ public sealed partial class FrmLogin : Form
     {
         _dataService = dataService;
         InitializeComponent();
+        SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
+        UpdateStyles();
 
         AppTheme.ApplyFormStyle(this, "\u0110\u0103ng nh\u1eadp h\u1ec7 th\u1ed1ng");
         ApplyLocalizedText();
-        AutoScroll = true;
+        AutoScroll = false;
+        lblHeaderTitle.AutoSize = false;
+        lblHeaderTitle.TextAlign = ContentAlignment.MiddleCenter;
+        lblHeaderSubtitle.AutoSize = false;
+        lblHeaderSubtitle.TextAlign = ContentAlignment.MiddleCenter;
         if (!IsInDesignMode())
         {
             var workingArea = Screen.FromPoint(Cursor.Position).WorkingArea;
@@ -31,19 +39,20 @@ public sealed partial class FrmLogin : Form
                 Math.Min(workingArea.Width, Math.Max(MinimumSize.Width, desiredSize.Width)),
                 Math.Min(workingArea.Height, Math.Max(MinimumSize.Height, desiredSize.Height)));
         }
-        BackColor = Color.FromArgb(233, 237, 244);
+        BackColor = Color.FromArgb(10, 20, 34);
 
         loginLogoPath = Path.Combine(AppContext.BaseDirectory, "Resources", "Images", "UI", "Login", "login-logo.png");
+        loginBackgroundPath = Path.Combine(AppContext.BaseDirectory, "Resources", "Images", "UI", "Login", "login-background.jpg");
 
         AcceptButton = btnLogin;
         CancelButton = btnExit;
 
         pnlLoginContainer.Paint += (_, e) =>
         {
-            using var shadowBrush = new SolidBrush(Color.FromArgb(18, 26, 28, 28));
-            e.Graphics.FillRectangle(shadowBrush, new Rectangle(8, 8, pnlLoginContainer.Width - 8, pnlLoginContainer.Height - 8));
             using var surfaceBrush = new SolidBrush(Color.White);
-            e.Graphics.FillRectangle(surfaceBrush, new Rectangle(0, 0, pnlLoginContainer.Width - 10, pnlLoginContainer.Height - 10));
+            e.Graphics.FillRectangle(surfaceBrush, new Rectangle(0, 0, pnlLoginContainer.Width - 1, pnlLoginContainer.Height - 1));
+            using var borderPen = new Pen(Color.FromArgb(220, 226, 235));
+            e.Graphics.DrawRectangle(borderPen, 0, 0, pnlLoginContainer.Width - 1, pnlLoginContainer.Height - 1);
         };
         pnlLoginHeader.Paint += DrawLoginHeaderBackground;
         picHeaderLogo.Paint += DrawHeaderLogoFallback;
@@ -61,14 +70,23 @@ public sealed partial class FrmLogin : Form
         ttLogin.SetToolTip(txtUsername, "Nhập tên đăng nhập được cấp trên hệ thống.");
         ttLogin.SetToolTip(txtPassword, "Mật khẩu được đối chiếu với PasswordHash trong bảng Accounts.");
 
-        LoadLoginLogoIfAvailable();
+        LoadLoginAssetsIfAvailable();
         ApplyResponsiveLayout();
 
-        Resize += (_, _) => ApplyResponsiveLayout();
+        Resize += (_, _) =>
+        {
+            ApplyResponsiveLayout();
+            Invalidate();
+        };
         Shown += (_, _) =>
         {
             ApplyResponsiveLayout();
             txtUsername.Focus();
+        };
+        Disposed += (_, _) =>
+        {
+            loginBackgroundImage?.Dispose();
+            picHeaderLogo.Image?.Dispose();
         };
     }
 
@@ -118,17 +136,41 @@ public sealed partial class FrmLogin : Form
         pnlLoginFooter.Height = FormHostHelpers.ScaleForDpi(this, 56);
         tblFooter.Padding = FormHostHelpers.ScalePadding(this, new Padding(compact ? 20 : 32, 12, compact ? 20 : 32, 12));
         pnlLoginFormContent.Padding = FormHostHelpers.ScalePadding(this, new Padding(compact ? 24 : 32, 0, compact ? 24 : 32, 0));
+        pnlLoginFormContent.AutoScroll = false;
+
+        picHeaderLogo.Location = new Point((pnlLoginHeaderOverlay.ClientSize.Width - picHeaderLogo.Width) / 2, FormHostHelpers.ScaleForDpi(this, 28));
+        lblHeaderTitle.SetBounds(0, picHeaderLogo.Bottom + FormHostHelpers.ScaleForDpi(this, 10), pnlLoginHeaderOverlay.ClientSize.Width, FormHostHelpers.ScaleForDpi(this, 46));
+        lblHeaderSubtitle.SetBounds(0, lblHeaderTitle.Bottom + FormHostHelpers.ScaleForDpi(this, 4), pnlLoginHeaderOverlay.ClientSize.Width, FormHostHelpers.ScaleForDpi(this, 24));
 
         var contentWidth = pnlLoginFormContent.ClientSize.Width - pnlLoginFormContent.Padding.Horizontal;
         if (contentWidth > 0)
         {
-            pnlErrorAlert.Width = contentWidth;
-            lblUsername.Width = contentWidth;
-            pnlUsernameInput.Width = contentWidth;
-            lblPassword.Width = contentWidth;
-            pnlPasswordInput.Width = contentWidth;
-            pnlSubControls.Width = contentWidth;
-            pnlActionButtons.Width = contentWidth;
+            var left = pnlLoginFormContent.Padding.Left;
+            var top = FormHostHelpers.ScaleForDpi(this, 24);
+
+            pnlErrorAlert.SetBounds(left, top, contentWidth, pnlErrorAlert.Height);
+            top = pnlErrorAlert.Visible
+                ? pnlErrorAlert.Bottom + FormHostHelpers.ScaleForDpi(this, 18)
+                : FormHostHelpers.ScaleForDpi(this, 28);
+
+            lblUsername.SetBounds(left, top, contentWidth, lblUsername.Height);
+            top = lblUsername.Bottom + FormHostHelpers.ScaleForDpi(this, 6);
+            pnlUsernameInput.SetBounds(left, top, contentWidth, pnlUsernameInput.Height);
+            txtUsername.SetBounds(FormHostHelpers.ScaleForDpi(this, 14), txtUsername.Top, contentWidth - FormHostHelpers.ScaleForDpi(this, 28), txtUsername.Height);
+            pnlUsernameIcon.Visible = false;
+
+            top = pnlUsernameInput.Bottom + FormHostHelpers.ScaleForDpi(this, 14);
+            lblPassword.SetBounds(left, top, contentWidth, lblPassword.Height);
+            top = lblPassword.Bottom + FormHostHelpers.ScaleForDpi(this, 6);
+            pnlPasswordInput.SetBounds(left, top, contentWidth, pnlPasswordInput.Height);
+            txtPassword.SetBounds(FormHostHelpers.ScaleForDpi(this, 14), txtPassword.Top, contentWidth - FormHostHelpers.ScaleForDpi(this, 28), txtPassword.Height);
+            pnlPasswordIcon.Visible = false;
+
+            top = pnlPasswordInput.Bottom + FormHostHelpers.ScaleForDpi(this, 18);
+            pnlSubControls.SetBounds(left, top, contentWidth, pnlSubControls.Height);
+
+            top = pnlSubControls.Bottom + FormHostHelpers.ScaleForDpi(this, 28);
+            pnlActionButtons.SetBounds(left, top, contentWidth, pnlActionButtons.Height);
 
             var gap = FormHostHelpers.ScaleForDpi(this, 16);
             var buttonWidth = Math.Max(FormHostHelpers.ScaleForDpi(this, 140), (contentWidth - gap) / 2);
@@ -207,10 +249,30 @@ public sealed partial class FrmLogin : Form
         if (string.IsNullOrWhiteSpace(message))
         {
             pnlErrorAlert.Visible = false;
+            ApplyResponsiveLayout();
             return;
         }
         lblErrorAlertText.Text = "Sai tên tài khoản hoặc mật khẩu";
         pnlErrorAlert.Visible = true;
+        ApplyResponsiveLayout();
+    }
+
+    protected override void OnPaintBackground(PaintEventArgs e)
+    {
+        e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+        e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+
+        if (loginBackgroundImage is not null)
+        {
+            DrawCoverImage(e.Graphics, loginBackgroundImage, ClientRectangle);
+        }
+        else
+        {
+            e.Graphics.Clear(Color.FromArgb(10, 20, 34));
+        }
+
+        using var overlayBrush = new SolidBrush(Color.FromArgb(116, 12, 24, 40));
+        e.Graphics.FillRectangle(overlayBrush, ClientRectangle);
     }
 
     private void DrawLoginHeaderBackground(object? sender, PaintEventArgs e)
@@ -265,15 +327,38 @@ public sealed partial class FrmLogin : Form
         e.Graphics.DrawLine(pen, 9, 13, 9, 13);
     }
 
-    private void LoadLoginLogoIfAvailable()
+    private void LoadLoginAssetsIfAvailable()
     {
-        if (!File.Exists(loginLogoPath))
+        if (File.Exists(loginBackgroundPath))
         {
-            return;
+            loginBackgroundImage?.Dispose();
+            loginBackgroundImage = LoadImageCopy(loginBackgroundPath);
         }
 
-        using var stream = new FileStream(loginLogoPath, FileMode.Open, FileAccess.Read);
-        picHeaderLogo.Image = Image.FromStream(stream);
+        if (File.Exists(loginLogoPath))
+        {
+            picHeaderLogo.Image?.Dispose();
+            picHeaderLogo.Image = LoadImageCopy(loginLogoPath);
+        }
+
+        Invalidate();
+    }
+
+    private static Image LoadImageCopy(string path)
+    {
+        using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+        using var sourceImage = Image.FromStream(stream);
+        return new Bitmap(sourceImage);
+    }
+
+    private static void DrawCoverImage(Graphics graphics, Image image, Rectangle bounds)
+    {
+        var scale = Math.Max(bounds.Width / (float)image.Width, bounds.Height / (float)image.Height);
+        var drawWidth = (int)Math.Ceiling(image.Width * scale);
+        var drawHeight = (int)Math.Ceiling(image.Height * scale);
+        var drawX = bounds.X + (bounds.Width - drawWidth) / 2;
+        var drawY = bounds.Y + (bounds.Height - drawHeight) / 2;
+        graphics.DrawImage(image, new Rectangle(drawX, drawY, drawWidth, drawHeight));
     }
 }
 
