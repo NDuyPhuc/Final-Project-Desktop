@@ -10,6 +10,7 @@ public partial class FrmCourseManagement : Form
     private readonly ErrorProvider _errCourse = new();
     private DataTable _courseTable = new();
     private string? _currentCourseStatus;
+    private ComboBox? _cboCourseDetailStatus;
 
     public FrmCourseManagement()
     {
@@ -30,6 +31,7 @@ public partial class FrmCourseManagement : Form
         pnlCourseFilterCard.Height = FormHostHelpers.ScaleForDpi(this, 96);
         flpCourseActions.WrapContents = true;
         flpCourseActions.Padding = FormHostHelpers.ScalePadding(this, new Padding(0, 8, 0, 0));
+        InitializeStatusControl();
 
         AppTheme.StyleGrid(dgvCourseList);
         AppTheme.StyleGrid(dgvCourseClassList);
@@ -86,6 +88,10 @@ public partial class FrmCourseManagement : Form
         ResetDetailEditor();
         txtCourseCode.Text = AppRuntime.DataService.GetNextCourseId();
         _currentCourseStatus = "Còn mở";
+        if (_cboCourseDetailStatus is not null)
+        {
+            _cboCourseDetailStatus.Text = _currentCourseStatus;
+        }
         txtCourseName.Focus();
         dgvCourseClassList.DataSource = AppRuntime.DataService.GetClassList(courseId: "__empty__");
     }
@@ -94,18 +100,24 @@ public partial class FrmCourseManagement : Form
     {
         if (!ValidateEditor(out var tuitionFee))
         {
+            ValidationFeedback.ShowFirstError(this, _errCourse,
+                txtCourseCode,
+                txtCourseName,
+                txtCourseFee);
             return;
         }
 
         try
         {
+            var courseId = txtCourseCode.Text.Trim();
+            var isCreating = AppRuntime.DataService.GetCourseById(courseId) is null;
             var course = new CourseEntity
             {
-                Id = txtCourseCode.Text.Trim(),
+                Id = courseId,
                 Name = txtCourseName.Text.Trim(),
                 Description = BuildCourseDescription(txtCourseLevel.Text.Trim(), txtCourseDescription.Text.Trim()),
                 TuitionFee = tuitionFee,
-                Status = string.IsNullOrWhiteSpace(_currentCourseStatus) ? "Còn mở" : _currentCourseStatus,
+                Status = _cboCourseDetailStatus?.Text ?? (string.IsNullOrWhiteSpace(_currentCourseStatus) ? "Còn mở" : _currentCourseStatus),
                 IsDeleted = false
             };
 
@@ -113,12 +125,12 @@ public partial class FrmCourseManagement : Form
             _currentCourseStatus = course.Status;
             LoadCourses(txtCourseKeyword.Text.Trim(), cboCourseStatusFilter.Text);
             FocusCourse(course.Id);
-            MessageBox.Show(this, "Đã lưu khóa học thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(this, isCreating ? "Đã thêm khóa học thành công." : "Đã cập nhật khóa học thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmCourseManagement));
-            MessageBox.Show(this, "Không lưu được khóa học. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, $"Không lưu được khóa học: {ex.GetBaseException().Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -126,6 +138,13 @@ public partial class FrmCourseManagement : Form
     {
         if (string.IsNullOrWhiteSpace(txtCourseCode.Text))
         {
+            MessageBox.Show(this, "Hãy chọn khóa học cần xóa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
+        if (AppRuntime.DataService.GetCourseById(txtCourseCode.Text.Trim()) is null)
+        {
+            MessageBox.Show(this, "Khóa học chưa được lưu nên không thể xóa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return;
         }
 
@@ -140,6 +159,7 @@ public partial class FrmCourseManagement : Form
             AppRuntime.DataService.SoftDeleteCourse(txtCourseCode.Text.Trim());
             LoadCourses(txtCourseKeyword.Text.Trim(), cboCourseStatusFilter.Text);
             ResetDetailEditor();
+            MessageBox.Show(this, "Đã xóa mềm khóa học thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         catch (Exception ex)
         {
@@ -174,8 +194,12 @@ public partial class FrmCourseManagement : Form
             ParseCourseDescription(course.Description, out var level, out var description);
             txtCourseLevel.Text = level;
             txtCourseDescription.Text = description;
-            txtCourseFee.Text = course.TuitionFee.ToString("0.##", CultureInfo.InvariantCulture);
+            txtCourseFee.Text = course.TuitionFee.ToString("N0", CultureInfo.GetCultureInfo("vi-VN"));
             _currentCourseStatus = course.Status;
+            if (_cboCourseDetailStatus is not null)
+            {
+                _cboCourseDetailStatus.Text = string.IsNullOrWhiteSpace(course.Status) ? "Còn mở" : course.Status;
+            }
             dgvCourseClassList.DataSource = AppRuntime.DataService.GetClassList(courseId: course.Id);
         }
         catch (Exception ex)
@@ -230,7 +254,7 @@ public partial class FrmCourseManagement : Form
         {
             _errCourse.SetError(txtCourseFee, "Học phí không được để trống.");
         }
-        else if (!decimal.TryParse(txtCourseFee.Text.Trim(), NumberStyles.Number, CultureInfo.InvariantCulture, out tuitionFee) || tuitionFee < 0)
+        else if (!TryParseMoney(txtCourseFee.Text, out tuitionFee) || tuitionFee < 0)
         {
             _errCourse.SetError(txtCourseFee, "Học phí phải là số >= 0.");
         }
@@ -249,6 +273,10 @@ public partial class FrmCourseManagement : Form
         txtCourseFee.Clear();
         txtCourseDescription.Clear();
         _currentCourseStatus = null;
+        if (_cboCourseDetailStatus is not null)
+        {
+            _cboCourseDetailStatus.Text = "Còn mở";
+        }
         dgvCourseClassList.DataSource = null;
     }
 
@@ -287,6 +315,54 @@ public partial class FrmCourseManagement : Form
         return string.IsNullOrWhiteSpace(description)
             ? safeLevel
             : $"{safeLevel} | {description.Trim()}";
+    }
+
+    private void InitializeStatusControl()
+    {
+        if (_cboCourseDetailStatus is not null || tblCourseDetail.Controls.ContainsKey("cboCourseDetailStatus"))
+        {
+            return;
+        }
+
+        var label = new Label
+        {
+            Name = "lblCourseDetailStatus",
+            Text = "Trạng thái",
+            Anchor = AnchorStyles.Left,
+            AutoSize = true
+        };
+
+        _cboCourseDetailStatus = new ComboBox
+        {
+            Name = "cboCourseDetailStatus",
+            Dock = DockStyle.Fill,
+            DropDownStyle = ComboBoxStyle.DropDownList
+        };
+        _cboCourseDetailStatus.Items.AddRange(["Còn mở", "Tạm dừng"]);
+        _cboCourseDetailStatus.SelectedIndex = 0;
+
+        tblCourseDetail.RowCount += 1;
+        tblCourseDetail.RowStyles.Add(new RowStyle());
+        tblCourseDetail.Controls.Add(label, 0, tblCourseDetail.RowCount - 1);
+        tblCourseDetail.Controls.Add(_cboCourseDetailStatus, 1, tblCourseDetail.RowCount - 1);
+    }
+
+    private static bool TryParseMoney(string? input, out decimal value)
+    {
+        value = 0M;
+        if (string.IsNullOrWhiteSpace(input))
+        {
+            return false;
+        }
+
+        var sanitized = input
+            .Replace("VND", string.Empty, StringComparison.OrdinalIgnoreCase)
+            .Replace("đ", string.Empty, StringComparison.OrdinalIgnoreCase)
+            .Replace(".", string.Empty)
+            .Replace(",", string.Empty)
+            .Trim();
+
+        return decimal.TryParse(sanitized, NumberStyles.Number, CultureInfo.InvariantCulture, out value);
     }
 
     private static void ParseCourseDescription(string? value, out string level, out string description)

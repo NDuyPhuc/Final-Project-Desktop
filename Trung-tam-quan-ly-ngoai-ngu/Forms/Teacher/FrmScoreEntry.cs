@@ -9,9 +9,11 @@ public partial class FrmScoreEntry : Form
 {
     private DataTable _classTable = new();
     private DataTable _scoreTable = new();
+    private readonly string? _preselectedClassId;
 
-    public FrmScoreEntry()
+    public FrmScoreEntry(string? preselectedClassId = null)
     {
+        _preselectedClassId = preselectedClassId;
         InitializeComponent();
         FormHostHelpers.ConfigureModuleSurface(this, "Nhập điểm");
         ConfigureView();
@@ -29,10 +31,10 @@ public partial class FrmScoreEntry : Form
         btnSaveScore.Text = "Lưu bảng điểm";
 
         cboScoreType.Items.Clear();
-        cboScoreType.Items.AddRange(["Tổng hợp điểm (chưa phân loại theo DB)"]);
+        cboScoreType.Items.AddRange(["Tổng hợp điểm"]);
         cboScoreType.SelectedIndex = 0;
         cboScoreType.Enabled = false;
-        lblScoreType.Text = "Loại điểm (chưa áp dụng)";
+        lblScoreType.Text = "Loại điểm";
         txtScoreWeight.Text = "0-10";
         txtScoreWeight.ReadOnly = true;
 
@@ -56,6 +58,7 @@ public partial class FrmScoreEntry : Form
             cboScoreClass.DisplayMember = "Ten lop";
             cboScoreClass.ValueMember = "Ma lop";
             cboScoreClass.DataSource = _classTable;
+            SelectClass(_preselectedClassId);
             LoadScoreList();
         }
         catch (Exception ex)
@@ -109,12 +112,13 @@ public partial class FrmScoreEntry : Form
             if (string.IsNullOrWhiteSpace(classId))
             {
                 errScore.SetError(cboScoreClass, "Chưa chọn lớp học.");
+                ValidationFeedback.ShowFirstError(this, errScore, cboScoreClass);
                 return;
             }
 
             if (!dgvScoreList.Columns.Contains("EnrollmentId"))
             {
-                MessageBox.Show(this, "Danh sach diem chua san sang de luu.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(this, "Danh sách điểm chưa sẵn sàng để lưu.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
@@ -132,8 +136,8 @@ public partial class FrmScoreEntry : Form
                     continue;
                 }
 
-                var midterm = ParseScore(GetCellValue(row, "Diem giua ky"), "Diem giua ky");
-                var final = ParseScore(GetCellValue(row, "Diem cuoi ky"), "Diem cuoi ky");
+                var midterm = ParseScore(GetCellValue(row, "Diem giua ky", "Điểm giữa kỳ", "Giua ky"), "Điểm giữa kỳ");
+                var final = ParseScore(GetCellValue(row, "Diem cuoi ky", "Điểm cuối kỳ", "Cuoi ky"), "Điểm cuối kỳ");
 
                 items.Add(new ScoreSaveItem
                 {
@@ -166,12 +170,12 @@ public partial class FrmScoreEntry : Form
 
         if (!decimal.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out var score))
         {
-            throw new InvalidOperationException($"{fieldName} phai la so.");
+            throw new InvalidOperationException($"{fieldName} phải là số.");
         }
 
         if (score < 0 || score > 10)
         {
-            throw new InvalidOperationException($"{fieldName} phai nam trong khoang 0 den 10.");
+            throw new InvalidOperationException($"{fieldName} phải nằm trong khoảng 0 đến 10.");
         }
 
         return score;
@@ -186,10 +190,38 @@ public partial class FrmScoreEntry : Form
                 : null;
     }
 
-    private static string? GetCellValue(DataGridViewRow row, string columnName)
+    private static string? GetCellValue(DataGridViewRow row, params string[] columnNames)
     {
-        return row.DataGridView is not null && row.DataGridView.Columns.Contains(columnName)
-            ? row.Cells[columnName].Value?.ToString()
-            : null;
+        if (row.DataGridView is null)
+        {
+            return null;
+        }
+
+        foreach (var columnName in columnNames)
+        {
+            if (row.DataGridView.Columns.Contains(columnName))
+            {
+                return row.Cells[columnName].Value?.ToString();
+            }
+        }
+
+        return null;
+    }
+
+    private void SelectClass(string? classId)
+    {
+        if (string.IsNullOrWhiteSpace(classId))
+        {
+            return;
+        }
+
+        foreach (DataRowView item in cboScoreClass.Items)
+        {
+            if (string.Equals(item.Row["Ma lop"]?.ToString(), classId, StringComparison.OrdinalIgnoreCase))
+            {
+                cboScoreClass.SelectedItem = item;
+                return;
+            }
+        }
     }
 }

@@ -41,7 +41,7 @@ Trung-tam-quan-ly-ngoai-ngu.sln
 Project UI hien dang dung:
 
 - `ClosedXML` `0.104.2`
-- `PdfSharp` `1.51.5185`
+- `PdfSharp` `6.0.0`
 - `WinForms.DataVisualization` `1.10.0`
 
 Project Application dang dung:
@@ -126,6 +126,49 @@ Khuyen nghi:
 dotnet build .\Trung-tam-quan-ly-ngoai-ngu\Trung-tam-quan-ly-ngoai-ngu.csproj
 dotnet run --project .\Trung-tam-quan-ly-ngoai-ngu\Trung-tam-quan-ly-ngoai-ngu.csproj
 ```
+
+## Publish file EXE
+
+Repo da duoc cau hinh san profile publish `win-x64`, `self-contained`, `single-file`.
+
+### Cach nhanh nhat
+
+Chay tai thu muc goc repo:
+
+```powershell
+.\publish-exe.cmd
+```
+
+Hoac:
+
+```powershell
+.\scripts\publish-exe.ps1 -OpenOutput
+```
+
+Sau khi publish xong, file EXE nam tai:
+
+```text
+artifacts\publish\win-x64\Trung-tam-quan-ly-ngoai-ngu.exe
+```
+
+File `appsettings.json` publish kem ngay canh file EXE:
+
+```text
+artifacts\publish\win-x64\appsettings.json
+```
+
+### Publish bang Visual Studio
+
+1. Right click project `Trung-tam-quan-ly-ngoai-ngu`
+2. Chon `Publish`
+3. Chon profile `FolderProfile`
+4. Nhan `Publish`
+
+### Ghi chu sau publish
+
+- Thu muc publish da co san `Resources`, `appsettings.json`, `Images\Students`, `Images\Teachers`, `logs`
+- Neu doi SQL Server, sua file `appsettings.json` trong thu muc publish hoac dat env var
+- Ban co the copy ca thu muc `artifacts\publish\win-x64` sang may Windows khac de chay
 
 ## Neu SQL Server loi
 

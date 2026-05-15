@@ -301,7 +301,7 @@ partial class FrmEnrollment
         lblEnrollmentOriginalFee.Size = new Size(85, 28);
         lblEnrollmentOriginalFee.AutoSize = true;
         lblEnrollmentOriginalFee.TabIndex = 6;
-        lblEnrollmentOriginalFee.Text = "Hoc phi goc";
+        lblEnrollmentOriginalFee.Text = "Học phí gốc";
         // 
         // txtEnrollmentOriginalFee
         // 
@@ -340,7 +340,7 @@ partial class FrmEnrollment
         lblEnrollmentFinalFee.Size = new Size(86, 28);
         lblEnrollmentFinalFee.AutoSize = true;
         lblEnrollmentFinalFee.TabIndex = 10;
-        lblEnrollmentFinalFee.Text = "Hoc phi cuoi";
+        lblEnrollmentFinalFee.Text = "Học phí cuối";
         // 
         // txtEnrollmentFinalFee
         // 
@@ -382,7 +382,7 @@ partial class FrmEnrollment
         lblEnrollmentNote.Size = new Size(57, 28);
         lblEnrollmentNote.AutoSize = true;
         lblEnrollmentNote.TabIndex = 14;
-        lblEnrollmentNote.Text = "Ghi chu";
+        lblEnrollmentNote.Text = "Ghi chú";
         // 
         // txtEnrollmentNote
         // 

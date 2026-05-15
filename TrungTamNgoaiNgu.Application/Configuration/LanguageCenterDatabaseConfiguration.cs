@@ -47,13 +47,30 @@ public static class LanguageCenterDatabaseConfiguration
             return null;
         }
 
-        var json = File.ReadAllText(settingsPath);
-        return JsonSerializer.Deserialize<AppSettingsRoot>(
-            json,
-            new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
+        try
+        {
+            var json = File.ReadAllText(settingsPath);
+            return JsonSerializer.Deserialize<AppSettingsRoot>(
+                json,
+                new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    ReadCommentHandling = JsonCommentHandling.Skip,
+                    AllowTrailingCommas = true
+                });
+        }
+        catch (JsonException)
+        {
+            return null;
+        }
+        catch (IOException)
+        {
+            return null;
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return null;
+        }
     }
 
     private static string NormalizeConnectionString(string rawConnectionString)
@@ -64,7 +81,14 @@ public static class LanguageCenterDatabaseConfiguration
                 !segment.StartsWith("Command Timeout", StringComparison.OrdinalIgnoreCase))
             .ToArray();
 
-        return string.Join(';', segments) + ';';
+        var hasConnectTimeout = segments.Any(segment =>
+            segment.StartsWith("Connect Timeout", StringComparison.OrdinalIgnoreCase)
+            || segment.StartsWith("Connection Timeout", StringComparison.OrdinalIgnoreCase));
+
+        var normalizedConnectionString = string.Join(';', segments) + ';';
+        return hasConnectTimeout
+            ? normalizedConnectionString
+            : normalizedConnectionString + "Connect Timeout=5;";
     }
 
     private sealed class AppSettingsRoot

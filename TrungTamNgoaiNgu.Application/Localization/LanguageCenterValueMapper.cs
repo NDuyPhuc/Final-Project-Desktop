@@ -7,8 +7,8 @@ public static class LanguageCenterValueMapper
     public static string NormalizeCourseStatus(string? value) => value?.Trim() switch
     {
         null or "" => "Active",
-        "Con mo" or "Còn mở" or "Active" => "Active",
-        "Tam dung" or "Tạm dừng" or "Inactive" => "Inactive",
+        "Còn mở" or "Con mo" or "Active" => "Active",
+        "Tạm dừng" or "Tam dung" or "Inactive" => "Inactive",
         _ => value.Trim()
     };
 
@@ -22,11 +22,11 @@ public static class LanguageCenterValueMapper
     public static string NormalizeStudentStatus(string? value) => value?.Trim() switch
     {
         null or "" => "Active",
-        "Dang hoc" or "Đang học" or "Active" => "Active",
-        "Bao luu" or "Bảo lưu" or "Paused" => "Paused",
-        "Tam dung" or "Tạm dừng" or "Inactive" => "Inactive",
-        "Hoan thanh" or "Hoàn thành" or "Completed" => "Completed",
-        "Da nghi" or "Đã nghỉ" or "Dropped" => "Dropped",
+        "Đang học" or "Dang hoc" or "Active" => "Active",
+        "Bảo lưu" or "Bao luu" or "Paused" => "Paused",
+        "Tạm dừng" or "Tam dung" or "Inactive" => "Inactive",
+        "Hoàn thành" or "Hoan thanh" or "Completed" => "Completed",
+        "Đã nghỉ" or "Da nghi" or "Dropped" => "Dropped",
         _ => value.Trim()
     };
 
@@ -43,8 +43,8 @@ public static class LanguageCenterValueMapper
     public static string NormalizeTeacherStatus(string? value) => value?.Trim() switch
     {
         null or "" => "Active",
-        "Dang day" or "Đang dạy" or "Active" => "Active",
-        "Tam nghi" or "Tạm nghỉ" or "Inactive" => "Inactive",
+        "Đang dạy" or "Dang day" or "Active" => "Active",
+        "Tạm nghỉ" or "Tam nghi" or "Inactive" => "Inactive",
         _ => value.Trim()
     };
 
@@ -55,15 +55,54 @@ public static class LanguageCenterValueMapper
         var normalized => normalized
     };
 
+    public static string? NormalizeTeacherGender(string? value)
+    {
+        var trimmed = value?.Trim();
+        if (string.IsNullOrWhiteSpace(trimmed))
+        {
+            return null;
+        }
+
+        if (trimmed.Equals("Male", StringComparison.OrdinalIgnoreCase)
+            || trimmed.Equals("Nam", StringComparison.OrdinalIgnoreCase))
+        {
+            return "Nam";
+        }
+
+        if (trimmed.Equals("Female", StringComparison.OrdinalIgnoreCase)
+            || trimmed.Equals("Nữ", StringComparison.OrdinalIgnoreCase)
+            || trimmed.Equals("Nu", StringComparison.OrdinalIgnoreCase))
+        {
+            return "Nữ";
+        }
+
+        if (trimmed.Equals("Other", StringComparison.OrdinalIgnoreCase)
+            || trimmed.Equals("Khác", StringComparison.OrdinalIgnoreCase)
+            || trimmed.Equals("Khac", StringComparison.OrdinalIgnoreCase))
+        {
+            return "Khác";
+        }
+
+        return trimmed;
+    }
+
+    public static string ToTeacherGenderDisplay(string? value) => NormalizeTeacherGender(value) switch
+    {
+        "Nam" => "Nam",
+        "Nữ" => "Nữ",
+        "Khác" => "Khác",
+        _ => string.Empty
+    };
+
     public static string NormalizeClassStatus(string? value) => value?.Trim() switch
     {
         null or "" => "Open",
-        "Dang mo" or "Đang mở" or "Open" => "Open",
-        "Dang hoc" or "Đang học" or "InProgress" => "InProgress",
-        "Da dong" or "Đã đóng" or "Closed" => "Closed",
-        "Hoan thanh" or "Hoàn thành" or "Completed" => "Completed",
-        "Da huy" or "Đã hủy" or "Cancelled" => "Cancelled",
-        "Day" or "Đầy" => "Open",
+        "Đang mở" or "Dang mo" or "Open" => "Open",
+        "Đang học" or "Dang hoc" or "InProgress" => "InProgress",
+        "Đã đóng" or "Da dong" or "Closed" => "Closed",
+        "Hoàn thành" or "Hoan thanh" or "Completed" => "Completed",
+        "Đã hủy" or "Da huy" or "Cancelled" => "Cancelled",
+        "Đầy" or "Day" => "Open",
         _ => value.Trim()
     };
 
@@ -80,11 +119,11 @@ public static class LanguageCenterValueMapper
     public static string NormalizeEnrollmentStatus(string? value) => value?.Trim() switch
     {
         null or "" => "Active",
-        "Dang hoc" or "Đang học" or "Active" => "Active",
-        "Bao luu" or "Bảo lưu" or "Paused" => "Paused",
-        "Hoan thanh" or "Hoàn thành" or "Completed" => "Completed",
-        "Da nghi" or "Đã nghỉ" or "Dropped" => "Dropped",
-        "Da huy" or "Đã hủy" or "Cancelled" => "Cancelled",
+        "Đang học" or "Dang hoc" or "Active" => "Active",
+        "Bảo lưu" or "Bao luu" or "Paused" => "Paused",
+        "Hoàn thành" or "Hoan thanh" or "Completed" => "Completed",
+        "Đã nghỉ" or "Da nghi" or "Dropped" => "Dropped",
+        "Đã hủy" or "Da huy" or "Cancelled" => "Cancelled",
         _ => value.Trim()
     };
 
@@ -101,11 +140,11 @@ public static class LanguageCenterValueMapper
     public static string NormalizePaymentMethod(string? value) => value?.Trim() switch
     {
         null or "" => "Cash",
-        "Tien mat" or "Tiền mặt" or "Cash" => "Cash",
-        "Chuyen khoan" or "Chuyển khoản" or "BankTransfer" => "BankTransfer",
-        "The" or "Thẻ" or "Card" => "Card",
-        "Vi dien tu" or "Ví điện tử" or "EWallet" => "EWallet",
-        "Khac" or "Khác" or "Other" => "Other",
+        "Tiền mặt" or "Tien mat" or "Cash" => "Cash",
+        "Chuyển khoản" or "Chuyen khoan" or "BankTransfer" => "BankTransfer",
+        "Thẻ" or "The" or "Card" => "Card",
+        "Ví điện tử" or "Vi dien tu" or "EWallet" => "EWallet",
+        "Khác" or "Khac" or "Other" => "Other",
         _ => value.Trim()
     };
 
@@ -122,9 +161,9 @@ public static class LanguageCenterValueMapper
     public static AccountStatus NormalizeAccountStatus(string? value) => value?.Trim() switch
     {
         null or "" => AccountStatus.Active,
-        "Hoat dong" or "Hoạt động" or "Active" => AccountStatus.Active,
-        "Tam dung" or "Tạm dừng" or "Inactive" => AccountStatus.Inactive,
-        "Khoa" or "Khóa" or "Locked" => AccountStatus.Locked,
+        "Hoạt động" or "Hoat dong" or "Active" => AccountStatus.Active,
+        "Tạm dừng" or "Tam dung" or "Inactive" => AccountStatus.Inactive,
+        "Khóa" or "Khoa" or "Locked" => AccountStatus.Locked,
         _ => Enum.TryParse<AccountStatus>(value, true, out var status) ? status : AccountStatus.Active
     };
 

@@ -1,5 +1,6 @@
 using System.Data;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using TrungTamNgoaiNgu.Application.Configuration;
 using TrungTamNgoaiNgu.Application.Contracts;
@@ -16,6 +17,10 @@ namespace TrungTamNgoaiNgu.Application.Services;
 
 public class SqlLanguageCenterDataService : ILanguageCenterDataService
 {
+    private static readonly Regex EnrollmentDiscountRegex = new(
+        @"(?:Giảm trừ|Giam tru|Discount tu van)\s*:\s*([0-9][0-9\.,]*)",
+        RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
     private readonly DbContextOptions<LanguageCenterDbContext> _options;
     private readonly IAccountRepository _accountRepository;
     private readonly CultureInfo _culture = CultureInfo.GetCultureInfo("vi-VN");
@@ -28,7 +33,7 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
                 string.IsNullOrWhiteSpace(connectionString) ? databaseOptions.ConnectionString : connectionString,
                 builder =>
                 {
-                    builder.EnableRetryOnFailure();
+                    builder.EnableRetryOnFailure(1, TimeSpan.FromSeconds(1), null);
                     if (databaseOptions.CommandTimeoutSeconds > 0)
                     {
                         builder.CommandTimeout(databaseOptions.CommandTimeoutSeconds);
@@ -127,7 +132,10 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
     {
         try
         {
-            if (string.IsNullOrWhiteSpace(account.PasswordHash))
+            var isNewAccount = string.IsNullOrWhiteSpace(account.Id)
+                || _accountRepository.GetAccounts().All(existing => !existing.Id.Equals(account.Id, StringComparison.OrdinalIgnoreCase));
+
+            if (isNewAccount && string.IsNullOrWhiteSpace(account.PasswordHash))
             {
                 account.PasswordHash = PasswordHasher.Hash("123456");
             }
@@ -174,20 +182,20 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
 
     public DataTable GetAccessMatrix()
     {
-        var table = CreateTable("Linh vuc chuc nang", "Admin", "Staff", "Teacher", "Pham vi");
-        table.Rows.Add("Quan ly tai khoan", "Co", "Khong", "Khong", "He thong");
-        table.Rows.Add("Thu hoc phi va bien lai", "Xem", "Co", "Khong", "Tai chinh");
-        table.Rows.Add("Ghi danh va xep lop", "Xem", "Co", "Khong", "Van hanh");
-        table.Rows.Add("Diem danh", "Xem", "Xem", "Co", "Giang day");
-        table.Rows.Add("Nhap diem", "Xem", "Khong", "Co", "Giang day");
-        table.Rows.Add("Bao cao doanh thu", "Co", "Xem", "Khong", "Bao cao");
+        var table = CreateTable("Lĩnh vực chức năng", "Admin", "Staff", "Teacher", "Phạm vi");
+        table.Rows.Add("Quản lý tài khoản", "Có", "Không", "Không", "Hệ thống");
+        table.Rows.Add("Thu học phí và biên lai", "Xem", "Có", "Không", "Tài chính");
+        table.Rows.Add("Ghi danh và xếp lớp", "Xem", "Có", "Không", "Vận hành");
+        table.Rows.Add("Điểm danh", "Xem", "Xem", "Có", "Giảng dạy");
+        table.Rows.Add("Nhập điểm", "Xem", "Không", "Có", "Giảng dạy");
+        table.Rows.Add("Báo cáo doanh thu", "Có", "Xem", "Không", "Báo cáo");
         return table;
     }
 
     public DataTable GetAdminWarnings()
     {
         using var context = CreateContext();
-        var table = CreateTable("Muc do", "Noi dung", "Han xu ly");
+        var table = CreateTable("Mức độ", "Nội dung", "Hạn xử lý");
 
         var nearlyFull = context.Classes
             .Include(x => x.Enrollments)
@@ -199,22 +207,22 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
 
         if (nearlyFull > 0)
         {
-            table.Rows.Add("Cao", $"{nearlyFull} lop sap het cho trong", "Hom nay");
+            table.Rows.Add("Cao", $"{nearlyFull} lớp sắp hết chỗ trống", "Hôm nay");
         }
 
         if (debtCount > 0)
         {
-            table.Rows.Add("Trung binh", $"{debtCount} hoc vien con cong no", "Ngay mai");
+            table.Rows.Add("Trung bình", $"{debtCount} học viên còn công nợ", "Ngày mai");
         }
 
         if (lockedCount > 0)
         {
-            table.Rows.Add("Thap", $"{lockedCount} tai khoan dang bi khoa", "Tuan nay");
+            table.Rows.Add("Thấp", $"{lockedCount} tài khoản đang bị khóa", "Tuần này");
         }
 
         if (table.Rows.Count == 0)
         {
-            table.Rows.Add("Thap", "He thong dang on dinh", "Khong");
+            table.Rows.Add("Thấp", "Hệ thống đang ổn định", "Không");
         }
 
         return table;
@@ -223,30 +231,30 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
     public DataTable GetMonitorActivity()
     {
         using var context = CreateContext();
-        var table = CreateTable("Phan he", "Chi so", "Gia tri", "Ghi chu");
+        var table = CreateTable("Phân hệ", "Chỉ số", "Giá trị", "Ghi chú");
         var today = DateTime.Today;
 
-        table.Rows.Add("Hoc vien", "Tiep nhan moi", context.Students.Count(x => !x.IsDeleted && x.BirthDate <= today).ToString(_culture), "Tong ho so hoat dong");
+        table.Rows.Add("Học viên", "Tiếp nhận mới", context.Students.Count(x => !x.IsDeleted && x.BirthDate <= today).ToString(_culture), "Tổng hồ sơ hoạt động");
         table.Rows.Add(
             "Ghi danh",
-            "Dang hoc",
+            "Đang học",
             context.Enrollments
                 .AsNoTracking()
                 .Where(x => !x.IsDeleted)
                 .AsEnumerable()
                 .Count(x => LanguageCenterValueMapper.NormalizeEnrollmentStatus(x.Status) == "Active")
                 .ToString(_culture),
-            "Bao gom ca bao luu");
-        table.Rows.Add("Tai chinh", "Bien lai", context.Receipts.Count(x => !x.IsDeleted && x.PayDate.Date == today).ToString(_culture), "Bien lai trong ngay");
+            "Bao gồm cả bảo lưu");
+        table.Rows.Add("Tài chính", "Biên lai", context.Receipts.Count(x => !x.IsDeleted && x.PayDate.Date == today).ToString(_culture), "Biên lai trong ngày");
         table.Rows.Add(
-            "Dao tao",
-            "Lop dang mo",
+            "Đào tạo",
+            "Lớp đang mở",
             context.Classes
                 .Include(x => x.Enrollments)
                 .AsEnumerable()
-                .Count(x => !x.IsDeleted && GetEffectiveClassStatus(x) != "Da dong")
+                .Count(x => !x.IsDeleted && GetEffectiveClassStatus(x) != "Đã đóng")
                 .ToString(_culture),
-            "Theo lich hien tai");
+            "Theo lịch hiện tại");
         return table;
     }
 
@@ -489,7 +497,7 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
             && !status.Equals("Tất cả", StringComparison.OrdinalIgnoreCase))
         {
             classes = status.Equals("Day", StringComparison.OrdinalIgnoreCase) || status.Equals("Đầy", StringComparison.OrdinalIgnoreCase)
-                ? classes.Where(classItem => GetEffectiveClassStatus(classItem).Equals("Day", StringComparison.OrdinalIgnoreCase)).ToList()
+                ? classes.Where(classItem => GetEffectiveClassStatus(classItem).Equals("Đầy", StringComparison.OrdinalIgnoreCase)).ToList()
                 : classes.Where(classItem => LanguageCenterValueMapper.NormalizeClassStatus(classItem.Status).Equals(normalizedStatus, StringComparison.OrdinalIgnoreCase)).ToList();
         }
 
@@ -585,11 +593,11 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
         {
             var sessionDate = sessionDates[index];
             var status = sessionDate.Date < DateTime.Today
-                ? "Da hoc"
-                : sessionDate.Date == DateTime.Today ? "Hom nay" : "Sap dien ra";
+                ? "Đã học"
+                : sessionDate.Date == DateTime.Today ? "Hôm nay" : "Sắp diễn ra";
 
             table.Rows.Add(
-                $"Buoi {index + 1:00}",
+                $"Buổi {index + 1:00}",
                 sessionDate.ToString("dd/MM/yyyy", _culture),
                 classItem.Schedule ?? "18:00 - 19:30",
                 classItem.Room ?? "P101",
@@ -627,7 +635,7 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
         }
         else
         {
-            classes = classes.Where(classItem => GetEffectiveClassStatus(classItem) != "Da dong").ToList();
+            classes = classes.Where(classItem => GetEffectiveClassStatus(classItem) != "Đã đóng").ToList();
         }
 
         var table = CreateTable("Ma lop", "Ten lop", "Khoa hoc", "Giao vien", "Lich hoc", "Con cho", "Hoc phi");
@@ -837,7 +845,7 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
         var activeClassCount = context.Classes
             .Include(x => x.Enrollments)
             .AsEnumerable()
-            .Count(x => !x.IsDeleted && GetEffectiveClassStatus(x) != "Da dong");
+            .Count(x => !x.IsDeleted && GetEffectiveClassStatus(x) != "Đã đóng");
 
         return new DashboardStats
         {
@@ -896,7 +904,7 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
         {
             TeachingClassCount = classes.Count,
             TeachingStudentCount = classes.Sum(GetActiveEnrollmentCount),
-            TodaySessionCount = classes.Count(x => GetEffectiveClassStatus(x) != "Da dong"),
+            TodaySessionCount = classes.Count(x => GetEffectiveClassStatus(x) != "Đã đóng"),
             PendingScoreCount = pendingScores
         };
     }
@@ -1071,6 +1079,7 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
         {
             ValidateTeacher(teacher);
             var normalizedStatus = LanguageCenterValueMapper.NormalizeTeacherStatus(teacher.Status);
+            var normalizedGender = LanguageCenterValueMapper.NormalizeTeacherGender(teacher.Gender);
             using var context = CreateContext();
             var entity = context.Teachers.FirstOrDefault(x => x.Id == teacher.Id);
             if (entity is null)
@@ -1082,7 +1091,7 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
                     Phone = teacher.Phone.Trim(),
                     Email = teacher.Email.Trim(),
                     Specialization = teacher.Specialization?.Trim(),
-                    Gender = teacher.Gender?.Trim(),
+                    Gender = normalizedGender,
                     Address = teacher.Address?.Trim(),
                     AvatarPath = teacher.AvatarPath,
                     AccountId = teacher.AccountId,
@@ -1097,7 +1106,7 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
                 entity.Phone = teacher.Phone.Trim();
                 entity.Email = teacher.Email.Trim();
                 entity.Specialization = teacher.Specialization?.Trim();
-                entity.Gender = teacher.Gender?.Trim();
+                entity.Gender = normalizedGender;
                 entity.Address = teacher.Address?.Trim();
                 entity.AvatarPath = teacher.AvatarPath;
                 entity.AccountId = teacher.AccountId;
@@ -1313,7 +1322,7 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
             return null;
         }
 
-        var tuitionFee = enrollment.Class.Course.TuitionFee;
+        var tuitionFee = GetEffectiveTuitionFee(enrollment);
         var totalPaid = enrollment.Receipts.Where(x => !x.IsDeleted).Sum(x => x.AmountPaid);
         return new EnrollmentReceiptContext
         {
@@ -1346,7 +1355,7 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
             return null;
         }
 
-        var tuitionFee = enrollment.Class.Course.TuitionFee;
+        var tuitionFee = GetEffectiveTuitionFee(enrollment);
         var totalPaid = enrollment.Receipts.Where(x => !x.IsDeleted).Sum(x => x.AmountPaid);
         return new EnrollmentReceiptContext
         {
@@ -1387,7 +1396,7 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
                 .FirstOrDefault(x => x.Id == enrollmentId && !x.IsDeleted)
                 ?? throw new InvalidOperationException("Ghi danh khong ton tai.");
 
-            var tuitionFee = enrollment.Class?.Course?.TuitionFee ?? 0M;
+            var tuitionFee = GetEffectiveTuitionFee(enrollment);
             var paidExcludingCurrent = context.Receipts
                 .Where(x => !x.IsDeleted && x.EnrollmentId == enrollmentId && (string.IsNullOrWhiteSpace(receiptId) || x.Id != receiptId))
                 .Sum(x => (decimal?)x.AmountPaid) ?? 0M;
@@ -1451,7 +1460,7 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
             .Where(x => !x.IsDeleted && x.EnrollmentId == receipt.EnrollmentId)
             .ToList();
 
-        var tuitionFee = receipt.Enrollment?.Class?.Course?.TuitionFee ?? 0M;
+        var tuitionFee = receipt.Enrollment is null ? 0M : GetEffectiveTuitionFee(receipt.Enrollment);
         var totalPaid = relatedReceipts.Sum(x => x.AmountPaid);
 
         return new ReceiptPrintInfo
@@ -1679,7 +1688,7 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
                 Phone = "0909000003",
                 Email = "teacher@ttnn.local",
                 Specialization = "IELTS",
-                Gender = "Male",
+                Gender = "Nam",
                 Address = "Da Nang",
                 AccountId = "ACC003",
                 Status = "Active",
@@ -1692,7 +1701,7 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
                 Phone = "0909000004",
                 Email = "vy@ttnn.local",
                 Specialization = "TOEIC",
-                Gender = "Female",
+                Gender = "Nữ",
                 Address = "Da Nang",
                 Status = "Active",
                 IsDeleted = false
@@ -1704,7 +1713,7 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
                 Phone = "0909000005",
                 Email = "hung@ttnn.local",
                 Specialization = "Tin hoc",
-                Gender = "Male",
+                Gender = "Nam",
                 Address = "Da Nang",
                 Status = "Inactive",
                 IsDeleted = false
@@ -1950,7 +1959,7 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
 
         return enrollments.Select(enrollment =>
         {
-            var tuitionFee = enrollment.Class?.Course?.TuitionFee ?? 0M;
+            var tuitionFee = GetEffectiveTuitionFee(enrollment);
             var paidAmount = enrollment.Receipts.Where(x => !x.IsDeleted).Sum(x => x.AmountPaid);
             var outstanding = Math.Max(0, tuitionFee - paidAmount);
             var referenceDate = enrollment.Receipts
@@ -1964,8 +1973,8 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
             }
 
             var status = outstanding <= 0
-                ? "Da hoan thanh"
-                : outstanding > tuitionFee / 2 ? "Qua han" : "Sap den han";
+                ? "Đã hoàn thành"
+                : outstanding > tuitionFee / 2 ? "Quá hạn" : "Sắp đến hạn";
 
             return new DebtRow
             {
@@ -1981,6 +1990,36 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
                 ReferenceDate = referenceDate
             };
         }).ToList();
+    }
+
+    private static decimal GetEffectiveTuitionFee(EnrollmentEntity enrollment)
+    {
+        var tuitionFee = enrollment.Class?.Course?.TuitionFee ?? 0M;
+        var discount = GetEnrollmentDiscount(enrollment.Note);
+        return Math.Max(0, tuitionFee - discount);
+    }
+
+    private static decimal GetEnrollmentDiscount(string? note)
+    {
+        if (string.IsNullOrWhiteSpace(note))
+        {
+            return 0M;
+        }
+
+        var match = EnrollmentDiscountRegex.Match(note);
+        if (!match.Success)
+        {
+            return 0M;
+        }
+
+        var rawValue = match.Groups[1].Value
+            .Replace(" ", string.Empty)
+            .Replace(".", string.Empty)
+            .Replace(",", string.Empty);
+
+        return decimal.TryParse(rawValue, NumberStyles.Number, CultureInfo.InvariantCulture, out var discount)
+            ? Math.Max(0, discount)
+            : 0M;
     }
 
     private static string GetNextCode(IEnumerable<string> existingIds, string prefix)
@@ -2055,11 +2094,11 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
 
         if (normalizedStatus is "Closed" or "Completed" or "Cancelled" || classItem.EndDate.Date < DateTime.Today)
         {
-            return "Da dong";
+            return "Đã đóng";
         }
 
         return GetActiveEnrollmentCount(classItem) >= classItem.MaxStudents
-            ? "Day"
+            ? "Đầy"
             : LanguageCenterValueMapper.ToClassStatusDisplay(normalizedStatus);
     }
 

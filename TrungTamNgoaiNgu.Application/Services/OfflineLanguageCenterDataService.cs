@@ -1,5 +1,8 @@
 using System.Data;
+using System.Globalization;
+using System.Text.RegularExpressions;
 using TrungTamNgoaiNgu.Application.Contracts;
+using TrungTamNgoaiNgu.Application.Localization;
 using TrungTamNgoaiNgu.Application.Models;
 using TrungTamNgoaiNgu.Application.Security;
 using TrungTamNgoaiNgu.Domain.Entities;
@@ -9,6 +12,10 @@ namespace TrungTamNgoaiNgu.Application.Services;
 
 public sealed class OfflineLanguageCenterDataService : ILanguageCenterDataService
 {
+    private static readonly Regex EnrollmentDiscountRegex = new(
+        @"(?:Giảm trừ|Giam tru|Discount tu van)\s*:\s*([0-9][0-9\.,]*)",
+        RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
     private readonly List<AccountEntity> _accounts;
     private readonly List<StudentEntity> _students;
     private readonly List<TeacherEntity> _teachers;
@@ -191,26 +198,31 @@ public sealed class OfflineLanguageCenterDataService : ILanguageCenterDataServic
 
     public AccountEntity SaveAccount(AccountEntity account)
     {
-        var existing = _accounts.FirstOrDefault(x => x.Id == account.Id);
         if (string.IsNullOrWhiteSpace(account.Id))
         {
             account.Id = GetNextAccountId();
         }
 
-        if (string.IsNullOrWhiteSpace(account.PasswordHash))
-        {
-            account.PasswordHash = PasswordHasher.Hash("123456");
-        }
+        var existing = _accounts.FirstOrDefault(x => x.Id == account.Id);
 
         if (existing is null)
         {
+            if (string.IsNullOrWhiteSpace(account.PasswordHash))
+            {
+                account.PasswordHash = PasswordHasher.Hash("123456");
+            }
+
             account.CreatedAt = account.CreatedAt == default ? DateTime.Now : account.CreatedAt;
             _accounts.Add(account);
             return account;
         }
 
         existing.Username = account.Username;
-        existing.PasswordHash = account.PasswordHash;
+        if (!string.IsNullOrWhiteSpace(account.PasswordHash))
+        {
+            existing.PasswordHash = account.PasswordHash;
+        }
+
         existing.DisplayName = account.DisplayName;
         existing.Email = account.Email;
         existing.Phone = account.Phone;
@@ -242,26 +254,26 @@ public sealed class OfflineLanguageCenterDataService : ILanguageCenterDataServic
 
     public DataTable GetAccessMatrix()
     {
-        var table = CreateTable("Linh vuc chuc nang", "Admin", "Staff", "Teacher", "Pham vi");
-        table.Rows.Add("Quan ly tai khoan", "Co", "Khong", "Khong", "He thong");
-        table.Rows.Add("Thu hoc phi", "Xem", "Co", "Khong", "Tai chinh");
-        table.Rows.Add("Diem danh", "Xem", "Xem", "Co", "Giang day");
+        var table = CreateTable("Lĩnh vực chức năng", "Admin", "Staff", "Teacher", "Phạm vi");
+        table.Rows.Add("Quản lý tài khoản", "Có", "Không", "Không", "Hệ thống");
+        table.Rows.Add("Thu học phí", "Xem", "Có", "Không", "Tài chính");
+        table.Rows.Add("Điểm danh", "Xem", "Xem", "Có", "Giảng dạy");
         return table;
     }
 
     public DataTable GetAdminWarnings()
     {
-        var table = CreateTable("Muc do", "Noi dung", "Han xu ly");
-        table.Rows.Add("Trung binh", "Dang chay o che do offline demo", "Kiem tra SQL Server");
+        var table = CreateTable("Mức độ", "Nội dung", "Hạn xử lý");
+        table.Rows.Add("Trung bình", "Đang chạy ở chế độ offline demo", "Kiểm tra SQL Server");
         return table;
     }
 
     public DataTable GetMonitorActivity()
     {
-        var table = CreateTable("Phan he", "Chi so", "Gia tri", "Ghi chu");
-        table.Rows.Add("He thong", "Che do", "Offline", "Khong can SQL Server");
-        table.Rows.Add("Hoc vien", "So ho so", _students.Count.ToString(), "Du lieu demo");
-        table.Rows.Add("Tai chinh", "So bien lai", _receipts.Count.ToString(), "Du lieu demo");
+        var table = CreateTable("Phân hệ", "Chỉ số", "Giá trị", "Ghi chú");
+        table.Rows.Add("Hệ thống", "Chế độ", "Offline", "Không cần SQL Server");
+        table.Rows.Add("Học viên", "Số hồ sơ", _students.Count.ToString(), "Dữ liệu demo");
+        table.Rows.Add("Tài chính", "Số biên lai", _receipts.Count.ToString(), "Dữ liệu demo");
         return table;
     }
 
@@ -366,10 +378,43 @@ public sealed class OfflineLanguageCenterDataService : ILanguageCenterDataServic
 
     public DataTable GetSessions(string? classId = null)
     {
-        var table = CreateTable("Ma lop", "Buoi hoc", "Ngay hoc", "Phong", "Trang thai");
-        foreach (var classEntity in _classes.Where(x => string.IsNullOrWhiteSpace(classId) || x.Id == classId))
+        var table = CreateTable("Buoi", "Ngay hoc", "Khung gio", "Phong", "Trang thai");
+        var classes = _classes
+            .Where(x => !x.IsDeleted && (string.IsNullOrWhiteSpace(classId) || x.Id == classId))
+            .OrderBy(x => x.Name)
+            .ToList();
+
+        foreach (var classEntity in classes)
         {
-            table.Rows.Add(classEntity.Id, "Buoi 1", DateTime.Today.ToString("dd/MM/yyyy"), classEntity.Room ?? string.Empty, "Planned");
+            var scheduleDays = ParseScheduleDays(classEntity.Schedule, classEntity.StartDate.DayOfWeek);
+            var sessionDates = new List<DateTime>();
+            for (var current = classEntity.StartDate.Date; current <= classEntity.EndDate.Date; current = current.AddDays(1))
+            {
+                if (scheduleDays.Contains(current.DayOfWeek))
+                {
+                    sessionDates.Add(current);
+                }
+            }
+
+            if (sessionDates.Count == 0)
+            {
+                sessionDates.Add(classEntity.StartDate.Date);
+            }
+
+            for (var index = 0; index < sessionDates.Count; index++)
+            {
+                var sessionDate = sessionDates[index];
+                var status = sessionDate.Date < DateTime.Today
+                    ? "Đã học"
+                    : sessionDate.Date == DateTime.Today ? "Hôm nay" : "Sắp diễn ra";
+
+                table.Rows.Add(
+                    $"Buổi {index + 1:00}",
+                    sessionDate.ToString("dd/MM/yyyy"),
+                    classEntity.Schedule ?? "18:00 - 19:30",
+                    classEntity.Room ?? "P101",
+                    status);
+            }
         }
 
         return table;
@@ -426,15 +471,34 @@ public sealed class OfflineLanguageCenterDataService : ILanguageCenterDataServic
 
     public DataTable GetDebtList(string? courseName = null, string? className = null, DateTime? fromDate = null, DateTime? toDate = null)
     {
-        var table = CreateTable("Ma hoc vien", "Hoc vien", "Khoa hoc", "Lop", "Hoc phi", "Da thu", "Con no");
+        var table = CreateTable("EnrollmentId", "Ma hoc vien", "Hoc vien", "Lop", "Khoa hoc", "Phai thu", "Da thu", "Con no", "Trang thai");
+        var start = fromDate?.Date ?? DateTime.MinValue;
+        var end = toDate?.Date ?? DateTime.MaxValue;
+
         foreach (var enrollment in _enrollments)
         {
             var student = _students.First(x => x.Id == enrollment.StudentId);
             var classEntity = _classes.First(x => x.Id == enrollment.ClassId);
             var course = _courses.First(x => x.Id == classEntity.CourseId);
             var totalPaid = _receipts.Where(x => x.EnrollmentId == enrollment.Id).Sum(x => x.AmountPaid);
-            var outstanding = Math.Max(0, course.TuitionFee - totalPaid);
+            var tuitionFee = GetEffectiveTuitionFee(enrollment);
+            var outstanding = Math.Max(0, tuitionFee - totalPaid);
+            var referenceDate = _receipts
+                .Where(x => x.EnrollmentId == enrollment.Id && !x.IsDeleted)
+                .OrderByDescending(x => x.PayDate)
+                .Select(x => x.PayDate)
+                .FirstOrDefault();
+            if (referenceDate == default)
+            {
+                referenceDate = enrollment.EnrollDate;
+            }
+
             if (outstanding <= 0)
+            {
+                continue;
+            }
+
+            if (referenceDate.Date < start || referenceDate.Date > end)
             {
                 continue;
             }
@@ -449,7 +513,17 @@ public sealed class OfflineLanguageCenterDataService : ILanguageCenterDataServic
                 continue;
             }
 
-            table.Rows.Add(student.Id, student.FullName, course.Name, classEntity.Name, course.TuitionFee.ToString("N0"), totalPaid.ToString("N0"), outstanding.ToString("N0"));
+            var status = outstanding > tuitionFee / 2 ? "Quá hạn" : "Sắp đến hạn";
+            table.Rows.Add(
+                enrollment.Id,
+                student.Id,
+                student.FullName,
+                classEntity.Name,
+                course.Name,
+                tuitionFee.ToString("N0"),
+                totalPaid.ToString("N0"),
+                outstanding.ToString("N0"),
+                status);
         }
 
         return table;
@@ -461,7 +535,7 @@ public sealed class OfflineLanguageCenterDataService : ILanguageCenterDataServic
         var table = CreateTable("Ma lop", "Ten lop", "Khoa hoc", "Lich hoc", "Si so", "Trang thai", "Thao tac");
         foreach (var classEntity in _classes.Where(x => string.IsNullOrWhiteSpace(teacherId) || x.TeacherId == teacherId))
         {
-            var classSize = $"{_enrollments.Count(x => x.ClassId == classEntity.Id)}/{classEntity.MaxStudents}";
+            var classSize = $"{_enrollments.Count(x => x.ClassId == classEntity.Id && IsEnrollmentCountedAsActive(x.Status))}/{classEntity.MaxStudents}";
             table.Rows.Add(
                 classEntity.Id,
                 classEntity.Name,
@@ -598,6 +672,7 @@ public sealed class OfflineLanguageCenterDataService : ILanguageCenterDataServic
 
     public TeacherEntity SaveTeacher(TeacherEntity teacher)
     {
+        teacher.Gender = LanguageCenterValueMapper.NormalizeTeacherGender(teacher.Gender);
         var existing = _teachers.FirstOrDefault(x => x.Id == teacher.Id);
         if (existing is null)
         {
@@ -701,17 +776,38 @@ public sealed class OfflineLanguageCenterDataService : ILanguageCenterDataServic
 
     public EnrollmentEntity CreateEnrollment(string studentId, string classId, DateTime enrollDate, string status, string? note)
     {
+        if (_students.All(x => x.Id != studentId || x.IsDeleted))
+        {
+            throw new InvalidOperationException("Học viên không tồn tại.");
+        }
+
+        if (_classes.All(x => x.Id != classId || x.IsDeleted))
+        {
+            throw new InvalidOperationException("Lớp học không tồn tại.");
+        }
+
+        if (StudentAlreadyEnrolled(studentId, classId))
+        {
+            throw new InvalidOperationException("Học viên đã tồn tại trong lớp này.");
+        }
+
+        if (!ClassHasAvailableSlot(classId))
+        {
+            throw new InvalidOperationException("Lớp học đã hết chỗ.");
+        }
+
         var enrollment = new EnrollmentEntity
         {
             Id = GetNextEnrollmentId(),
             StudentId = studentId,
             ClassId = classId,
             EnrollDate = enrollDate,
-            Status = status,
-            Note = note,
+            Status = LanguageCenterValueMapper.NormalizeEnrollmentStatus(status),
+            Note = note?.Trim(),
             CreatedAt = DateTime.Now
         };
         _enrollments.Add(enrollment);
+        enrollment.Status = LanguageCenterValueMapper.ToEnrollmentStatusDisplay(enrollment.Status);
         return enrollment;
     }
 
@@ -728,7 +824,7 @@ public sealed class OfflineLanguageCenterDataService : ILanguageCenterDataServic
             return false;
         }
 
-        return _enrollments.Count(x => x.ClassId == classId && !x.IsDeleted) < classEntity.MaxStudents;
+        return _enrollments.Count(x => x.ClassId == classId && !x.IsDeleted && IsEnrollmentCountedAsActive(x.Status)) < classEntity.MaxStudents;
     }
 
     public EnrollmentReceiptContext? GetEnrollmentReceiptContext(string enrollmentId)
@@ -744,24 +840,55 @@ public sealed class OfflineLanguageCenterDataService : ILanguageCenterDataServic
 
     public EnrollmentReceiptContext? GetLatestEnrollmentReceiptContextByStudentId(string studentId)
     {
-        var enrollment = _enrollments.LastOrDefault(x => x.StudentId == studentId);
+        var enrollment = _enrollments.LastOrDefault(x => x.StudentId == studentId && !x.IsDeleted);
         return enrollment is null ? null : BuildEnrollmentReceiptContext(enrollment);
     }
 
     public ReceiptEntity SaveReceipt(string? receiptId, string enrollmentId, decimal amountPaid, DateTime payDate, string paymentMethod, string? note, string? createdByStaffId)
     {
-        var receipt = new ReceiptEntity
+        if (amountPaid <= 0)
         {
-            Id = string.IsNullOrWhiteSpace(receiptId) ? GetNextReceiptId() : receiptId,
-            EnrollmentId = enrollmentId,
-            AmountPaid = amountPaid,
-            PayDate = payDate,
-            PaymentMethod = paymentMethod,
-            Note = note,
-            CreatedByStaffId = createdByStaffId,
-            CreatedAt = DateTime.Now
-        };
-        _receipts.Add(receipt);
+            throw new InvalidOperationException("Số tiền thu phải lớn hơn 0.");
+        }
+
+        var enrollment = _enrollments.FirstOrDefault(x => x.Id == enrollmentId && !x.IsDeleted)
+            ?? throw new InvalidOperationException("Ghi danh không tồn tại.");
+        var tuitionFee = GetEffectiveTuitionFee(enrollment);
+        var paidExcludingCurrent = _receipts
+            .Where(x => !x.IsDeleted && x.EnrollmentId == enrollmentId && (string.IsNullOrWhiteSpace(receiptId) || x.Id != receiptId))
+            .Sum(x => x.AmountPaid);
+        if (paidExcludingCurrent + amountPaid > tuitionFee)
+        {
+            throw new InvalidOperationException("Số tiền thu vượt quá học phí còn lại của ghi danh.");
+        }
+
+        var receipt = string.IsNullOrWhiteSpace(receiptId)
+            ? null
+            : _receipts.FirstOrDefault(x => x.Id == receiptId);
+
+        if (receipt is null)
+        {
+            receipt = new ReceiptEntity
+            {
+                Id = string.IsNullOrWhiteSpace(receiptId) ? GetNextReceiptId() : receiptId,
+                EnrollmentId = enrollmentId,
+                AmountPaid = amountPaid,
+                PayDate = payDate.Date,
+                PaymentMethod = LanguageCenterValueMapper.NormalizePaymentMethod(paymentMethod),
+                Note = note?.Trim(),
+                CreatedByStaffId = createdByStaffId,
+                CreatedAt = DateTime.Now
+            };
+            _receipts.Add(receipt);
+            return receipt;
+        }
+
+        receipt.AmountPaid = amountPaid;
+        receipt.PayDate = payDate.Date;
+        receipt.PaymentMethod = LanguageCenterValueMapper.NormalizePaymentMethod(paymentMethod);
+        receipt.Note = note?.Trim();
+        receipt.CreatedByStaffId = createdByStaffId;
+        receipt.UpdatedAt = DateTime.Now;
         return receipt;
     }
 
@@ -770,7 +897,7 @@ public sealed class OfflineLanguageCenterDataService : ILanguageCenterDataServic
         var receipt = _receipts.First(x => x.Id == receiptId);
         var enrollment = _enrollments.First(x => x.Id == receipt.EnrollmentId);
         var context = BuildEnrollmentReceiptContext(enrollment);
-        var totalPaid = _receipts.Where(x => x.EnrollmentId == enrollment.Id).Sum(x => x.AmountPaid);
+        var totalPaid = _receipts.Where(x => x.EnrollmentId == enrollment.Id && !x.IsDeleted).Sum(x => x.AmountPaid);
 
         return new ReceiptPrintInfo
         {
@@ -784,7 +911,7 @@ public sealed class OfflineLanguageCenterDataService : ILanguageCenterDataServic
             TotalPaid = totalPaid,
             OutstandingBalance = Math.Max(0, context.TuitionFee - totalPaid),
             PayDate = receipt.PayDate,
-            PaymentMethod = receipt.PaymentMethod,
+            PaymentMethod = LanguageCenterValueMapper.ToPaymentMethodDisplay(receipt.PaymentMethod),
             Note = receipt.Note,
             StaffName = _accounts.FirstOrDefault(x => x.Id == receipt.CreatedByStaffId)?.DisplayName
         };
@@ -812,7 +939,8 @@ public sealed class OfflineLanguageCenterDataService : ILanguageCenterDataServic
         var student = _students.First(x => x.Id == enrollment.StudentId);
         var classEntity = _classes.First(x => x.Id == enrollment.ClassId);
         var course = _courses.First(x => x.Id == classEntity.CourseId);
-        var totalPaid = _receipts.Where(x => x.EnrollmentId == enrollment.Id).Sum(x => x.AmountPaid);
+        var tuitionFee = GetEffectiveTuitionFee(enrollment);
+        var totalPaid = _receipts.Where(x => x.EnrollmentId == enrollment.Id && !x.IsDeleted).Sum(x => x.AmountPaid);
 
         return new EnrollmentReceiptContext
         {
@@ -822,10 +950,96 @@ public sealed class OfflineLanguageCenterDataService : ILanguageCenterDataServic
             ClassCode = classEntity.Id,
             ClassName = classEntity.Name,
             CourseName = course.Name,
-            TuitionFee = course.TuitionFee,
+            TuitionFee = tuitionFee,
             TotalPaid = totalPaid,
-            OutstandingBalance = Math.Max(0, course.TuitionFee - totalPaid)
+            OutstandingBalance = Math.Max(0, tuitionFee - totalPaid)
         };
+    }
+
+    private static bool IsEnrollmentCountedAsActive(string? status)
+    {
+        var normalizedStatus = LanguageCenterValueMapper.NormalizeEnrollmentStatus(status);
+        return normalizedStatus is "Active" or "Paused";
+    }
+
+    private static HashSet<DayOfWeek> ParseScheduleDays(string? schedule, DayOfWeek fallbackDay)
+    {
+        var normalized = (schedule ?? string.Empty).ToLowerInvariant();
+        var mappings = new Dictionary<string, DayOfWeek>
+        {
+            ["2"] = DayOfWeek.Monday,
+            ["3"] = DayOfWeek.Tuesday,
+            ["4"] = DayOfWeek.Wednesday,
+            ["5"] = DayOfWeek.Thursday,
+            ["6"] = DayOfWeek.Friday,
+            ["7"] = DayOfWeek.Saturday,
+            ["cn"] = DayOfWeek.Sunday,
+            ["mon"] = DayOfWeek.Monday,
+            ["wed"] = DayOfWeek.Wednesday,
+            ["fri"] = DayOfWeek.Friday,
+            ["thu 2"] = DayOfWeek.Monday,
+            ["thu 3"] = DayOfWeek.Tuesday,
+            ["thu 4"] = DayOfWeek.Wednesday,
+            ["thu 5"] = DayOfWeek.Thursday,
+            ["thu 6"] = DayOfWeek.Friday,
+            ["thu 7"] = DayOfWeek.Saturday,
+            ["thứ 2"] = DayOfWeek.Monday,
+            ["thứ 3"] = DayOfWeek.Tuesday,
+            ["thứ 4"] = DayOfWeek.Wednesday,
+            ["thứ 5"] = DayOfWeek.Thursday,
+            ["thứ 6"] = DayOfWeek.Friday,
+            ["thứ 7"] = DayOfWeek.Saturday,
+            ["t2"] = DayOfWeek.Monday,
+            ["t3"] = DayOfWeek.Tuesday,
+            ["t4"] = DayOfWeek.Wednesday,
+            ["t5"] = DayOfWeek.Thursday,
+            ["t6"] = DayOfWeek.Friday,
+            ["t7"] = DayOfWeek.Saturday
+        };
+
+        var results = mappings
+            .Where(x => normalized.Contains(x.Key))
+            .Select(x => x.Value)
+            .ToHashSet();
+
+        if (results.Count == 0)
+        {
+            results.Add(fallbackDay);
+        }
+
+        return results;
+    }
+
+    private decimal GetEffectiveTuitionFee(EnrollmentEntity enrollment)
+    {
+        var classEntity = _classes.FirstOrDefault(x => x.Id == enrollment.ClassId);
+        var course = classEntity is null ? null : _courses.FirstOrDefault(x => x.Id == classEntity.CourseId);
+        var tuitionFee = course?.TuitionFee ?? 0M;
+        var discount = GetEnrollmentDiscount(enrollment.Note);
+        return Math.Max(0, tuitionFee - discount);
+    }
+
+    private static decimal GetEnrollmentDiscount(string? note)
+    {
+        if (string.IsNullOrWhiteSpace(note))
+        {
+            return 0M;
+        }
+
+        var match = EnrollmentDiscountRegex.Match(note);
+        if (!match.Success)
+        {
+            return 0M;
+        }
+
+        var rawValue = match.Groups[1].Value
+            .Replace(" ", string.Empty)
+            .Replace(".", string.Empty)
+            .Replace(",", string.Empty);
+
+        return decimal.TryParse(rawValue, NumberStyles.Number, CultureInfo.InvariantCulture, out var discount)
+            ? Math.Max(0, discount)
+            : 0M;
     }
 
     private decimal GetOutstandingTotal()

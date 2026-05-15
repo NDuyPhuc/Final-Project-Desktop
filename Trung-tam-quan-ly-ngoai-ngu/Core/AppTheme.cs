@@ -8,19 +8,26 @@ internal static class AppTheme
     {
         ["Ma hoc vien"] = "Mã học viên",
         ["Ma giao vien"] = "Mã giáo viên",
+        ["Ma khoa"] = "Mã khóa",
         ["Ma khoa hoc"] = "Mã khóa học",
         ["Ma lop"] = "Mã lớp",
+        ["Ma ghi danh"] = "Mã ghi danh",
         ["Ma bien lai"] = "Mã biên lai",
+        ["So bien nhan"] = "Số biên nhận",
+        ["Lop"] = "Lớp",
+        ["Khoa"] = "Khóa",
         ["Ho ten"] = "Họ tên",
         ["Ho va ten"] = "Họ và tên",
         ["Ten hoc vien"] = "Tên học viên",
         ["Ten giao vien"] = "Tên giáo viên",
+        ["Ten khoa"] = "Tên khóa",
         ["Ten khoa hoc"] = "Tên khóa học",
         ["Ten lop"] = "Tên lớp",
         ["Ngay sinh"] = "Ngày sinh",
         ["Ngay hoc"] = "Ngày học",
         ["Ngay ghi danh"] = "Ngày ghi danh",
         ["Ngay nop"] = "Ngày nộp",
+        ["Ngay thu"] = "Ngày thu",
         ["Dien thoai"] = "Điện thoại",
         ["So dien thoai"] = "Số điện thoại",
         ["Dia chi"] = "Địa chỉ",
@@ -28,27 +35,38 @@ internal static class AppTheme
         ["Trang thai"] = "Trạng thái",
         ["Khoa hoc"] = "Khóa học",
         ["Hoc phi"] = "Học phí",
+        ["Phai thu"] = "Phải thu",
+        ["Da thu"] = "Đã thu",
         ["Con no"] = "Còn nợ",
         ["Cong no"] = "Công nợ",
         ["So tien"] = "Số tiền",
         ["So tien thu"] = "Số tiền thu",
+        ["Buoi"] = "Buổi",
+        ["Buoi hoc"] = "Buổi học",
         ["Phuong thuc"] = "Phương thức",
         ["Phuong thuc thanh toan"] = "Phương thức thanh toán",
         ["Ghi chu"] = "Ghi chú",
         ["Chuyen mon"] = "Chuyên môn",
+        ["Giao vien"] = "Giáo viên",
+        ["Nhan vien"] = "Nhân viên",
+        ["Hoc vien"] = "Học viên",
         ["Lich hoc"] = "Lịch học",
+        ["Khung gio"] = "Khung giờ",
+        ["Phong"] = "Phòng",
         ["Phong hoc"] = "Phòng học",
         ["Si so"] = "Sĩ số",
+        ["Con cho"] = "Còn chỗ",
+        ["Thao tac"] = "Thao tác",
+        ["Co mat"] = "Có mặt",
         ["Diem danh"] = "Điểm danh",
         ["Diem"] = "Điểm",
+        ["Diem giua ky"] = "Điểm giữa kỳ",
+        ["Diem cuoi ky"] = "Điểm cuối kỳ",
         ["Diem nghe"] = "Điểm nghe",
         ["Diem noi"] = "Điểm nói",
         ["Diem doc"] = "Điểm đọc",
         ["Diem viet"] = "Điểm viết",
-        ["Diem tong"] = "Điểm tổng",
-        ["Nhan vien"] = "Nhân viên",
-        ["Giao vien"] = "Giáo viên",
-        ["Hoc vien"] = "Học viên"
+        ["Diem tong"] = "Điểm tổng"
     };
 
     private static readonly Dictionary<string, string> GridCellText = new(StringComparer.OrdinalIgnoreCase)
@@ -247,13 +265,9 @@ internal static class AppTheme
             else if (string.IsNullOrWhiteSpace(Convert.ToString(column.HeaderText)))
             {
                 column.HeaderText = string.IsNullOrWhiteSpace(dataPropertyName)
-                    ? $"Cot {column.Index + 1}"
+                    ? $"Cột {column.Index + 1}"
                     : dataPropertyName;
             }
-
-            // Do not set MinimumWidth here. During DataBindingComplete WinForms can
-            // still be attaching generated columns; touching DataGridViewBand
-            // thickness at that moment throws NullReferenceException internally.
         }
     }
 

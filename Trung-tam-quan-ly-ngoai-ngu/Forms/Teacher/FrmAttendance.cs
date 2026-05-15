@@ -9,9 +9,11 @@ public partial class FrmAttendance : Form
 {
     private DataTable _classTable = new();
     private DataTable _attendanceTable = new();
+    private readonly string? _preselectedClassId;
 
-    public FrmAttendance()
+    public FrmAttendance(string? preselectedClassId = null)
     {
+        _preselectedClassId = preselectedClassId;
         InitializeComponent();
         FormHostHelpers.ConfigureModuleSurface(this, "Điểm danh");
         ConfigureView();
@@ -59,6 +61,7 @@ public partial class FrmAttendance : Form
             cboAttendanceClass.DisplayMember = "Ten lop";
             cboAttendanceClass.ValueMember = "Ma lop";
             cboAttendanceClass.DataSource = _classTable;
+            SelectClass(_preselectedClassId);
             LoadSessions();
         }
         catch (Exception ex)
@@ -167,20 +170,21 @@ public partial class FrmAttendance : Form
     {
         try
         {
+            errAttendance.Clear();
             var classId = GetSelectedClassId();
             if (string.IsNullOrWhiteSpace(classId))
             {
                 errAttendance.SetError(cboAttendanceClass, "Chưa chọn lớp học.");
+                ValidationFeedback.ShowFirstError(this, errAttendance, cboAttendanceClass);
                 return;
             }
 
             if (!dgvAttendanceList.Columns.Contains("EnrollmentId") || !dgvAttendanceList.Columns.Contains("Co mat"))
             {
-                MessageBox.Show(this, "Danh sach diem danh chua san sang de luu.", "Thong bao", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(this, "Danh sách điểm danh chưa sẵn sàng để lưu.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            errAttendance.Clear();
             var items = dgvAttendanceList.Rows
                 .Cast<DataGridViewRow>()
                 .Where(row => !row.IsNewRow)
@@ -211,5 +215,22 @@ public partial class FrmAttendance : Form
             : cboAttendanceClass.SelectedItem is DataRowView rowView && rowView.Row.Table.Columns.Contains("Ma lop")
                 ? rowView.Row["Ma lop"]?.ToString()
                 : null;
+    }
+
+    private void SelectClass(string? classId)
+    {
+        if (string.IsNullOrWhiteSpace(classId))
+        {
+            return;
+        }
+
+        foreach (DataRowView item in cboAttendanceClass.Items)
+        {
+            if (string.Equals(item.Row["Ma lop"]?.ToString(), classId, StringComparison.OrdinalIgnoreCase))
+            {
+                cboAttendanceClass.SelectedItem = item;
+                return;
+            }
+        }
     }
 }

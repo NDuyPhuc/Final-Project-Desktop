@@ -164,8 +164,8 @@ public partial class FrmTeacherDashboard : Form
             ErrorLogger.Log(exception, nameof(FrmTeacherDashboard));
             MessageBox.Show(
                 this,
-                "Khong mo duoc chuc nang nay. Ung dung se giu nguyen dashboard de tranh bi vang ra. Vui long kiem tra log.txt.",
-                "Loi chuc nang",
+                "Không mở được chức năng này. Ứng dụng sẽ giữ nguyên dashboard. Vui lòng kiểm tra log.txt.",
+                "Lỗi chức năng",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
         }
@@ -203,7 +203,7 @@ public partial class FrmTeacherDashboard : Form
             Dock = DockStyle.Top,
             Height = 42,
             FlatStyle = FlatStyle.Flat,
-            Text = "Tạo buổi học mới",
+            Text = "Điểm danh hôm nay",
             TextAlign = ContentAlignment.MiddleCenter,
             BackColor = Color.FromArgb(0, 78, 140),
             ForeColor = Color.White,
@@ -212,11 +212,7 @@ public partial class FrmTeacherDashboard : Form
         };
         _btnTeacherNewSession.FlatAppearance.BorderSize = 0;
         _btnTeacherNewSession.FlatAppearance.MouseOverBackColor = Color.FromArgb(10, 96, 166);
-        _btnTeacherNewSession.Click += (_, _) =>
-        {
-            using var dialog = new FrmStatusDialog("Tạo buổi học mới", "Khung teacher đã sẵn chỗ cho hành động tạo buổi học mới.");
-            dialog.ShowDialog(this);
-        };
+        _btnTeacherNewSession.Click += (_, _) => OpenModule(() => new FrmAttendance(), btnMenuAttendance, GetMenuButtons());
 
         _btnTeacherSettings = new Button
         {
@@ -232,6 +228,11 @@ public partial class FrmTeacherDashboard : Form
         };
         _btnTeacherSettings.FlatAppearance.BorderSize = 0;
         _btnTeacherSettings.FlatAppearance.MouseOverBackColor = Color.FromArgb(234, 246, 250);
+        _btnTeacherSettings.Click += (_, _) =>
+        {
+            using var dialog = new FrmStatusDialog("Cài đặt", "Chưa có tùy chọn cấu hình riêng cho giáo viên.");
+            dialog.ShowDialog(this);
+        };
 
         pnlSidebarTeacher.Controls.Remove(btnLogoutTeacher);
         _sidebarFooterPanel.Controls.Add(btnLogoutTeacher);

@@ -252,7 +252,7 @@ public sealed partial class FrmLogin : Form
             ApplyResponsiveLayout();
             return;
         }
-        lblErrorAlertText.Text = "Sai tên tài khoản hoặc mật khẩu";
+        lblErrorAlertText.Text = message;
         pnlErrorAlert.Visible = true;
         ApplyResponsiveLayout();
     }

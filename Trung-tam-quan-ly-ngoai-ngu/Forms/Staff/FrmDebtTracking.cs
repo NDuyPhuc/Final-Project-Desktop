@@ -110,9 +110,15 @@ public partial class FrmDebtTracking : Form
 
         var dueSoonCount = _debtTable.AsEnumerable().Count(row =>
         {
-            var status = row["Trang thai"]?.ToString() ?? string.Empty;
+            var status = _debtTable.Columns.Contains("Trang thai")
+                ? row["Trang thai"]?.ToString() ?? string.Empty
+                : row.Table.Columns.Contains("Trạng thái")
+                    ? row["Trạng thái"]?.ToString() ?? string.Empty
+                    : string.Empty;
             return status.Contains("Qua", StringComparison.OrdinalIgnoreCase)
-                || status.Contains("Sap", StringComparison.OrdinalIgnoreCase);
+                || status.Contains("Quá", StringComparison.OrdinalIgnoreCase)
+                || status.Contains("Sap", StringComparison.OrdinalIgnoreCase)
+                || status.Contains("Sắp", StringComparison.OrdinalIgnoreCase);
         });
         lblDebtDueSoonValue.Text = dueSoonCount.ToString("N0", CultureInfo.GetCultureInfo("vi-VN"));
     }
@@ -143,6 +149,12 @@ public partial class FrmDebtTracking : Form
 
     private void ExportDebtExcel()
     {
+        if (_debtTable.Rows.Count == 0)
+        {
+            MessageBox.Show(this, "Không có dữ liệu công nợ để xuất.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return;
+        }
+
         try
         {
             using var dialog = new SaveFileDialog
@@ -169,11 +181,17 @@ public partial class FrmDebtTracking : Form
 
     private void ExportDebtPdf()
     {
+        if (_debtTable.Rows.Count == 0)
+        {
+            MessageBox.Show(this, "Không có dữ liệu công nợ để xuất.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return;
+        }
+
         try
         {
             using var dialog = new SaveFileDialog { Filter = "PDF files (*.pdf)|*.pdf", FileName = $"cong-no-{DateTime.Now:yyyyMMdd-HHmmss}.pdf" };
             if (dialog.ShowDialog(this) != DialogResult.OK) return;
-            ExportFileHelper.ExportDataTableToPdf(_debtTable, dialog.FileName, "Bao cao cong no");
+            ExportFileHelper.ExportDataTableToPdf(_debtTable, dialog.FileName, "Báo cáo công nợ");
             MessageBox.Show(this, "Đã xuất công nợ ra PDF.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         catch (Exception ex)

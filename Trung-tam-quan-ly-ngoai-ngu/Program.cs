@@ -9,15 +9,14 @@ namespace Trung_tam_quan_ly_ngoai_ngu
         [STAThread]
         static void Main()
         {
-            Application.SetHighDpiMode(HighDpiMode.SystemAware);
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+        Application.SetHighDpiMode(HighDpiMode.SystemAware);
+        Application.EnableVisualStyles();
+        Application.SetCompatibleTextRenderingDefault(false);
 
-            ILanguageCenterDataService dataService = new SqlLanguageCenterDataService();
-            if (!TryInitializeRuntime(dataService))
-            {
-                return;
-            }
+        if (!TryInitializeRuntime())
+        {
+            return;
+        }
 
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             Application.ThreadException += (_, args) => HandleUnhandledException(args.Exception);
@@ -29,34 +28,34 @@ namespace Trung_tam_quan_ly_ngoai_ngu
                 }
             };
 
-            Application.Run(new FrmLogin(AppRuntime.DataService));
-        }
+        Application.Run(new FrmLogin(AppRuntime.DataService));
+    }
 
-        private static bool TryInitializeRuntime(ILanguageCenterDataService dataService)
+    private static bool TryInitializeRuntime()
+    {
+        try
         {
-            try
-            {
-                AppRuntime.Initialize(dataService);
-                return true;
-            }
-            catch (Exception exception)
-            {
-                ErrorLogger.Log(exception, "InitializeDatabase");
-                AppRuntime.Initialize(new OfflineLanguageCenterDataService());
-
-                var message =
-                    "Khong the khoi tao ket noi SQL Server.\n\n" +
-                    "Ung dung se chuyen sang che do offline demo de ban tiep tuc kiem tra giao dien.\n\n" +
-                    "Tai khoan demo:\n" +
-                    "- admin / 123456\n" +
-                    "- staff / 123456\n" +
-                    "- teacher / 123456\n\n" +
-                    $"Chi tiet loi da duoc ghi tai:\n{AppPaths.LogFilePath}";
-
-                MessageBox.Show(message, "Khoi tao database that bai", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return true;
-            }
+            AppRuntime.Initialize(new SqlLanguageCenterDataService());
+            return true;
         }
+        catch (Exception exception)
+        {
+            ErrorLogger.Log(exception, "InitializeDatabase");
+            AppRuntime.Initialize(new OfflineLanguageCenterDataService());
+
+            var message =
+                "Không khởi tạo được kết nối SQL Server.\n\n" +
+                "Ứng dụng sẽ chuyển sang chế độ offline demo để bạn tiếp tục kiểm tra giao diện.\n\n" +
+                "Tài khoản demo:\n" +
+                "- admin / 123456\n" +
+                "- staff / 123456\n" +
+                "- teacher / 123456\n\n" +
+                $"Chi tiết lỗi đã được ghi tại:\n{AppPaths.LogFilePath}";
+
+            MessageBox.Show(message, "Khởi tạo database thất bại", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return true;
+        }
+    }
 
         private static void HandleUnhandledException(Exception exception)
         {
@@ -65,8 +64,8 @@ namespace Trung_tam_quan_ly_ngoai_ngu
                 ErrorLogger.Log(exception, "UnhandledException");
 
                 MessageBox.Show(
-                    $"Ung dung vua gap loi va da ghi log tai:\n{AppPaths.LogFilePath}",
-                    "Loi he thong",
+                    $"Ứng dụng vừa gặp lỗi và đã ghi log tại:\n{AppPaths.LogFilePath}",
+                    "Lỗi hệ thống",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
@@ -74,7 +73,7 @@ namespace Trung_tam_quan_ly_ngoai_ngu
             {
                 MessageBox.Show(
                     exception.ToString(),
-                    "Loi he thong",
+                    "Lỗi hệ thống",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }

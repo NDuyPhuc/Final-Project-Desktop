@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.104.2" />
-    <PackageReference Include="PdfSharp" Version="1.51.5185" />
+    <PackageReference Include="PdfSharp" Version="6.0.0" />
     <PackageReference Include="WinForms.DataVisualization" Version="1.10.0" />
   </ItemGroup>
 
@@ -25,11 +25,24 @@
     <Content Remove="Resources\**\.vs\**\*" />
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>
     <Content Include="Resources\Images\UI\**\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
+
+  <Target Name="PreparePublishedRuntimeFolders" AfterTargets="Publish">
+    <MakeDir Directories="$(PublishDir)Images" />
+    <MakeDir Directories="$(PublishDir)Images\Students" />
+    <MakeDir Directories="$(PublishDir)Images\Teachers" />
+    <MakeDir Directories="$(PublishDir)logs" />
+    <ItemGroup>
+      <PublishedPdbFiles Include="$(PublishDir)**\*.pdb" />
+    </ItemGroup>
+    <Delete Files="@(PublishedPdbFiles)" />
+  </Target>
 
   <Target Name="StopLockedDebugExe" BeforeTargets="PrepareForBuild;_GenerateAppHost" Condition="'$(Configuration)' == 'Debug'">
     <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -Command &quot;$ErrorActionPreference = 'SilentlyContinue'; $target = [System.IO.Path]::GetFullPath('$(TargetDir)$(AssemblyName).exe'); try { Get-CimInstance Win32_Process -Filter \&quot;Name='$(AssemblyName).exe'\&quot; -ErrorAction SilentlyContinue | Where-Object { $_.ExecutablePath -and ([System.IO.Path]::GetFullPath($_.ExecutablePath) -ieq $target) } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue } } catch { }; exit 0&quot;" />

@@ -1,7 +1,9 @@
 using System.ComponentModel;
 using System.Data;
+using System.Text.RegularExpressions;
 using TrungTamNgoaiNgu.Application.Contracts;
 using TrungTamNgoaiNgu.Application.Infrastructure;
+using TrungTamNgoaiNgu.Application.Security;
 using TrungTamNgoaiNgu.Domain.Entities;
 using TrungTamNgoaiNgu.Domain.Enums;
 
@@ -9,11 +11,16 @@ namespace Trung_tam_quan_ly_ngoai_ngu;
 
 public partial class FrmAccountManagement : Form
 {
+    private static readonly Regex PhoneRegex = new(@"^0\d{9}$", RegexOptions.Compiled);
+    private static readonly Regex EmailRegex = new(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.Compiled);
     private readonly ILanguageCenterDataService _dataService;
     private readonly List<AccountRecord> _accounts = [];
     private readonly Dictionary<string, Panel> _accountCards = new();
     private AccountRecord? _selectedAccount;
     private bool _creatingAccount;
+    private Button? _btnOpenAccessMatrix;
+    private Label? _lblAccountPassword;
+    private TextBox? _txtAccountPassword;
 
     public FrmAccountManagement() : this(AppRuntime.DataService)
     {
@@ -112,6 +119,7 @@ public partial class FrmAccountManagement : Form
         StylePrimaryAction(btnToggleAccountStatus, Color.FromArgb(249, 229, 231), Color.FromArgb(181, 73, 91));
         StylePrimaryAction(btnSearchAccount, Color.White, Color.FromArgb(58, 77, 98));
         StylePrimaryAction(btnRefreshAccount, Color.White, Color.FromArgb(58, 77, 98));
+        EnsureAccessMatrixButton();
 
         StylePermissionPanel(pnlPermissionAdmin, lblPermissionAdminTitle, Color.FromArgb(9, 80, 144), Color.White);
         StylePermissionPanel(pnlPermissionStaff, lblPermissionStaffTitle, Color.FromArgb(148, 164, 185), Color.White);
@@ -203,7 +211,7 @@ public partial class FrmAccountManagement : Form
         };
         detailLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
         detailLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 94F));
-        detailLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 274F));
+        detailLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 344F));
         detailLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
 
         pnlAccountHeader.Dock = DockStyle.Fill;
@@ -244,9 +252,13 @@ public partial class FrmAccountManagement : Form
         tblAccountInfo.RowStyles.Add(new RowStyle(SizeType.Absolute, 24F));
         tblAccountInfo.RowStyles.Add(new RowStyle(SizeType.Absolute, 36F));
         tblAccountInfo.RowStyles.Add(new RowStyle(SizeType.Absolute, 24F));
+        tblAccountInfo.RowStyles.Add(new RowStyle(SizeType.Absolute, 36F));
+        tblAccountInfo.RowStyles.Add(new RowStyle(SizeType.Absolute, 24F));
         tblAccountInfo.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+        tblAccountInfo.RowCount = 8;
         tblAccountInfo.Margin = Padding.Empty;
         tblAccountInfo.Dock = DockStyle.Fill;
+        EnsurePasswordControls();
 
         flpAccountActions.AutoSize = false;
         flpAccountActions.Dock = DockStyle.Fill;
@@ -264,6 +276,39 @@ public partial class FrmAccountManagement : Form
         infoLayout.Controls.Add(flpAccountActions, 0, 1);
         pnlAccountInfoCard.Controls.Add(infoLayout);
         pnlAccountInfoCard.ResumeLayout(true);
+    }
+
+    private void EnsurePasswordControls()
+    {
+        _lblAccountPassword ??= new Label
+        {
+            Name = "lblAccountPasswordDynamic",
+            Text = "MẬT KHẨU",
+            AutoSize = true,
+            Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+            Margin = new Padding(3, 0, 16, 0)
+        };
+
+        _txtAccountPassword ??= new TextBox
+        {
+            Name = "txtAccountPasswordDynamic",
+            UseSystemPasswordChar = true,
+            PlaceholderText = "Bỏ trống = 123456 khi tạo; nhập để đổi mật khẩu",
+            Margin = new Padding(3, 0, 16, 12)
+        };
+        StyleInput(_txtAccountPassword);
+
+        if (!tblAccountInfo.Controls.Contains(_lblAccountPassword))
+        {
+            tblAccountInfo.Controls.Add(_lblAccountPassword, 0, 6);
+            tblAccountInfo.SetColumnSpan(_lblAccountPassword, 2);
+        }
+
+        if (!tblAccountInfo.Controls.Contains(_txtAccountPassword))
+        {
+            tblAccountInfo.Controls.Add(_txtAccountPassword, 0, 7);
+            tblAccountInfo.SetColumnSpan(_txtAccountPassword, 2);
+        }
     }
 
     private void ConfigurePermissionCardStructure()
@@ -295,6 +340,24 @@ public partial class FrmAccountManagement : Form
         pnlPermissionRuleCard.Controls.Add(lblPermissionFooter);
         pnlPermissionRuleCard.Controls.Add(lblPermissionRuleTitle);
         pnlPermissionRuleCard.ResumeLayout(true);
+    }
+
+    private void EnsureAccessMatrixButton()
+    {
+        if (_btnOpenAccessMatrix is not null)
+        {
+            return;
+        }
+
+        _btnOpenAccessMatrix = new Button
+        {
+            Name = "btnOpenAccessMatrix",
+            Text = "MA TRẬN QUYỀN",
+            Size = new Size(150, 36),
+            Margin = new Padding(8, 0, 0, 0)
+        };
+        StylePrimaryAction(_btnOpenAccessMatrix, Color.FromArgb(224, 243, 255), Color.FromArgb(0, 66, 118));
+        flpAccountActions.Controls.Add(_btnOpenAccessMatrix);
     }
 
     private void ConfigureResponsiveLayout()
@@ -478,7 +541,7 @@ public partial class FrmAccountManagement : Form
         if (pnlAccountDetailColumn.Controls.OfType<TableLayoutPanel>().FirstOrDefault(panel => panel.Name == "tblAccountDetailLayout") is { } detailLayout
             && detailLayout.RowStyles.Count > 1)
         {
-            detailLayout.RowStyles[1].Height = Math.Clamp(infoHeight, 248, 292);
+            detailLayout.RowStyles[1].Height = Math.Clamp(infoHeight, 320, 380);
         }
     }
 
@@ -492,6 +555,10 @@ public partial class FrmAccountManagement : Form
         btnSaveAccount.Click += (_, _) => SaveCurrentAccountPersisted();
         btnResetPassword.Click += (_, _) => ResetSelectedAccountPassword();
         btnToggleAccountStatus.Click += (_, _) => ToggleSelectedAccountStatus();
+        if (_btnOpenAccessMatrix is not null)
+        {
+            _btnOpenAccessMatrix.Click += (_, _) => OpenAccessMatrix();
+        }
         cboAccountRole.SelectedIndexChanged += (_, _) => HighlightPermissionRole(cboAccountRole.Text);
     }
 
@@ -675,10 +742,11 @@ public partial class FrmAccountManagement : Form
         txtUsername.Text = account.Username;
         txtEmail.Text = account.Email;
         txtPhone.Text = account.Phone;
+        _txtAccountPassword?.Clear();
         cboAccountRole.SelectedItem = account.Role;
         rdoAccountActive.Checked = account.Status == "Hoạt động";
         rdoAccountLocked.Checked = account.Status != "Hoạt động";
-        btnToggleAccountStatus.Text = "KHÓA TÀI KHOẢN";
+        btnToggleAccountStatus.Text = account.Status == "Hoạt động" ? "KHÓA TÀI KHOẢN" : "MỞ KHÓA TÀI KHOẢN";
         HighlightPermissionRole(account.Role);
         RefreshCardSelection();
     }
@@ -690,6 +758,7 @@ public partial class FrmAccountManagement : Form
         txtUsername.Clear();
         txtEmail.Clear();
         txtPhone.Clear();
+        _txtAccountPassword?.Clear();
         cboAccountRole.SelectedIndex = 0;
         rdoAccountActive.Checked = true;
         btnToggleAccountStatus.Text = "KHÓA TÀI KHOẢN";
@@ -716,6 +785,7 @@ public partial class FrmAccountManagement : Form
         txtUsername.Clear();
         txtEmail.Clear();
         txtPhone.Clear();
+        _txtAccountPassword?.Clear();
         cboAccountRole.SelectedIndex = 0;
         rdoAccountActive.Checked = true;
         btnToggleAccountStatus.Text = "KHÓA TÀI KHOẢN";
@@ -728,20 +798,28 @@ public partial class FrmAccountManagement : Form
     {
         if (!ValidateInputs())
         {
+            ValidationFeedback.ShowFirstError(this, errAccount,
+                txtDisplayName,
+                txtUsername,
+                txtEmail,
+                txtPhone,
+                _txtAccountPassword);
             return;
         }
 
         try
         {
+            var isCreating = _creatingAccount || _selectedAccount is null;
             var accountId = _creatingAccount || _selectedAccount is null
                 ? lblAccountIdentifier.Text.Replace("ID:", string.Empty).Trim()
                 : _selectedAccount.AccountId;
+            var customPassword = _txtAccountPassword?.Text.Trim() ?? string.Empty;
 
             var savedAccount = _dataService.SaveAccount(new AccountEntity
             {
                 Id = accountId,
                 Username = txtUsername.Text.Trim(),
-                PasswordHash = string.Empty,
+                PasswordHash = string.IsNullOrWhiteSpace(customPassword) ? string.Empty : PasswordHasher.Hash(customPassword),
                 DisplayName = txtDisplayName.Text.Trim(),
                 Email = txtEmail.Text.Trim(),
                 Phone = txtPhone.Text.Trim(),
@@ -751,13 +829,21 @@ public partial class FrmAccountManagement : Form
             });
 
             _creatingAccount = false;
+            _txtAccountPassword?.Clear();
             ReloadAccounts(savedAccount.Id);
-            MessageBox.Show(this, "Đã lưu tài khoản thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            var message = isCreating
+                ? string.IsNullOrWhiteSpace(customPassword)
+                    ? "Đã thêm tài khoản thành công. Mật khẩu mặc định là 123456."
+                    : "Đã thêm tài khoản thành công với mật khẩu đã nhập."
+                : string.IsNullOrWhiteSpace(customPassword)
+                    ? "Đã cập nhật tài khoản thành công."
+                    : "Đã cập nhật tài khoản và mật khẩu thành công.";
+            MessageBox.Show(this, message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         catch (Exception exception)
         {
             ErrorLogger.Log(exception, nameof(FrmAccountManagement));
-            MessageBox.Show(this, "Không lưu được tài khoản. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, $"Không lưu được tài khoản: {exception.GetBaseException().Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -767,6 +853,16 @@ public partial class FrmAccountManagement : Form
         {
             MessageBox.Show(this, "Chọn tài khoản cần đặt lại mật khẩu.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             return;
+        }
+
+        using (var dialog = new FrmConfirmDialog(
+            "Đặt lại mật khẩu",
+            $"Bạn có chắc muốn đặt lại mật khẩu tài khoản {_selectedAccount.Username} về 123456 không?"))
+        {
+            if (dialog.ShowDialog(this) != DialogResult.OK)
+            {
+                return;
+            }
         }
 
         try
@@ -791,14 +887,16 @@ public partial class FrmAccountManagement : Form
     {
         if (_selectedAccount is null)
         {
-            rdoAccountLocked.Checked = !rdoAccountActive.Checked;
+            MessageBox.Show(this, "Chọn tài khoản cần đổi trạng thái.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return;
         }
 
         try
         {
+            var willLock = _selectedAccount.Status == "Hoạt động";
             _dataService.ToggleAccountStatus(_selectedAccount.AccountId);
             ReloadAccounts(_selectedAccount.AccountId);
+            MessageBox.Show(this, willLock ? "Đã khóa tài khoản thành công." : "Đã mở khóa tài khoản thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         catch (Exception exception)
         {
@@ -807,10 +905,22 @@ public partial class FrmAccountManagement : Form
         }
     }
 
+    private void OpenAccessMatrix()
+    {
+        using var form = new FrmAccessMatrix(_dataService);
+        form.ShowDialog(this);
+    }
+
     private void SaveCurrentAccount()
     {
         if (!ValidateInputs())
         {
+            ValidationFeedback.ShowFirstError(this, errAccount,
+                txtDisplayName,
+                txtUsername,
+                txtEmail,
+                txtPhone,
+                _txtAccountPassword);
             return;
         }
         var status = rdoAccountActive.Checked ? "Hoạt động" : "Khóa";
@@ -862,15 +972,28 @@ public partial class FrmAccountManagement : Form
             valid = false;
         }
 
-        if (string.IsNullOrWhiteSpace(txtEmail.Text) || !txtEmail.Text.Contains('@'))
+        if (string.IsNullOrWhiteSpace(txtEmail.Text) || !EmailRegex.IsMatch(txtEmail.Text.Trim()))
         {
-            errAccount.SetError(txtEmail, "Email chưa hợp lệ.");
+            errAccount.SetError(txtEmail, "Email phải có @ và tên miền, ví dụ ten@gmail.com.");
             valid = false;
         }
 
         if (string.IsNullOrWhiteSpace(txtPhone.Text))
         {
             errAccount.SetError(txtPhone, "Nhập số điện thoại.");
+            valid = false;
+        }
+        else if (!PhoneRegex.IsMatch(txtPhone.Text.Trim()))
+        {
+            errAccount.SetError(txtPhone, "Số điện thoại phải bắt đầu bằng 0 và đủ 10 chữ số, không nhập chữ.");
+            valid = false;
+        }
+
+        if (_txtAccountPassword is not null
+            && !string.IsNullOrWhiteSpace(_txtAccountPassword.Text)
+            && _txtAccountPassword.Text.Trim().Length < 6)
+        {
+            errAccount.SetError(_txtAccountPassword, "Mật khẩu phải có ít nhất 6 ký tự.");
             valid = false;
         }
 

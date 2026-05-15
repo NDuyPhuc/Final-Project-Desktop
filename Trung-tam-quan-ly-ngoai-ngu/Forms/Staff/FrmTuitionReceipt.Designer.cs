@@ -28,6 +28,7 @@ partial class FrmTuitionReceipt
     private FlowLayoutPanel flpReceiptActions;
     private Button btnCollectTuition;
     private Button btnSavePrintReceipt;
+    private Button btnExportReceiptPdf;
     private Button btnViewReceipt;
     private Button btnCancelReceipt;
     private DataGridView dgvReceiptHistory;
@@ -72,6 +73,7 @@ partial class FrmTuitionReceipt
         flpReceiptActions = new FlowLayoutPanel();
         btnCollectTuition = new Button();
         btnSavePrintReceipt = new Button();
+        btnExportReceiptPdf = new Button();
         btnViewReceipt = new Button();
         btnCancelReceipt = new Button();
         dgvReceiptHistory = new DataGridView();
@@ -338,6 +340,7 @@ partial class FrmTuitionReceipt
         tblPaymentInfo.SetColumnSpan(flpReceiptActions, 2);
         flpReceiptActions.Controls.Add(btnCollectTuition);
         flpReceiptActions.Controls.Add(btnSavePrintReceipt);
+        flpReceiptActions.Controls.Add(btnExportReceiptPdf);
         flpReceiptActions.Controls.Add(btnViewReceipt);
         flpReceiptActions.Controls.Add(btnCancelReceipt);
         flpReceiptActions.Dock = DockStyle.Fill;
@@ -366,23 +369,32 @@ partial class FrmTuitionReceipt
         btnSavePrintReceipt.TabIndex = 1;
         btnSavePrintReceipt.Text = "Lưu và in";
         btnSavePrintReceipt.UseVisualStyleBackColor = true;
-        // 
+        //
+        // btnExportReceiptPdf
+        //
+        btnExportReceiptPdf.Location = new Point(221, 3);
+        btnExportReceiptPdf.Name = "btnExportReceiptPdf";
+        btnExportReceiptPdf.Size = new Size(92, 28);
+        btnExportReceiptPdf.TabIndex = 2;
+        btnExportReceiptPdf.Text = "Xuất PDF";
+        btnExportReceiptPdf.UseVisualStyleBackColor = true;
+        //
         // btnViewReceipt
         // 
-        btnViewReceipt.Location = new Point(221, 3);
+        btnViewReceipt.Location = new Point(319, 3);
         btnViewReceipt.Name = "btnViewReceipt";
         btnViewReceipt.Size = new Size(120, 28);
-        btnViewReceipt.TabIndex = 2;
+        btnViewReceipt.TabIndex = 3;
         btnViewReceipt.Text = "Xem biên nhận";
         btnViewReceipt.UseVisualStyleBackColor = true;
         // 
         // btnCancelReceipt
         // 
-        btnCancelReceipt.Location = new Point(347, 3);
+        btnCancelReceipt.Location = new Point(445, 3);
         btnCancelReceipt.Name = "btnCancelReceipt";
         btnCancelReceipt.Size = new Size(70, 28);
-        btnCancelReceipt.TabIndex = 3;
-        btnCancelReceipt.Text = "Hủy";
+        btnCancelReceipt.TabIndex = 4;
+        btnCancelReceipt.Text = "Đặt lại";
         btnCancelReceipt.UseVisualStyleBackColor = true;
         // 
         // dgvReceiptHistory

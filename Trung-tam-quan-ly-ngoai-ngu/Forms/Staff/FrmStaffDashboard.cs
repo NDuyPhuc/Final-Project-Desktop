@@ -147,6 +147,10 @@ public partial class FrmStaffDashboard : Form
         btnMenuEnrollment.Click += (_, _) => OpenModule(() => new FrmEnrollment(), btnMenuEnrollment, menuButtons);
         btnMenuTuitionReceipt.Click += (_, _) => OpenModule(() => new FrmTuitionReceipt(), btnMenuTuitionReceipt, menuButtons);
         btnMenuDebtTracking.Click += (_, _) => OpenModule(() => new FrmDebtTracking(), btnMenuDebtTracking, menuButtons);
+        btnTopbarNotifyStaff.Click += (_, _) => ShowStatusDialog("Thông tin", "Chưa có thông báo vận hành mới.");
+        btnTopbarSettingsStaff.Click += (_, _) => ShowStatusDialog("Cài đặt", "Chưa có tùy chọn cấu hình riêng cho nhân viên.");
+        btnTopbarHelpStaff.Click += (_, _) => ShowStatusDialog("Hỗ trợ", "Liên hệ quản trị viên khi cần hỗ trợ nghiệp vụ.");
+        btnAddTaskStaff.Click += (_, _) => ShowStatusDialog("Nhiệm vụ mới", "Chưa có chức năng tạo nhiệm vụ riêng. Hãy dùng các mục nghiệp vụ ở thanh bên để xử lý công việc.");
 
         pnlNewStudentsToday.Resize += (_, _) => LayoutKpiCard(pnlNewStudentsToday, lblNewStudentsTodayTitle, lblNewStudentsTodayValue, lblNewStudentsTodayBadge);
         pnlAvailableClasses.Resize += (_, _) => LayoutKpiCard(pnlAvailableClasses, lblAvailableClassesTitle, lblAvailableClassesValue, lblAvailableClassesBadge);
@@ -178,6 +182,7 @@ public partial class FrmStaffDashboard : Form
     private void ShowDashboardHome()
     {
         var menuButtons = new[] { btnMenuStaffDashboard, btnMenuStudentManagement, btnMenuTeacherManagement, btnMenuCourseManagement, btnMenuClassManagement, btnMenuEnrollment, btnMenuTuitionReceipt, btnMenuDebtTracking };
+        BindDashboardData();
         lblTopbarTitleStaff.Text = GetMenuCaption(btnMenuStaffDashboard);
         FormHostHelpers.LogUi("StaffDashboard:ShowDashboardHome:start");
         pnlContentHostStaff.SuspendLayout();
@@ -221,11 +226,17 @@ public partial class FrmStaffDashboard : Form
             ErrorLogger.Log(exception, nameof(FrmStaffDashboard));
             MessageBox.Show(
                 this,
-                "Khong mo duoc chuc nang nay. Ung dung se giu nguyen dashboard de tranh bi vang ra. Vui long kiem tra log.txt.",
-                "Loi chuc nang",
+                "Không mở được chức năng này. Ứng dụng sẽ giữ nguyên dashboard. Vui lòng kiểm tra log.txt.",
+                "Lỗi chức năng",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
         }
+    }
+
+    private void ShowStatusDialog(string title, string message)
+    {
+        using var dialog = new FrmStatusDialog(title, message);
+        dialog.ShowDialog(this);
     }
 
     private static string GetMenuCaption(Button button)

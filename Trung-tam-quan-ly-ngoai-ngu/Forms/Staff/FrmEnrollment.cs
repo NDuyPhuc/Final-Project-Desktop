@@ -275,6 +275,10 @@ public partial class FrmEnrollment : Form
     {
         if (!ValidateEditor())
         {
+            ValidationFeedback.ShowFirstError(this, _errEnrollment,
+                dgvEnrollmentStudentList,
+                dgvEnrollmentClassList,
+                txtEnrollmentDiscount);
             return;
         }
 
@@ -293,12 +297,19 @@ public partial class FrmEnrollment : Form
             }
 
             var note = txtEnrollmentNote.Text.Trim();
+            var originalFee = ParseMoney(txtEnrollmentOriginalFee.Text);
             var discount = ParseMoney(txtEnrollmentDiscount.Text);
+            if (discount > originalFee)
+            {
+                MessageBox.Show(this, "Mức giảm không được vượt quá học phí gốc.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             if (discount > 0)
             {
                 note = string.IsNullOrWhiteSpace(note)
-                    ? $"Discount tu van: {discount:N0}"
-                    : $"{note} | Discount tu van: {discount:N0}";
+                    ? $"Giảm trừ: {discount:N0}"
+                    : $"{note} | Giảm trừ: {discount:N0}";
             }
 
             var enrollment = AppRuntime.DataService.CreateEnrollment(
@@ -317,7 +328,7 @@ public partial class FrmEnrollment : Form
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmEnrollment));
-            MessageBox.Show(this, "Không tạo được ghi danh. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, $"Không tạo được ghi danh: {ex.GetBaseException().Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -351,6 +362,10 @@ public partial class FrmEnrollment : Form
         {
             _errEnrollment.SetError(txtEnrollmentDiscount, "Mức giảm phải >= 0.");
         }
+        else if (ParseMoney(txtEnrollmentDiscount.Text) > ParseMoney(txtEnrollmentOriginalFee.Text))
+        {
+            _errEnrollment.SetError(txtEnrollmentDiscount, "Mức giảm không được vượt quá học phí gốc.");
+        }
 
         return string.IsNullOrWhiteSpace(_errEnrollment.GetError(dgvEnrollmentStudentList))
             && string.IsNullOrWhiteSpace(_errEnrollment.GetError(dgvEnrollmentClassList))
@@ -380,8 +395,8 @@ public partial class FrmEnrollment : Form
     {
         var studentId = row[0]?.ToString() ?? string.Empty;
         var fullName = row[1]?.ToString() ?? string.Empty;
-        var phone = row[3]?.ToString() ?? string.Empty;
-        return $"{studentId}{Environment.NewLine}{fullName}{Environment.NewLine}SDT: {phone}";
+        var phone = GetColumnValue(row, "Dien thoai");
+        return $"{studentId}{Environment.NewLine}{fullName}{Environment.NewLine}SĐT: {phone}";
     }
 
     private static string BuildClassSummary(DataRow row)
@@ -402,6 +417,19 @@ public partial class FrmEnrollment : Form
 
         var sanitized = input.Replace(".", string.Empty).Replace(",", string.Empty).Trim();
         return decimal.TryParse(sanitized, NumberStyles.Number, CultureInfo.InvariantCulture, out var value) ? value : 0;
+    }
+
+    private static string GetColumnValue(DataRow row, params string[] names)
+    {
+        foreach (var name in names)
+        {
+            if (row.Table.Columns.Contains(name))
+            {
+                return row[name]?.ToString() ?? string.Empty;
+            }
+        }
+
+        return string.Empty;
     }
 
     private void ConfigureClassGrid()

@@ -40,17 +40,38 @@ public partial class FrmTeachingClasses : Form
         btnRefreshTeachingClass.Click += (_, _) => ResetFilters();
         btnOpenClassStudentList.Click += (_, _) =>
         {
-            using var form = new FrmClassStudentList();
+            var classId = GetSelectedClassId();
+            if (string.IsNullOrWhiteSpace(classId))
+            {
+                MessageBox.Show(this, "Hãy chọn lớp trước khi mở danh sách học viên.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            using var form = new FrmClassStudentList(classId);
             form.ShowDialog(this);
         };
         btnOpenAttendance.Click += (_, _) =>
         {
-            using var form = new FrmAttendance();
+            var classId = GetSelectedClassId();
+            if (string.IsNullOrWhiteSpace(classId))
+            {
+                MessageBox.Show(this, "Hãy chọn lớp trước khi điểm danh.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            using var form = new FrmAttendance(classId);
             form.ShowDialog(this);
         };
         btnOpenScoreEntry.Click += (_, _) =>
         {
-            using var form = new FrmScoreEntry();
+            var classId = GetSelectedClassId();
+            if (string.IsNullOrWhiteSpace(classId))
+            {
+                MessageBox.Show(this, "Hãy chọn lớp trước khi nhập điểm.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            using var form = new FrmScoreEntry(classId);
             form.ShowDialog(this);
         };
     }
@@ -107,5 +128,12 @@ public partial class FrmTeachingClasses : Form
         return row.Table.Columns.Contains(columnName)
             ? row[columnName]?.ToString() ?? string.Empty
             : string.Empty;
+    }
+
+    private string? GetSelectedClassId()
+    {
+        return dgvTeachingClassList.CurrentRow?.DataBoundItem is DataRowView rowView
+            ? GetField(rowView.Row, "Ma lop")
+            : null;
     }
 }

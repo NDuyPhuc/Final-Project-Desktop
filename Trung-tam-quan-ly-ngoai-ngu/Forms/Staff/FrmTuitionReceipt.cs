@@ -46,12 +46,14 @@ public partial class FrmTuitionReceipt : Form
         AppTheme.StyleGrid(dgvReceiptHistory);
         AppTheme.StylePrimaryButton(btnCollectTuition);
         AppTheme.StyleSecondaryButton(btnSavePrintReceipt);
+        AppTheme.StyleSecondaryButton(btnExportReceiptPdf);
         AppTheme.StyleSecondaryButton(btnViewReceipt);
         AppTheme.StyleDangerButton(btnCancelReceipt);
 
         cboReceiptMethod.SelectedIndex = 0;
-        ttTuitionReceipt.SetToolTip(btnCollectTuition, "Lưu biên lai thu học phí vào SQL Server.");
+        ttTuitionReceipt.SetToolTip(btnCollectTuition, "Lưu biên lai thu học phí.");
         ttTuitionReceipt.SetToolTip(btnSavePrintReceipt, "Lưu biên lai và mở Print Preview.");
+        ttTuitionReceipt.SetToolTip(btnExportReceiptPdf, "Lưu biên lai đang chọn ra file PDF.");
         prdTuitionReceipt.PrintPage += PrintReceiptPreview;
 
         flpReceiptActions.AutoSize = true;
@@ -71,6 +73,8 @@ public partial class FrmTuitionReceipt : Form
         txtReceiptStudentName.ReadOnly = true;
         txtReceiptClassCode.ReadOnly = true;
         txtReceiptCourseName.ReadOnly = true;
+        txtReceiptStudentCode.PlaceholderText = "Gõ mã hoặc tên học viên, hệ thống sẽ gợi ý";
+        ConfigureStudentCodeAutoComplete();
         dgvReceiptHistory.AutoGenerateColumns = true;
         dgvReceiptHistory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         dgvReceiptHistory.RowTemplate.Height = 40;
@@ -91,6 +95,7 @@ public partial class FrmTuitionReceipt : Form
     {
         btnCollectTuition.Click += (_, _) => SaveReceipt(false);
         btnSavePrintReceipt.Click += (_, _) => SaveReceipt(true);
+        btnExportReceiptPdf.Click += (_, _) => ExportActiveReceiptPdf();
         btnViewReceipt.Click += (_, _) => PreviewSelectedReceipt();
         btnCancelReceipt.Click += (_, _) => ResetPaymentEditor();
         txtReceiptStudentCode.Leave += (_, _) => TryResolveContextFromStudentCode();
@@ -130,10 +135,10 @@ public partial class FrmTuitionReceipt : Form
             txtReceiptStudentCode.Text = _currentContext.StudentCode;
             txtReceiptStudentName.Text = _currentContext.StudentName;
             txtReceiptClassCode.Text = $"{_currentContext.ClassCode} - {_currentContext.ClassName}";
-            txtReceiptCourseName.Text = $"{_currentContext.CourseName} | Hoc phi: {FormatMoney(_currentContext.TuitionFee)} | Con no: {FormatMoney(_currentContext.OutstandingBalance)}";
+            txtReceiptCourseName.Text = $"{_currentContext.CourseName} | Học phí: {FormatMoney(_currentContext.TuitionFee)} | Còn nợ: {FormatMoney(_currentContext.OutstandingBalance)}";
             txtReceiptAmount.Text = _currentContext.OutstandingBalance > 0
                 ? _currentContext.OutstandingBalance.ToString("N0", CultureInfo.GetCultureInfo("vi-VN"))
-                : _currentContext.TuitionFee.ToString("N0", CultureInfo.GetCultureInfo("vi-VN"));
+                : "0";
         }
         catch (Exception ex)
         {
@@ -151,20 +156,25 @@ public partial class FrmTuitionReceipt : Form
 
         try
         {
-            var context = AppRuntime.DataService.GetLatestEnrollmentReceiptContextByStudentId(txtReceiptStudentCode.Text.Trim());
+            var studentId = ResolveReceiptStudentId(txtReceiptStudentCode.Text.Trim());
+            var context = AppRuntime.DataService.GetLatestEnrollmentReceiptContextByStudentId(studentId);
             if (context is null)
             {
+                MessageBox.Show(this, "Không tìm thấy ghi danh phù hợp cho học viên này.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             _currentContext = context;
             _currentEnrollmentId = context.EnrollmentId;
+            txtReceiptStudentCode.Text = context.StudentCode;
             txtReceiptStudentName.Text = context.StudentName;
             txtReceiptClassCode.Text = $"{context.ClassCode} - {context.ClassName}";
-            txtReceiptCourseName.Text = $"{context.CourseName} | Hoc phi: {FormatMoney(context.TuitionFee)} | Con no: {FormatMoney(context.OutstandingBalance)}";
+            txtReceiptCourseName.Text = $"{context.CourseName} | Học phí: {FormatMoney(context.TuitionFee)} | Còn nợ: {FormatMoney(context.OutstandingBalance)}";
             if (string.IsNullOrWhiteSpace(txtReceiptAmount.Text))
             {
-                txtReceiptAmount.Text = context.OutstandingBalance.ToString("N0", CultureInfo.GetCultureInfo("vi-VN"));
+                txtReceiptAmount.Text = context.OutstandingBalance > 0
+                    ? context.OutstandingBalance.ToString("N0", CultureInfo.GetCultureInfo("vi-VN"))
+                    : "0";
             }
 
             LoadReceiptHistory();
@@ -174,6 +184,77 @@ public partial class FrmTuitionReceipt : Form
             ErrorLogger.Log(ex, nameof(FrmTuitionReceipt));
             MessageBox.Show(this, "Không tìm thấy ghi danh phù hợp cho học viên này.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+    }
+
+    private void ConfigureStudentCodeAutoComplete()
+    {
+        try
+        {
+            var source = new AutoCompleteStringCollection();
+            var students = AppRuntime.DataService.GetEnrollmentStudents();
+            foreach (DataRow row in students.Rows)
+            {
+                var id = row[0]?.ToString()?.Trim() ?? string.Empty;
+                var name = row[1]?.ToString()?.Trim() ?? string.Empty;
+                if (string.IsNullOrWhiteSpace(id))
+                {
+                    continue;
+                }
+
+                source.Add(id);
+                if (!string.IsNullOrWhiteSpace(name))
+                {
+                    source.Add(name);
+                    source.Add($"{id} - {name}");
+                }
+            }
+
+            txtReceiptStudentCode.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            txtReceiptStudentCode.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            txtReceiptStudentCode.AutoCompleteCustomSource = source;
+        }
+        catch (Exception ex)
+        {
+            ErrorLogger.Log(ex, nameof(FrmTuitionReceipt));
+        }
+    }
+
+    private string ResolveReceiptStudentId(string input)
+    {
+        if (string.IsNullOrWhiteSpace(input))
+        {
+            return string.Empty;
+        }
+
+        var exactId = input.Split('-', 2)[0].Trim();
+        var students = AppRuntime.DataService.GetEnrollmentStudents();
+        var partialMatches = new List<string>();
+
+        foreach (DataRow row in students.Rows)
+        {
+            var id = row[0]?.ToString()?.Trim() ?? string.Empty;
+            var name = row[1]?.ToString()?.Trim() ?? string.Empty;
+            var display = $"{id} - {name}";
+            if (id.Equals(exactId, StringComparison.OrdinalIgnoreCase)
+                || id.Equals(input, StringComparison.OrdinalIgnoreCase)
+                || name.Equals(input, StringComparison.OrdinalIgnoreCase)
+                || display.Equals(input, StringComparison.OrdinalIgnoreCase))
+            {
+                return id;
+            }
+
+            if (input.Length >= 2
+                && (id.Contains(input, StringComparison.OrdinalIgnoreCase)
+                    || name.Contains(input, StringComparison.OrdinalIgnoreCase)
+                    || display.Contains(input, StringComparison.OrdinalIgnoreCase)))
+            {
+                partialMatches.Add(id);
+            }
+        }
+
+        return partialMatches.Distinct(StringComparer.OrdinalIgnoreCase).Take(2).Count() == 1
+            ? partialMatches[0]
+            : exactId;
     }
 
     private void LoadReceiptHistory()
@@ -195,6 +276,9 @@ public partial class FrmTuitionReceipt : Form
     {
         if (!ValidateReceipt())
         {
+            ValidationFeedback.ShowFirstError(this, errTuitionReceipt,
+                txtReceiptStudentCode,
+                txtReceiptAmount);
             return;
         }
 
@@ -213,6 +297,7 @@ public partial class FrmTuitionReceipt : Form
             _currentPrintInfo = AppRuntime.DataService.GetReceiptPrintInfo(receipt.Id);
             LoadEnrollmentContext(_currentEnrollmentId);
             LoadReceiptHistory();
+            SelectReceiptHistoryRow(receipt.Id);
             ResetPaymentEditor(keepAmount: true);
 
             MessageBox.Show(this, "Đã thu học phí và lưu biên lai thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -231,41 +316,81 @@ public partial class FrmTuitionReceipt : Form
 
     private void PreviewSelectedReceipt()
     {
-        if (!string.IsNullOrWhiteSpace(_lastReceiptId))
+        if (!TryLoadActiveReceiptPrintInfo())
         {
-            try
-            {
-                _currentPrintInfo = AppRuntime.DataService.GetReceiptPrintInfo(_lastReceiptId);
-                ppdTuitionReceiptPreview.ShowDialog(this);
-                return;
-            }
-            catch (Exception ex)
-            {
-                ErrorLogger.Log(ex, nameof(FrmTuitionReceipt));
-            }
+            MessageBox.Show(this, "Chưa có biên lai nào để xem trước.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return;
         }
 
+        ppdTuitionReceiptPreview.ShowDialog(this);
+    }
+
+    private void ExportActiveReceiptPdf()
+    {
+        if (!TryLoadActiveReceiptPrintInfo())
+        {
+            MessageBox.Show(this, "Chưa có biên lai nào để xuất PDF.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return;
+        }
+
+        try
+        {
+            using var dialog = new SaveFileDialog
+            {
+                Filter = "PDF files (*.pdf)|*.pdf",
+                FileName = BuildReceiptPdfFileName(_currentPrintInfo!.ReceiptId),
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)
+            };
+
+            if (dialog.ShowDialog(this) != DialogResult.OK)
+            {
+                return;
+            }
+
+            ExportFileHelper.ExportReceiptToPdf(_currentPrintInfo, dialog.FileName);
+            MessageBox.Show(this, "Đã lưu biên lai ra PDF.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        catch (Exception ex)
+        {
+            ErrorLogger.Log(ex, nameof(FrmTuitionReceipt));
+            MessageBox.Show(this, "Không xuất được biên lai PDF. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private bool TryLoadActiveReceiptPrintInfo()
+    {
+        var receiptId = GetActiveReceiptId();
+        if (string.IsNullOrWhiteSpace(receiptId))
+        {
+            return false;
+        }
+
+        try
+        {
+            _currentPrintInfo = AppRuntime.DataService.GetReceiptPrintInfo(receiptId);
+            _lastReceiptId = receiptId;
+            return true;
+        }
+        catch (Exception ex)
+        {
+            ErrorLogger.Log(ex, nameof(FrmTuitionReceipt));
+            return false;
+        }
+    }
+
+    private string? GetActiveReceiptId()
+    {
         var currentRow = dgvReceiptHistory.CurrentRow;
         if (currentRow?.Cells.Count > 0)
         {
             var selectedReceiptId = currentRow.Cells[0].Value?.ToString();
             if (!string.IsNullOrWhiteSpace(selectedReceiptId))
             {
-                try
-                {
-                    _currentPrintInfo = AppRuntime.DataService.GetReceiptPrintInfo(selectedReceiptId);
-                    _lastReceiptId = selectedReceiptId;
-                    ppdTuitionReceiptPreview.ShowDialog(this);
-                    return;
-                }
-                catch (Exception ex)
-                {
-                    ErrorLogger.Log(ex, nameof(FrmTuitionReceipt));
-                }
+                return selectedReceiptId;
             }
         }
 
-        MessageBox.Show(this, "Chưa có biên lai nào để xem trước.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        return _lastReceiptId;
     }
 
     private void SyncSelectedReceipt()
@@ -275,6 +400,28 @@ public partial class FrmTuitionReceipt : Form
         {
             _lastReceiptId = currentRow.Cells[0].Value?.ToString();
         }
+    }
+
+    private void SelectReceiptHistoryRow(string receiptId)
+    {
+        foreach (DataGridViewRow row in dgvReceiptHistory.Rows)
+        {
+            if (string.Equals(row.Cells[0].Value?.ToString(), receiptId, StringComparison.OrdinalIgnoreCase))
+            {
+                dgvReceiptHistory.CurrentCell = row.Cells[0];
+                row.Selected = true;
+                return;
+            }
+        }
+    }
+
+    private static string BuildReceiptPdfFileName(string receiptId)
+    {
+        var safeReceiptId = new string(receiptId
+            .Select(ch => Path.GetInvalidFileNameChars().Contains(ch) ? '-' : ch)
+            .ToArray());
+
+        return $"bien-lai-{safeReceiptId}.pdf";
     }
 
     private bool ValidateReceipt()
@@ -292,7 +439,11 @@ public partial class FrmTuitionReceipt : Form
             errTuitionReceipt.SetError(txtReceiptAmount, "Số tiền thu phải > 0.");
         }
 
-        if (_currentContext is not null && amount > _currentContext.OutstandingBalance && _currentContext.OutstandingBalance > 0)
+        if (_currentContext is not null && _currentContext.OutstandingBalance <= 0)
+        {
+            errTuitionReceipt.SetError(txtReceiptAmount, "Ghi danh này đã thanh toán đủ học phí.");
+        }
+        else if (_currentContext is not null && amount > _currentContext.OutstandingBalance)
         {
             errTuitionReceipt.SetError(txtReceiptAmount, "Số tiền thu không được vượt quá công nợ hiện tại.");
         }
@@ -329,32 +480,32 @@ public partial class FrmTuitionReceipt : Form
         var top = 60;
         var line = 30;
 
-        graphics.DrawString("BIEN LAI THU HOC PHI", titleFont, Brushes.Black, left, top);
+        graphics.DrawString("BIÊN LAI THU HỌC PHÍ", titleFont, Brushes.Black, left, top);
         top += 50;
 
-        graphics.DrawString($"So bien lai: {_currentPrintInfo.ReceiptId}", boldFont, Brushes.Black, left, top);
+        graphics.DrawString($"Số biên lai: {_currentPrintInfo.ReceiptId}", boldFont, Brushes.Black, left, top);
         top += line;
-        graphics.DrawString($"Hoc vien: {_currentPrintInfo.StudentName} ({_currentPrintInfo.StudentCode})", bodyFont, Brushes.Black, left, top);
+        graphics.DrawString($"Học viên: {_currentPrintInfo.StudentName} ({_currentPrintInfo.StudentCode})", bodyFont, Brushes.Black, left, top);
         top += line;
-        graphics.DrawString($"Lop: {_currentPrintInfo.ClassName}", bodyFont, Brushes.Black, left, top);
+        graphics.DrawString($"Lớp: {_currentPrintInfo.ClassName}", bodyFont, Brushes.Black, left, top);
         top += line;
-        graphics.DrawString($"Khoa hoc: {_currentPrintInfo.CourseName}", bodyFont, Brushes.Black, left, top);
+        graphics.DrawString($"Khóa học: {_currentPrintInfo.CourseName}", bodyFont, Brushes.Black, left, top);
         top += line;
-        graphics.DrawString($"Hoc phi: {FormatMoney(_currentPrintInfo.TuitionFee)}", bodyFont, Brushes.Black, left, top);
+        graphics.DrawString($"Học phí: {FormatMoney(_currentPrintInfo.TuitionFee)}", bodyFont, Brushes.Black, left, top);
         top += line;
-        graphics.DrawString($"So tien da thu ky nay: {FormatMoney(_currentPrintInfo.AmountPaid)}", bodyFont, Brushes.Black, left, top);
+        graphics.DrawString($"Số tiền thu kỳ này: {FormatMoney(_currentPrintInfo.AmountPaid)}", bodyFont, Brushes.Black, left, top);
         top += line;
-        graphics.DrawString($"Tong da thu: {FormatMoney(_currentPrintInfo.TotalPaid)}", bodyFont, Brushes.Black, left, top);
+        graphics.DrawString($"Tổng đã thu: {FormatMoney(_currentPrintInfo.TotalPaid)}", bodyFont, Brushes.Black, left, top);
         top += line;
-        graphics.DrawString($"Con lai: {FormatMoney(_currentPrintInfo.OutstandingBalance)}", bodyFont, Brushes.Black, left, top);
+        graphics.DrawString($"Còn lại: {FormatMoney(_currentPrintInfo.OutstandingBalance)}", bodyFont, Brushes.Black, left, top);
         top += line;
-        graphics.DrawString($"Ngay nop: {_currentPrintInfo.PayDate:dd/MM/yyyy}", bodyFont, Brushes.Black, left, top);
+        graphics.DrawString($"Ngày nộp: {_currentPrintInfo.PayDate:dd/MM/yyyy}", bodyFont, Brushes.Black, left, top);
         top += line;
-        graphics.DrawString($"Phuong thuc: {_currentPrintInfo.PaymentMethod}", bodyFont, Brushes.Black, left, top);
+        graphics.DrawString($"Phương thức: {_currentPrintInfo.PaymentMethod}", bodyFont, Brushes.Black, left, top);
         top += line;
-        graphics.DrawString($"Nhan vien thu: {_currentPrintInfo.StaffName ?? "Staff"}", bodyFont, Brushes.Black, left, top);
+        graphics.DrawString($"Nhân viên thu: {_currentPrintInfo.StaffName ?? "Staff"}", bodyFont, Brushes.Black, left, top);
         top += line;
-        graphics.DrawString($"Ghi chu: {_currentPrintInfo.Note ?? string.Empty}", bodyFont, Brushes.Black, left, top);
+        graphics.DrawString($"Ghi chú: {_currentPrintInfo.Note ?? string.Empty}", bodyFont, Brushes.Black, left, top);
     }
 
     private void LocalizeLabels()
@@ -375,8 +526,9 @@ public partial class FrmTuitionReceipt : Form
 
         btnCollectTuition.Text = "Thu học phí";
         btnSavePrintReceipt.Text = "Lưu và in";
+        btnExportReceiptPdf.Text = "Xuất PDF";
         btnViewReceipt.Text = "Xem biên lai";
-        btnCancelReceipt.Text = "Hủy";
+        btnCancelReceipt.Text = "Đặt lại";
     }
 
     private void ApplyResponsiveLayout()

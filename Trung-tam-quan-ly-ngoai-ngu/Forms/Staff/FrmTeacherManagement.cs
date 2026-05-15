@@ -1,4 +1,5 @@
 using System.Data;
+using System.Text.RegularExpressions;
 using TrungTamNgoaiNgu.Application.Infrastructure;
 using TrungTamNgoaiNgu.Domain.Entities;
 
@@ -6,6 +7,8 @@ namespace Trung_tam_quan_ly_ngoai_ngu;
 
 public partial class FrmTeacherManagement : Form
 {
+    private static readonly Regex PhoneRegex = new(@"^0\d{9}$", RegexOptions.Compiled);
+    private static readonly Regex EmailRegex = new(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.Compiled);
     private DataTable _teacherTable = new();
     private string? _currentTeacherStatus;
     private string? _currentTeacherAccountId;
@@ -13,6 +16,9 @@ public partial class FrmTeacherManagement : Form
     private string? _pendingAvatarSourcePath;
     private PictureBox? _picTeacherAvatar;
     private Button? _btnChooseTeacherAvatar;
+    private Button? _btnRemoveTeacherAvatar;
+    private ComboBox? _cboTeacherDetailStatus;
+    private ComboBox? _cboTeacherGender;
 
     public FrmTeacherManagement()
     {
@@ -40,20 +46,24 @@ public partial class FrmTeacherManagement : Form
         AppTheme.StylePrimaryButton(btnSaveTeacher);
         AppTheme.StylePrimaryButton(btnUpdateTeacher);
         AppTheme.StyleDangerButton(btnDeleteTeacher);
+        InitializeGenderControl();
+        InitializeStatusControls();
         InitializeAvatarControls();
         if (_btnChooseTeacherAvatar is not null)
         {
             AppTheme.StyleSecondaryButton(_btnChooseTeacherAvatar);
+        }
+        if (_btnRemoveTeacherAvatar is not null)
+        {
+            AppTheme.StyleSecondaryButton(_btnRemoveTeacherAvatar);
         }
 
         dgvTeacherList.AutoGenerateColumns = true;
         dgvTeacherList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         dgvTeacherList.RowTemplate.Height = 42;
         txtTeacherAddress.ScrollBars = ScrollBars.Vertical;
-        txtTeacherNote.ScrollBars = ScrollBars.Vertical;
 
         cboTeacherStatusFilter.SelectedIndex = 0;
-        txtTeacherNote.PlaceholderText = "Nam / Nữ";
     }
 
     private void WireEvents()
@@ -68,6 +78,10 @@ public partial class FrmTeacherManagement : Form
         if (_btnChooseTeacherAvatar is not null)
         {
             _btnChooseTeacherAvatar.Click += (_, _) => ChooseTeacherAvatar();
+        }
+        if (_btnRemoveTeacherAvatar is not null)
+        {
+            _btnRemoveTeacherAvatar.Click += (_, _) => RemoveTeacherAvatar();
         }
     }
 
@@ -94,6 +108,10 @@ public partial class FrmTeacherManagement : Form
         ResetDetailEditor();
         txtTeacherCode.Text = AppRuntime.DataService.GetNextTeacherId();
         _currentTeacherStatus = "Đang dạy";
+        if (_cboTeacherDetailStatus is not null)
+        {
+            _cboTeacherDetailStatus.Text = _currentTeacherStatus;
+        }
         txtTeacherName.Focus();
     }
 
@@ -101,23 +119,30 @@ public partial class FrmTeacherManagement : Form
     {
         if (!ValidateEditor())
         {
+            ValidationFeedback.ShowFirstError(this, errTeacher,
+                txtTeacherCode,
+                txtTeacherName,
+                txtTeacherPhone,
+                txtTeacherEmail);
             return;
         }
 
         try
         {
+            var teacherId = txtTeacherCode.Text.Trim();
+            var isCreating = AppRuntime.DataService.GetTeacherById(teacherId) is null;
             var teacher = new TeacherEntity
             {
-                Id = txtTeacherCode.Text.Trim(),
+                Id = teacherId,
                 FullName = txtTeacherName.Text.Trim(),
                 Phone = txtTeacherPhone.Text.Trim(),
                 Email = txtTeacherEmail.Text.Trim(),
                 Specialization = txtTeacherSpecialty.Text.Trim(),
                 Address = txtTeacherAddress.Text.Trim(),
-                Gender = txtTeacherNote.Text.Trim(),
+                Gender = GetTeacherGenderText(),
                 AvatarPath = _currentAvatarPath,
                 AccountId = _currentTeacherAccountId,
-                Status = string.IsNullOrWhiteSpace(_currentTeacherStatus) ? "Đang dạy" : _currentTeacherStatus,
+                Status = _cboTeacherDetailStatus?.Text ?? (string.IsNullOrWhiteSpace(_currentTeacherStatus) ? "Đang dạy" : _currentTeacherStatus),
                 IsDeleted = false
             };
 
@@ -135,12 +160,12 @@ public partial class FrmTeacherManagement : Form
 
             LoadTeachers(txtTeacherKeyword.Text.Trim(), cboTeacherStatusFilter.Text);
             FocusTeacher(teacher.Id);
-            MessageBox.Show(this, "Đã lưu giáo viên thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(this, isCreating ? "Đã thêm giáo viên thành công." : "Đã cập nhật giáo viên thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmTeacherManagement));
-            MessageBox.Show(this, "Không lưu được giáo viên. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, $"Không lưu được giáo viên: {ex.GetBaseException().Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -148,6 +173,13 @@ public partial class FrmTeacherManagement : Form
     {
         if (string.IsNullOrWhiteSpace(txtTeacherCode.Text))
         {
+            MessageBox.Show(this, "Hãy chọn giáo viên cần xóa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
+        if (AppRuntime.DataService.GetTeacherById(txtTeacherCode.Text.Trim()) is null)
+        {
+            MessageBox.Show(this, "Giáo viên chưa được lưu nên không thể xóa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return;
         }
 
@@ -162,6 +194,7 @@ public partial class FrmTeacherManagement : Form
             AppRuntime.DataService.SoftDeleteTeacher(txtTeacherCode.Text.Trim());
             LoadTeachers(txtTeacherKeyword.Text.Trim(), cboTeacherStatusFilter.Text);
             ResetDetailEditor();
+            MessageBox.Show(this, "Đã xóa mềm giáo viên thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         catch (Exception ex)
         {
@@ -198,10 +231,15 @@ public partial class FrmTeacherManagement : Form
             txtTeacherSpecialty.Text = teacher.Specialization ?? string.Empty;
             txtTeacherAddress.Text = teacher.Address ?? string.Empty;
             txtTeacherNote.Text = teacher.Gender ?? string.Empty;
+            SetTeacherGender(teacher.Gender);
             _currentAvatarPath = teacher.AvatarPath;
             _pendingAvatarSourcePath = null;
             LoadTeacherAvatarPreview(_currentAvatarPath);
             _currentTeacherStatus = teacher.Status;
+            if (_cboTeacherDetailStatus is not null)
+            {
+                _cboTeacherDetailStatus.Text = string.IsNullOrWhiteSpace(teacher.Status) ? "Đang dạy" : teacher.Status;
+            }
             _currentTeacherAccountId = teacher.AccountId;
         }
         catch (Exception ex)
@@ -255,14 +293,18 @@ public partial class FrmTeacherManagement : Form
         {
             errTeacher.SetError(txtTeacherPhone, "Số điện thoại không được để trống.");
         }
+        else if (!PhoneRegex.IsMatch(txtTeacherPhone.Text.Trim()))
+        {
+            errTeacher.SetError(txtTeacherPhone, "Số điện thoại phải bắt đầu bằng 0 và đủ 10 chữ số, không nhập chữ.");
+        }
 
         if (string.IsNullOrWhiteSpace(txtTeacherEmail.Text))
         {
             errTeacher.SetError(txtTeacherEmail, "Email không được để trống.");
         }
-        else if (!txtTeacherEmail.Text.Contains('@') || !txtTeacherEmail.Text.Contains('.'))
+        else if (!EmailRegex.IsMatch(txtTeacherEmail.Text.Trim()))
         {
-            errTeacher.SetError(txtTeacherEmail, "Email không hợp lệ.");
+            errTeacher.SetError(txtTeacherEmail, "Email phải có @ và tên miền, ví dụ ten@gmail.com.");
         }
 
         return string.IsNullOrWhiteSpace(errTeacher.GetError(txtTeacherCode))
@@ -281,6 +323,7 @@ public partial class FrmTeacherManagement : Form
         txtTeacherSpecialty.Clear();
         txtTeacherAddress.Clear();
         txtTeacherNote.Clear();
+        SetTeacherGender(null);
         _currentAvatarPath = null;
         _pendingAvatarSourcePath = null;
         if (_picTeacherAvatar is not null)
@@ -289,6 +332,10 @@ public partial class FrmTeacherManagement : Form
             _picTeacherAvatar.Image = null;
         }
         _currentTeacherStatus = null;
+        if (_cboTeacherDetailStatus is not null)
+        {
+            _cboTeacherDetailStatus.Text = "Đang dạy";
+        }
         _currentTeacherAccountId = null;
     }
 
@@ -323,13 +370,106 @@ public partial class FrmTeacherManagement : Form
         btnDeleteTeacher.Text = "Xóa mềm";
     }
 
+    private void InitializeGenderControl()
+    {
+        if (_cboTeacherGender is not null || tblTeacherDetail.Controls.ContainsKey("cboTeacherGender"))
+        {
+            return;
+        }
+
+        var genderRow = tblTeacherDetail.GetPositionFromControl(txtTeacherNote).Row;
+        if (genderRow < 0)
+        {
+            genderRow = 6;
+        }
+
+        tblTeacherDetail.Controls.Remove(txtTeacherNote);
+        txtTeacherNote.Visible = false;
+        txtTeacherNote.Enabled = false;
+
+        if (genderRow < tblTeacherDetail.RowStyles.Count)
+        {
+            tblTeacherDetail.RowStyles[genderRow].SizeType = SizeType.Absolute;
+            tblTeacherDetail.RowStyles[genderRow].Height = FormHostHelpers.ScaleForDpi(this, 38);
+        }
+
+        _cboTeacherGender = new ComboBox
+        {
+            Name = "cboTeacherGender",
+            Dock = DockStyle.Left,
+            Width = FormHostHelpers.ScaleForDpi(this, 180),
+            DropDownStyle = ComboBoxStyle.DropDownList
+        };
+        _cboTeacherGender.Items.AddRange(["Nam", "Nữ", "Khác"]);
+        _cboTeacherGender.SelectedIndex = 0;
+
+        tblTeacherDetail.Controls.Add(_cboTeacherGender, 1, genderRow);
+    }
+
+    private string GetTeacherGenderText()
+    {
+        return _cboTeacherGender?.SelectedItem?.ToString()
+            ?? _cboTeacherGender?.Text.Trim()
+            ?? txtTeacherNote.Text.Trim();
+    }
+
+    private void SetTeacherGender(string? value)
+    {
+        if (_cboTeacherGender is null)
+        {
+            return;
+        }
+
+        var normalized = (value ?? string.Empty).Trim();
+        var selected = normalized switch
+        {
+            "" => "Nam",
+            "Male" or "Nam" => "Nam",
+            "Female" or "Nữ" or "Nu" => "Nữ",
+            _ => "Khác"
+        };
+        _cboTeacherGender.SelectedItem = selected;
+        txtTeacherNote.Text = selected;
+    }
+
+    private void InitializeStatusControls()
+    {
+        if (_cboTeacherDetailStatus is not null || tblTeacherDetail.Controls.ContainsKey("cboTeacherDetailStatus"))
+        {
+            return;
+        }
+
+        var label = new Label
+        {
+            Name = "lblTeacherDetailStatus",
+            Text = "Trạng thái",
+            Anchor = AnchorStyles.Left,
+            AutoSize = true
+        };
+
+        _cboTeacherDetailStatus = new ComboBox
+        {
+            Name = "cboTeacherDetailStatus",
+            Dock = DockStyle.Fill,
+            DropDownStyle = ComboBoxStyle.DropDownList
+        };
+        _cboTeacherDetailStatus.Items.AddRange(["Đang dạy", "Tạm nghỉ"]);
+        _cboTeacherDetailStatus.SelectedIndex = 0;
+
+        tblTeacherDetail.RowCount += 1;
+        tblTeacherDetail.RowStyles.Add(new RowStyle());
+        tblTeacherDetail.Controls.Add(label, 0, tblTeacherDetail.RowCount - 1);
+        tblTeacherDetail.Controls.Add(_cboTeacherDetailStatus, 1, tblTeacherDetail.RowCount - 1);
+    }
+
     private void InitializeAvatarControls()
     {
         _picTeacherAvatar ??= new PictureBox
         {
             Name = "picTeacherAvatar",
-            Dock = DockStyle.Top,
-            Height = 120,
+            Dock = DockStyle.Left,
+            Width = FormHostHelpers.ScaleForDpi(this, 104),
+            Height = FormHostHelpers.ScaleForDpi(this, 104),
             BorderStyle = BorderStyle.FixedSingle,
             BackColor = Color.FromArgb(233, 239, 248),
             SizeMode = PictureBoxSizeMode.Zoom
@@ -339,9 +479,18 @@ public partial class FrmTeacherManagement : Form
         {
             Name = "btnChooseTeacherAvatar",
             Text = "Chọn ảnh",
-            Dock = DockStyle.Left,
-            Width = 120,
-            Margin = new Padding(0, 8, 0, 0)
+            Width = FormHostHelpers.ScaleForDpi(this, 116),
+            Height = FormHostHelpers.ScaleForDpi(this, 32),
+            Margin = new Padding(0, 8, 8, 0)
+        };
+
+        _btnRemoveTeacherAvatar ??= new Button
+        {
+            Name = "btnRemoveTeacherAvatar",
+            Text = "Xóa ảnh",
+            Width = FormHostHelpers.ScaleForDpi(this, 116),
+            Height = FormHostHelpers.ScaleForDpi(this, 32),
+            Margin = new Padding(8, 8, 0, 0)
         };
 
         if (tblTeacherDetail.Controls.ContainsKey("pnlTeacherAvatarHost"))
@@ -353,9 +502,20 @@ public partial class FrmTeacherManagement : Form
         {
             Name = "pnlTeacherAvatarHost",
             Dock = DockStyle.Fill,
-            Height = 160
+            Height = FormHostHelpers.ScaleForDpi(this, 118)
         };
-        panel.Controls.Add(_btnChooseTeacherAvatar);
+
+        var actionPanel = new FlowLayoutPanel
+        {
+            Dock = DockStyle.Fill,
+            FlowDirection = FlowDirection.LeftToRight,
+            WrapContents = true,
+            Margin = Padding.Empty,
+            Padding = new Padding(12, 8, 0, 0)
+        };
+        actionPanel.Controls.Add(_btnChooseTeacherAvatar);
+        actionPanel.Controls.Add(_btnRemoveTeacherAvatar);
+        panel.Controls.Add(actionPanel);
         panel.Controls.Add(_picTeacherAvatar);
 
         var label = new Label
@@ -367,9 +527,22 @@ public partial class FrmTeacherManagement : Form
         };
 
         tblTeacherDetail.RowCount += 1;
-        tblTeacherDetail.RowStyles.Add(new RowStyle(SizeType.Absolute, 170F));
+        tblTeacherDetail.RowStyles.Add(new RowStyle(SizeType.Absolute, FormHostHelpers.ScaleForDpi(this, 128)));
         tblTeacherDetail.Controls.Add(label, 0, tblTeacherDetail.RowCount - 1);
         tblTeacherDetail.Controls.Add(panel, 1, tblTeacherDetail.RowCount - 1);
+    }
+
+    private void RemoveTeacherAvatar()
+    {
+        _pendingAvatarSourcePath = null;
+        _currentAvatarPath = null;
+        if (_picTeacherAvatar is not null)
+        {
+            _picTeacherAvatar.Image?.Dispose();
+            _picTeacherAvatar.Image = null;
+        }
+
+        MessageBox.Show(this, "Đã bỏ ảnh đại diện. Bấm Lưu để áp dụng thay đổi.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
 
     private void ChooseTeacherAvatar()

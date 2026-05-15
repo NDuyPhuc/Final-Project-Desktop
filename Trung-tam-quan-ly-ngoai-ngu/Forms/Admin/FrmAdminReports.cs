@@ -38,6 +38,7 @@ public partial class FrmAdminReports : Form
         pnlReportHighlightCard.Resize += (_, _) => LayoutHighlightCard();
         pnlReportDistributionCard.Resize += (_, _) => LayoutDistributionCard();
         pnlReportChartHeader.Resize += (_, _) => LayoutChartHeader();
+        pnlReportChartCard.Resize += (_, _) => LayoutChartSurface();
         pnlReportDetailHeader.Resize += (_, _) => LayoutDetailHeader();
     }
 
@@ -457,6 +458,22 @@ public partial class FrmAdminReports : Form
         pnlReportChartHeader.Height = compact
             ? Math.Max(FormHostHelpers.ScaleForDpi(this, 70), flpChartLegend.Bottom + FormHostHelpers.ScaleForDpi(this, 8))
             : FormHostHelpers.ScaleForDpi(this, 54);
+        LayoutChartSurface();
+    }
+
+    private void LayoutChartSurface()
+    {
+        if (pnlReportChartCard.IsDisposed || chtAdminRevenue.IsDisposed)
+        {
+            return;
+        }
+
+        var left = pnlReportChartCard.Padding.Left;
+        var top = pnlReportChartHeader.Bottom + FormHostHelpers.ScaleForDpi(this, 8);
+        var width = Math.Max(FormHostHelpers.ScaleForDpi(this, 320), pnlReportChartCard.ClientSize.Width - pnlReportChartCard.Padding.Horizontal);
+        var height = Math.Max(FormHostHelpers.ScaleForDpi(this, 220), pnlReportChartCard.ClientSize.Height - top - pnlReportChartCard.Padding.Bottom);
+
+        chtAdminRevenue.SetBounds(left, top, width, height);
     }
 
     private void LayoutDetailHeader()
@@ -537,7 +554,7 @@ public partial class FrmAdminReports : Form
     {
         Text = "Báo cáo thống kê";
         lblAdminReportTitle.Text = "BÁO CÁO THỐNG KÊ";
-        lblAdminReportSession.Text = $"PHIEN: {DateTime.Now:dd/MM/yyyy HH:mm}";
+        lblAdminReportSession.Text = $"PHIÊN: {DateTime.Now:dd/MM/yyyy HH:mm}";
         lblAdminReportStatus.Text = "TRẠNG THÁI: ADMIN";
         btnPrintReport.Text = "IN BÁO CÁO";
         btnRefreshData.Text = "CẬP NHẬT DỮ LIỆU";
@@ -616,6 +633,10 @@ public partial class FrmAdminReports : Form
 
     private void ConfigureChartSurface()
     {
+        chtAdminRevenue.Dock = DockStyle.None;
+        chtAdminRevenue.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+        chtAdminRevenue.MinimumSize = FormHostHelpers.ScaleSize(this, new Size(320, 220));
+
         var area = chtAdminRevenue.ChartAreas["DefaultArea"];
         area.BackColor = Color.White;
         area.AxisX.MajorGrid.Enabled = false;
@@ -640,11 +661,11 @@ public partial class FrmAdminReports : Form
     {
         btnViewReport.Click += (_, _) => ApplyReportView();
         btnRefreshData.Click += (_, _) => RefreshReportData();
-        btnExportReportCsv.Click += (_, _) => ExportCurrentReportExcel();
+        btnExportReportCsv.Click += (_, _) => ExportCurrentReportCsv();
         btnPrintReport.Click += (_, _) => ExportCurrentReportPdf();
         cboReportType.SelectedIndexChanged += (_, _) => ApplyReportView();
-        btnReportPrevPage.Click += (_, _) => ShowFeatureHint("Dieu huong trang");
-        btnReportNextPage.Click += (_, _) => ShowFeatureHint("Dieu huong trang");
+        btnReportPrevPage.Click += (_, _) => ShowFeatureHint("Điều hướng trang");
+        btnReportNextPage.Click += (_, _) => ShowFeatureHint("Điều hướng trang");
     }
 
     private void LoadDefaultReport()
@@ -669,7 +690,7 @@ public partial class FrmAdminReports : Form
             _currentScenario = BuildScenario(selectedType, dtpReportFromDate.Value.Date, dtpReportToDate.Value.Date);
             BindScenarioToUi(_currentScenario);
             ApplyReportTypeIcons(selectedType);
-            lblAdminReportSession.Text = $"PHIEN: {DateTime.Now:dd/MM/yyyy HH:mm}";
+            lblAdminReportSession.Text = $"PHIÊN: {DateTime.Now:dd/MM/yyyy HH:mm}";
         lblAdminReportStatus.Text = "TRẠNG THÁI: ADMIN";
         }
         catch (Exception ex)
@@ -757,22 +778,22 @@ public partial class FrmAdminReports : Form
         {
             "Tuyen sinh" => new ReportScenario
             {
-                RevenueTitle = "Tong ho so ghi danh",
+                RevenueTitle = "Tổng hồ sơ ghi danh",
                 RevenueValue = detailCount.ToString("N0", ReportCulture),
                 RevenueTrend = BuildTrendText(chartPoints),
                 EnrollmentTitle = "Học viên mới trong kỳ",
                 EnrollmentValue = CountDistinctValues(detailTable, "Hoc vien").ToString("N0", ReportCulture),
-                EnrollmentTrend = $"Thang nay: {stats.NewStudentsThisMonth:N0}",
+                EnrollmentTrend = $"Tháng này: {stats.NewStudentsThisMonth:N0}",
                 ClassTitle = "Số lớp đang mở",
                 ClassValue = stats.TotalActiveClasses.ToString("N0", ReportCulture),
                 ClassTrend = $"Tổng học viên: {stats.TotalStudents:N0}",
                 RetentionTitle = "Tổng học viên trung tâm",
                 RetentionValue = stats.TotalStudents.ToString("N0", ReportCulture),
-                RetentionTrend = $"Tong GV: {stats.TotalTeachers:N0}",
-                ChartTitle = "XU HUONG GHI DANH THEO THANG",
-                DetailTitle = "CHI TIET GHI DANH TRONG KY",
-                HighlightTitle = "Tuyen sinh dang tang",
-                HighlightBody = $"Co {detailCount:N0} ho so trong khoang {fromDate:dd/MM/yyyy} - {toDate:dd/MM/yyyy}.",
+                RetentionTrend = $"Tổng GV: {stats.TotalTeachers:N0}",
+                ChartTitle = "XU HƯỚNG GHI DANH THEO THÁNG",
+                DetailTitle = "CHI TIẾT GHI DANH TRONG KỲ",
+                HighlightTitle = "Tuyển sinh đang tăng",
+                HighlightBody = $"Có {detailCount:N0} hồ sơ trong khoảng {fromDate:dd/MM/yyyy} - {toDate:dd/MM/yyyy}.",
                 HighlightProgress = BuildProgressValue(detailCount, Math.Max(1, stats.TotalStudents)),
                 DetailPaging = BuildPagingText(detailCount),
                 Distributions = distributions,
@@ -782,22 +803,22 @@ public partial class FrmAdminReports : Form
             },
             "Cong no" => new ReportScenario
             {
-                RevenueTitle = "Tong cong no",
+                RevenueTitle = "Tổng công nợ",
                 RevenueValue = FormatCompactMoney(stats.TotalDebt),
                 RevenueTrend = BuildTrendText(chartPoints),
-                EnrollmentTitle = "So bien lai",
+                EnrollmentTitle = "Số biên lai",
                 EnrollmentValue = stats.TotalReceipts.ToString("N0", ReportCulture),
                 EnrollmentTrend = $"Doanh thu: {FormatCompactMoney(stats.TotalRevenue)}",
                 ClassTitle = "Lớp đang mở",
                 ClassValue = stats.TotalActiveClasses.ToString("N0", ReportCulture),
-                ClassTrend = $"Tong staff: {stats.TotalStaff:N0}",
+                ClassTrend = $"Tổng staff: {stats.TotalStaff:N0}",
                 RetentionTitle = "Học viên còn nợ",
                 RetentionValue = detailTable.Rows.Count.ToString("N0", ReportCulture),
-                RetentionTrend = "Theo doi cong no chua thanh toan",
-                ChartTitle = "XU HUONG CONG NO THEO THANG",
-                DetailTitle = "CHI TIET CONG NO TRONG KY",
-                HighlightTitle = "Cong no can theo doi",
-                HighlightBody = $"Tong cong no hien tai la {FormatMoney(stats.TotalDebt)}.",
+                RetentionTrend = "Theo dõi công nợ chưa thanh toán",
+                ChartTitle = "XU HƯỚNG CÔNG NỢ THEO THÁNG",
+                DetailTitle = "CHI TIẾT CÔNG NỢ TRONG KỲ",
+                HighlightTitle = "Công nợ cần theo dõi",
+                HighlightBody = $"Tổng công nợ hiện tại là {FormatMoney(stats.TotalDebt)}.",
                 HighlightProgress = BuildProgressValue(stats.TotalDebt, Math.Max(1M, stats.TotalRevenue + stats.TotalDebt)),
                 DetailPaging = BuildPagingText(detailTable.Rows.Count),
                 Distributions = distributions,
@@ -815,14 +836,14 @@ public partial class FrmAdminReports : Form
                 EnrollmentTrend = $"Tổng học viên: {stats.TotalStudents:N0}",
                 ClassTitle = "Số lớp đang mở",
                 ClassValue = stats.TotalActiveClasses.ToString("N0", ReportCulture),
-                ClassTrend = $"Tong GV: {stats.TotalTeachers:N0}",
-                RetentionTitle = "Tong cong no",
+                ClassTrend = $"Tổng GV: {stats.TotalTeachers:N0}",
+                RetentionTitle = "Tổng công nợ",
                 RetentionValue = FormatCompactMoney(stats.TotalDebt),
-                RetentionTrend = $"Tong bien lai: {stats.TotalReceipts:N0}",
-                ChartTitle = "XU HUONG DOANH THU THEO THANG",
-                DetailTitle = "CHI TIET THU HOC PHI TRONG KY",
+                RetentionTrend = $"Tổng biên lai: {stats.TotalReceipts:N0}",
+                ChartTitle = "XU HƯỚNG DOANH THU THEO THÁNG",
+                DetailTitle = "CHI TIẾT THU HỌC PHÍ TRONG KỲ",
                 HighlightTitle = "Doanh thu đã ghi nhận",
-                HighlightBody = $"Da thu {FormatMoney(stats.TotalRevenue)} va con no {FormatMoney(stats.TotalDebt)}.",
+                HighlightBody = $"Đã thu {FormatMoney(stats.TotalRevenue)} và còn nợ {FormatMoney(stats.TotalDebt)}.",
                 HighlightProgress = BuildProgressValue(stats.TotalRevenue, Math.Max(1M, stats.TotalRevenue + stats.TotalDebt)),
                 DetailPaging = BuildPagingText(detailTable.Rows.Count),
                 Distributions = distributions,
@@ -1030,6 +1051,37 @@ public partial class FrmAdminReports : Form
         {
             ErrorLogger.Log(ex, nameof(FrmAdminReports));
             MessageBox.Show(this, "Không xuất được file Excel. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private void ExportCurrentReportCsv()
+    {
+        if (_currentScenario is null)
+        {
+            return;
+        }
+
+        try
+        {
+            using var dialog = new SaveFileDialog
+            {
+                Filter = "CSV files (*.csv)|*.csv",
+                FileName = $"bao-cao-{GetSelectedReportType().ToLowerInvariant().Replace(' ', '-')}-{DateTime.Now:yyyyMMdd-HHmmss}.csv",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)
+            };
+
+            if (dialog.ShowDialog(this) != DialogResult.OK)
+            {
+                return;
+            }
+
+            File.WriteAllText(dialog.FileName, BuildCsv(_currentScenario.DetailTable), new UTF8Encoding(true));
+            MessageBox.Show(this, "Đã xuất file CSV thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        catch (Exception ex)
+        {
+            ErrorLogger.Log(ex, nameof(FrmAdminReports));
+            MessageBox.Show(this, "Không xuất được file CSV. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 

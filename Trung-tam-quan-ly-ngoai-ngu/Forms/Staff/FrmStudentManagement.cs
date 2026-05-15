@@ -1,6 +1,7 @@
 using System.Data;
 using System.Globalization;
 using System.Text;
+using System.Text.RegularExpressions;
 using TrungTamNgoaiNgu.Application.Infrastructure;
 using TrungTamNgoaiNgu.Domain.Entities;
 
@@ -8,6 +9,11 @@ namespace Trung_tam_quan_ly_ngoai_ngu;
 
 public partial class FrmStudentManagement : Form
 {
+    private static readonly DateTime StudentBirthDateMax = new(2020, 12, 31);
+    private static readonly DateTime StudentBirthDateMin = new(1900, 1, 1);
+    private static readonly DateTime DefaultStudentBirthDate = new(2012, 1, 1);
+    private static readonly Regex PhoneRegex = new(@"^0\d{9}$", RegexOptions.Compiled);
+    private static readonly Regex EmailRegex = new(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.Compiled);
     private DataTable _studentTable = new();
     private string? _pendingAvatarSourcePath;
     private string? _currentAvatarPath;
@@ -33,8 +39,9 @@ public partial class FrmStudentManagement : Form
         cboStudentStatusFilter.SelectedIndex = 0;
         cboStudentStatus.SelectedIndex = 0;
 
-        ttStudentManagement.SetToolTip(btnOpenEnrollment, "Mở màn hình ghi danh để tiếp tục xếp lớp và thu học phí.");
-        ttStudentManagement.SetToolTip(btnChooseStudentAvatar, "Chọn ảnh avatar và lưu vào thư mục Images.");
+        ttStudentManagement.SetToolTip(btnOpenEnrollment, "Mở màn hình ghi danh để xếp lớp và thu học phí.");
+        ttStudentManagement.SetToolTip(btnChooseStudentAvatar, "Chọn ảnh đại diện và lưu vào thư mục Images.");
+        ttStudentManagement.SetToolTip(btnRemoveStudentAvatar, "Xóa ảnh khỏi hồ sơ. Bấm Lưu để áp dụng.");
 
         AppTheme.StyleGroupBox(grpStudentInfo);
         AppTheme.StyleGrid(dgvStudentList);
@@ -49,11 +56,17 @@ public partial class FrmStudentManagement : Form
         AppTheme.StylePrimaryButton(btnUpdateStudent);
         AppTheme.StyleDangerButton(btnDeleteStudent);
 
+        dtpStudentBirthDate.Format = DateTimePickerFormat.Custom;
+        dtpStudentBirthDate.CustomFormat = "dd/MM/yyyy";
+        dtpStudentBirthDate.MinDate = StudentBirthDateMin;
+        dtpStudentBirthDate.Value = DefaultStudentBirthDate;
+        dtpStudentBirthDate.MaxDate = StudentBirthDateMax;
+
         picStudentAvatar.BackColor = Color.FromArgb(233, 239, 248);
         picStudentAvatar.BorderStyle = BorderStyle.FixedSingle;
         picStudentAvatar.SizeMode = PictureBoxSizeMode.Zoom;
-        picStudentAvatar.MinimumSize = new Size(112, 112);
-        picStudentAvatar.Size = new Size(128, 128);
+        picStudentAvatar.MinimumSize = new Size(88, 88);
+        picStudentAvatar.Size = new Size(96, 96);
         picStudentAvatar.Anchor = AnchorStyles.Top;
         picStudentAvatar.Margin = new Padding(0, 0, 0, 8);
 
@@ -133,14 +146,22 @@ public partial class FrmStudentManagement : Form
     {
         if (!ValidateEditor())
         {
+            ValidationFeedback.ShowFirstError(this, errStudent,
+                txtStudentId,
+                txtStudentFullName,
+                dtpStudentBirthDate,
+                txtStudentPhone,
+                txtStudentEmail);
             return;
         }
 
         try
         {
+            var studentId = txtStudentId.Text.Trim();
+            var isCreating = AppRuntime.DataService.GetStudentById(studentId) is null;
             var student = new StudentEntity
             {
-                Id = txtStudentId.Text.Trim(),
+                Id = studentId,
                 FullName = txtStudentFullName.Text.Trim(),
                 BirthDate = dtpStudentBirthDate.Value.Date,
                 Phone = txtStudentPhone.Text.Trim(),
@@ -162,12 +183,12 @@ public partial class FrmStudentManagement : Form
             _currentAvatarPath = student.AvatarPath;
             LoadStudents(txtStudentKeyword.Text.Trim(), cboStudentStatusFilter.Text);
             FocusStudent(student.Id);
-            MessageBox.Show(this, "Đã lưu học viên thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(this, isCreating ? "Đã thêm học viên thành công." : "Đã cập nhật học viên thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         catch (Exception ex)
         {
             ErrorLogger.Log(ex, nameof(FrmStudentManagement));
-            MessageBox.Show(this, "Không lưu được học viên. Vui lòng kiểm tra log.txt.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, $"Không lưu được học viên: {ex.GetBaseException().Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 
@@ -175,6 +196,13 @@ public partial class FrmStudentManagement : Form
     {
         if (string.IsNullOrWhiteSpace(txtStudentId.Text))
         {
+            MessageBox.Show(this, "Hãy chọn học viên cần xóa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return;
+        }
+
+        if (AppRuntime.DataService.GetStudentById(txtStudentId.Text.Trim()) is null)
+        {
+            MessageBox.Show(this, "Học viên chưa được lưu nên không thể xóa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             return;
         }
 
@@ -189,6 +217,7 @@ public partial class FrmStudentManagement : Form
             AppRuntime.DataService.SoftDeleteStudent(txtStudentId.Text.Trim());
             LoadStudents(txtStudentKeyword.Text.Trim(), cboStudentStatusFilter.Text);
             ResetDetailEditor();
+            MessageBox.Show(this, "Đã xóa mềm học viên thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         catch (Exception ex)
         {
@@ -226,7 +255,9 @@ public partial class FrmStudentManagement : Form
     {
         _pendingAvatarSourcePath = null;
         _currentAvatarPath = null;
+        picStudentAvatar.Image?.Dispose();
         picStudentAvatar.Image = null;
+        MessageBox.Show(this, "Đã bỏ ảnh đại diện. Bấm Lưu để áp dụng thay đổi.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
 
     private void SelectFirstStudentRow()
@@ -282,7 +313,7 @@ public partial class FrmStudentManagement : Form
             txtStudentEmail.Text = student.Email ?? string.Empty;
             SetStudentAddressText(student.Address);
             cboStudentStatus.Text = string.IsNullOrWhiteSpace(student.Status) ? "Đang học" : student.Status;
-            dtpStudentBirthDate.Value = student.BirthDate == default ? DateTime.Today : student.BirthDate;
+            dtpStudentBirthDate.Value = ClampStudentBirthDate(student.BirthDate);
             _currentAvatarPath = student.AvatarPath;
             _pendingAvatarSourcePath = null;
             LoadAvatarPreview(AppRuntime.DataService.ResolveAbsoluteImagePath(student.AvatarPath));
@@ -298,11 +329,15 @@ public partial class FrmStudentManagement : Form
     {
         if (string.IsNullOrWhiteSpace(imagePath) || !File.Exists(imagePath))
         {
+            picStudentAvatar.Image?.Dispose();
             picStudentAvatar.Image = null;
             return;
         }
 
-        using var stream = new FileStream(imagePath, FileMode.Open, FileAccess.Read);
+        picStudentAvatar.Image?.Dispose();
+        picStudentAvatar.Image = null;
+
+        using var stream = new FileStream(imagePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
         using var image = Image.FromStream(stream);
         picStudentAvatar.Image = new Bitmap(image);
     }
@@ -325,20 +360,30 @@ public partial class FrmStudentManagement : Form
         {
             errStudent.SetError(txtStudentPhone, "Số điện thoại không được để trống.");
         }
+        else if (!PhoneRegex.IsMatch(txtStudentPhone.Text.Trim()))
+        {
+            errStudent.SetError(txtStudentPhone, "Số điện thoại phải bắt đầu bằng 0 và đủ 10 chữ số, không nhập chữ.");
+        }
 
         if (string.IsNullOrWhiteSpace(txtStudentEmail.Text))
         {
             errStudent.SetError(txtStudentEmail, "Email không được để trống.");
         }
-        else if (!txtStudentEmail.Text.Contains('@') || !txtStudentEmail.Text.Contains('.'))
+        else if (!EmailRegex.IsMatch(txtStudentEmail.Text.Trim()))
         {
-            errStudent.SetError(txtStudentEmail, "Email không hợp lệ.");
+            errStudent.SetError(txtStudentEmail, "Email phải có @ và tên miền, ví dụ ten@gmail.com.");
+        }
+
+        if (dtpStudentBirthDate.Value.Date > StudentBirthDateMax)
+        {
+            errStudent.SetError(dtpStudentBirthDate, "Ngày sinh phải từ năm 2020 trở về trước.");
         }
 
         return string.IsNullOrWhiteSpace(errStudent.GetError(txtStudentId))
             && string.IsNullOrWhiteSpace(errStudent.GetError(txtStudentFullName))
             && string.IsNullOrWhiteSpace(errStudent.GetError(txtStudentPhone))
-            && string.IsNullOrWhiteSpace(errStudent.GetError(txtStudentEmail));
+            && string.IsNullOrWhiteSpace(errStudent.GetError(txtStudentEmail))
+            && string.IsNullOrWhiteSpace(errStudent.GetError(dtpStudentBirthDate));
     }
 
     private void ResetDetailEditor()
@@ -350,7 +395,7 @@ public partial class FrmStudentManagement : Form
         txtStudentEmail.Clear();
         SetStudentAddressText(string.Empty);
         cboStudentStatus.SelectedIndex = 0;
-        dtpStudentBirthDate.Value = DateTime.Today;
+        dtpStudentBirthDate.Value = DefaultStudentBirthDate;
         _pendingAvatarSourcePath = null;
         _currentAvatarPath = null;
         picStudentAvatar.Image = null;
@@ -561,6 +606,21 @@ public partial class FrmStudentManagement : Form
         {
             _txtStudentAddress.Text = value ?? string.Empty;
         }
+    }
+
+    private static DateTime ClampStudentBirthDate(DateTime birthDate)
+    {
+        if (birthDate == default)
+        {
+            return DefaultStudentBirthDate;
+        }
+
+        if (birthDate < StudentBirthDateMin)
+        {
+            return StudentBirthDateMin;
+        }
+
+        return birthDate > StudentBirthDateMax ? StudentBirthDateMax : birthDate;
     }
 
     private static string BuildDemoEmail(string fullName)

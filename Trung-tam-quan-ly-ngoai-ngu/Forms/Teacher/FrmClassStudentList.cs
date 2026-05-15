@@ -7,9 +7,11 @@ public partial class FrmClassStudentList : Form
 {
     private DataTable _classTable = new();
     private DataTable _studentTable = new();
+    private readonly string? _preselectedClassId;
 
-    public FrmClassStudentList()
+    public FrmClassStudentList(string? preselectedClassId = null)
     {
+        _preselectedClassId = preselectedClassId;
         InitializeComponent();
         FormHostHelpers.ConfigureModuleSurface(this, "Danh sách học viên lớp");
         ConfigureView();
@@ -238,18 +240,17 @@ public partial class FrmClassStudentList : Form
         btnRefreshClassStudent.Click += (_, _) => ResetFilters();
         btnOpenAttendanceFromStudentList.Click += (_, _) =>
         {
-            using var form = new FrmAttendance();
+            using var form = new FrmAttendance(GetSelectedClassId());
             form.ShowDialog(this);
         };
         btnOpenScoreFromStudentList.Click += (_, _) =>
         {
-            using var form = new FrmScoreEntry();
+            using var form = new FrmScoreEntry(GetSelectedClassId());
             form.ShowDialog(this);
         };
         btnBackToTeachingClasses.Click += (_, _) =>
         {
-            using var form = new FrmTeachingClasses();
-            form.ShowDialog(this);
+            FindForm()?.Close();
         };
     }
 
@@ -261,6 +262,7 @@ public partial class FrmClassStudentList : Form
             cboClassStudentClass.DisplayMember = "Ten lop";
             cboClassStudentClass.ValueMember = "Ma lop";
             cboClassStudentClass.DataSource = _classTable;
+            SelectClass(_preselectedClassId);
             LoadStudents();
         }
         catch (Exception ex)
@@ -345,6 +347,23 @@ public partial class FrmClassStudentList : Form
             : cboClassStudentClass.SelectedItem is DataRowView rowView
                 ? GetField(rowView.Row, "Ma lop")
                 : null;
+    }
+
+    private void SelectClass(string? classId)
+    {
+        if (string.IsNullOrWhiteSpace(classId))
+        {
+            return;
+        }
+
+        foreach (DataRowView item in cboClassStudentClass.Items)
+        {
+            if (string.Equals(item.Row["Ma lop"]?.ToString(), classId, StringComparison.OrdinalIgnoreCase))
+            {
+                cboClassStudentClass.SelectedItem = item;
+                return;
+            }
+        }
     }
 
     private static string GetField(DataRow row, string columnName)
