@@ -23,6 +23,8 @@ public sealed class OfflineLanguageCenterDataService : ILanguageCenterDataServic
     private readonly List<ClassEntity> _classes;
     private readonly List<EnrollmentEntity> _enrollments;
     private readonly List<ReceiptEntity> _receipts;
+    private readonly List<AttendanceEntity> _attendances;
+    private readonly List<ScoreEntity> _scores;
 
     public OfflineLanguageCenterDataService()
     {
@@ -171,6 +173,9 @@ public sealed class OfflineLanguageCenterDataService : ILanguageCenterDataServic
                 CreatedAt = now
             }
         ];
+
+        _attendances = [];
+        _scores = [];
     }
 
     public void EnsureDatabaseReady()
@@ -551,11 +556,22 @@ public sealed class OfflineLanguageCenterDataService : ILanguageCenterDataServic
 
     public DataTable GetAttendanceList(string? classId = null, DateTime? attendanceDate = null)
     {
-        var table = CreateTable("Ma ghi danh", "Hoc vien", "Ngay", "Trang thai", "Ghi chu");
-        foreach (var enrollment in _enrollments.Where(x => string.IsNullOrWhiteSpace(classId) || x.ClassId == classId))
+        var targetDate = (attendanceDate ?? DateTime.Today).Date;
+        var table = CreateTable("EnrollmentId", "Ma hoc vien", "Ho ten", "Co mat", "Trang thai", "Ghi chu");
+        foreach (var enrollment in _enrollments.Where(x => !x.IsDeleted
+                                                           && IsEnrollmentCountedAsActive(x.Status)
+                                                           && (string.IsNullOrWhiteSpace(classId) || x.ClassId == classId)))
         {
             var student = _students.First(x => x.Id == enrollment.StudentId);
-            table.Rows.Add(enrollment.Id, student.FullName, (attendanceDate ?? DateTime.Today).ToString("dd/MM/yyyy"), "Present", string.Empty);
+            var attendance = _attendances.FirstOrDefault(x => x.EnrollmentId == enrollment.Id && x.AttendanceDate.Date == targetDate);
+            var status = attendance?.Status ?? "Present";
+            table.Rows.Add(
+                enrollment.Id,
+                student.Id,
+                student.FullName,
+                status.Equals("Present", StringComparison.OrdinalIgnoreCase),
+                status,
+                attendance?.Note ?? string.Empty);
         }
 
         return table;
@@ -563,11 +579,20 @@ public sealed class OfflineLanguageCenterDataService : ILanguageCenterDataServic
 
     public DataTable GetScoreList(string? classId = null)
     {
-        var table = CreateTable("Ma ghi danh", "Hoc vien", "Giua ky", "Cuoi ky", "Ghi chu");
-        foreach (var enrollment in _enrollments.Where(x => string.IsNullOrWhiteSpace(classId) || x.ClassId == classId))
+        var table = CreateTable("EnrollmentId", "Ma hoc vien", "Ho ten", "Diem giua ky", "Diem cuoi ky", "Ghi chu");
+        foreach (var enrollment in _enrollments.Where(x => !x.IsDeleted
+                                                           && IsEnrollmentCountedAsActive(x.Status)
+                                                           && (string.IsNullOrWhiteSpace(classId) || x.ClassId == classId)))
         {
             var student = _students.First(x => x.Id == enrollment.StudentId);
-            table.Rows.Add(enrollment.Id, student.FullName, "8.0", "8.5", "Demo");
+            var score = _scores.FirstOrDefault(x => x.EnrollmentId == enrollment.Id);
+            table.Rows.Add(
+                enrollment.Id,
+                student.Id,
+                student.FullName,
+                score?.MidtermScore?.ToString("0.##", CultureInfo.InvariantCulture) ?? string.Empty,
+                score?.FinalScore?.ToString("0.##", CultureInfo.InvariantCulture) ?? string.Empty,
+                score?.Note ?? string.Empty);
         }
 
         return table;
@@ -919,10 +944,65 @@ public sealed class OfflineLanguageCenterDataService : ILanguageCenterDataServic
 
     public void SaveAttendance(string classId, DateTime attendanceDate, IEnumerable<AttendanceSaveItem> items)
     {
+        var activeEnrollmentIds = _enrollments
+            .Where(x => !x.IsDeleted && x.ClassId == classId && IsEnrollmentCountedAsActive(x.Status))
+            .Select(x => x.Id)
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var item in items.Where(x => activeEnrollmentIds.Contains(x.EnrollmentId)))
+        {
+            var entity = _attendances.FirstOrDefault(x => x.EnrollmentId == item.EnrollmentId && x.AttendanceDate.Date == attendanceDate.Date);
+            if (entity is null)
+            {
+                entity = new AttendanceEntity
+                {
+                    Id = GetNextCode(_attendances.Select(x => x.Id), "DD"),
+                    EnrollmentId = item.EnrollmentId,
+                    AttendanceDate = attendanceDate.Date,
+                    Status = item.Status,
+                    Note = item.Note?.Trim(),
+                    CreatedAt = DateTime.Now
+                };
+                _attendances.Add(entity);
+                continue;
+            }
+
+            entity.Status = item.Status;
+            entity.Note = item.Note?.Trim();
+            entity.UpdatedAt = DateTime.Now;
+        }
     }
 
     public void SaveScores(string classId, IEnumerable<ScoreSaveItem> items)
     {
+        var activeEnrollmentIds = _enrollments
+            .Where(x => !x.IsDeleted && x.ClassId == classId && IsEnrollmentCountedAsActive(x.Status))
+            .Select(x => x.Id)
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var item in items.Where(x => activeEnrollmentIds.Contains(x.EnrollmentId)))
+        {
+            var entity = _scores.FirstOrDefault(x => x.EnrollmentId == item.EnrollmentId);
+            if (entity is null)
+            {
+                entity = new ScoreEntity
+                {
+                    Id = GetNextCode(_scores.Select(x => x.Id), "DS"),
+                    EnrollmentId = item.EnrollmentId,
+                    MidtermScore = item.MidtermScore,
+                    FinalScore = item.FinalScore,
+                    Note = item.Note?.Trim(),
+                    CreatedAt = DateTime.Now
+                };
+                _scores.Add(entity);
+                continue;
+            }
+
+            entity.MidtermScore = item.MidtermScore;
+            entity.FinalScore = item.FinalScore;
+            entity.Note = item.Note?.Trim();
+            entity.UpdatedAt = DateTime.Now;
+        }
     }
 
     public string SaveStudentAvatar(string studentId, string sourceImagePath) => sourceImagePath;

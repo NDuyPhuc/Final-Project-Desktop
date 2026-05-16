@@ -22,6 +22,7 @@ public partial class FrmClassManagement : Form
     private void ConfigureView()
     {
         LocalizeLabels();
+        ConfigureClassInfoRows();
         MinimumSize = FormHostHelpers.ScaleSize(this, new Size(1140, 700));
         splClassContent.Panel1MinSize = FormHostHelpers.ScaleForDpi(this, 360);
         splClassContent.Panel2MinSize = FormHostHelpers.ScaleForDpi(this, 420);
@@ -64,6 +65,31 @@ public partial class FrmClassManagement : Form
         cboClassStatusFilter.SelectedIndex = 0;
         cboClassDetailStatus.SelectedIndex = 0;
         _errClass.BlinkStyle = ErrorBlinkStyle.NeverBlink;
+    }
+
+    private void ConfigureClassInfoRows()
+    {
+        tblClassInfo.SuspendLayout();
+        try
+        {
+            tblClassInfo.RowStyles.Clear();
+            tblClassInfo.RowCount = 10;
+            var rowHeight = FormHostHelpers.ScaleForDpi(this, 40);
+            for (var index = 0; index < tblClassInfo.RowCount; index++)
+            {
+                tblClassInfo.RowStyles.Add(new RowStyle(SizeType.Absolute, rowHeight));
+            }
+
+            tblClassInfo.AutoScroll = true;
+            txtClassSize.Dock = DockStyle.Left;
+            txtClassSize.Width = FormHostHelpers.ScaleForDpi(this, 180);
+            cboClassDetailStatus.Dock = DockStyle.Left;
+            cboClassDetailStatus.Width = FormHostHelpers.ScaleForDpi(this, 180);
+        }
+        finally
+        {
+            tblClassInfo.ResumeLayout(true);
+        }
     }
 
     private void WireEvents()

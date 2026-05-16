@@ -91,7 +91,7 @@ CREATE TABLE [Teachers] (
     [UpdatedAt] datetime2 NULL,
     CONSTRAINT [PK_Teachers] PRIMARY KEY ([Id]),
     CONSTRAINT [FK_Teachers_Accounts_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [Accounts] ([Id]) ON DELETE SET NULL,
-    CONSTRAINT [CK_Teachers_Gender] CHECK ([Gender] IS NULL OR [Gender] IN (N'Male', N'Female', N'Other')),
+    CONSTRAINT [CK_Teachers_Gender] CHECK ([Gender] IS NULL OR LTRIM(RTRIM([Gender])) IN (N'Nam', N'Nữ', N'Nu', N'Khác', N'Khac', N'Male', N'Female', N'Other')),
     CONSTRAINT [CK_Teachers_Status] CHECK ([Status] IN (N'Active', N'Inactive'))
 );
 GO

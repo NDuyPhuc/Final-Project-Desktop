@@ -73,6 +73,14 @@ public partial class FrmScoreEntry : Form
         try
         {
             var classId = GetSelectedClassId();
+            if (string.IsNullOrWhiteSpace(classId))
+            {
+                _scoreTable = BuildEmptyScoreTable();
+                dgvScoreList.DataSource = _scoreTable;
+                ConfigureGrid();
+                return;
+            }
+
             _scoreTable = AppRuntime.DataService.GetScoreList(classId);
             dgvScoreList.DataSource = _scoreTable;
             ConfigureGrid();
@@ -86,6 +94,12 @@ public partial class FrmScoreEntry : Form
 
     private void ConfigureGrid()
     {
+        SetHeader("Ma hoc vien", "Mã học viên");
+        SetHeader("Ho ten", "Họ tên");
+        SetHeader("Diem giua ky", "Điểm giữa kỳ");
+        SetHeader("Diem cuoi ky", "Điểm cuối kỳ");
+        SetHeader("Ghi chu", "Ghi chú");
+
         if (!dgvScoreList.Columns.Contains("EnrollmentId"))
         {
             return;
@@ -108,6 +122,8 @@ public partial class FrmScoreEntry : Form
         try
         {
             errScore.Clear();
+            dgvScoreList.EndEdit();
+
             var classId = GetSelectedClassId();
             if (string.IsNullOrWhiteSpace(classId))
             {
@@ -168,7 +184,10 @@ public partial class FrmScoreEntry : Form
             return null;
         }
 
-        if (!decimal.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out var score))
+        var normalizedValue = value.Trim();
+        var viCulture = CultureInfo.GetCultureInfo("vi-VN");
+        if (!decimal.TryParse(normalizedValue, NumberStyles.Number, viCulture, out var score)
+            && !decimal.TryParse(normalizedValue, NumberStyles.Number, CultureInfo.InvariantCulture, out score))
         {
             throw new InvalidOperationException($"{fieldName} phải là số.");
         }
@@ -223,5 +242,25 @@ public partial class FrmScoreEntry : Form
                 return;
             }
         }
+    }
+
+    private void SetHeader(string columnName, string headerText)
+    {
+        if (dgvScoreList.Columns.Contains(columnName))
+        {
+            dgvScoreList.Columns[columnName].HeaderText = headerText;
+        }
+    }
+
+    private static DataTable BuildEmptyScoreTable()
+    {
+        var table = new DataTable();
+        table.Columns.Add("EnrollmentId");
+        table.Columns.Add("Ma hoc vien");
+        table.Columns.Add("Ho ten");
+        table.Columns.Add("Diem giua ky");
+        table.Columns.Add("Diem cuoi ky");
+        table.Columns.Add("Ghi chu");
+        return table;
     }
 }

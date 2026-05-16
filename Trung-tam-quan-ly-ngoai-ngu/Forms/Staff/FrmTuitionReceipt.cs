@@ -107,6 +107,7 @@ public partial class FrmTuitionReceipt : Form
     {
         try
         {
+            var previousEnrollmentId = _currentEnrollmentId;
             _currentContext = string.IsNullOrWhiteSpace(enrollmentId)
                 ? null
                 : AppRuntime.DataService.GetEnrollmentReceiptContext(enrollmentId);
@@ -131,6 +132,12 @@ public partial class FrmTuitionReceipt : Form
             }
 
             _currentEnrollmentId = _currentContext.EnrollmentId;
+            if (!string.Equals(previousEnrollmentId, _currentEnrollmentId, StringComparison.OrdinalIgnoreCase))
+            {
+                _lastReceiptId = null;
+                _currentPrintInfo = null;
+            }
+
             txtReceiptStudentCode.ReadOnly = false;
             txtReceiptStudentCode.Text = _currentContext.StudentCode;
             txtReceiptStudentName.Text = _currentContext.StudentName;
@@ -166,16 +173,15 @@ public partial class FrmTuitionReceipt : Form
 
             _currentContext = context;
             _currentEnrollmentId = context.EnrollmentId;
+            _lastReceiptId = null;
+            _currentPrintInfo = null;
             txtReceiptStudentCode.Text = context.StudentCode;
             txtReceiptStudentName.Text = context.StudentName;
             txtReceiptClassCode.Text = $"{context.ClassCode} - {context.ClassName}";
             txtReceiptCourseName.Text = $"{context.CourseName} | Học phí: {FormatMoney(context.TuitionFee)} | Còn nợ: {FormatMoney(context.OutstandingBalance)}";
-            if (string.IsNullOrWhiteSpace(txtReceiptAmount.Text))
-            {
-                txtReceiptAmount.Text = context.OutstandingBalance > 0
-                    ? context.OutstandingBalance.ToString("N0", CultureInfo.GetCultureInfo("vi-VN"))
-                    : "0";
-            }
+            txtReceiptAmount.Text = context.OutstandingBalance > 0
+                ? context.OutstandingBalance.ToString("N0", CultureInfo.GetCultureInfo("vi-VN"))
+                : "0";
 
             LoadReceiptHistory();
         }
@@ -264,6 +270,12 @@ public partial class FrmTuitionReceipt : Form
             dgvReceiptHistory.DataSource = AppRuntime.DataService.GetReceiptHistory(
                 _currentEnrollmentId,
                 string.IsNullOrWhiteSpace(txtReceiptStudentCode.Text) ? null : txtReceiptStudentCode.Text.Trim());
+
+            if (dgvReceiptHistory.Rows.Count == 0)
+            {
+                _lastReceiptId = null;
+                _currentPrintInfo = null;
+            }
         }
         catch (Exception ex)
         {
@@ -368,6 +380,13 @@ public partial class FrmTuitionReceipt : Form
         try
         {
             _currentPrintInfo = AppRuntime.DataService.GetReceiptPrintInfo(receiptId);
+            if (_currentContext is not null
+                && !_currentPrintInfo.StudentCode.Equals(_currentContext.StudentCode, StringComparison.OrdinalIgnoreCase))
+            {
+                _currentPrintInfo = null;
+                return false;
+            }
+
             _lastReceiptId = receiptId;
             return true;
         }
@@ -390,7 +409,20 @@ public partial class FrmTuitionReceipt : Form
             }
         }
 
-        return _lastReceiptId;
+        if (string.IsNullOrWhiteSpace(_lastReceiptId))
+        {
+            return null;
+        }
+
+        foreach (DataGridViewRow row in dgvReceiptHistory.Rows)
+        {
+            if (string.Equals(row.Cells[0].Value?.ToString(), _lastReceiptId, StringComparison.OrdinalIgnoreCase))
+            {
+                return _lastReceiptId;
+            }
+        }
+
+        return null;
     }
 
     private void SyncSelectedReceipt()

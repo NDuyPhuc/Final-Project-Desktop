@@ -25,6 +25,12 @@ public partial class FrmTeachingClasses : Form
         AppTheme.StylePrimaryButton(btnOpenAttendance);
         AppTheme.StylePrimaryButton(btnOpenScoreEntry);
 
+        btnSearchTeachingClass.Text = "Tìm";
+        btnRefreshTeachingClass.Text = "Làm mới";
+        btnOpenClassStudentList.Text = "Học viên";
+        btnOpenAttendance.Text = "Điểm danh";
+        btnOpenScoreEntry.Text = "Nhập điểm";
+
         dgvTeachingClassList.AutoGenerateColumns = true;
         dgvTeachingClassList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         txtTeachingClassKeyword.PlaceholderText = "Nhập mã hoặc tên lớp";
@@ -82,6 +88,7 @@ public partial class FrmTeachingClasses : Form
         {
             _sourceTable = AppRuntime.DataService.GetTeachingClasses(AppRuntime.CurrentUser?.Id);
             dgvTeachingClassList.DataSource = _sourceTable;
+            ConfigureGridColumns();
         }
         catch (Exception ex)
         {
@@ -106,7 +113,7 @@ public partial class FrmTeachingClasses : Form
                 || classId.Contains(keyword, StringComparison.OrdinalIgnoreCase)
                 || className.Contains(keyword, StringComparison.OrdinalIgnoreCase);
 
-            var matchesStatus = status is "Tat ca" or "Tất cả" || classStatus.Equals(status, StringComparison.OrdinalIgnoreCase);
+            var matchesStatus = status == "Tất cả" || classStatus.Equals(status, StringComparison.OrdinalIgnoreCase);
             if (matchesKeyword && matchesStatus)
             {
                 filtered.ImportRow(row);
@@ -114,6 +121,7 @@ public partial class FrmTeachingClasses : Form
         }
 
         dgvTeachingClassList.DataSource = filtered;
+        ConfigureGridColumns();
     }
 
     private void ResetFilters()
@@ -121,6 +129,26 @@ public partial class FrmTeachingClasses : Form
         txtTeachingClassKeyword.Clear();
         cboTeachingStatusFilter.SelectedIndex = 0;
         dgvTeachingClassList.DataSource = _sourceTable;
+        ConfigureGridColumns();
+    }
+
+    private void ConfigureGridColumns()
+    {
+        SetHeader("Ma lop", "Mã lớp");
+        SetHeader("Ten lop", "Tên lớp");
+        SetHeader("Khoa hoc", "Khóa học");
+        SetHeader("Lich hoc", "Lịch học");
+        SetHeader("Si so", "Sĩ số");
+        SetHeader("Trang thai", "Trạng thái");
+        SetHeader("Thao tac", "Thao tác");
+    }
+
+    private void SetHeader(string columnName, string headerText)
+    {
+        if (dgvTeachingClassList.Columns.Contains(columnName))
+        {
+            dgvTeachingClassList.Columns[columnName].HeaderText = headerText;
+        }
     }
 
     private static string GetField(DataRow row, string columnName)

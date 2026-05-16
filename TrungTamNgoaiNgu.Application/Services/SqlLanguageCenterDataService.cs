@@ -733,17 +733,19 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
     {
         using var context = CreateContext();
         var teacherId = ResolveRequiredTeacherIdByAccount(context, teacherAccountId);
-        if (teacherId is null)
-        {
-            return CreateTable("Ma lop", "Ten lop", "Khoa hoc", "Lich hoc", "Si so", "Trang thai", "Thao tac");
-        }
-        var classes = context.Classes
+
+        var query = context.Classes
             .AsNoTracking()
             .Include(x => x.Course)
             .Include(x => x.Enrollments)
-            .Where(x => !x.IsDeleted && x.TeacherId == teacherId)
-            .OrderBy(x => x.Name)
-            .ToList();
+            .Where(x => !x.IsDeleted);
+
+        if (!string.IsNullOrWhiteSpace(teacherId))
+        {
+            query = query.Where(x => x.TeacherId == teacherId);
+        }
+
+        var classes = query.OrderBy(x => x.Name).ToList();
 
         var table = CreateTable("Ma lop", "Ten lop", "Khoa hoc", "Lich hoc", "Si so", "Trang thai", "Thao tac");
         foreach (var classItem in classes)
@@ -885,14 +887,17 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
     {
         using var context = CreateContext();
         var teacherId = ResolveRequiredTeacherIdByAccount(context, teacherAccountId);
-        if (teacherId is null)
-        {
-            return new TeacherDashboardStats();
-        }
-        var classes = context.Classes
+
+        var query = context.Classes
             .Include(x => x.Enrollments)
-            .Where(x => !x.IsDeleted && x.TeacherId == teacherId)
-            .ToList();
+            .Where(x => !x.IsDeleted);
+
+        if (!string.IsNullOrWhiteSpace(teacherId))
+        {
+            query = query.Where(x => x.TeacherId == teacherId);
+        }
+
+        var classes = query.ToList();
 
         var classIds = classes.Select(x => x.Id).ToList();
         var today = DateTime.Today;
@@ -2201,8 +2206,36 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
             return null;
         }
 
-        return context.Teachers
+        var teacherId = context.Teachers
             .Where(x => !x.IsDeleted && x.AccountId == teacherAccountId)
+            .Select(x => x.Id)
+            .FirstOrDefault();
+
+        if (!string.IsNullOrWhiteSpace(teacherId))
+        {
+            return teacherId;
+        }
+
+        var account = context.Accounts
+            .AsNoTracking()
+            .FirstOrDefault(x => !x.IsDeleted && x.Id == teacherAccountId);
+
+        if (account is null)
+        {
+            return null;
+        }
+
+        var accountEmail = account.Email.Trim();
+        var accountPhone = account.Phone.Trim();
+        var accountName = account.DisplayName.Trim();
+
+        return context.Teachers
+            .AsNoTracking()
+            .Where(x => !x.IsDeleted
+                        && (x.Email == accountEmail
+                            || x.Phone == accountPhone
+                            || x.FullName == accountName))
+            .OrderBy(x => x.Id)
             .Select(x => x.Id)
             .FirstOrDefault();
     }

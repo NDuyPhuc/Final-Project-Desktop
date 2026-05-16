@@ -2,6 +2,7 @@ using System.Data;
 using System.Globalization;
 using ClosedXML.Excel;
 using PdfSharp.Drawing;
+using PdfSharp.Fonts;
 using PdfSharp.Pdf;
 using TrungTamNgoaiNgu.Application.Models;
 
@@ -9,10 +10,21 @@ namespace Trung_tam_quan_ly_ngoai_ngu;
 
 internal static class ExportFileHelper
 {
+    private const string PdfFontFamilyName = "Arial";
+    private const string RegularFace = "app-arial-regular";
+    private const string BoldFace = "app-arial-bold";
+    private const string ItalicFace = "app-arial-italic";
+    private const string BoldItalicFace = "app-arial-bold-italic";
+
     private static readonly CultureInfo ReceiptCulture = CultureInfo.GetCultureInfo("vi-VN");
+    private static readonly XPdfFontOptions PdfFontOptions = new(PdfFontEncoding.Unicode);
+    private static readonly object FontResolverLock = new();
+    private static bool _fontResolverConfigured;
 
     public static void ExportDataTableToExcel(DataTable table, string filePath, string sheetName)
     {
+        EnsureTargetDirectory(filePath);
+
         using var workbook = new XLWorkbook();
         var worksheet = workbook.Worksheets.Add(string.IsNullOrWhiteSpace(sheetName) ? "Sheet1" : sheetName);
         for (var c = 0; c < table.Columns.Count; c++)
@@ -35,11 +47,14 @@ internal static class ExportFileHelper
 
     public static void ExportDataTableToPdf(DataTable table, string filePath, string title)
     {
+        EnsureTargetDirectory(filePath);
+        EnsurePdfFontResolver();
+
         using var document = new PdfDocument();
         document.Info.Title = title;
-        var titleFont = new XFont("Arial", 14, XFontStyleEx.Bold);
-        var bodyFont = new XFont("Arial", 9);
-        var header = string.Join(" | ", table.Columns.Cast<DataColumn>().Select(x => x.ColumnName));
+        var titleFont = CreateFont(14, XFontStyleEx.Bold);
+        var bodyFont = CreateFont(9);
+        var header = string.Join(" | ", table.Columns.Cast<DataColumn>().Select(x => ToDisplayHeader(x.ColumnName)));
 
         var page = AddA4Page(document);
         var gfx = XGraphics.FromPdfPage(page);
@@ -50,7 +65,7 @@ internal static class ExportFileHelper
 
             foreach (DataRow row in table.Rows)
             {
-                var line = string.Join(" | ", row.ItemArray.Select(x => (x?.ToString() ?? string.Empty).Replace("\r", " ").Replace("\n", " ")));
+                var line = string.Join(" | ", row.ItemArray.Select(x => NormalizePdfText(x?.ToString())));
                 if (y > page.Height - 30)
                 {
                     gfx.Dispose();
@@ -74,16 +89,18 @@ internal static class ExportFileHelper
     public static void ExportReceiptToPdf(ReceiptPrintInfo receipt, string filePath)
     {
         ArgumentNullException.ThrowIfNull(receipt);
+        EnsureTargetDirectory(filePath);
+        EnsurePdfFontResolver();
 
         using var document = new PdfDocument();
         document.Info.Title = $"Biên lai {receipt.ReceiptId}";
 
         var page = AddA4Page(document);
         using var gfx = XGraphics.FromPdfPage(page);
-        var titleFont = new XFont("Arial", 16, XFontStyleEx.Bold);
-        var labelFont = new XFont("Arial", 10, XFontStyleEx.Bold);
-        var bodyFont = new XFont("Arial", 10);
-        var noteFont = new XFont("Arial", 9);
+        var titleFont = CreateFont(16, XFontStyleEx.Bold);
+        var labelFont = CreateFont(10, XFontStyleEx.Bold);
+        var bodyFont = CreateFont(10);
+        var noteFont = CreateFont(9);
         double y = 36;
 
         gfx.DrawString("BIÊN LAI THU HỌC PHÍ", titleFont, XBrushes.Black, new XRect(40, y, page.Width - 80, 24), XStringFormats.TopCenter);
@@ -132,12 +149,156 @@ internal static class ExportFileHelper
     private static double DrawReceiptLine(XGraphics gfx, PdfPage page, XFont labelFont, XFont valueFont, double y, string label, string value)
     {
         gfx.DrawString($"{label}:", labelFont, XBrushes.Black, new XRect(40, y, 125, 16), XStringFormats.TopLeft);
-        gfx.DrawString(value, valueFont, XBrushes.Black, new XRect(170, y, page.Width - 210, 24), XStringFormats.TopLeft);
+        gfx.DrawString(NormalizePdfText(value), valueFont, XBrushes.Black, new XRect(170, y, page.Width - 210, 24), XStringFormats.TopLeft);
         return y + 22;
+    }
+
+    private static XFont CreateFont(double size, XFontStyleEx style = XFontStyleEx.Regular)
+    {
+        return new XFont(PdfFontFamilyName, size, style, PdfFontOptions);
     }
 
     private static string FormatMoney(decimal amount)
     {
         return amount.ToString("N0", ReceiptCulture) + " VND";
+    }
+
+    private static string NormalizePdfText(string? value)
+    {
+        return (value ?? string.Empty).Replace("\r", " ").Replace("\n", " ");
+    }
+
+    private static string ToDisplayHeader(string columnName)
+    {
+        return columnName switch
+        {
+            "Ma lop" => "Mã lớp",
+            "Ten lop" => "Tên lớp",
+            "Khoa hoc" => "Khóa học",
+            "Lich hoc" => "Lịch học",
+            "Si so" => "Sĩ số",
+            "Trang thai" => "Trạng thái",
+            "Thao tac" => "Thao tác",
+            "Ma hoc vien" => "Mã học viên",
+            "Hoc vien" => "Học viên",
+            "Ho ten" => "Họ tên",
+            "Dien thoai" => "Điện thoại",
+            "Ngay" => "Ngày",
+            "Ngay hoc" => "Ngày học",
+            "Ngay ghi danh" => "Ngày ghi danh",
+            "Lop" => "Lớp",
+            "Phai thu" => "Phải thu",
+            "Da thu" => "Đã thu",
+            "Con no" => "Còn nợ",
+            "So tien" => "Số tiền",
+            "Ngay nop" => "Ngày nộp",
+            "Phuong thuc" => "Phương thức",
+            "Ghi chu" => "Ghi chú",
+            "Diem giua ky" => "Điểm giữa kỳ",
+            "Diem cuoi ky" => "Điểm cuối kỳ",
+            "Co mat" => "Có mặt",
+            _ => columnName
+        };
+    }
+
+    private static void EnsureTargetDirectory(string filePath)
+    {
+        var directory = Path.GetDirectoryName(Path.GetFullPath(filePath));
+        if (!string.IsNullOrWhiteSpace(directory))
+        {
+            Directory.CreateDirectory(directory);
+        }
+    }
+
+    private static void EnsurePdfFontResolver()
+    {
+        if (_fontResolverConfigured)
+        {
+            return;
+        }
+
+        lock (FontResolverLock)
+        {
+            if (_fontResolverConfigured)
+            {
+                return;
+            }
+
+            try
+            {
+                if (GlobalFontSettings.FontResolver is null)
+                {
+                    GlobalFontSettings.FontResolver = new WindowsFontResolver();
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                // PDFsharp locks font settings after first font use. Existing resolver can still serve fonts.
+            }
+
+            _fontResolverConfigured = true;
+        }
+    }
+
+    private sealed class WindowsFontResolver : IFontResolver
+    {
+        private static readonly IReadOnlyDictionary<string, string> FontFiles = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            [RegularFace] = "arial.ttf",
+            [BoldFace] = "arialbd.ttf",
+            [ItalicFace] = "ariali.ttf",
+            [BoldItalicFace] = "arialbi.ttf"
+        };
+
+        public FontResolverInfo? ResolveTypeface(string familyName, bool isBold, bool isItalic)
+        {
+            var requestedFace = (isBold, isItalic) switch
+            {
+                (true, true) => BoldItalicFace,
+                (true, false) => BoldFace,
+                (false, true) => ItalicFace,
+                _ => RegularFace
+            };
+
+            if (FontFileExists(requestedFace))
+            {
+                return new FontResolverInfo(requestedFace);
+            }
+
+            return new FontResolverInfo(RegularFace, isBold, isItalic);
+        }
+
+        public byte[]? GetFont(string faceName)
+        {
+            var fileName = FontFiles.TryGetValue(faceName, out var mappedFileName)
+                ? mappedFileName
+                : FontFiles[RegularFace];
+
+            var path = FindFontFile(fileName) ?? FindFontFile(FontFiles[RegularFace]) ?? FindFontFile("segoeui.ttf");
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                throw new InvalidOperationException("Khong tim thay font Arial hoac Segoe UI de xuat PDF.");
+            }
+
+            return File.ReadAllBytes(path);
+        }
+
+        private static bool FontFileExists(string faceName)
+        {
+            return FontFiles.TryGetValue(faceName, out var fileName) && FindFontFile(fileName) is not null;
+        }
+
+        private static string? FindFontFile(string fileName)
+        {
+            var windowsDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
+            var candidates = new[]
+            {
+                Path.Combine(windowsDirectory, "Fonts", fileName),
+                Path.Combine(AppContext.BaseDirectory, "Fonts", fileName),
+                Path.Combine(AppContext.BaseDirectory, fileName)
+            };
+
+            return candidates.FirstOrDefault(File.Exists);
+        }
     }
 }

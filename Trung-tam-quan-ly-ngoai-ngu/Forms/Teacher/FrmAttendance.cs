@@ -76,6 +76,15 @@ public partial class FrmAttendance : Form
         try
         {
             var classId = GetSelectedClassId();
+            if (string.IsNullOrWhiteSpace(classId))
+            {
+                cboAttendanceSession.DataSource = BuildEmptySessionTable();
+                _attendanceTable = BuildEmptyAttendanceTable();
+                dgvAttendanceList.DataSource = _attendanceTable;
+                ConfigureGrid();
+                return;
+            }
+
             var sessions = AppRuntime.DataService.GetSessions(classId);
             cboAttendanceSession.DisplayMember = "Buoi";
             cboAttendanceSession.ValueMember = "Ngay hoc";
@@ -111,6 +120,14 @@ public partial class FrmAttendance : Form
         try
         {
             var classId = GetSelectedClassId();
+            if (string.IsNullOrWhiteSpace(classId))
+            {
+                _attendanceTable = BuildEmptyAttendanceTable();
+                dgvAttendanceList.DataSource = _attendanceTable;
+                ConfigureGrid();
+                return;
+            }
+
             _attendanceTable = AppRuntime.DataService.GetAttendanceList(classId, dtpAttendanceDate.Value.Date);
             dgvAttendanceList.DataSource = _attendanceTable;
             ConfigureGrid();
@@ -124,6 +141,12 @@ public partial class FrmAttendance : Form
 
     private void ConfigureGrid()
     {
+        SetHeader("Ma hoc vien", "Mã học viên");
+        SetHeader("Ho ten", "Họ tên");
+        SetHeader("Co mat", "Có mặt");
+        SetHeader("Trang thai", "Trạng thái");
+        SetHeader("Ghi chu", "Ghi chú");
+
         if (!dgvAttendanceList.Columns.Contains("EnrollmentId"))
         {
             return;
@@ -131,13 +154,11 @@ public partial class FrmAttendance : Form
 
         dgvAttendanceList.Columns["EnrollmentId"].Visible = false;
 
-        var presentColumn = dgvAttendanceList.Columns.Contains("Co mat")
-            ? dgvAttendanceList.Columns["Co mat"]
-            : null;
-
-        if (presentColumn is null)
+        if (!dgvAttendanceList.Columns.Contains("Co mat"))
         {
-            var statusColumn = dgvAttendanceList.Columns["Trang thai"];
+            var statusColumn = dgvAttendanceList.Columns.Contains("Trang thai")
+                ? dgvAttendanceList.Columns["Trang thai"]
+                : null;
             var displayIndex = statusColumn?.DisplayIndex ?? 3;
             var checkboxColumn = new DataGridViewCheckBoxColumn
             {
@@ -148,6 +169,8 @@ public partial class FrmAttendance : Form
             };
             dgvAttendanceList.Columns.Insert(displayIndex, checkboxColumn);
         }
+
+        SetHeader("Co mat", "Có mặt");
     }
 
     private void SetAllAttendanceStatus(bool present)
@@ -171,6 +194,8 @@ public partial class FrmAttendance : Form
         try
         {
             errAttendance.Clear();
+            dgvAttendanceList.EndEdit();
+
             var classId = GetSelectedClassId();
             if (string.IsNullOrWhiteSpace(classId))
             {
@@ -232,5 +257,36 @@ public partial class FrmAttendance : Form
                 return;
             }
         }
+    }
+
+    private void SetHeader(string columnName, string headerText)
+    {
+        if (dgvAttendanceList.Columns.Contains(columnName))
+        {
+            dgvAttendanceList.Columns[columnName].HeaderText = headerText;
+        }
+    }
+
+    private static DataTable BuildEmptySessionTable()
+    {
+        var table = new DataTable();
+        table.Columns.Add("Buoi");
+        table.Columns.Add("Ngay hoc");
+        table.Columns.Add("Khung gio");
+        table.Columns.Add("Phong");
+        table.Columns.Add("Trang thai");
+        return table;
+    }
+
+    private static DataTable BuildEmptyAttendanceTable()
+    {
+        var table = new DataTable();
+        table.Columns.Add("EnrollmentId");
+        table.Columns.Add("Ma hoc vien");
+        table.Columns.Add("Ho ten");
+        table.Columns.Add("Co mat", typeof(bool));
+        table.Columns.Add("Trang thai");
+        table.Columns.Add("Ghi chu");
+        return table;
     }
 }

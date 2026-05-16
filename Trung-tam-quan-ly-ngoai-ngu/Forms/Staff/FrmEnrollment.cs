@@ -54,6 +54,8 @@ public partial class FrmEnrollment : Form
         txtEnrollmentFinalFee.ReadOnly = true;
         txtEnrollmentNote.ScrollBars = ScrollBars.Vertical;
         btnOpenTuitionReceipt.Enabled = false;
+        btnOpenTuitionReceipt.Visible = false;
+        flpEnrollmentActions.Controls.Remove(btnOpenTuitionReceipt);
         _errEnrollment.BlinkStyle = ErrorBlinkStyle.NeverBlink;
     }
 
@@ -320,10 +322,10 @@ public partial class FrmEnrollment : Form
                 note);
 
             _currentEnrollmentId = enrollment.Id;
-            btnOpenTuitionReceipt.Enabled = true;
+            btnOpenTuitionReceipt.Enabled = false;
 
-            MessageBox.Show(this, "Đã tạo ghi danh thành công. Tiếp tục thu học phí ở bước tiếp theo.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            OpenTuitionReceipt();
+            MessageBox.Show(this, "Đã tạo ghi danh thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            LoadData();
         }
         catch (Exception ex)
         {
