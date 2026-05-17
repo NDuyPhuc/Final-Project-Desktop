@@ -27,7 +27,7 @@ namespace Trung_tam_quan_ly_ngoai_ngu
                     HandleUnhandledException(exception);
                 }
             };
-
+                
         Application.Run(new FrmLogin(AppRuntime.DataService));
     }
 

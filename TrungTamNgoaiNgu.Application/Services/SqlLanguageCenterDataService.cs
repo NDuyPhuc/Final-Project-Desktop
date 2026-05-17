@@ -778,7 +778,9 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
             .AsNoTracking()
             .Include(x => x.Student)
             .Include(x => x.Attendances)
-            .Where(x => !x.IsDeleted && x.ClassId == targetClassId && LanguageCenterValueMapper.NormalizeEnrollmentStatus(x.Status) == "Active")
+            .Where(x => !x.IsDeleted && x.ClassId == targetClassId)
+            .AsEnumerable()
+            .Where(x => IsEnrollmentStatusActive(x.Status))
             .OrderBy(x => x.Student!.FullName)
             .ToList();
 
@@ -811,7 +813,9 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
             .AsNoTracking()
             .Include(x => x.Student)
             .Include(x => x.Score)
-            .Where(x => !x.IsDeleted && x.ClassId == targetClassId && LanguageCenterValueMapper.NormalizeEnrollmentStatus(x.Status) == "Active")
+            .Where(x => !x.IsDeleted && x.ClassId == targetClassId)
+            .AsEnumerable()
+            .Where(x => IsEnrollmentStatusActive(x.Status))
             .OrderBy(x => x.Student!.FullName)
             .ToList();
 
@@ -1491,8 +1495,11 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
         try
         {
             using var context = CreateContext();
+            var attendanceIds = context.Attendances.Select(x => x.Id).ToList();
             var activeEnrollmentIds = context.Enrollments
-                .Where(x => !x.IsDeleted && x.ClassId == classId && LanguageCenterValueMapper.NormalizeEnrollmentStatus(x.Status) == "Active")
+                .Where(x => !x.IsDeleted && x.ClassId == classId)
+                .AsEnumerable()
+                .Where(x => IsEnrollmentStatusActive(x.Status))
                 .Select(x => x.Id)
                 .ToHashSet();
 
@@ -1503,9 +1510,11 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
 
                 if (entity is null)
                 {
+                    var nextId = GetNextCode(attendanceIds, "DD");
+                    attendanceIds.Add(nextId);
                     entity = new AttendanceEntity
                     {
-                        Id = GetNextCode(context.Attendances.Select(x => x.Id).ToList(), "DD"),
+                        Id = nextId,
                         EnrollmentId = item.EnrollmentId,
                         AttendanceDate = attendanceDate.Date,
                         Status = item.Status,
@@ -1534,8 +1543,11 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
         try
         {
             using var context = CreateContext();
+            var scoreIds = context.Scores.Select(x => x.Id).ToList();
             var activeEnrollmentIds = context.Enrollments
-                .Where(x => !x.IsDeleted && x.ClassId == classId && LanguageCenterValueMapper.NormalizeEnrollmentStatus(x.Status) == "Active")
+                .Where(x => !x.IsDeleted && x.ClassId == classId)
+                .AsEnumerable()
+                .Where(x => IsEnrollmentStatusActive(x.Status))
                 .Select(x => x.Id)
                 .ToHashSet();
 
@@ -1547,9 +1559,11 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
                 var entity = context.Scores.FirstOrDefault(x => x.EnrollmentId == item.EnrollmentId);
                 if (entity is null)
                 {
+                    var nextId = GetNextCode(scoreIds, "DS");
+                    scoreIds.Add(nextId);
                     entity = new ScoreEntity
                     {
-                        Id = GetNextCode(context.Scores.Select(x => x.Id).ToList(), "DS"),
+                        Id = nextId,
                         EnrollmentId = item.EnrollmentId,
                         MidtermScore = item.MidtermScore,
                         FinalScore = item.FinalScore,
@@ -2111,6 +2125,11 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
     {
         var normalizedStatus = LanguageCenterValueMapper.NormalizeEnrollmentStatus(status);
         return normalizedStatus is "Active" or "Paused";
+    }
+
+    private static bool IsEnrollmentStatusActive(string? status)
+    {
+        return LanguageCenterValueMapper.NormalizeEnrollmentStatus(status) == "Active";
     }
 
     private static void ValidateStudent(StudentEntity student)
