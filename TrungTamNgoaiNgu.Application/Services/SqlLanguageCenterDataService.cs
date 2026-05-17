@@ -53,16 +53,150 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
             }
 
             using var context = CreateContext();
+            EnsureSchemaCompatibility(context);
             if (ShouldSeedSampleData(context))
             {
                 SeedData(context);
             }
+
+            SeedTeacherFlowData(context);
         }
         catch (Exception exception)
         {
             ErrorLogger.Log(exception, "EnsureDatabaseReady");
             throw;
         }
+    }
+
+    private static void EnsureSchemaCompatibility(LanguageCenterDbContext context)
+    {
+        context.Database.ExecuteSqlRaw("""
+IF COL_LENGTH(N'dbo.Teachers', N'AccountId') IS NULL
+BEGIN
+    ALTER TABLE dbo.Teachers ADD AccountId nvarchar(20) NULL;
+END
+""");
+
+        context.Database.ExecuteSqlRaw("""
+IF NOT EXISTS (
+    SELECT 1
+    FROM sys.foreign_keys
+    WHERE name = N'FK_Teachers_Accounts_AccountId'
+      AND parent_object_id = OBJECT_ID(N'dbo.Teachers')
+)
+BEGIN
+    ALTER TABLE dbo.Teachers WITH CHECK
+    ADD CONSTRAINT FK_Teachers_Accounts_AccountId
+    FOREIGN KEY (AccountId) REFERENCES dbo.Accounts(Id) ON DELETE SET NULL;
+END
+""");
+
+        context.Database.ExecuteSqlRaw("""
+IF NOT EXISTS (
+    SELECT 1
+    FROM sys.indexes
+    WHERE name = N'IX_Teachers_AccountId'
+      AND object_id = OBJECT_ID(N'dbo.Teachers')
+)
+BEGIN
+    CREATE UNIQUE INDEX IX_Teachers_AccountId
+    ON dbo.Teachers(AccountId)
+    WHERE AccountId IS NOT NULL AND IsDeleted = 0;
+END
+""");
+
+        context.Database.ExecuteSqlRaw("""
+IF EXISTS (
+    SELECT 1
+    FROM sys.check_constraints
+    WHERE name = N'CK_Teachers_Gender'
+      AND parent_object_id = OBJECT_ID(N'dbo.Teachers')
+)
+BEGIN
+    ALTER TABLE dbo.Teachers DROP CONSTRAINT CK_Teachers_Gender;
+END
+""");
+
+        context.Database.ExecuteSqlRaw("""
+ALTER TABLE dbo.Teachers WITH CHECK
+ADD CONSTRAINT CK_Teachers_Gender
+CHECK (
+    Gender IS NULL
+    OR LTRIM(RTRIM(Gender)) IN (
+        N'Nam', N'Nữ', N'Ná»¯', N'Nu',
+        N'Khác', N'KhÃ¡c', N'Khac',
+        N'Male', N'Female', N'Other'
+    )
+);
+""");
+
+        context.Database.ExecuteSqlRaw("""
+IF OBJECT_ID(N'dbo.Attendances', N'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.Attendances (
+        Id nvarchar(20) NOT NULL,
+        EnrollmentId nvarchar(20) NOT NULL,
+        AttendanceDate datetime2 NOT NULL,
+        Status nvarchar(20) NOT NULL,
+        Note nvarchar(300) NULL,
+        CreatedAt datetime2 NOT NULL CONSTRAINT DF_Attendances_CreatedAt DEFAULT SYSUTCDATETIME(),
+        UpdatedAt datetime2 NULL,
+        CONSTRAINT PK_Attendances PRIMARY KEY (Id),
+        CONSTRAINT FK_Attendances_Enrollments_EnrollmentId
+            FOREIGN KEY (EnrollmentId) REFERENCES dbo.Enrollments(Id) ON DELETE NO ACTION,
+        CONSTRAINT CK_Attendances_Status
+            CHECK (Status IN (N'Present', N'Absent', N'Late', N'Excused'))
+    );
+END
+""");
+
+        context.Database.ExecuteSqlRaw("""
+IF NOT EXISTS (
+    SELECT 1
+    FROM sys.indexes
+    WHERE name = N'IX_Attendances_EnrollmentId_AttendanceDate'
+      AND object_id = OBJECT_ID(N'dbo.Attendances')
+)
+BEGIN
+    CREATE UNIQUE INDEX IX_Attendances_EnrollmentId_AttendanceDate
+    ON dbo.Attendances(EnrollmentId, AttendanceDate);
+END
+""");
+
+        context.Database.ExecuteSqlRaw("""
+IF OBJECT_ID(N'dbo.Scores', N'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.Scores (
+        Id nvarchar(20) NOT NULL,
+        EnrollmentId nvarchar(20) NOT NULL,
+        MidtermScore decimal(4,2) NULL,
+        FinalScore decimal(4,2) NULL,
+        Note nvarchar(300) NULL,
+        CreatedAt datetime2 NOT NULL CONSTRAINT DF_Scores_CreatedAt DEFAULT SYSUTCDATETIME(),
+        UpdatedAt datetime2 NULL,
+        CONSTRAINT PK_Scores PRIMARY KEY (Id),
+        CONSTRAINT FK_Scores_Enrollments_EnrollmentId
+            FOREIGN KEY (EnrollmentId) REFERENCES dbo.Enrollments(Id) ON DELETE NO ACTION,
+        CONSTRAINT CK_Scores_MidtermScore
+            CHECK (MidtermScore IS NULL OR (MidtermScore >= 0 AND MidtermScore <= 10)),
+        CONSTRAINT CK_Scores_FinalScore
+            CHECK (FinalScore IS NULL OR (FinalScore >= 0 AND FinalScore <= 10))
+    );
+END
+""");
+
+        context.Database.ExecuteSqlRaw("""
+IF NOT EXISTS (
+    SELECT 1
+    FROM sys.indexes
+    WHERE name = N'IX_Scores_EnrollmentId'
+      AND object_id = OBJECT_ID(N'dbo.Scores')
+)
+BEGIN
+    CREATE UNIQUE INDEX IX_Scores_EnrollmentId
+    ON dbo.Scores(EnrollmentId);
+END
+""");
     }
 
     public AccountEntity? Authenticate(string username, string password)
@@ -1870,6 +2004,249 @@ public class SqlLanguageCenterDataService : ILanguageCenterDataService
         context.Attendances.AddRange(attendances);
         context.Scores.AddRange(scores);
         context.SaveChanges();
+    }
+
+    private static void SeedTeacherFlowData(LanguageCenterDbContext context)
+    {
+        var teacherAccount = context.Accounts.FirstOrDefault(x =>
+            x.Id == "ACC003"
+            || x.Username == "teacher"
+            || x.Email == "teacher@ttnn.local"
+            || x.Phone == "0909000003");
+
+        if (teacherAccount is null)
+        {
+            teacherAccount = new AccountEntity
+            {
+                Id = "ACC003",
+                Username = "teacher",
+                PasswordHash = PasswordHasher.Hash("123456"),
+                DisplayName = "Tran Minh An",
+                Email = "teacher@ttnn.local",
+                Phone = "0909000003",
+                Role = AccountRole.Teacher,
+                Status = AccountStatus.Active,
+                IsDeleted = false
+            };
+            context.Accounts.Add(teacherAccount);
+        }
+        else
+        {
+            teacherAccount.Role = AccountRole.Teacher;
+            teacherAccount.Status = AccountStatus.Active;
+            teacherAccount.IsDeleted = false;
+            if (string.IsNullOrWhiteSpace(teacherAccount.PasswordHash))
+            {
+                teacherAccount.PasswordHash = PasswordHasher.Hash("123456");
+            }
+        }
+
+        context.SaveChanges();
+
+        var teacher = context.Teachers.FirstOrDefault(x =>
+            x.Id == "GV001"
+            || x.Email == "teacher@ttnn.local"
+            || x.Phone == "0909000003"
+            || x.FullName == "Tran Minh An");
+
+        if (teacher is null)
+        {
+            teacher = new TeacherEntity
+            {
+                Id = "GV001",
+                FullName = "Tran Minh An",
+                Phone = "0909000003",
+                Email = "teacher@ttnn.local",
+                Specialization = "IELTS",
+                Gender = "Nam",
+                Address = "Da Nang",
+                AccountId = teacherAccount.Id,
+                Status = "Active",
+                IsDeleted = false
+            };
+            context.Teachers.Add(teacher);
+        }
+        else
+        {
+            teacher.Status = "Active";
+            teacher.IsDeleted = false;
+            if (string.IsNullOrWhiteSpace(teacher.AccountId))
+            {
+                teacher.AccountId = teacherAccount.Id;
+            }
+        }
+
+        var foundationCourse = EnsureCourse("KH001", "English Foundation", "A1 co ban", 2400000M);
+        var ieltsCourse = EnsureCourse("KH002", "IELTS Intensive", "Luyen thi IELTS 5.5+", 6500000M);
+        var studentOne = EnsureStudent("HV001", "Nguyen Hai Dang", new DateTime(2010, 3, 12), "0909123456", "dang@example.com");
+        var studentTwo = EnsureStudent("HV002", "Le Khanh Vy", new DateTime(2011, 7, 3), "0911222333", "vy@example.com");
+
+        context.SaveChanges();
+
+        EnsureClass("LP001", "ENG-A1-01", foundationCourse.Id, teacher.Id, new DateTime(2026, 1, 5), new DateTime(2026, 4, 30), "2-4-6 18:00-19:30", "P201", 20);
+        EnsureClass("LP002", "IELTS-24A", ieltsCourse.Id, teacher.Id, new DateTime(2026, 2, 10), new DateTime(2026, 6, 30), "3-5-7 18:00-19:30", "P301", 18);
+        context.SaveChanges();
+
+        var teacherClass = context.Classes.FirstOrDefault(x => !x.IsDeleted && x.TeacherId == teacher.Id);
+        if (teacherClass is null)
+        {
+            teacherClass = new ClassEntity
+            {
+                Id = GetNextCode(context.Classes.Select(x => x.Id).ToList(), "LP"),
+                Name = "TEACHER-DEMO",
+                CourseId = foundationCourse.Id,
+                TeacherId = teacher.Id,
+                StartDate = DateTime.Today.AddDays(-7),
+                EndDate = DateTime.Today.AddMonths(2),
+                Schedule = "2-4-6 18:00-19:30",
+                Room = "P201",
+                MaxStudents = 20,
+                Status = "Open",
+                IsDeleted = false
+            };
+            context.Classes.Add(teacherClass);
+            context.SaveChanges();
+        }
+
+        var enrollmentOne = EnsureEnrollment("GD001", studentOne.Id, teacherClass.Id, new DateTime(2026, 1, 6), "Dot 1");
+        var enrollmentTwo = EnsureEnrollment("GD002", studentTwo.Id, teacherClass.Id, new DateTime(2026, 1, 12), "Dong du");
+        context.SaveChanges();
+
+        EnsureAttendance("DD001", enrollmentOne.Id, new DateTime(2026, 4, 20), "Present", string.Empty);
+        EnsureAttendance("DD002", enrollmentTwo.Id, new DateTime(2026, 4, 20), "Late", "Tre 10 phut");
+        EnsureScore("DS001", enrollmentOne.Id, 8.5M, 9.0M);
+        EnsureScore("DS002", enrollmentTwo.Id, 7.0M, 8.0M);
+        context.SaveChanges();
+
+        CourseEntity EnsureCourse(string id, string name, string description, decimal tuitionFee)
+        {
+            var course = context.Courses.FirstOrDefault(x => x.Id == id || x.Name == name);
+            if (course is not null)
+            {
+                course.Status = "Active";
+                course.IsDeleted = false;
+                return course;
+            }
+
+            course = new CourseEntity
+            {
+                Id = id,
+                Name = name,
+                Description = description,
+                TuitionFee = tuitionFee,
+                Status = "Active",
+                IsDeleted = false
+            };
+            context.Courses.Add(course);
+            return course;
+        }
+
+        StudentEntity EnsureStudent(string id, string fullName, DateTime birthDate, string phone, string email)
+        {
+            var student = context.Students.FirstOrDefault(x => x.Id == id || x.Phone == phone || x.Email == email);
+            if (student is not null)
+            {
+                student.Status = "Active";
+                student.IsDeleted = false;
+                return student;
+            }
+
+            student = new StudentEntity
+            {
+                Id = id,
+                FullName = fullName,
+                BirthDate = birthDate,
+                Phone = phone,
+                Email = email,
+                Address = "Da Nang",
+                Status = "Active",
+                IsDeleted = false
+            };
+            context.Students.Add(student);
+            return student;
+        }
+
+        void EnsureClass(string id, string name, string courseId, string teacherId, DateTime startDate, DateTime endDate, string schedule, string room, int maxStudents)
+        {
+            if (context.Classes.Any(x => x.Id == id))
+            {
+                return;
+            }
+
+            context.Classes.Add(new ClassEntity
+            {
+                Id = id,
+                Name = name,
+                CourseId = courseId,
+                TeacherId = teacherId,
+                StartDate = startDate,
+                EndDate = endDate,
+                Schedule = schedule,
+                Room = room,
+                MaxStudents = maxStudents,
+                Status = "Open",
+                IsDeleted = false
+            });
+        }
+
+        EnrollmentEntity EnsureEnrollment(string id, string studentId, string classId, DateTime enrollDate, string note)
+        {
+            var enrollment = context.Enrollments.FirstOrDefault(x => x.StudentId == studentId && x.ClassId == classId)
+                             ?? context.Enrollments.FirstOrDefault(x => x.Id == id);
+            if (enrollment is not null)
+            {
+                enrollment.Status = "Active";
+                enrollment.IsDeleted = false;
+                return enrollment;
+            }
+
+            enrollment = new EnrollmentEntity
+            {
+                Id = id,
+                StudentId = studentId,
+                ClassId = classId,
+                EnrollDate = enrollDate,
+                Status = "Active",
+                Note = note,
+                IsDeleted = false
+            };
+            context.Enrollments.Add(enrollment);
+            return enrollment;
+        }
+
+        void EnsureAttendance(string id, string enrollmentId, DateTime attendanceDate, string status, string note)
+        {
+            if (context.Attendances.Any(x => x.Id == id || (x.EnrollmentId == enrollmentId && x.AttendanceDate.Date == attendanceDate.Date)))
+            {
+                return;
+            }
+
+            context.Attendances.Add(new AttendanceEntity
+            {
+                Id = id,
+                EnrollmentId = enrollmentId,
+                AttendanceDate = attendanceDate,
+                Status = status,
+                Note = note
+            });
+        }
+
+        void EnsureScore(string id, string enrollmentId, decimal midtermScore, decimal finalScore)
+        {
+            if (context.Scores.Any(x => x.Id == id || x.EnrollmentId == enrollmentId))
+            {
+                return;
+            }
+
+            context.Scores.Add(new ScoreEntity
+            {
+                Id = id,
+                EnrollmentId = enrollmentId,
+                MidtermScore = midtermScore,
+                FinalScore = finalScore,
+                Note = string.Empty
+            });
+        }
     }
 
     private static bool ShouldSeedSampleData(LanguageCenterDbContext context)

@@ -47,7 +47,7 @@ public partial class FrmAttendance : Form
     {
         cboAttendanceClass.SelectedIndexChanged += (_, _) => LoadSessions();
         cboAttendanceSession.SelectedIndexChanged += (_, _) => SyncDateFromSession();
-        btnSearchAttendance.Click += (_, _) => LoadAttendanceList();
+        btnSearchAttendance.Click += (_, _) => LoadAttendanceList(showEmptyMessage: true);
         btnCheckAllPresent.Click += (_, _) => SetAllAttendanceStatus(true);
         btnCheckAllAbsent.Click += (_, _) => SetAllAttendanceStatus(false);
         btnSaveAttendance.Click += (_, _) => SaveAttendance();
@@ -115,7 +115,7 @@ public partial class FrmAttendance : Form
         }
     }
 
-    private void LoadAttendanceList()
+    private void LoadAttendanceList(bool showEmptyMessage = false)
     {
         try
         {
@@ -125,12 +125,20 @@ public partial class FrmAttendance : Form
                 _attendanceTable = BuildEmptyAttendanceTable();
                 dgvAttendanceList.DataSource = _attendanceTable;
                 ConfigureGrid();
+                if (showEmptyMessage)
+                {
+                    MessageBox.Show(this, "Chưa có lớp giảng dạy để xem điểm danh. Hãy kiểm tra tài khoản giáo viên đã được gán với giáo viên và lớp học trong database.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
                 return;
             }
 
             _attendanceTable = AppRuntime.DataService.GetAttendanceList(classId, dtpAttendanceDate.Value.Date);
             dgvAttendanceList.DataSource = _attendanceTable;
             ConfigureGrid();
+            if (showEmptyMessage && _attendanceTable.Rows.Count == 0)
+            {
+                MessageBox.Show(this, "Lớp này chưa có học viên đang học để điểm danh. Hãy kiểm tra bảng Enrollments có bản ghi Active cho lớp đã chọn.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
         catch (Exception ex)
         {

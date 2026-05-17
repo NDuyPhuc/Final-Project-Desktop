@@ -650,11 +650,13 @@ public partial class FrmTeacherDashboard : Form
                 Width = 148,
                 Height = 32,
                 FlatStyle = FlatStyle.Flat,
-                Font = new Font("Segoe UI", 8.75F, FontStyle.Bold)
+                Font = new Font("Segoe UI", 8.75F, FontStyle.Bold),
+                Cursor = Cursors.Hand
             };
             button.FlatAppearance.BorderSize = 0;
             button.BackColor = task.Accent;
             button.ForeColor = Color.White;
+            button.Click += (_, _) => OpenTeachingTask(task.Title, task.Action);
 
             var due = new Label
             {
@@ -771,6 +773,26 @@ public partial class FrmTeacherDashboard : Form
         panel.Controls.Add(textPanel);
         panel.Controls.Add(dateLabel);
         return panel;
+    }
+
+    private void OpenTeachingTask(string title, string action)
+    {
+        var menuButtons = GetMenuButtons();
+        if (title.Contains("Điểm danh", StringComparison.OrdinalIgnoreCase)
+            || action.Contains("THỰC HIỆN", StringComparison.OrdinalIgnoreCase))
+        {
+            OpenModule(() => new FrmAttendance(), btnMenuAttendance, menuButtons);
+            return;
+        }
+
+        if (title.Contains("điểm", StringComparison.OrdinalIgnoreCase)
+            || action.Contains("NHẬP ĐIỂM", StringComparison.OrdinalIgnoreCase))
+        {
+            OpenModule(() => new FrmScoreEntry(), btnMenuScoreEntry, menuButtons);
+            return;
+        }
+
+        OpenModule(() => new FrmTeachingClasses(), btnMenuTeachingClasses, menuButtons);
     }
 
     private Button CreateTopbarMiniButton(string text)
