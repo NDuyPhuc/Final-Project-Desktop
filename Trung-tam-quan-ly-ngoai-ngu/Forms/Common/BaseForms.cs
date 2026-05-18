@@ -8,6 +8,7 @@ public static class FormHostHelpers
     private static readonly PropertyInfo? DoubleBufferedProperty =
         typeof(Control).GetProperty("DoubleBuffered", BindingFlags.Instance | BindingFlags.NonPublic);
     private static readonly object UiLogLock = new();
+    private static Icon? cachedApplicationIcon;
 
     public static void ConfigureModuleSurface(Form form, string title)
     {
@@ -22,6 +23,7 @@ public static class FormHostHelpers
             form.MinimumSize = ScaleSize(form, new Size(980, 620));
         }
 
+        ApplyApplicationIcon(form);
         EnableOptimizedRendering(form);
     }
 
@@ -43,6 +45,7 @@ public static class FormHostHelpers
             form.MinimumSize = ScaleSize(form, new Size(1200, 720));
         }
 
+        ApplyApplicationIcon(form);
         EnableOptimizedRendering(form);
     }
 
@@ -56,7 +59,23 @@ public static class FormHostHelpers
         form.MinimumSize = ScaleSize(form, logicalMinimumSize);
         form.StartPosition = FormStartPosition.CenterParent;
 
+        ApplyApplicationIcon(form);
         EnableOptimizedRendering(form);
+    }
+
+    public static void ApplyApplicationIcon(Form form)
+    {
+        try
+        {
+            cachedApplicationIcon ??= Icon.ExtractAssociatedIcon(Application.ExecutablePath);
+            if (cachedApplicationIcon is not null)
+            {
+                form.Icon = (Icon)cachedApplicationIcon.Clone();
+            }
+        }
+        catch
+        {
+        }
     }
 
     public static void OpenChildForm(Panel hostPanel, Form childForm)

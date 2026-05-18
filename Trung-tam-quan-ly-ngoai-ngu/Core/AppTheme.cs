@@ -128,6 +128,7 @@ internal static class AppTheme
         form.Font = FontBody;
         form.AutoScaleMode = AutoScaleMode.Dpi;
         form.MinimumSize = FormHostHelpers.ScaleSize(form, new Size(1024, 700));
+        FormHostHelpers.ApplyApplicationIcon(form);
     }
 
     public static void StylePrimaryButton(Button button)
